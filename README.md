@@ -1,74 +1,43 @@
-# Sistema de livraria
+#ReadEasy 
 
-## Integrantes do grupo:
-- João Victor Morais Barreto da Silva - Joao.moraissilva@ufrpe.br
-- Rony Elias de Oliveira - r.eliasemp@gmail.com
-- Louise de Athayde Vieira - lvathayd@gmail.com
-- Mariane Elisa dos Santos Souza - mariane.elisa@ufrpe.br
+ReadEasy é um projeto para a disciplina de Introdução à Programação 2 do curso de Bacharelado em Ciência da Computação - UFRPE.
 
-## Descrição:
-  - O sistema oferece recursos de controle de acesso, venda de livros, histórico de compras e vendas, relatório de vendas e gerenciamento de livros, perfis e estoque, atendendo às necessidades dos funcionários e da livraria.
+##Integrantes do grupo:
 
-### Perguntas e respostas:
+João Victor Morais Barreto da Silva - joao.moraissilva@ufrpe.br
+Rony Elias de Oliveira - r.eliasemp@gmail.com
+Louise de Athayde Vieira - lvathayd@gmail.com
+Mariane Elisa dos Santos Souza - mariane.elisa@ufrpe.br
 
-1. **Quem vai usar o programa?**
-    - R: Funcionários e administradores/gerentes da Livraria.
+##Descrição geral do projeto:
 
-<br>
+ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livraria, além disso, o qual coordenará o acesso dos prestadores de serviços, funcionários e fornecedores.
 
-2. **Que serviços são importantes para os usuários?**
-    - R: Os serviços importantes são:  
-      - Cadastro de Livros
-      - Registro de vendas
-      - Registro de compras do fornecedor
-      - Registro e a atualização do estoque de livros
+*O sistema pode ser usado pelos seus funcionários, administradores e comuns, e pelos fornecedores dos livros. 
 
-<br>
+*Os serviços prestados pelo sistema contará com o CRUD de livros e dos prestadores de serviços para, assim, permitir a administração dos processos da livraria. 
 
-3. **Qual a principal funcionalidade do seu sistema?**
-    - R: Registrar e gerenciar a venda livros de uma livraria.
+##Requisitos 
 
-<br>
+*REQ1
+O sistema será acessado por colaboradores, administradores e comuns, e pelos fornecedoresdos produtos, mediante login e senha.
 
-4. **Quais serviços cada usuário pode executar?**
-    - R: Funcionários comuns podem:
-      - Registrar vendas
-      - Cadastrar, editar e deletar livros
-      - Atualizar o estoque de livros
+*REQ2
+Os funcionários administradores devem ser responsáveis pelo CRUD (Create, Recover, Update e Delete) dos prestadores de serviços, que também poderão executar normalmente as funções que um funcionário comum executa. 
 
-    - Administradores:
-      - Gerenciar perfis que acessarão o sistema (adicionar, editar, remover)
-      - Gerenciar os fornecedores da empresa (adicionar, editar, remover)
-      - Visualizar o histórico de compras dos fornecedores e histórico de vendas dos clientes
-      - Executar todas as funcionalidades que um funcionário comum pode executar
+*REQ3
+Os Colaboradores comuns serão incumbidos de fazer o CRUD (Create, Recover, Update e Delete) dos produtos da livraria.
 
-# Requisitos:
+*REQ4
+Os Colaboradores comuns deverão ter a possibilidade de buscar imagens na web dos livros para endossar o cadastro dos livros. 
 
-**REQ 1 - Gerenciamento de perfis:**
- 	
-  - O sistema deve possibilitar o gerenciamento (Create, Recover, Update e Delete - CRUD)  e perfis que acessarão o sistema.
+*REQ4
+Os fornecedores da livrarias devem ter acesso a informações como estoque e quantitativo de venda dos seus produtos.
 
-<br>
+*REQ5
+As vendas devem estar associadas a um cliente e a um fornecedor. 
 
-**REQ 2 - Controle de Acesso:**
-  - O sistema deve implementar um controle de acesso baseado em perfis de usuário. Os usuários serão categorizados em dois tipos, o administrador e funcionários, garantindo que cada perfil tenha acesso apenas às funcionalidades autorizadas para sua respectiva função.
 
-<br>
 
-**REQ 3 - Venda de Livros e Histórico de compras dos clientes:**
-  - O sistema deve permitir a venda de livros previamente cadastrados e salvá-los como em um histórico de vendas.
 
-<br>
 
-**REQ 4 - Relatório de Vendas dos Livros:**
-  - O sistema deve permitir um relatório das vendas de cada livro vendido, informando a quantidade vendida, o valor de lucro obtido e uma classificação dos livros mais vendidos e que mais geraram lucro para a livraria.
-
-<br>
-
-**REQ 5 - Gerenciamento de Livros e estoque:** 
-  - O sistema deve permitir o gerenciamento do estoque e CRUD dos Livros cadastrados.
-
-<br>
-
-**REQ 6 - Gerenciamento de fornecedores, histórico de compras e vendas da livraria:** 
-  - O sistema deve permitir o gerenciamento CRUD dos fornecedores da livraria, além de registrar e listar todas as compras realizadas dos fornecedores.
