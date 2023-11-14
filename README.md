@@ -19,9 +19,9 @@
 2. **Que serviços são importantes para os usuários?**
     - R: Os serviços importantes são:  
       - Cadastro de Livros
-      - registro de vendas
-      - registro de compras do fornecedor
-      - registro e a atualização do estoque de livros
+      - Registro de vendas
+      - Registro de compras do fornecedor
+      - Registro e a atualização do estoque de livros
 
 <br>
 
