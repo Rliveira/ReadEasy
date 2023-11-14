@@ -1,15 +1,15 @@
-#ReadEasy 
+# ReadEasy 
 
 ReadEasy é um projeto para a disciplina de Introdução à Programação 2 do curso de Bacharelado em Ciência da Computação - UFRPE.
 
-##Integrantes do grupo:
+## Integrantes do grupo:
 
 João Victor Morais Barreto da Silva - joao.moraissilva@ufrpe.br
 Rony Elias de Oliveira - r.eliasemp@gmail.com
 Louise de Athayde Vieira - lvathayd@gmail.com
 Mariane Elisa dos Santos Souza - mariane.elisa@ufrpe.br
 
-##Descrição geral do projeto:
+## Descrição geral do projeto:
 
 ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livraria, além disso, o qual coordenará o acesso dos prestadores de serviços, funcionários e fornecedores.
 
@@ -17,7 +17,7 @@ ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livr
 
 *Os serviços prestados pelo sistema contará com o CRUD de livros e dos prestadores de serviços para, assim, permitir a administração dos processos da livraria. 
 
-##Requisitos 
+## Requisitos 
 
 *REQ1
 O sistema será acessado por colaboradores, administradores e comuns, e pelos fornecedoresdos produtos, mediante login e senha.
