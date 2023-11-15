@@ -1,5 +1,5 @@
 # ReadEasy 
-a
+
 ReadEasy é um projeto para a disciplina de Introdução à Programação 2 do curso de Bacharelado em Ciência da Computação - UFRPE.
 
 ## Integrantes do grupo:
