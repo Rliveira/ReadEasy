@@ -21,7 +21,7 @@ ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livr
 ## Requisitos 
 
 *REQ1
-O sistema será acessado por colaboradores, administradores e comuns, e pelos fornecedoresdos produtos, mediante login e senha.
+O sistema será acessado por colaboradores, administradores e comuns, e pelos fornecedores dos produtos, mediante login e senha.
 
 *REQ2
 Os funcionários administradores devem ser responsáveis pelo CRUD (Create, Recover, Update e Delete) dos prestadores de serviços, que também poderão executar normalmente as funções que um funcionário comum executa. 
@@ -37,8 +37,3 @@ Os fornecedores da livrarias devem ter acesso a informações como estoque e qua
 
 *REQ5
 As vendas devem estar associadas a um cliente e a um fornecedor. 
-
-
-
-
-
