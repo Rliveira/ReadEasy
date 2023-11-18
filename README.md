@@ -20,20 +20,21 @@ ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livr
 
 ## Requisitos 
 
-*REQ1
-O sistema será acessado por colaboradores, administradores e comuns, e pelos fornecedores dos produtos, mediante login e senha.
+*REQ1 O sistema será acessado por colaboradores, administradores e comuns, pelos fornecedores dos produtos, mediante login e senha.
 
-*REQ2
-Os funcionários administradores devem ser responsáveis pelo CRUD (Create, Recover, Update e Delete) dos prestadores de serviços, que também poderão executar normalmente as funções que um funcionário comum executa. 
+*REQ2 Os funcionários administradores devem ser responsáveis pelo CRUD (Create, Recover, Update e Delete) dos prestadores de serviços, 
+que também poderão executar normalmente as funções que um funcionário comum executa.
 
-*REQ3
-Os Colaboradores comuns serão incumbidos de fazer o CRUD (Create, Recover, Update e Delete) dos produtos da livraria.
+*REQ3 Os Colaboradores comuns serão incumbidos de fazer o CRUD (Create, Recover, Update e Delete) dos produtos da livraria e dos clientes.
 
-*REQ4
-Os Colaboradores comuns deverão ter a possibilidade de buscar imagens na web dos livros para endossar o cadastro dos livros. 
+*REQ4 Os Colaboradores comuns deverão ter a possibilidade de buscar imagens na web dos livros para endossar o cadastro dos livros.
 
-*REQ4
-Os fornecedores da livrarias devem ter acesso a informações como estoque e quantitativo de venda dos seus produtos.
+*REQ4 Os fornecedores da livrarias devem ter acesso a informações como estoque e quantitativo de venda dos seus produtos.
 
-*REQ5
-As vendas devem estar associadas a um cliente e a um fornecedor. 
+*REQ5 As vendas devem estar associadas a um cliente e a um fornecedor.
+
+*REQ6 Por meio do sistema será possível filtrar os produtos vendidos por período de tempo.
+
+*REQ7 Irá disponilizar, também, relatórios de vendas para consulta da livraria e dos fornecedores.
+
+*REQ8 O sistema deverá ranquear por número de compras os clientes, para melhor direcionamento de vendas. 
