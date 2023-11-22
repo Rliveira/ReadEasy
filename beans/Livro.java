@@ -5,18 +5,13 @@ import java.util.ArrayList;
 public class Livro {
     private String titulo;
     private String autor;
-    private String editora;
-    private int ano;
     private double preco;
     private ArrayList<String> generos;
     private Fornecedor fornecedor;
 
-    public Livro(String titulo, String autor, String editora,
-                 int ano, double preco, ArrayList<String> generos, Fornecedor fornecedor) {
+    public Livro(String titulo, String autor, double preco, ArrayList<String> generos, Fornecedor fornecedor) {
         this.titulo = titulo;
         this.autor = autor;
-        this.editora = editora;
-        this.ano = ano;
         this.preco = preco;
         this.generos = generos;
         this.fornecedor = fornecedor;
@@ -28,14 +23,6 @@ public class Livro {
 
     public String getAutor() {
         return autor;
-    }
-
-    public String getEditora() {
-        return editora;
-    }
-
-    public int getAno() {
-        return ano;
     }
 
     public double getPreco() {
@@ -51,18 +38,6 @@ public class Livro {
     public void setAutor(String autor) {
         if (!autor.isEmpty()) {
             this.autor = autor;
-        }
-    }
-
-    public void setEditora(String editora) {
-        if (!editora.isEmpty()) {
-            this.editora = editora;
-        }
-    }
-
-    public void setAno(int ano) {
-        if (ano > 0) {
-            this.ano = ano;
         }
     }
 
