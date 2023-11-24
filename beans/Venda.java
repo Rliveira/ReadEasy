@@ -22,6 +22,24 @@ public class Venda {
         return total;
     }
 
+    public void adicionarLivro(Livro livro, int quantidade) {
+        LivroVendido livroVendido = new LivroVendido(livro, quantidade);
+        livrosVendidos.add(livroVendido);
+    }
+
+    public void removerLivro(Livro livro, int quantidade) {
+        for (LivroVendido livroVendido : livrosVendidos) {
+            if (livroVendido.getLivro().equals(livro)) {
+                if (livroVendido.getQuantidade() > quantidade) {
+                    livroVendido.setQuantidade(livroVendido.getQuantidade() - quantidade);
+                } else {
+                    livrosVendidos.remove(livroVendido);
+                }
+                break;
+            }
+        }
+    }
+
     public Cliente getCliente() {
         return cliente;
     }

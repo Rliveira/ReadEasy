@@ -9,12 +9,24 @@ public class Livro {
     private ArrayList<String> generos;
     private Fornecedor fornecedor;
 
-    public Livro(String titulo, String autor, double preco, ArrayList<String> generos, Fornecedor fornecedor) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.preco = preco;
-        this.generos = generos;
-        this.fornecedor = fornecedor;
+    public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
+        setTitulo(titulo);
+        setAutor(autor);
+        setPreco(preco);
+        this.generos = new ArrayList<String>();
+        setFornecedor(fornecedor);
+    }
+
+    public void adicionarGenero(String genero) {
+        if (!genero.isEmpty()) {
+            generos.add(genero);
+        }
+    }
+
+    public void removerGenero(String genero) {
+        if (!genero.isEmpty()) {
+            generos.remove(genero);
+        }
     }
 
     public String getTitulo() {
