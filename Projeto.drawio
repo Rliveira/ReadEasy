@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-11-24T00:19:50.683Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="PZ8UAF96slavJwgQe5Ew" version="22.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2023-11-24T00:35:34.630Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="zgPrFloVriItn78P1CEk" version="22.1.3" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1290" dy="1726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -119,7 +119,7 @@
         <mxCell id="XBGWm8nAmDF4gUoBzpc8-30" value="+ Vendas (cliente)&lt;br&gt;+ calcularTotal( ): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="XBGWm8nAmDF4gUoBzpc8-27" vertex="1">
           <mxGeometry y="98" width="280" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="ikEvyeaQRwQM_20NMCcv-1" value="+ adicionarLivroVendido( ) : void&lt;br&gt;+ removerLivroVendido( ) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="XBGWm8nAmDF4gUoBzpc8-27">
+        <mxCell id="ikEvyeaQRwQM_20NMCcv-1" value="+ adicionarLivroVendido(Livro, int) : void&lt;br&gt;+ removerLivroVendido( ) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="XBGWm8nAmDF4gUoBzpc8-27">
           <mxGeometry y="140" width="280" height="42" as="geometry" />
         </mxCell>
         <mxCell id="XBGWm8nAmDF4gUoBzpc8-31" value="" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;exitX=-0.002;exitY=0.354;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.677;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="XBGWm8nAmDF4gUoBzpc8-26" target="XBGWm8nAmDF4gUoBzpc8-19" edge="1">
