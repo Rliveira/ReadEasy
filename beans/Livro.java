@@ -8,6 +8,7 @@ public class Livro {
     private double preco;
     private ArrayList<String> generos;
     private Fornecedor fornecedor;
+    private String imagem;
 
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
         setTitulo(titulo);
@@ -76,6 +77,15 @@ public class Livro {
     public void setFornecedor(Fornecedor fornecedor) {
         if (fornecedor != null) {
             this.fornecedor = fornecedor;
+        }
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+    public void setImagem(String imagem) {
+        if (!imagem.isEmpty()) {
+            this.imagem = imagem;
         }
     }
 }
