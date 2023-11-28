@@ -16,7 +16,7 @@ ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livr
 
 *O sistema pode ser usado pelos seus funcionários, administradores e comuns, e pelos fornecedores dos livros. 
 
-*Os serviços prestados pelo sistema contaram com o CRUD de livros e dos prestadores de serviços para, assim, permitir a administração dos processos da livraria. 
+*Os serviços prestados pelo sistema contarão com o CRUD de livros e dos prestadores de serviços para, assim, permitir a administração dos processos da livraria. 
 
 ## Requisitos 
 
@@ -31,7 +31,7 @@ que também poderão executar normalmente as funções que um funcionário comum
 
 *REQ4 Os fornecedores da livrarias devem ter acesso a informações como estoque e quantitativo de venda dos seus produtos.
 
-*REQ5 As vendas devem estar associadas a um cliente, e os livros, a um fornecedor.
+*REQ5 As vendas devem estar associadas a um cliente, e os livros, a um fornecedor, além disso será feita uma buscas por promoções associadas aos livros da venda.
 
 *REQ6 Por meio do sistema será possível filtrar os produtos vendidos por período de tempo.
 
