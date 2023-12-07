@@ -1,4 +1,4 @@
-package beans;
+package com.example.readeasy.Business.beans;
 
 import java.time.LocalDate;
 
@@ -9,10 +9,11 @@ public abstract class Usuario{
     private LocalDate dataNascimento;
     private String login;
     private String senha;
-    private String endereco;
+    private Endereco endereco;
     private String telefone;
 
-    public Usuario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, String endereco, String telefone) {
+    //CONSTRUTOR:
+    public Usuario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -22,6 +23,7 @@ public abstract class Usuario{
         this.telefone = telefone;
     }
 
+    //GETS AND SETS:
     public String getNome() {
         return nome;
     }
@@ -62,11 +64,11 @@ public abstract class Usuario{
         this.senha = senha;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 

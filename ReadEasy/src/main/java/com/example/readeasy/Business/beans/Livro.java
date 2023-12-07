@@ -1,4 +1,4 @@
-package beans;
+package com.example.readeasy.Business.beans;
 
 import java.util.ArrayList;
 
@@ -6,30 +6,29 @@ public class Livro {
     private String titulo;
     private String autor;
     private double preco;
-    private ArrayList<String> generos;
+    private ArrayList<Genero> generos;
     private Fornecedor fornecedor;
     private String imagem;
 
+    //CONSTRUTOR:
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
         setTitulo(titulo);
         setAutor(autor);
         setPreco(preco);
-        this.generos = new ArrayList<String>();
+        this.generos = new ArrayList<Genero>();
         setFornecedor(fornecedor);
     }
 
-    public void adicionarGenero(String genero) {
-        if (!genero.isEmpty()) {
-            generos.add(genero);
-        }
+    //MÉTODOS:
+    public void adicionarGenero(Genero genero) {
+        generos.add(genero);
     }
 
-    public void removerGenero(String genero) {
-        if (!genero.isEmpty()) {
-            generos.remove(genero);
-        }
+    public void removerGenero(Genero genero) {
+        generos.remove(genero);
     }
 
+    //GETS AND SETS:
     public String getTitulo() {
         return titulo;
     }
@@ -60,14 +59,8 @@ public class Livro {
         }
     }
 
-    public ArrayList<String> getGeneros() {
+    public ArrayList<Genero> getGeneros() {
         return generos;
-    }
-
-    public void setGeneros(ArrayList<String> generos) {
-        if (!generos.isEmpty()) {
-            this.generos = generos;
-        }
     }
 
     public Fornecedor getFornecedor() {
@@ -87,5 +80,17 @@ public class Livro {
         if (!imagem.isEmpty()) {
             this.imagem = imagem;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Livro{" +
+                "titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", preco=" + preco +
+                ", generos=" + generos +
+                ", fornecedor=" + fornecedor +
+                ", imagem='" + imagem + '\'' +
+                '}';
     }
 }

@@ -1,14 +1,21 @@
-package beans;
+package com.example.readeasy.Business.beans;
 
 public class LivroVendido {
     private Livro livro;
     private int quantidade;
 
+    //CONSTRUTOR:
     public LivroVendido(Livro livro, int quantidade) {
         this.livro = livro;
         this.quantidade = quantidade;
     }
 
+    //MÉTODOS:
+    public double calcularTotal() {
+        return livro.getPreco() * quantidade;
+    }
+
+    //GETS AND SETS:
     public Livro getLivro() {
         return livro;
     }
@@ -27,9 +34,5 @@ public class LivroVendido {
         if (quantidade > 0) {
             this.quantidade = quantidade;
         }
-    }
-
-    public double getValorTotal() {
-        return livro.getPreco() * quantidade;
     }
 }

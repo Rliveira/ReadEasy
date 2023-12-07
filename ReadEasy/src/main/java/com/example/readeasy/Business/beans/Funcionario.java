@@ -1,23 +1,22 @@
-package beans;
+package com.example.readeasy.Business.beans;
 
 import java.time.LocalDate;
 
 
 public class Funcionario extends Usuario {
-
     private boolean ehAdm;
-
     private Funcionario admResponsavel;
 
-
-    public Funcionario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, String endereco,
+    //CONSTRUTOR:
+    public Funcionario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco,
                        String telefone, boolean ehAdm, Funcionario admResponsavel) {
         super(nome, cpf, dataNascimento, login, senha, endereco, telefone);
         this.ehAdm = ehAdm;
         this.admResponsavel = admResponsavel;
     }
 
-    public boolean isEhAdm() {
+    //GETS AND SETS:
+    public boolean EhAdm() {
         return ehAdm;
     }
 
@@ -33,4 +32,11 @@ public class Funcionario extends Usuario {
         this.admResponsavel = admResponsavel;
     }
 
+    @Override
+    public String toString() {
+        return "Funcionario{" +
+                "ehAdm=" + ehAdm +
+                ", admResponsavel=" + admResponsavel +
+                '}' + super.toString();
+    }
 }
