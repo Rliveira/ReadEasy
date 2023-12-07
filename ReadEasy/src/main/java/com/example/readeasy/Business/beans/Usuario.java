@@ -80,6 +80,21 @@ public abstract class Usuario{
         this.telefone = telefone;
     }
 
+    public int getIdade() {
+        return LocalDate.now().getYear() - dataNascimento.getYear();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Usuario)) {
+            return false;
+        }
+        Usuario usuario = (Usuario) obj;
+        return this.cpf.equals(usuario.cpf);
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

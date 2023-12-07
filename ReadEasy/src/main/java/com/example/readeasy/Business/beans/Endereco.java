@@ -5,7 +5,7 @@ public class Endereco {
     private String rua;
     private String bairro;
     private String cidade;
-    private String Estado;
+    private String estado;
 
     //CONSTRUTOR:
     public Endereco(int cep, String rua, String bairro, String cidade, String estado) {
@@ -13,7 +13,7 @@ public class Endereco {
         this.rua = rua;
         this.bairro = bairro;
         this.cidade = cidade;
-        Estado = estado;
+        this.estado = estado;
     }
 
     //GETS AND SETS:
@@ -50,11 +50,11 @@ public class Endereco {
     }
 
     public String getEstado() {
-        return Estado;
+        return estado;
     }
 
     public void setEstado(String estado) {
-        Estado = estado;
+        this.estado = estado;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Endereco {
                 ", rua='" + rua + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
-                ", Estado='" + Estado + '\'' +
+                ", Estado='" + estado + '\'' +
                 '}';
     }
 }
