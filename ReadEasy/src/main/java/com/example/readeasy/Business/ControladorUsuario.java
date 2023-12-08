@@ -5,8 +5,7 @@ import com.example.readeasy.Data.IRepositorioUsuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-// TODO import exceptions.*;
-// TODO fazer exceptions
+import com.example.readeasy.Exceptions.*;
 
 public class ControladorUsuario {
     private static ControladorUsuario instance;
@@ -19,7 +18,7 @@ public class ControladorUsuario {
         }
         return instance;
     }
-    public void cadastrarUsuario(Usuario usuario) {
+    public void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException, DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (!repUsuario.existeUsuario(usuario.getCpf())) {
                 if (!usuario.getNome().isEmpty() && !usuario.getCpf().isEmpty() && usuario.getDataNascimento() != null
@@ -31,271 +30,288 @@ public class ControladorUsuario {
                                 if (((Funcionario) usuario).getAdmResponsavel() != null) {
                                     repUsuario.inserirUsuario(usuario);
                                 } else {
-                                    // TODO throw new AdmResponsavelNuloException();
+                                    throw new CampoVazioException();
                                 }
                             } else if (usuario instanceof Fornecedor) {
                                 repUsuario.inserirUsuario(usuario);
                             } else if (usuario instanceof Cliente) {
                                 repUsuario.inserirUsuario(usuario);
                             } else {
-                                //TODO throw new TipoUsuarioInvalidoException(
+                                throw new TipoUsuarioInvalidoException();
                             }
                         } else {
-                            // TODO throw new MenorDeIdadeException();
+                            throw new MenorDeIdadeException(usuario.getIdade());
                         }
                     } else {
-                        //TODO throw new DataInvalidaException();
+                        throw new DataInvalidaException(usuario.getDataNascimento());
                     }
                 } else {
-                    //TODO throw new CampoVazioException();
+                    throw new CampoVazioException();
                 }
             } else {
-                //TODO throw new UsuarioExistenteException();
+                throw new UsuarioExistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void removerUsuario(Usuario usuario) {
+    public void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 repUsuario.removerUsuario(usuario);
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, boolean ehAdm, Funcionario admResponsavel) {
+    public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, boolean ehAdm, Funcionario admResponsavel) throws TipoUsuarioInvalidoException, UsuarioExistenteException, DataInvalidaException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
-            if (repUsuario.existeUsuario(cpf)){
+            if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Funcionario) {
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
-                    } else {
-                        usuario.setNome(nome);
                     }
+                        usuario.setNome(nome);
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
                         cpf = usuario.getCpf();
                     } else {
-                        usuario.setCpf(cpf);
+                        if (!repUsuario.existeUsuario(cpf)){
+                            usuario.setCpf(cpf);
+                        } else {
+                            throw new UsuarioExistenteException(cpf);
+                        }
+
                     }
                     if (dataNascimento == null || dataNascimento.equals(usuario.getDataNascimento())) {
                         dataNascimento = usuario.getDataNascimento();
                     } else {
-                        usuario.setDataNascimento(dataNascimento);
+                        if (!dataNascimento.isBefore(LocalDate.now())){
+                            usuario.setDataNascimento(dataNascimento);
+                        } else{
+                            throw new DataInvalidaException(dataNascimento);
+                        }
+
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
-                    } else {
-                        usuario.setLogin(login);
                     }
+                        usuario.setLogin(login);
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
-                    } else {
-                        usuario.setSenha(senha);
                     }
+                        usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
-                    } else {
-                        usuario.setEndereco(endereco);
                     }
+                        usuario.setEndereco(endereco);
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
-                    } else {
-                        usuario.setTelefone(telefone);
                     }
+                        usuario.setTelefone(telefone);
                     if (ehAdm == ((Funcionario) usuario).EhAdm()) {
                         ehAdm = ((Funcionario) usuario).EhAdm();
-                    } else {
-                        ((Funcionario) usuario).setEhAdm(ehAdm);
                     }
+                        ((Funcionario) usuario).setEhAdm(ehAdm);
                     if (admResponsavel == null || admResponsavel.equals(((Funcionario) usuario).getAdmResponsavel())) {
                         admResponsavel = ((Funcionario) usuario).getAdmResponsavel();
-                    } else {
-                        ((Funcionario) usuario).setAdmResponsavel(admResponsavel);
                     }
+                        ((Funcionario) usuario).setAdmResponsavel(admResponsavel);
                 } else {
-                    //TODO throw new TipoUsuarioInvalidoException();
+                    throw new TipoUsuarioInvalidoException();
                 }
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone) {
+    public void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone) throws UsuarioExistenteException, DataInvalidaException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
-            if (repUsuario.existeUsuario(cpf)){
+            if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Cliente) {
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
-                    } else {
-                        usuario.setNome(nome);
                     }
+                        usuario.setNome(nome);
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
-                        cpf = usuario.getCpf();
+                            cpf = usuario.getCpf();
                     } else {
-                        usuario.setCpf(cpf);
+                        if (!repUsuario.existeUsuario(cpf)){
+                            usuario.setCpf(cpf);
+                        } else {
+                            throw new UsuarioExistenteException(cpf);
+                        }
+
                     }
                     if (dataNascimento == null || dataNascimento.equals(usuario.getDataNascimento())) {
                         dataNascimento = usuario.getDataNascimento();
                     } else {
-                        usuario.setDataNascimento(dataNascimento);
+                        if (!dataNascimento.isBefore(LocalDate.now())){
+                            usuario.setDataNascimento(dataNascimento);
+                        } else{
+                            throw new DataInvalidaException(dataNascimento);
+                        }
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
-                    } else {
-                        usuario.setLogin(login);
                     }
+                        usuario.setLogin(login);
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
-                    } else {
-                        usuario.setSenha(senha);
                     }
+                        usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
-                    } else {
-                        usuario.setEndereco(endereco);
                     }
+                        usuario.setEndereco(endereco);
+
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
-                    } else {
-                        usuario.setTelefone(telefone);
                     }
+                        usuario.setTelefone(telefone);
+
                 } else {
-                    //TODO throw new TipoUsuarioInvalidoException();
+                    throw new TipoUsuarioInvalidoException();
                 }
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor) {
+    public void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor) throws DataInvalidaException, UsuarioExistenteException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
-            if (repUsuario.existeUsuario(cpf)){
+            if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Fornecedor) {
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
-                    } else {
-                        usuario.setNome(nome);
                     }
+                        usuario.setNome(nome);
+
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
                         cpf = usuario.getCpf();
                     } else {
-                        usuario.setCpf(cpf);
+                        if (!repUsuario.existeUsuario(cpf)){
+                            usuario.setCpf(cpf);
+                        } else {
+                            throw new UsuarioExistenteException(cpf);
+                        }
+
                     }
                     if (dataNascimento == null || dataNascimento.equals(usuario.getDataNascimento())) {
                         dataNascimento = usuario.getDataNascimento();
                     } else {
-                        usuario.setDataNascimento(dataNascimento);
+                        if (!dataNascimento.isBefore(LocalDate.now())){
+                            usuario.setDataNascimento(dataNascimento);
+                        } else{
+                            throw new DataInvalidaException(dataNascimento);
+                        }
+
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
-                    } else {
-                        usuario.setLogin(login);
                     }
+                        usuario.setLogin(login);
+
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
-                    } else {
-                        usuario.setSenha(senha);
                     }
+                        usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
-                    } else {
-                        usuario.setEndereco(endereco);
                     }
+                        usuario.setEndereco(endereco);
+
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
-                    } else {
-                        usuario.setTelefone(telefone);
                     }
+                        usuario.setTelefone(telefone);
+
                     if (tipoFornecedor == null || tipoFornecedor.equals(((Fornecedor) usuario).getTipoFornecedor())){
                         tipoFornecedor = ((Fornecedor) usuario).getTipoFornecedor();
-                    } else {
-                        ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
                     }
+                        ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
+
                 } else {
-                    //TODO throw new TipoUsuarioInvalidoException();
+                    throw new TipoUsuarioInvalidoException();
                 }
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) {
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
                     if (endereco != null) {
                         ((Cliente) usuario).adicionarEndereco(endereco);
                     } else {
-                        //TODO throw new CampoVazioException();
+                        throw new CampoVazioException();
                     }
                 } else {
-                    //TODO throw new TipoUsuarioInvalidoException();
+                    throw new TipoUsuarioInvalidoException();
                 }
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) {
+    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
                     if (endereco != null) {
                         ((Cliente) usuario).removerEndereco(endereco);
                     } else {
-                        //TODO throw new CampoVazioException();
+                        throw new CampoVazioException();
                     }
                 } else {
-                    //TODO throw new TipoUsuarioInvalidoException();
+                    throw new TipoUsuarioInvalidoException();
                 }
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(usuario.getCpf());
             }
         } else {
-            //TODO throw new UsuarioNuloException();
+            throw new UsuarioNuloException();
         }
     }
 
-    public Usuario procurarUsuario(String cpf) {
+    public Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
         if (!cpf.isEmpty()) {
             if (repUsuario.existeUsuario(cpf)) {
                 return repUsuario.procurarUsuario(cpf);
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(cpf);
             }
         } else {
-            //TODO throw new CampoVazioException();
+            throw new CampoVazioException();
         }
-        return null;
     }
 
-    public void removerUsuario(String cpf) {
+    public void removerUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
         if (!cpf.isEmpty()) {
             if (repUsuario.existeUsuario(cpf)) {
                 repUsuario.removerUsuario(repUsuario.procurarUsuario(cpf));
             } else {
-                //TODO throw new UsuarioInexistenteException();
+                throw new UsuarioInexistenteException(cpf);
             }
         } else {
-            //TODO throw new CampoVazioException();
+            throw new CampoVazioException();
         }
     }
 
