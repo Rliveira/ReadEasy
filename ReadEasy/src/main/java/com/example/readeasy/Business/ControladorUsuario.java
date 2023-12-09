@@ -11,6 +11,7 @@ public class ControladorUsuario {
     private static ControladorUsuario instance;
     private IRepositorioUsuario repUsuario;
     private ControladorUsuario() {
+        this.repUsuario = RepositorioUsuario.getInstance();
     }
     public static ControladorUsuario getInstance() {
         if (instance == null) {
