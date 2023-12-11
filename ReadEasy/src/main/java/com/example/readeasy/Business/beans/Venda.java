@@ -49,6 +49,21 @@ public class Venda {
         }
     }
 
+    public boolean equals(Venda o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        Venda venda = (Venda) o;
+        return o.equals(livrosVendidos, this.livrosVendidos) && o.equals(cliente, this.cliente) &&
+                o.equals(dataEHora, this.dataEHora);
+    }
+
     //GETS AND SETS:
     public Cliente getCliente() {
         return cliente;
@@ -64,5 +79,10 @@ public class Venda {
 
     public void setDataEHora(LocalDateTime dataEHora) {
         this.dataEHora = dataEHora;
+    }
+
+    public int hashCode()
+    {
+        return Objects.hash(livrosVendidos, cliente, dataEHora);
     }
 }
