@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public interface IRepositorioUsuario {
     void inserirUsuario(Usuario usuario);
     void removerUsuario(Usuario usuario);
-    void atualizarCliente(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone);
-    void adicionarEnderecoDeEntrega(String endereco, Cliente cliente);
-    void removerEnderecoDeEntrega(String endereco, Cliente cliente);
-    void atualizarFuncionario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, boolean ehAdm, Funcionario admResponsavel);
-    void atualizarFornecedor(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor);
+    void atualizarCliente(Usuario usuario,String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone);
+    void adicionarEnderecoDeEntrega(Usuario usuario, String endereco);
+    void removerEnderecoDeEntrega(Usuario usuario, String endereco);
+    void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, boolean ehAdm, Funcionario admResponsavel);
+    void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor);
     Usuario procurarUsuario(String cpf);
     ArrayList<Usuario> listarUsuarios();
     ArrayList<Cliente> listarClientes();
