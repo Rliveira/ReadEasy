@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Exceptions;
+package br.ufrpe.readeasy.exceptions;
 
 public class TipoUsuarioInvalidoException extends Exception{
     public TipoUsuarioInvalidoException (){

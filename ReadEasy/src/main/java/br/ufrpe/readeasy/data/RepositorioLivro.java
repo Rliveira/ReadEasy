@@ -1,13 +1,13 @@
-package br.ufrpe.readeasy.Data;
+package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.Business.ComparadorDeLivro;
+import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.Exceptions.GeneroExistenteException;
-import br.ufrpe.readeasy.Exceptions.GeneroNaoExistenteException;
-import br.ufrpe.readeasy.Exceptions.LivroExistenteException;
-import br.ufrpe.readeasy.Exceptions.LivroNaoExistenteException;
+import br.ufrpe.readeasy.exceptions.GeneroExistenteException;
+import br.ufrpe.readeasy.exceptions.GeneroNaoExistenteException;
+import br.ufrpe.readeasy.exceptions.LivroExistenteException;
+import br.ufrpe.readeasy.exceptions.LivroNaoExistenteException;
 
 import java.util.ArrayList;
 import java.util.List;

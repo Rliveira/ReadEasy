@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Data;
+package br.ufrpe.readeasy.data;
 import br.ufrpe.readeasy.beans.*;
 import com.example.readeasy.Business.beans.*;
 

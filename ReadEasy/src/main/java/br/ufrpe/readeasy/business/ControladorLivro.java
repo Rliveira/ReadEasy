@@ -1,8 +1,8 @@
-package br.ufrpe.readeasy.Business;
+package br.ufrpe.readeasy.business;
 
-import br.ufrpe.readeasy.Data.IRepositorioLivro;
-import br.ufrpe.readeasy.Data.RepositorioLivro;
-import br.ufrpe.readeasy.Exceptions.*;
+import br.ufrpe.readeasy.data.IRepositorioLivro;
+import br.ufrpe.readeasy.data.RepositorioLivro;
+import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;

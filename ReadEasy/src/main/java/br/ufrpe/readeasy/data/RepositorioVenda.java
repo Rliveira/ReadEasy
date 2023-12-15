@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Data;
+package br.ufrpe.readeasy.data;
 
 import java.util.ArrayList;
 import java.util.Comparator;

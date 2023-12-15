@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Data;
+package br.ufrpe.readeasy.data;
 
 public class IRepositorioVenda
 {

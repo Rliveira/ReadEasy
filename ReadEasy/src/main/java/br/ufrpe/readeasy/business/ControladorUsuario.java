@@ -1,9 +1,9 @@
-package br.ufrpe.readeasy.Business;
+package br.ufrpe.readeasy.business;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.Exceptions.*;
+import br.ufrpe.readeasy.exceptions.*;
 import com.example.readeasy.Business.beans.*;
-import br.ufrpe.readeasy.Data.IRepositorioUsuario;
+import br.ufrpe.readeasy.data.IRepositorioUsuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 

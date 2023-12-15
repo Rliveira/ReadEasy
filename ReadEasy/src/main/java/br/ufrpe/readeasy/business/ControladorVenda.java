@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Business;
+package br.ufrpe.readeasy.business;
 import java.util.ArrayList;
 
 public class ControladorVenda

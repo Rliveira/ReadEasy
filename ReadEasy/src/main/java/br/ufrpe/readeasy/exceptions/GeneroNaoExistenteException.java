@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Exceptions;
+package br.ufrpe.readeasy.exceptions;
 
 public class GeneroNaoExistenteException extends Exception{
     public GeneroNaoExistenteException(String titulo, String nomeDoGenero) {

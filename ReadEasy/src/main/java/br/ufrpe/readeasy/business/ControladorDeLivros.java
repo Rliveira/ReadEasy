@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Business;
+package br.ufrpe.readeasy.business;
 
 public class ControladorDeLivros {
 }

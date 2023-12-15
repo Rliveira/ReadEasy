@@ -1,4 +1,4 @@
-package br.ufrpe.readeasy.Business;
+package br.ufrpe.readeasy.business;
 
 import br.ufrpe.readeasy.beans.Livro;
 
