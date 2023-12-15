@@ -6,6 +6,6 @@ module com.example.readeasy {
             requires com.dlsc.formsfx;
                     requires org.kordamp.bootstrapfx.core;
             
-    opens com.example.readeasy to javafx.fxml;
-    exports com.example.readeasy;
+    opens br.ufrpe.readeasy to javafx.fxml;
+    exports br.ufrpe.readeasy;
 }
