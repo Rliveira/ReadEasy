@@ -4,7 +4,6 @@ ReadEasy é um projeto para a disciplina de Introdução à Programação 2 do c
 
 ## Integrantes do grupo:
 
-- Adams Gomes Bezerra de Arruda Filho - adamsfilho678@gmail.com
 - João Victor Morais Barreto da Silva - joao.moraissilva@ufrpe.br
 - Louise de Athayde Vieira - lvathayd@gmail.com
 - Mariane Elisa dos Santos Souza - mariane.elisa@ufrpe.br
