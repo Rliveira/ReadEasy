@@ -1,8 +1,10 @@
 package com.example.readeasy.Business.beans;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Livro {
+    private UUID id;
     private String titulo;
     private String autor;
     private double preco;
@@ -12,11 +14,11 @@ public class Livro {
 
     //CONSTRUTOR:
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
-        setTitulo(titulo);
-        setAutor(autor);
-        setPreco(preco);
-        this.generos = new ArrayList<Genero>();
-        setFornecedor(fornecedor);
+        this.id = UUID.randomUUID();
+        this.titulo = titulo;
+        this.autor = autor;
+        this.preco = preco;
+        this.fornecedor = fornecedor;
     }
 
     //MÉTODOS:
@@ -29,6 +31,14 @@ public class Livro {
     }
 
     //GETS AND SETS:
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getTitulo() {
         return titulo;
     }
