@@ -19,7 +19,12 @@ public class Cliente extends Usuario{
     }
 
     public void removerEndereco(Endereco endereco) {
-        this.enderecosentrega.remove(endereco);
+        for (Endereco end : this.enderecosentrega) {
+            if (end.equals(endereco)) {
+                this.enderecosentrega.remove(end);
+                break;
+            }
+        }
     }
 
     //GETS AND SETS:

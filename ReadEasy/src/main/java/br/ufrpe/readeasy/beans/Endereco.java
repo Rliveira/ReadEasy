@@ -57,6 +57,15 @@ public class Endereco {
         this.estado = estado;
     }
 
+    public boolean equals(Endereco endereco){
+        if (this.cep == endereco.getCep() && this.rua.equals(endereco.getRua()) &&
+                this.bairro.equals(endereco.getBairro()) && this.cidade.equals(endereco.getCidade()) &&
+                this.estado.equals(endereco.getEstado())){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "Endereco{" +

@@ -118,6 +118,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         for(Usuario user : usuarios){
             if(user.getCpf().equals(cpf)){
                 existe = true;
+                break;
             }
         }
         return existe;
@@ -129,6 +130,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         for(Usuario user : usuarios){
             if(user.getCpf().equals(cpf)){
                 usuarioAux = user;
+                break;
             }
         }
         return usuarioAux;
