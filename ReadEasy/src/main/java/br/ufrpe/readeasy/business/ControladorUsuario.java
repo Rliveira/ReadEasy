@@ -1,13 +1,12 @@
 package br.ufrpe.readeasy.business;
 
 import br.ufrpe.readeasy.beans.*;
+import br.ufrpe.readeasy.data.RepositorioUsuario;
 import br.ufrpe.readeasy.exceptions.*;
-import com.example.readeasy.Business.beans.*;
 import br.ufrpe.readeasy.data.IRepositorioUsuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.example.readeasy.Exceptions.*;
 
 public class ControladorUsuario {
     private static ControladorUsuario instance;
@@ -115,10 +114,10 @@ public class ControladorUsuario {
                         telefone = usuario.getTelefone();
                     }
                         usuario.setTelefone(telefone);
-                    if (ehAdm == ((Funcionario) usuario).EhAdm()) {
-                        ehAdm = ((Funcionario) usuario).EhAdm();
+                    if (ehAdm == ((Funcionario) usuario).isAdm()) {
+                        ehAdm = ((Funcionario) usuario).isAdm();
                     }
-                        ((Funcionario) usuario).setEhAdm(ehAdm);
+                        ((Funcionario) usuario).isAdm();
                     if (admResponsavel == null || admResponsavel.equals(((Funcionario) usuario).getAdmResponsavel())) {
                         admResponsavel = ((Funcionario) usuario).getAdmResponsavel();
                     }
