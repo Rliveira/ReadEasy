@@ -3,6 +3,7 @@ package br.ufrpe.readeasy.data;
 import br.ufrpe.readeasy.beans.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import br.ufrpe.readeasy.exceptions.*;
 
 public interface IRepositorioUsuario {
     void inserirUsuario(Usuario usuario);
@@ -17,6 +18,13 @@ public interface IRepositorioUsuario {
 
     void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha,
                              Endereco endereco, String telefone, TipoFornecedor tipoFornecedor);
+
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco);
+
+    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco);
+
+    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+            UsuarioNuloException;
 
     Usuario procurarUsuario(String cpf);
 

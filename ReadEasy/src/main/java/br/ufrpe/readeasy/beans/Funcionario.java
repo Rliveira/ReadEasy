@@ -12,7 +12,7 @@ public class Funcionario extends Usuario {
     public Funcionario(String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco,
                        String telefone, boolean ehAdm, Funcionario admResponsavel) {
         super(nome, cpf, dataNascimento, login, senha, endereco, telefone);
-        this.Adm = Adm;
+        this.Adm = ehAdm;
         this.admResponsavel = admResponsavel;
     }
 
@@ -35,10 +35,11 @@ public class Funcionario extends Usuario {
 
     @Override
     public String toString() {
-        return "Funcionario{" +
-                "ehAdm=" + Adm +
-                ", admResponsavel=" + admResponsavel +
-                '}' + super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("+---------------------------------------------+\n");
+        sb.append(String.format("| %-20s | %-20s |\n", "Acesso de ADM", isAdm()));
+        sb.append(String.format("| %-20s | %-20s |\n", "ADM Responsável", getAdmResponsavel().getNome()));
+        return sb + super.toString();
     }
 }
 
