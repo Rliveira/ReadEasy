@@ -135,6 +135,17 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         }
         return usuarioAux;
     }
+
+    @Override
+    public Cliente procurarCliente(String cpf) {
+        Cliente clienteAux = null;
+        for (Usuario usuario : usuarios) {
+            if (usuario instanceof Cliente && usuario.getCpf().equals(cpf)) {
+                return (Cliente) usuario;
+            }
+        }
+        return clienteAux;
+    }
 }
 
 

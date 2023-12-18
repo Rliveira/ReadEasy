@@ -18,8 +18,6 @@ public interface IRepositorioUsuario {
     void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha,
                              Endereco endereco, String telefone, TipoFornecedor tipoFornecedor);
 
-    Usuario procurarUsuario(String cpf);
-
     ArrayList<Usuario> listarUsuarios();
 
     ArrayList<Cliente> listarClientes();
@@ -31,4 +29,7 @@ public interface IRepositorioUsuario {
     ArrayList<Fornecedor> listarFornecedores();
 
     boolean existeUsuario(String cpf);
+    public Usuario procurarUsuario(String cpf);
+
+    public Cliente procurarCliente(String cpf);
 }

@@ -1,5 +1,7 @@
 package br.ufrpe.readeasy.beans;
 
+import br.ufrpe.readeasy.data.RepositorioUsuario;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 

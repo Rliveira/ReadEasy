@@ -13,4 +13,8 @@ public interface IRepositorioEndereco {
     public Endereco obterEnderecoPorCep(int cep);
 
     public List<Endereco> listarEnderecos();
+
+    public void adicionarEnderecoCliente(String cpf, Endereco endereco);
+
+    public void removerEnderecoCliente(String cpf, Endereco endereco);
 }
