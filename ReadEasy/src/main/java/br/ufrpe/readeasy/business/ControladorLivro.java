@@ -6,8 +6,6 @@ import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
-
-
 import java.util.List;
 
 public class ControladorLivro {

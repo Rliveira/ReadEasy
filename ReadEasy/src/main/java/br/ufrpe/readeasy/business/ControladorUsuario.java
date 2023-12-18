@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public class ControladorUsuario {
+public class ControladorUsuario implements IControladorUsuario{
     private static ControladorUsuario instance;
     private IRepositorioUsuario repUsuario;
     private ControladorUsuario() {
@@ -20,7 +20,9 @@ public class ControladorUsuario {
         }
         return instance;
     }
-    public void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException, DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException {
+    @Override
+    public void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException,
+            DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (!repUsuario.existeUsuario(usuario.getCpf())) {
                 if (!usuario.getNome().isEmpty() && !usuario.getCpf().isEmpty() && usuario.getDataNascimento() != null
@@ -58,6 +60,7 @@ public class ControladorUsuario {
         }
     }
 
+    @Override
     public void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
@@ -70,7 +73,11 @@ public class ControladorUsuario {
         }
     }
 
-    public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, boolean ehAdm, Funcionario admResponsavel) throws TipoUsuarioInvalidoException, UsuarioExistenteException, DataInvalidaException, UsuarioInexistenteException, UsuarioNuloException {
+    @Override
+    public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
+                                     String senha, Endereco endereco, String telefone, boolean ehAdm,
+                                     Funcionario admResponsavel) throws TipoUsuarioInvalidoException,
+            UsuarioExistenteException, DataInvalidaException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
             if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Funcionario) {
@@ -117,7 +124,7 @@ public class ControladorUsuario {
                     if (ehAdm == ((Funcionario) usuario).isAdm()) {
                         ehAdm = ((Funcionario) usuario).isAdm();
                     }
-                        ((Funcionario) usuario).isAdm();
+                        ((Funcionario) usuario).setAdm(ehAdm);
                     if (admResponsavel == null || admResponsavel.equals(((Funcionario) usuario).getAdmResponsavel())) {
                         admResponsavel = ((Funcionario) usuario).getAdmResponsavel();
                     }
@@ -133,7 +140,10 @@ public class ControladorUsuario {
         }
     }
 
-    public void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone) throws UsuarioExistenteException, DataInvalidaException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+    @Override
+    public void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
+                                 String senha, Endereco endereco, String telefone) throws UsuarioExistenteException,
+            DataInvalidaException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
             if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Cliente) {
@@ -189,7 +199,11 @@ public class ControladorUsuario {
         }
     }
 
-    public void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login, String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor) throws DataInvalidaException, UsuarioExistenteException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+    @Override
+    public void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
+                                    String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor)
+            throws DataInvalidaException, UsuarioExistenteException, TipoUsuarioInvalidoException,
+            UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null){
             if (repUsuario.existeUsuario(usuario.getCpf())){
                 if (usuario instanceof Fornecedor) {
@@ -253,7 +267,9 @@ public class ControladorUsuario {
         }
     }
 
-    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+    @Override
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
+            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
@@ -273,7 +289,9 @@ public class ControladorUsuario {
         }
     }
 
-    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+    @Override
+    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
+            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
@@ -293,6 +311,7 @@ public class ControladorUsuario {
         }
     }
 
+    @Override
     public Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
         if (!cpf.isEmpty()) {
             if (repUsuario.existeUsuario(cpf)) {
@@ -305,6 +324,7 @@ public class ControladorUsuario {
         }
     }
 
+    @Override
     public void removerUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
         if (!cpf.isEmpty()) {
             if (repUsuario.existeUsuario(cpf)) {
@@ -317,26 +337,32 @@ public class ControladorUsuario {
         }
     }
 
+    @Override
     public ArrayList<Usuario> listarUsuarios() {
         return repUsuario.listarUsuarios();
     }
 
+    @Override
     public ArrayList<Cliente> listarClientes() {
         return repUsuario.listarClientes();
     }
 
+    @Override
     public ArrayList<Funcionario> listarFuncionarios() {
         return repUsuario.listarFuncionarios();
     }
 
+    @Override
     public ArrayList<Funcionario> listarAdms() {
         return repUsuario.listarAdms();
     }
 
+    @Override
     public ArrayList<Fornecedor> listarFornecedores() {
         return repUsuario.listarFornecedores();
     }
 
+    @Override
     public boolean existeUsuario(String cpf) {
         return repUsuario.existeUsuario(cpf);
     }
