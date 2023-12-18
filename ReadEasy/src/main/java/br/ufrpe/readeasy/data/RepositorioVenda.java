@@ -8,24 +8,27 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
-public class RepositorioVenda implements IRepositorioVenda{
-
+public class RepositorioVenda implements IRepositorioVenda
+{
     private static IRepositorioVenda instance;
     private ArrayList<Venda> vendas;
-
-    public RepositorioVenda() {
+    public RepositorioVenda()
+    {
         this.vendas = new ArrayList<>();
     }
 
-    public static IRepositorioVenda getInstance(){
-        if (instance == null) {
+    public static IRepositorioVenda getInstance()
+    {
+        if (instance == null)
+        {
             instance = new RepositorioVenda();
         }
         return instance;
     }
 
     @Override
-    public void inserirVenda(Venda venda){
+    public void inserirVenda(Venda venda)
+    {
         vendas.add(venda);
     }
 
@@ -35,46 +38,65 @@ public class RepositorioVenda implements IRepositorioVenda{
     }
 
     @Override
-    public void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros) {
+    public void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros)
+    {
         venda.setCliente(cliente);
         venda.setDataEHora(dataHora);
         venda.setLivrosVendidos(livros);
     }
 
     @Override
-    public ArrayList<Venda> listarVendas(){
-        return vendas;
+    public ArrayList<Venda> listarVendas()
+    {
+        return vendas.stream().;
     }
 
     @Override
-    public ArrayList<Venda> historicoDeVendas(){
+    public List<Venda> historicoDeVendas()
+    {
+        List<Venda> historico = new ArrayList<>();
 
-        ArrayList<Venda> historico = new ArrayList<>(vendas);
+        for (Venda venda: vendas)
+        {
+         if(!venda.getCliente().getNome().isEmpty())
+         {
+             historico.add(venda);
+         }
+        }
         historico.sort(Comparator.comparing(Venda::getDataEHora).reversed());
-
         return historico;
     }
 
-    public List<Cliente> topClientes(Map<Cliente, Integer> map) {
+    public List<Cliente> listarMelhoresClientesPorCompra(Map<Cliente, Integer> map)
+    {
         List<Map.Entry<Cliente, Integer>> entryList = new ArrayList<>(map.entrySet());
 
-        entryList.sort(new Comparator<Map.Entry<Cliente, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Cliente, Integer> entry1, Map.Entry<Cliente, Integer> entry2) {
-                return entry1.getValue().compareTo(entry2.getValue());
-            }
-        });
+        entryList.sort(Map.Entry.comparingByValue());
 
         List<Cliente> listaTopClientes = new ArrayList<>();
-        for (Map.Entry<Cliente, Integer> entry : entryList) {
+        for (Map.Entry<Cliente, Integer> entry : entryList)
+        {
             listaTopClientes.add(entry.getKey());
         }
         return listaTopClientes;
     }
 
+    public List<Cliente> listarMelhoresClientesPorGasto(Map<Cliente, Double> map)
+    {
+        List<Map.Entry<Cliente, Double>> clienteGasto = new ArrayList<>(map.entrySet());
 
+        clienteGasto.sort(Map.Entry.comparingByValue());
+
+        List<Cliente> listaTopClientes = new ArrayList<>();
+        for (Map.Entry<Cliente, Double> entry : clienteGasto)
+        {
+            listaTopClientes.add(entry.getKey());
+        }
+        return listaTopClientes;
+    }
     @Override
-    public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente){
+    public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente)
+    {
         ArrayList<Venda> historicoCliente = new ArrayList<>();
 
         for(Venda venda : vendas)

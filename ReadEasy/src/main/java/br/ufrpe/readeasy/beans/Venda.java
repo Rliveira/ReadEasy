@@ -1,9 +1,21 @@
 package br.ufrpe.readeasy.beans;
+import br.ufrpe.readeasy.business.ControladorVenda;
+import br.ufrpe.readeasy.business.IControladorVenda;
+import br.ufrpe.readeasy.data.IRepositorioUsuario;
+import br.ufrpe.readeasy.data.IRepositorioVenda;
+import br.ufrpe.readeasy.data.RepositorioUsuario;
+import br.ufrpe.readeasy.data.RepositorioVenda;
+import br.ufrpe.readeasy.exceptions.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Venda {
+public class Venda
+{
     private ArrayList<LivroVendido> livrosVendidos;
     private Cliente cliente;
     private LocalDateTime dataEHora;
@@ -39,24 +51,21 @@ public class Venda {
         }
     }
 
-    public void alterarQuantidade(Livro livro, int quantidade){
+    public void alterarQuantidade(Livro livro, int quantidade) {
         boolean achou = false;
         for (int i = 0; i < livrosVendidos.size() && !achou; i++) {
             if (livrosVendidos.get(i).getLivro().equals(livro) &&
-                    livrosVendidos.get(i).getQuantidade() != quantidade && quantidade != 0 ) {
+                    livrosVendidos.get(i).getQuantidade() != quantidade && quantidade != 0) {
                 livrosVendidos.get(i).setQuantidade(quantidade);
             }
         }
     }
 
-    public boolean equals(Object obj)
-    {
-        if(this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if(obj == null || this.getClass() != obj.getClass())
-        {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
         Venda venda = (Venda) obj;
@@ -83,8 +92,7 @@ public class Venda {
         this.dataEHora = dataEHora;
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(livrosVendidos, cliente, dataEHora);
     }
 
@@ -94,5 +102,44 @@ public class Venda {
 
     public void setLivrosVendidos(ArrayList<LivroVendido> livrosVendidos) {
         this.livrosVendidos = livrosVendidos;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("+----------------------+--------------------------------+----------------------" +
+                "+----------------------+----------------------+----------------------+\n");
+        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Livro", "Autor", "Fornecedor"
+                , "Preço por Unidade", "Quantidade", "Preço Total"));
+        sb.append("|----------------------|--------------------------------|----------------------" +
+                "|----------------------|----------------------|----------------------|\n");
+
+        double precoTotalVenda = 0.0;
+        for (LivroVendido livro : livrosVendidos) {
+            double precoTotalLivro = livro.calcularTotal();
+            precoTotalVenda += precoTotalLivro;
+
+            sb.append(String.format("| %-20s | %-30s | %-20s | %-20.2f | %-20d | %-20.2f |\n",
+                    livro.getLivro().getTitulo(), livro.getLivro().getAutor(), livro.getLivro().getFornecedor()
+                            .getNome(), livro.getLivro().getPreco(), livro.getQuantidade(), precoTotalLivro));
+        }
+
+        sb.append("|----------------------|--------------------------------|----------------------" +
+                "|----------------------|----------------------|----------------------|\n");
+        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Cliente"
+                , cliente.getNome(), "CPF: " + cliente.getCpf(), "", "", ""));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        String dataHoraFormatada = dataEHora.format(formatter);
+
+        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Data e Hora", dataEHora, "", ""
+                , "", ""));
+        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20.2f |\n", "Total Venda", "", "", "", ""
+                , precoTotalVenda));
+        sb.append("+----------------------+--------------------------------+----------------------" +
+                "+----------------------+----------------------+----------------------+\n");
+
+        return sb.toString();
     }
 }

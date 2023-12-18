@@ -99,14 +99,18 @@ public abstract class Usuario{
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", login='" + login + '\'' +
-                ", senha='" + senha + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("+---------------------------------------------+\n");
+        sb.append(String.format("| %-20s | %-20s |\n", "Nome", getNome()));
+        sb.append(String.format("| %-20s | %-20s |\n", "CPF", getCpf()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Data de Nascimento", getDataNascimento()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Login", getLogin()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Senha", getSenha()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Endereço", getEndereco().getRua()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Telefone", getTelefone()));
+        sb.append("+---------------------------------------------+\n");
+
+        return sb.toString();
     }
 }

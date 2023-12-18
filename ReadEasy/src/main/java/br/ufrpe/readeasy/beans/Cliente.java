@@ -29,8 +29,20 @@ public class Cliente extends Usuario{
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "enderecosentrega=" + enderecosentrega +
-                '}' + super.toString();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("Cliente #%d%n", numeroClienteAtual));
+        sb.append("+---------------------------------------------+\n");
+        sb.append(String.format("| %-20s | %-20s |\n", "Nome", getNome()));
+        sb.append(String.format("| %-20s | %-20s |\n", "CPF", getCpf()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Data de Nascimento", getDataNascimento()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Login", getLogin()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Senha", getSenha()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Endereço", getEndereco().getRua()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Telefone", getTelefone()));
+        sb.append("+---------------------------------------------+\n");
+        numeroClienteAtual++;
+
+        return sb.toString();
     }
 }

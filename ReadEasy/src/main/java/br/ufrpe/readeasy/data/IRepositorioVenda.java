@@ -10,18 +10,19 @@ import java.util.Map;
 
     public interface IRepositorioVenda {
 
-        public void inserirVenda(Venda venda);
+        void inserirVenda(Venda venda);
 
-        public void removerVenda(Venda venda);
+        void removerVenda(Venda venda);
 
-        public void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros);
+        void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros);
 
-        public ArrayList<Venda> listarVendas();
+        ArrayList<Venda> listarVendas();
 
-        public ArrayList<Venda> historicoDeVendas();
+        List historicoDeVendas();
 
-        public List<Cliente> topClientes(Map<Cliente, Integer> map);
+        List<Cliente> listarMelhoresClientesPorCompra(Map<Cliente, Integer> map);
 
-        public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
+        ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
 
+        List<Cliente> listarMelhoresClientesPorGasto(Map<Cliente, Double> clienteGasto);
     }
