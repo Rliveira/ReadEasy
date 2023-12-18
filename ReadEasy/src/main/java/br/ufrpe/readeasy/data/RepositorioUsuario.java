@@ -72,17 +72,15 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
     }
 
-    @Override
     public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco){
         ((Cliente) usuario).adicionarEndereco(endereco);
     }
 
-    @Override
+
     public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco){
         ((Cliente) usuario).removerEndereco(endereco);
     }
 
-    @Override
     public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (this.existeUsuario(usuario.getCpf())) {
