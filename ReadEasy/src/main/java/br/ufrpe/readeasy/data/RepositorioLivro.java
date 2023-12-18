@@ -4,13 +4,9 @@ import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.exceptions.GeneroExistenteException;
-import br.ufrpe.readeasy.exceptions.GeneroNaoExistenteException;
-import br.ufrpe.readeasy.exceptions.LivroExistenteException;
-import br.ufrpe.readeasy.exceptions.LivroNaoExistenteException;
+import br.ufrpe.readeasy.exceptions.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class RepositorioLivro implements IRepositorioLivro {
@@ -32,96 +28,143 @@ public class RepositorioLivro implements IRepositorioLivro {
 
     //MÉTODOS:
     @Override
-    public void adicionarLivros(List<Livro> livros) throws LivroExistenteException {
-        for (Livro livro : livros) {
-            if (this.livros.contains(livro)) {
-                throw new LivroExistenteException(livro.toString());
-            }
+    public void cadastrarLivro(Livro livro) throws LivroExistenteException {
+        if (!this.livros.contains(livro)) {
+            this.livros.add(livro);
         }
-
-        this.livros.addAll(livros);
+        else{
+            throw new LivroExistenteException();
+        }
     }
 
     @Override
-    public void removerLivros(List<Livro> livros) throws LivroNaoExistenteException {
-        for (Livro livro : livros) {
-            if (!this.livros.contains(livro)) {
-                throw new LivroNaoExistenteException(livro.getTitulo());
-            }
+    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
+        if (this.livros.contains(livro)) {
+            this.livros.remove(livro);
         }
-
-        this.livros.removeAll(livros);
+        else{
+            throw new LivroNaoExistenteException();
+        }
     }
 
     @Override
-    public void atualizarLivros(Livro livro) throws LivroNaoExistenteException {
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor) throws LivroNaoExistenteException {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
             if (livros.get(i).getId().equals(livro.getId())) {
-                livros.remove(i);
-                livros.add(livro);
+                livros.get(i).setTitulo(titulo);
+                livros.get(i).setAutor(autor);
+                livros.get(i).setPreco(preco);
+                livros.get(i).setFornecedor(fornecedor);
                 achou = true;
             }
         }
         if (!achou) {
-            throw new LivroNaoExistenteException(livro.getTitulo());
+            throw new LivroNaoExistenteException();
         }
     }
 
     @Override
-    public void adicionarGenero(String tituloLivro, Genero genero) throws GeneroExistenteException, LivroNaoExistenteException {
-        for (Livro livro : livros) {
-            if (livro.getTitulo().equals(tituloLivro)) {
-                if (!livro.getGeneros().contains(genero)) {
-                    livro.adicionarGenero(genero);
-                } else {
-                    throw new GeneroExistenteException(tituloLivro, genero.getDescricaoEnum());
-                }
-            } else {
-                throw new LivroNaoExistenteException(tituloLivro);
+    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException
+            , LivroNaoExistenteException {
+
+        if(this.livros.contains(livro)){
+            if (!livro.getGeneros().contains(genero)) {
+                livro.adicionarGenero(genero);
+            }
+            else {
+                throw new GeneroExistenteException(livro.getTitulo(), genero.getDescricaoEnum());
             }
         }
+        else {
+            throw new LivroNaoExistenteException();
+        }
+    }
+
+
+    @Override
+    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException
+            , LivroNaoExistenteException {
+
+        if(this.livros.contains(livro)){
+            if (livro.getGeneros().contains(genero)) {
+                livro.removerGenero(genero);
+            }
+            else {
+                throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero " + genero.getDescricaoEnum());
+            }
+        }
+        else {
+            throw new LivroNaoExistenteException();
+        }
     }
 
     @Override
-    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroNaoExistenteException {
-        if (livro.getGeneros().contains(genero)) {
-            for (Livro livroRepositorio : livros) {
-                if (livroRepositorio.getTitulo().equals(livro.getTitulo())) {
-                    livro.removerGenero(genero);
-                } else {
-                    throw new LivroNaoExistenteException(livro.getTitulo());
+    public Livro buscarLivro(UUID id){
+        boolean achou = false;
+        Livro livro = null;
+
+        for(int i = 0; i < livros.size() && !achou; i++){
+            if(livros.get(i).getId().equals(id)){
+                livro = livros.get(i);
+                achou = true;
+            }
+        }
+        return livro;
+    }
+
+    @Override
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade) throws LivroNaoExistenteException {
+        if (livros.contains(livro)) {
+            livro.aumentarQuantidade(quantidade);
+        }
+        else {
+            throw new LivroNaoExistenteException();
+        }
+    }
+
+    @Override
+    public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
+            QuantidadeInvalidaException, LivroNaoExistenteException {
+        if (livros.contains(livro)) {
+            if(livro.getQuantidade() != 0 ){
+                if(livro.getQuantidade() - quantidade >= 0){
+                    livro.diminuirQuantidade(quantidade);
                 }
+                else{
+                    throw new QuantidadeInvalidaException();
+                }
+            }
+            else{
+                throw new EstoqueInsuficienteException();
             }
         } else {
-            throw new GeneroNaoExistenteException(livro.getTitulo(), genero.getDescricaoEnum());
+            throw new LivroNaoExistenteException();
         }
     }
 
     @Override
     public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
         List<Livro> lista = new ArrayList<>();
+
         lista.addAll(livros);
         lista = ComparadorDeLivro.ordenarPorTitulo(lista);
         return lista;
     }
 
     @Override
-    public List<Livro> listarLivrosPorTitulo(String titulo) throws LivroNaoExistenteException {
-        List<Livro> lista = new ArrayList<>();
+    public Map<Livro, Integer> listarQuantidadeDeEstoque(){
+        Map<Livro, Integer> estoque = new HashMap<>();
 
-        for (Livro livro : livros) {
-            if (livro.getTitulo().equals(titulo)) {
-                lista.add(livro);
-            }
+        for(Livro livro : livros){
+            estoque.put(livro, livro.getQuantidade());
         }
-        return lista;
+        return estoque;
     }
 
     @Override
     public List<Livro> listarLivrosPorAutor(String autor) {
-
         List<Livro> lista = new ArrayList<>();
 
         for (Livro livro : livros) {
@@ -135,11 +178,17 @@ public class RepositorioLivro implements IRepositorioLivro {
     @Override
     public List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException {
         List<Livro> lista = new ArrayList<>();
+        boolean contemGenero = false;
 
         for (Livro livro : livros) {
             if (livro.getGeneros().contains(genero)) {
                 lista.add(livro);
+                contemGenero = true;
             }
+        }
+
+        if(!contemGenero){
+            throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero " + genero.getDescricaoEnum());
         }
         return lista;
     }
@@ -159,6 +208,7 @@ public class RepositorioLivro implements IRepositorioLivro {
     @Override
     public List<Livro> listarEOrdenarLivrosPorPreco() {
         List<Livro> lista = new ArrayList<>();
+
         lista.addAll(livros);
         lista = ComparadorDeLivro.ordenarPorPreco(lista);
         return lista;
