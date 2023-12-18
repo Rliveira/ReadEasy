@@ -269,12 +269,16 @@ public class ControladorUsuario implements IControladorUsuario{
 
     @Override
     public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoExistenteException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
                     if (endereco != null) {
-                        ((Cliente) usuario).adicionarEndereco(endereco);
+                        if (((Cliente) usuario).getEnderecosentrega().contains(endereco)) {
+                            throw new EnderecoExistenteException(endereco.getCep());
+                        } else {
+                            ((Cliente) usuario).adicionarEndereco(endereco);
+                        }
                     } else {
                         throw new CampoVazioException();
                     }
@@ -291,12 +295,16 @@ public class ControladorUsuario implements IControladorUsuario{
 
     @Override
     public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoInexistenteException {
         if (usuario != null) {
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
                     if (endereco != null) {
-                        ((Cliente) usuario).removerEndereco(endereco);
+                       if (((Cliente) usuario).getEnderecosentrega().contains(endereco)) {
+                           ((Cliente) usuario).removerEndereco(endereco);
+                       } else {
+                           throw new EnderecoInexistenteException(endereco.getCep());
+                       }
                     } else {
                         throw new CampoVazioException();
                     }
@@ -309,6 +317,12 @@ public class ControladorUsuario implements IControladorUsuario{
         } else {
             throw new UsuarioNuloException();
         }
+    }
+
+    @Override
+    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+            UsuarioNuloException {
+        repUsuario.listarEnderecosDeEntrega(usuario);
     }
 
     @Override

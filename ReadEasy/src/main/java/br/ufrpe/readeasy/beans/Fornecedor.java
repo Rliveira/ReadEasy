@@ -23,8 +23,9 @@ public class Fornecedor extends Usuario{
 
     @Override
     public String toString() {
-        return "Fornecedor{" +
-                "tipoFornecedor=" + tipoFornecedor +
-                '}' + super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("+---------------------------------------------+\n");
+        sb.append(String.format("| %-20s | %-20s |\n", "Tipo de Fornecedor", getTipoFornecedor()));
+        return sb + super.toString();
     }
 }

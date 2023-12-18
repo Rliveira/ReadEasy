@@ -1,6 +1,10 @@
 package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.*;
+import br.ufrpe.readeasy.exceptions.TipoUsuarioInvalidoException;
+import br.ufrpe.readeasy.exceptions.UsuarioInexistenteException;
+import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -66,6 +70,37 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         ((Fornecedor) usuario).setEndereco(endereco);
         ((Fornecedor) usuario).setTelefone(telefone);
         ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
+    }
+
+    @Override
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco){
+        ((Cliente) usuario).adicionarEndereco(endereco);
+    }
+
+    @Override
+    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco){
+        ((Cliente) usuario).removerEndereco(endereco);
+    }
+
+    @Override
+    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+        if (usuario != null) {
+            if (this.existeUsuario(usuario.getCpf())) {
+                if (usuario instanceof Cliente) {
+                    ArrayList<Endereco> enderecos = ((Cliente) usuario).getEnderecosentrega();
+                    System.out.println("Lista de endereços:");
+                    for (Endereco e : enderecos) {
+                        System.out.println(e);
+                    }
+                } else {
+                    throw new TipoUsuarioInvalidoException();
+                }
+            } else {
+                throw new UsuarioInexistenteException(usuario.getCpf());
+            }
+        } else {
+            throw new UsuarioNuloException();
+        }
     }
 
     @Override

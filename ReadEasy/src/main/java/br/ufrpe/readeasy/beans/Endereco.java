@@ -70,12 +70,14 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Endereco{" +
-                "cep=" + cep +
-                ", rua='" + rua + '\'' +
-                ", bairro='" + bairro + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", Estado='" + estado + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("+---------------------------------------------+\n");
+        sb.append(String.format("| %-20s | %-20s |\n", "CEP", getCep()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Rua", getRua()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Bairro", getBairro()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Cidade", getCidade()));
+        sb.append(String.format("| %-20s | %-20s |\n", "Estado", getEstado()));
+        sb.append("+---------------------------------------------+\n");
+        return sb.toString();
     }
 }
