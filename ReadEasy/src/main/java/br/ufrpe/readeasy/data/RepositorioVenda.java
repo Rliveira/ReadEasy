@@ -48,7 +48,7 @@ public class RepositorioVenda implements IRepositorioVenda
     @Override
     public ArrayList<Venda> listarVendas()
     {
-        return vendas.stream().;
+        return vendas;
     }
 
     @Override
