@@ -120,7 +120,7 @@ public class ControladorVenda implements IControladorVenda
 
         if(!repoVenda.listarVendas().isEmpty())
         {
-            for (int i = listarVendas().size() -1; i > 0; i--)
+            for (int i = listarVendas().size() -1; i >= 0; i--)
             {
                 clienteCompra.put(repoVenda.listarVendas().get(i).getCliente()
                         , repoVenda.listarVendas().get(i).getLivrosVendidos().size());

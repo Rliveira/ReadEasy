@@ -108,7 +108,7 @@ public class Venda
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("+----------------------+--------------------------------+----------------------" +
+        sb.append("\n+----------------------+--------------------------------+----------------------" +
                 "+----------------------+----------------------+----------------------+\n");
         sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Livro", "Autor", "Fornecedor"
                 , "Preço por Unidade", "Quantidade", "Preço Total"));
