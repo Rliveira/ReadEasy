@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.exceptions;
 
 public class LivroExistenteException extends Exception{
-    public LivroExistenteException(String livroTitulo) {
-        super("O livro " + livroTitulo + " ja existe.");
+    public LivroExistenteException() {
+        super("O livro que você tentou acabar de cadastrar já existe no sistema.");
     }
 }

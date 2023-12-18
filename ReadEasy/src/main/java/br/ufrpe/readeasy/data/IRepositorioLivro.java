@@ -1,25 +1,29 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.exceptions.GeneroNaoExistenteException;
-import br.ufrpe.readeasy.exceptions.LivroExistenteException;
+import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.exceptions.GeneroExistenteException;
-import br.ufrpe.readeasy.exceptions.LivroNaoExistenteException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public interface IRepositorioLivro {
-    void adicionarLivros(List<Livro> livros) throws LivroExistenteException;
-    void removerLivros(List<Livro> livros) throws LivroNaoExistenteException;
-    void atualizarLivros(Livro livro) throws LivroNaoExistenteException;
-    void adicionarGenero (String tituloLivro, Genero genero) throws GeneroExistenteException, LivroNaoExistenteException;
+    void cadastrarLivro(Livro livro) throws LivroExistenteException;
+    void removerLivro(Livro livro) throws LivroNaoExistenteException;
+    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor) throws LivroNaoExistenteException;
+    void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException
+            , LivroNaoExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroNaoExistenteException;
+    void aumentarQuantidadeEmEstoque(Livro livro, int quantidade) throws LivroNaoExistenteException;
+    void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException
+            , QuantidadeInvalidaException, LivroNaoExistenteException;
+    Livro buscarLivro(UUID id);
     List<Livro> listarTodosOsLivrosEmOrdemAlfabetica();
-    List<Livro> listarLivrosPorTitulo(String titulo) throws LivroNaoExistenteException;
     List<Livro> listarLivrosPorAutor(String autor);
     List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException;
     List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor);
     List<Livro> listarEOrdenarLivrosPorPreco();
+    Map<Livro, Integer> listarQuantidadeDeEstoque();
 }

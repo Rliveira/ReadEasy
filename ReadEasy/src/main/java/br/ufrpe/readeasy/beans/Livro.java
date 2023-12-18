@@ -11,6 +11,7 @@ public class Livro {
     private ArrayList<Genero> generos;
     private Fornecedor fornecedor;
     private String imagem;
+    private int quantidade;
 
     //CONSTRUTOR:
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
@@ -18,7 +19,9 @@ public class Livro {
         this.titulo = titulo;
         this.autor = autor;
         this.preco = preco;
+        this.generos = new ArrayList<>();
         this.fornecedor = fornecedor;
+        this.quantidade = 0;
     }
 
     //MÉTODOS:
@@ -30,13 +33,17 @@ public class Livro {
         generos.remove(genero);
     }
 
+    public void aumentarQuantidade(int quantidade) {
+        setQuantidade(this.getQuantidade() + quantidade);
+    }
+
+    public void diminuirQuantidade(int quantidade){
+        setQuantidade(this.getQuantidade() - quantidade);
+    }
+
     //GETS AND SETS:
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getTitulo() {
@@ -81,6 +88,14 @@ public class Livro {
         if (fornecedor != null) {
             this.fornecedor = fornecedor;
         }
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public String getImagem() {

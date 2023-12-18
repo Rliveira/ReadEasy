@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.exceptions;
 
 public class LivroNaoExistenteException extends Exception{
-    public LivroNaoExistenteException(String livroNome) {
-        super("O livro " + livroNome + "Não existe" );
+    public LivroNaoExistenteException() {
+        super("O livro Não existe no sistema");
     }
 }
