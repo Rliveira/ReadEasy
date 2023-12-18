@@ -120,12 +120,17 @@ public class ControladorVenda implements IControladorVenda
 
         if(!repoVenda.listarVendas().isEmpty())
         {
-            for (int i = 0; i < repoVenda.listarVendas().size(); i++)
+            for (int i = listarVendas().size() -1; i > 0; i--)
             {
                 clienteCompra.put(repoVenda.listarVendas().get(i).getCliente()
                         , repoVenda.listarVendas().get(i).getLivrosVendidos().size());
             }
-            List<Cliente> listaInterna = repoVenda.listarMelhoresClientesPorCompra(clienteCompra);
+            List<Cliente> listaInterna = clienteCompra.entrySet()
+                    .stream()
+                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+
             return listaInterna;
         }
         else
