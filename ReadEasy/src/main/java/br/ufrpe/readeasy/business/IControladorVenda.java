@@ -16,8 +16,8 @@ public interface IControladorVenda
     void atualizarVenda(Venda venda, Cliente cliente,  ArrayList<LivroVendido>
                         livros) throws VendaInvalidaException, UsuarioNuloException, UsuarioInexistenteException,
                         ListaDeLivrosVaziaException;
-    void historicoDeVendas() throws HistoricoVazioException;
-    ArrayList<Venda> listarVendas();
+    List<Venda> historicoDeVendas() throws HistoricoVazioException;
+    List<Venda> listarVendas();
     List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException;
     List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
     List<Cliente> listarMelhoresClientesPorGasto() throws HistoricoVazioException;

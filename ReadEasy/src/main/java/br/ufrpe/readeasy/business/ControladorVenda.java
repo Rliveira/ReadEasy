@@ -85,7 +85,7 @@ public class ControladorVenda implements IControladorVenda
         } else throw new VendaInvalidaException();
     }
     @Override
-    public void historicoDeVendas() throws HistoricoVazioException
+    public List<Venda> historicoDeVendas() throws HistoricoVazioException
     {
         List<Venda> historicoInterno;
 
@@ -98,6 +98,8 @@ public class ControladorVenda implements IControladorVenda
         {
             throw new HistoricoVazioException();
         }
+
+        return historicoInterno;
     }
     @Override
     public List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
