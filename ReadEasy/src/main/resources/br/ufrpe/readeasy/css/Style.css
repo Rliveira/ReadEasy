@@ -1,0 +1,141 @@
+
+.btnLogin{
+	-fx-background-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+	-fx-text-fill: #FFFFFF;
+	-fx-background-radius: 8px;
+	-fx-border-radius: 8px;
+	-fx-font-family: "Times New Roman";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.btnLoginP: pressed {
+    -fx-background-color: transparent;
+    -fx-border-color:  linear-gradient(to bottom right, #335577, #338899, #33aabb);
+    -fx-text-fill: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+}
+
+.btnVoltar{
+    -fx-background-color: transparent;
+        -fx-text-fill: #ffffff;
+        -fx-font-family: "Times New Roman";
+        -fx-font-size: 18 px;
+        -fx-font-weight: bold;
+        -fx-alignment: center-left;
+        -fx-border-width: 10px;
+        -fx-background-radius: 10px
+}
+
+.btnBarraLateral{
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-border-width: 15px;
+    -fx-background-radius: 10px
+}
+
+.btnBarraLateralH: hover{
+    -fx-background-color:  #2C2C2C;
+    -fx-opacity: 0.5;
+}
+
+.btnBarraLateralP: pressed {
+    -fx-opacity: 0.7;
+}
+
+.btnDownloadCapaWeb{
+    -fx-background-color:   linear-gradient(to bottom right, #4a93c2, #2f6a8e);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 20px;
+    -fx-background-radius: 8px;
+}
+
+.btnAdicionar{
+    -fx-background-color: linear-gradient(to bottom left, #39556b, #0D69A0);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.btnDeletar{
+    -fx-background-color:  linear-gradient(to bottom left, #4a1418,#8c2c32);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.btnEditar{
+    -fx-background-color:  linear-gradient(to bottom left, #386858, #47A156);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.corDeFundo{
+    -fx-background-color:  linear-gradient(to bottom right, #335577, #338899, #33aabb);
+}
+
+.labelCadastre-seH: hover {
+    -fx-text-fill: #008dd8;
+}
+
+.shadow{
+    -fx-effect:dropshadow(three-pass-box, rgba(0,0,0,0.4), 6,0,0,0);
+}
+
+.textFieldDesign {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom right, #5588aa, #55aabb, #55ccdd);
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-text-family:  "Times New Roman";
+    -fx-text-size:  14px;
+    -fx-transition: translateY 0.3s;
+}
+
+.textFieldF:focused {
+    -fx-border-color: #1493DF;
+}
+
+.tab-pane{
+    -fx-text-fill: #000000;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 15px;
+}
+
+.table-view{
+    -fx-background-color:transparent;
+    -fx-padding:0px;
+    -fx-border-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-border-width:2px;
+    -fx-border-radius:8px;
+}
+.table-view .table-column{
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-background-radius:8px 8px 0px 0px;
+    -fx-background-inset: 0 0 0 0;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color:transparent;
+    -fx-size:40px;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill:#fff;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 15px;
+}
