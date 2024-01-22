@@ -2,11 +2,18 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.business.ControladorUsuario;
+import br.ufrpe.readeasy.exceptions.*;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class ClienteCadastroController {
@@ -50,7 +57,7 @@ public class ClienteCadastroController {
     @FXML
     private TextField txtFUsuario;
 
-    protected void onBtnCadastrarClick() {
+    protected void onBtnCadastrarClick(ActionEvent event) throws IOException {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
         String usuario = txtFUsuario.getText();
@@ -63,10 +70,53 @@ public class ClienteCadastroController {
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtpkDataNascimento.getValue();
 
-        Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+            Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+            Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
+            try {
+                ControladorUsuario.getInstance().cadastrarUsuario(cliente);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Cadastro de Cliente");
+                alert.setHeaderText(null);
+                alert.setContentText("Cliente cadastrado com sucesso!");
+                alert.showAndWait();
+            } catch (TipoUsuarioInvalidoException e) {
+                throw new RuntimeException(e);
+            } catch (MenorDeIdadeException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro no preenchimento de dados");
+                alert.setHeaderText(null);
+                alert.setContentText("O usuário deve ser maior de idade!");
+                alert.showAndWait();
+            } catch (DataInvalidaException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro no preenchimento de dados");
+                alert.setHeaderText(null);
+                alert.setContentText("Data inválida!");
+                alert.showAndWait();
+            } catch (CampoVazioException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro no preenchimento de dados");
+                alert.setHeaderText(null);
+                alert.setContentText("Preencha todos os campos!");
+                alert.showAndWait();
+            } catch (UsuarioExistenteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro no preenchimento de dados");
+                alert.setHeaderText(null);
+                alert.setContentText("Usuário já cadastrado!");
+                alert.showAndWait();
+            } catch (UsuarioNuloException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro no preenchimento de dados");
+                alert.setHeaderText(null);
+                alert.setContentText("Usuário nulo!");
+                alert.showAndWait();
+        }
 
-        Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
+    }
 
+    protected void onBtnVoltarClick(ActionEvent event) throws IOException {
+        // TODO implementação do método de voltar
     }
 
 }

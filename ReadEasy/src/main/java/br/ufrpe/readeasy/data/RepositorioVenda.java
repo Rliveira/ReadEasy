@@ -70,6 +70,15 @@ public class RepositorioVenda implements IRepositorioVenda
     @Override
     public List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim)
     {
+        if (dataInicio == null)
+        {
+            dataInicio = LocalDateTime.MIN;
+        }
+        if (dataFim == null)
+        {
+            dataFim = LocalDateTime.now();
+        }
+
         List<Venda> historico = new ArrayList<>();
 
         for (Venda venda: vendas)
