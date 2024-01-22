@@ -16,9 +16,11 @@ import java.util.Map;
 
         void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros);
 
-        ArrayList<Venda> listarVendas();
+        List<Venda> listarVendas();
 
         List historicoDeVendas();
+
+        List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim);
 
         List<Cliente> listarMelhoresClientesPorCompra(Map<Cliente, Integer> map);
 

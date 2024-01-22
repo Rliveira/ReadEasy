@@ -6,6 +6,7 @@ import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.data.IRepositorioUsuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ControladorUsuario implements IControladorUsuario{
@@ -352,27 +353,27 @@ public class ControladorUsuario implements IControladorUsuario{
     }
 
     @Override
-    public ArrayList<Usuario> listarUsuarios() {
+    public List<Usuario> listarUsuarios() {
         return repUsuario.listarUsuarios();
     }
 
     @Override
-    public ArrayList<Cliente> listarClientes() {
+    public List<Cliente> listarClientes() {
         return repUsuario.listarClientes();
     }
 
     @Override
-    public ArrayList<Funcionario> listarFuncionarios() {
+    public List<Funcionario> listarFuncionarios() {
         return repUsuario.listarFuncionarios();
     }
 
     @Override
-    public ArrayList<Funcionario> listarAdms() {
+    public List<Funcionario> listarAdms() {
         return repUsuario.listarAdms();
     }
 
     @Override
-    public ArrayList<Fornecedor> listarFornecedores() {
+    public List<Fornecedor> listarFornecedores() {
         return repUsuario.listarFornecedores();
     }
 

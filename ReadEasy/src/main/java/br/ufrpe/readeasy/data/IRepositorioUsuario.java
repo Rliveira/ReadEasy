@@ -3,6 +3,8 @@ package br.ufrpe.readeasy.data;
 import br.ufrpe.readeasy.beans.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+
 import br.ufrpe.readeasy.exceptions.*;
 
 public interface IRepositorioUsuario {
@@ -27,15 +29,15 @@ public interface IRepositorioUsuario {
             UsuarioNuloException;
 
 
-    ArrayList<Usuario> listarUsuarios();
+    List<Usuario> listarUsuarios();
 
-    ArrayList<Cliente> listarClientes();
+    List<Cliente> listarClientes();
 
-    ArrayList<Funcionario> listarFuncionarios();
+    List<Funcionario> listarFuncionarios();
 
-    ArrayList<Funcionario> listarAdms();
+    List<Funcionario> listarAdms();
 
-    ArrayList<Fornecedor> listarFornecedores();
+    List<Fornecedor> listarFornecedores();
 
     boolean existeUsuario(String cpf);
     public Usuario procurarUsuario(String cpf);

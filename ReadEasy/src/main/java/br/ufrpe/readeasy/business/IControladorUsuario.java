@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IControladorUsuario {
     void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException,
@@ -38,15 +39,15 @@ public interface IControladorUsuario {
 
     void removerUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException;
 
-    ArrayList<Usuario> listarUsuarios();
+    List<Usuario> listarUsuarios();
 
-    ArrayList<Cliente> listarClientes();
+    List<Cliente> listarClientes();
 
-    ArrayList<Funcionario> listarFuncionarios();
+    List<Funcionario> listarFuncionarios();
 
-    ArrayList<Funcionario> listarAdms();
+    List<Funcionario> listarAdms();
 
-    ArrayList<Fornecedor> listarFornecedores();
+    List<Fornecedor> listarFornecedores();
 
     boolean existeUsuario(String cpf);
 }

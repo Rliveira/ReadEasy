@@ -6,6 +6,7 @@ import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioUsuario;
 import br.ufrpe.readeasy.data.RepositorioVenda;
 import br.ufrpe.readeasy.exceptions.*;
+import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -141,5 +142,9 @@ public class Venda
                 "+----------------------+----------------------+----------------------+\n");
 
         return sb.toString();
+    }
+
+    public ObservableValue<String> getTituloProperty() { //TODO: Verificar se é necessário e se está correto
+        return null;
     }
 }

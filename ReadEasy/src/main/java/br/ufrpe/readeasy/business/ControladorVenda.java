@@ -7,6 +7,7 @@ import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioVenda;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class ControladorVenda implements IControladorVenda
         return instance;
     }
     @Override
-    public ArrayList<Venda> listarVendas()
+    public List<Venda> listarVendas()
     {
         return repoVenda.listarVendas();
     }
@@ -101,6 +102,13 @@ public class ControladorVenda implements IControladorVenda
 
         return historicoInterno;
     }
+
+    @Override
+    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
+        return repoVenda.HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
+    }
+
+
     @Override
     public List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
         List<Venda> historicoInterno;

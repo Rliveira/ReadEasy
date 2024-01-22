@@ -46,9 +46,9 @@ public class RepositorioVenda implements IRepositorioVenda
     }
 
     @Override
-    public ArrayList<Venda> listarVendas()
+    public List<Venda> listarVendas()
     {
-        return vendas;
+        return Collections.unmodifiableList(vendas);
     }
 
     @Override
@@ -62,6 +62,22 @@ public class RepositorioVenda implements IRepositorioVenda
          {
              historico.add(venda);
          }
+        }
+        historico.sort(Comparator.comparing(Venda::getDataEHora).reversed());
+        return historico;
+    }
+
+    @Override
+    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim)
+    {
+        List<Venda> historico = new ArrayList<>();
+
+        for (Venda venda: vendas)
+        {
+            if(venda.getDataEHora().isAfter(dataInicio) && venda.getDataEHora().isBefore(dataFim))
+            {
+                historico.add(venda);
+            }
         }
         historico.sort(Comparator.comparing(Venda::getDataEHora).reversed());
         return historico;

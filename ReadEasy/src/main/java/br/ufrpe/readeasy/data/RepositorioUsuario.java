@@ -7,6 +7,8 @@ import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RepositorioUsuario implements IRepositorioUsuario{
 
@@ -102,48 +104,48 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     }
 
     @Override
-    public ArrayList<Usuario> listarUsuarios(){
-        return usuarios;
+    public List<Usuario> listarUsuarios(){
+        return Collections.unmodifiableList(usuarios);
     }
     @Override
-    public ArrayList<Cliente> listarClientes(){
+    public List<Cliente> listarClientes(){
         ArrayList<Cliente> listaDeClientes = new ArrayList<>();
         for(Usuario usuario : usuarios){
             if(usuario instanceof Cliente){
                 listaDeClientes.add((Cliente) usuario);
             }
         }
-        return listaDeClientes;
+        return Collections.unmodifiableList(listaDeClientes);
     }
     @Override
-    public ArrayList<Funcionario> listarFuncionarios(){
+    public List<Funcionario> listarFuncionarios(){
         ArrayList<Funcionario> listaDeColaboradores = new ArrayList<>();
         for(Usuario usuario : usuarios){
             if(usuario instanceof Funcionario && !((Funcionario) usuario).isAdm()){
                 listaDeColaboradores.add((Funcionario) usuario);
             }
         }
-        return listaDeColaboradores;
+        return Collections.unmodifiableList(listaDeColaboradores);
     }
     @Override
-    public ArrayList<Funcionario> listarAdms(){
+    public List<Funcionario> listarAdms(){
         ArrayList<Funcionario> listaDeAdministradores = new ArrayList<>();
         for(Usuario usuario : usuarios){
             if(usuario instanceof Funcionario && ((Funcionario) usuario).isAdm()){
                 listaDeAdministradores.add((Funcionario) usuario);
             }
         }
-        return listaDeAdministradores;
+        return Collections.unmodifiableList(listaDeAdministradores);
     }
     @Override
-    public ArrayList<Fornecedor> listarFornecedores(){
+    public List<Fornecedor> listarFornecedores(){
         ArrayList<Fornecedor> listaDeFornecedores = new ArrayList<>();
         for(Usuario usuario : usuarios){
             if(usuario instanceof Fornecedor){
                 listaDeFornecedores.add((Fornecedor) usuario);
             }
         }
-        return listaDeFornecedores;
+        return Collections.unmodifiableList(listaDeFornecedores);
     }
     @Override
     public boolean existeUsuario(String cpf){
