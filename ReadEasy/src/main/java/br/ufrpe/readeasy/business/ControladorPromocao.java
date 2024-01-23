@@ -8,7 +8,7 @@ import br.ufrpe.readeasy.exceptions.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ControladorPromocao {
+public class ControladorPromocao implements IControladorPromocao{
     private static ControladorPromocao instance;
     private IRepositorioPromocao repPromocoes;
 

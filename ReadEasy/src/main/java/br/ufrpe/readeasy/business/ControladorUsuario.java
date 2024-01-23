@@ -5,7 +5,6 @@ import br.ufrpe.readeasy.data.RepositorioUsuario;
 import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.data.IRepositorioUsuario;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,6 +70,19 @@ public class ControladorUsuario implements IControladorUsuario{
             }
         } else {
             throw new UsuarioNuloException();
+        }
+    }
+
+    @Override
+    public void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+        if (!login.isEmpty() && !senha.isEmpty()) {
+            if (repUsuario.checarLogin(login, senha)) {
+                System.out.println("Login realizado com sucesso!");
+            } else {
+                throw new LoginInvalidoException();
+            }
+        } else {
+            throw new CampoVazioException();
         }
     }
 

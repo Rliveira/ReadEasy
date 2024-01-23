@@ -172,6 +172,18 @@ public class RepositorioUsuario implements IRepositorioUsuario{
     }
 
     @Override
+    public Usuario procurarUsuarioPorLogin(String login){
+        Usuario usuarioAux = null;
+        for(Usuario user : usuarios){
+            if(user.getLogin().equals(login)){
+                usuarioAux = user;
+                break;
+            }
+        }
+        return usuarioAux;
+    }
+
+    @Override
     public Cliente procurarCliente(String cpf) {
         Cliente clienteAux = null;
         for (Usuario usuario : usuarios) {
@@ -180,6 +192,17 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             }
         }
         return clienteAux;
+    }
+
+    @Override
+    public boolean checarLogin(String login, String senha) {
+        Usuario usuario = this.procurarUsuarioPorLogin(login);
+        if (usuario != null) {
+            if (usuario.getSenha().equals(senha)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

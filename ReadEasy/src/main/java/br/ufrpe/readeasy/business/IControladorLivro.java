@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface IcontroladorLivro {
+public interface IControladorLivro {
     void adicionarLivro(Livro livro) throws LivroNuloException, CampoVazioException,
             PrecoInvalidoException, LivroExistenteException;
     void removerLivro(Livro livro) throws LivroNuloException, CampoVazioException, LivroNaoExistenteException;

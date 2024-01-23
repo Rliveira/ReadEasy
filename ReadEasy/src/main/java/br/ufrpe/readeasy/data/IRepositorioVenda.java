@@ -18,7 +18,7 @@ import java.util.Map;
 
         List<Venda> listarVendas();
 
-        List historicoDeVendas();
+        List<Venda> historicoDeVendas();
 
         List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim);
 

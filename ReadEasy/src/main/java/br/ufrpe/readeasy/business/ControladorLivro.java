@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ControladorLivro implements IcontroladorLivro {
+public class ControladorLivro implements IControladorLivro {
     private IRepositorioLivro repLivro;
     private static ControladorLivro instance;
 

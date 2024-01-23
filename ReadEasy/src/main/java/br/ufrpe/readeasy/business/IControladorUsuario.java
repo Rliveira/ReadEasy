@@ -12,6 +12,8 @@ public interface IControladorUsuario {
             DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException;
     void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException;
 
+    void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException;
+
     void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                               String senha, Endereco endereco, String telefone, boolean ehAdm,
                               Funcionario admResponsavel) throws TipoUsuarioInvalidoException,

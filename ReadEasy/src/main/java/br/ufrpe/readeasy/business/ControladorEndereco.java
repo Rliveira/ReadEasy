@@ -10,7 +10,7 @@ import br.ufrpe.readeasy.exceptions.UsuarioInexistenteException;
 
 import java.util.List;
 
-public class ControladorEndereco {
+public class ControladorEndereco implements IControladorEndereco{
 
     private static ControladorEndereco instance;
     private IRepositorioEndereco repEnderecos;

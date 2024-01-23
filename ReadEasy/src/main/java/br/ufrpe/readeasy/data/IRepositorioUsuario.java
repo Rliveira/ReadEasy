@@ -43,4 +43,7 @@ public interface IRepositorioUsuario {
     public Usuario procurarUsuario(String cpf);
 
     public Cliente procurarCliente(String cpf);
+
+    boolean checarLogin(String login, String senha);
+
 }
