@@ -392,7 +392,7 @@
                                     <VBox prefHeight="319.0" prefWidth="150.0" stylesheets="@css/Style.css">
                                        <children>
                                           <Pane prefHeight="20.0" prefWidth="150.0" VBox.vgrow="ALWAYS" />
-                                          <Button fx:id="btnCadastrar" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@../../../../../../../../../../../../../Downloads/Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Cadastar">
+                                          <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#CadastrarUsuarios" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@../../../../../../../../../../../../../Downloads/Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Cadastar">
                                              <graphic>
                                                 <FontAwesomeIcon fill="WHITE" glyphName="PLUS_SQUARE_ALT" size="20" />
                                              </graphic>

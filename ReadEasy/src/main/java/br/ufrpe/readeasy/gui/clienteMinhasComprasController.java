@@ -1,6 +1,10 @@
+package br.ufrpe.readeasy.gui;
+
+import br.ufrpe.readeasy.beans.Livro;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import java.time.LocalDate;
 
 public class clienteMinhasComprasController
 {
@@ -31,17 +35,18 @@ public class clienteMinhasComprasController
     private TableView TVTabelaCompras;
 
     @FXML
-    private TableColumn ColTitulo;
+    private TableColumn<Livro, String> colTitulo;
 
     @FXML
-    private TableColumn ColAutor;
+    private TableColumn<Livro, String> colAutor;
 
     @FXML
-    private TableColumn ColQTD;
+    private TableColumn<Livro, Integer> colQTD;
 
     @FXML
-    private TableColumn ColPreco;
+    private TableColumn<Livro, Double> colPreco;
 
     @FXML
-    private TableColumn ColDataCompra;
+    private TableColumn<Livro, LocalDate> colDataCompra;
+    
 }
