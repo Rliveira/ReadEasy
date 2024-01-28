@@ -28,8 +28,9 @@ public interface IRepositorioUsuario {
     public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
             UsuarioNuloException;
 
-
     List<Usuario> listarUsuarios();
+
+    Usuario procurarUsuarioPorLogin(String login);
 
     List<Cliente> listarClientes();
 
