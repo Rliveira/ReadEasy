@@ -8,19 +8,21 @@ import br.ufrpe.readeasy.exceptions.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-public class ClienteCadastroController {
+public class ClienteCadastroController implements Initializable {
 
     @FXML
     private Button btnCadastrar;
-
     @FXML
     private Button btnVoltar;
 
@@ -29,31 +31,22 @@ public class ClienteCadastroController {
 
     @FXML
     private TextField txtFBairro;
-
     @FXML
     private TextField txtFCEP;
-
     @FXML
     private TextField txtFCidade;
-
     @FXML
     private TextField txtFCpf;
-
     @FXML
     private TextField txtFEstado;
-
     @FXML
     private TextField txtFNome;
-
     @FXML
     private TextField txtFRua;
-
     @FXML
     private TextField txtFSenha;
-
     @FXML
     private TextField txtFTelefone;
-
     @FXML
     private TextField txtFUsuario;
 
@@ -119,4 +112,8 @@ public class ClienteCadastroController {
         // TODO implementação do método de voltar
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //TODO implementação do método de inicialização (não sei o que colocar aqui)
+    }
 }

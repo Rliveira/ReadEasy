@@ -23,6 +23,7 @@ public interface IControladorVenda
     List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException;
     List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
     List<Cliente> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
-
+    List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio,
+                                          LocalDateTime dataFim) throws HistoricoVazioException;
 }
 

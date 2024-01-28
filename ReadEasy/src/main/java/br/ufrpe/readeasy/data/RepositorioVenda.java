@@ -119,6 +119,20 @@ public class RepositorioVenda implements IRepositorioVenda
         }
         return listaTopClientes;
     }
+
+    @Override
+    public List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio, LocalDateTime dataFim) {
+        List<Venda> vendasFornecedor = new ArrayList<>();
+
+        for (Venda venda : vendas) {
+            if (venda.getLivrosVendidos().get(0).getLivro().getFornecedor().getNome().equals(nomeFornecedor) &&
+                    venda.getDataEHora().isAfter(dataInicio) && venda.getDataEHora().isBefore(dataFim)) {
+                vendasFornecedor.add(venda);
+            }
+        }
+        return vendasFornecedor;
+    }
+
     @Override
     public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente)
     {
