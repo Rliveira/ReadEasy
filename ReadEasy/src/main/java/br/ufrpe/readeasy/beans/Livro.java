@@ -1,6 +1,9 @@
 package br.ufrpe.readeasy.beans;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Livro {
@@ -12,6 +15,7 @@ public class Livro {
     private Fornecedor fornecedor;
     private String imagem;
     private int quantidade;
+    private Map<LocalDate, Integer> registroAtualizacaoEstoque;
 
     //CONSTRUTOR:
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
@@ -22,6 +26,7 @@ public class Livro {
         this.generos = new ArrayList<>();
         this.fornecedor = fornecedor;
         this.quantidade = 0;
+        this.registroAtualizacaoEstoque = new HashMap<>();
     }
 
     //MÉTODOS:
@@ -39,6 +44,17 @@ public class Livro {
 
     public void diminuirQuantidade(int quantidade){
         setQuantidade(this.getQuantidade() - quantidade);
+    }
+
+    public void atualizarRegistroDeEstoque(LocalDate dataAtualizacao, int qtd) {
+        Integer quantidade = qtd;
+
+        if (this.registroAtualizacaoEstoque.containsKey(dataAtualizacao)) {
+            Integer valorAtual = registroAtualizacaoEstoque.get(dataAtualizacao);
+            registroAtualizacaoEstoque.put(dataAtualizacao, valorAtual + quantidade);
+        } else {
+            registroAtualizacaoEstoque.put(dataAtualizacao, quantidade);
+        }
     }
 
     //GETS AND SETS:
@@ -105,6 +121,10 @@ public class Livro {
         if (!imagem.isEmpty()) {
             this.imagem = imagem;
         }
+    }
+
+    public Map<LocalDate, Integer> getRegistroAtualizacaoEstoque() {
+        return registroAtualizacaoEstoque;
     }
 
     @Override
