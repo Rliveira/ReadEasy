@@ -1,4 +1,13 @@
+package br.ufrpe.readeasy.gui;
+
+import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Funcionario;
+import br.ufrpe.readeasy.beans.Usuario;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -52,19 +61,13 @@ public class admCRUDUsuariosController
     private TextField txtFieldCPF;
 
     @FXML
-    private TextField txtFieldDataNascimento;
-
-    @FXML
-    private TextField txtFieldNomeUsuario;
-
-    @FXML
-    private TextField txtFieldSenha;
+    private TextField txtFieldLogin;
 
     @FXML
     private TextField txtFieldTelefone;
 
     @FXML
-    private TextField txtFieldTipoFornecedor;
+    private TextField txtFieldADM;
 
     @FXML
     private TextField txtFieldCEP;
@@ -80,6 +83,9 @@ public class admCRUDUsuariosController
 
     @FXML
     private TextField txtFieldEstado;
+
+    @FXML
+    private TextField txtFieldSenha;
 
     @FXML
     private DatePicker DPDataNascimento;
@@ -110,6 +116,5 @@ public class admCRUDUsuariosController
 
     @FXML
     private TableColumn ColADM;
-
 
 }

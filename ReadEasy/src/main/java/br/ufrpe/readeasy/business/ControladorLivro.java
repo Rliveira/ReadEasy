@@ -1,11 +1,11 @@
 package br.ufrpe.readeasy.business;
 
-import br.ufrpe.readeasy.data.IRepositorioLivro;
-import br.ufrpe.readeasy.data.RepositorioLivro;
-import br.ufrpe.readeasy.exceptions.*;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.data.IRepositorioLivro;
+import br.ufrpe.readeasy.data.RepositorioLivro;
+import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class ControladorLivro implements IControladorLivro {
         }
         return instance;
     }
+
 
     //MÉTODOS:
 
@@ -63,7 +64,7 @@ public class ControladorLivro implements IControladorLivro {
     @Override
     public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
             throws LivroNaoExistenteException, CampoVazioException, LivroNuloException,
-            PrecoInvalidoException, UsuarioNuloException, DataInvalidaException, MenorDeIdadeException {
+            PrecoInvalidoException, UsuarioNuloException, DataInvalidaException {
 
         if(livro != null && livro.getTitulo() != null && livro.getAutor() != null && livro.getFornecedor() != null) {
             if(!titulo.isBlank() && !autor.isBlank()) {
@@ -73,15 +74,11 @@ public class ControladorLivro implements IControladorLivro {
                         if(!fornecedor.getNome().isBlank() && !fornecedor.getCpf().isBlank() && !fornecedor.getLogin().isBlank()
                                 && !fornecedor.getSenha().isBlank()){
                             if(!fornecedor.getDataNascimento().isAfter(LocalDate.now())){
-                                if(fornecedor.getIdade() > 18){
                                     repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
-                                }
-                                else{
-                                    throw new MenorDeIdadeException(fornecedor.getIdade());
-                                }
                             }
                             else{
-                                throw new DataInvalidaException(fornecedor.getDataNascimento());
+                                throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento" +
+                                        " anterior a data atual.");
                             }
                         }
                         else{
@@ -133,13 +130,14 @@ public class ControladorLivro implements IControladorLivro {
             throw new LivroNuloException();
         }
     }
+
     @Override
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade) throws LivroNaoExistenteException
-            , LivroNuloException, QuantidadeInvalidaException {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)
+            throws LivroNaoExistenteException, LivroNuloException, QuantidadeInvalidaException {
 
         if (livro != null) {
             if(quantidade > 0){
-                repLivro.aumentarQuantidadeEmEstoque(livro, quantidade);
+                repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao);
             }
             else{
                 throw new QuantidadeInvalidaException();
@@ -151,7 +149,9 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException, QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException {
+    public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
+            QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException {
+
         if (livro != null) {
             if(quantidade > 0){
                 repLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
@@ -179,7 +179,7 @@ public class ControladorLivro implements IControladorLivro {
     public List<Livro> listarLivrosPorAutor(String nomeAutor) {
         List<Livro> lista = new ArrayList<>();
 
-        if(nomeAutor != null && nomeAutor.isBlank()){
+        if(nomeAutor != null && !nomeAutor.isBlank()){
             lista = repLivro.listarLivrosPorAutor(nomeAutor);
         }
         return lista;
@@ -191,8 +191,22 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) {
+    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) throws FornecedorNaoEncontradoException {
         return repLivro.listarLivrosPorFornecedor(fornecedor);
+    }
+
+    @Override
+    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException {
+
+        LocalDate dataAtual = LocalDate.now();
+        if (dataInicio.isAfter(dataFim) || dataInicio.isEqual(dataFim) ||
+                !dataInicio.isBefore(dataAtual) || !dataFim.isBefore(dataAtual)){
+            throw new DataInvalidaException("Datas inválidas. Certifique-se de que a data de início não seja posterior"
+                    +  " à data de fim e que ambas não sejam datas posteriores ou iguais à data atual.");
+        }
+
+        return repLivro.ListarHistoricoDeVendasFornecedor(fornecedor, dataInicio, dataFim);
     }
 
     @Override

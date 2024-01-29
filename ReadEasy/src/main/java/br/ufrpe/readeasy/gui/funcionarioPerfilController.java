@@ -1,20 +1,28 @@
+package br.ufrpe.readeasy.gui;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class fornecedorPerfilController
+public class funcionarioPerfilController
 {
-    private Application app;
+    public Application app;
 
     @FXML
     private Button btnPerfil;
+
+    @FXML
+    private Button btnLivros;
 
     @FXML
     private Button btnEstoque;
 
     @FXML
     private Button btnHistorico;
+
+    @FXML
+    private Button btnRelatorios;
 
     @FXML
     private Button btnSair;

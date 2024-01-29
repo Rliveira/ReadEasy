@@ -1,11 +1,12 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -48,7 +49,8 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor) throws LivroNaoExistenteException {
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
+            throws LivroNaoExistenteException {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
@@ -92,7 +94,8 @@ public class RepositorioLivro implements IRepositorioLivro {
                 livro.removerGenero(genero);
             }
             else {
-                throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero " + genero.getDescricaoEnum());
+                throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero "
+                        + genero.getDescricaoEnum());
             }
         }
         else {
@@ -115,9 +118,10 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade) throws LivroNaoExistenteException {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao) throws LivroNaoExistenteException {
         if (livros.contains(livro)) {
             livro.aumentarQuantidade(quantidade);
+            livro.atualizarRegistroDeEstoque(dataDaAtualizacao, quantidade);
         }
         else {
             throw new LivroNaoExistenteException();
@@ -188,19 +192,58 @@ public class RepositorioLivro implements IRepositorioLivro {
         }
 
         if(!contemGenero){
-            throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero " + genero.getDescricaoEnum());
+            throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero "
+                    + genero.getDescricaoEnum());
         }
         return lista;
     }
 
     @Override
-    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) {
+    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) throws FornecedorNaoEncontradoException {
         List<Livro> lista = new ArrayList<>();
+        boolean fornecedorEncontrado = false;
 
         for (Livro livro : livros) {
             if (livro.getFornecedor().equals(fornecedor)) {
+                fornecedorEncontrado = true;
                 lista.add(livro);
             }
+        }
+        if(!fornecedorEncontrado){
+            throw new FornecedorNaoEncontradoException();
+        }
+        return lista;
+    }
+
+    @Override
+    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException {
+
+        Map<Livro, Map<LocalDate, Integer>> lista = new HashMap<>();
+        boolean fornecedorEncontrado = false;
+
+        for (Livro livro : livros) {
+            if (livro.getFornecedor().equals(fornecedor)) {
+
+                fornecedorEncontrado = true;
+                Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
+                Map<LocalDate, Integer> dadosNoIntervalo = new HashMap<>();
+
+                for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
+                    LocalDate dataAtualizacao = entry.getKey();
+
+                    if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                            (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+                        dadosNoIntervalo.put(dataAtualizacao, entry.getValue());
+                    }
+                }
+                if (!dadosNoIntervalo.isEmpty()) {
+                    lista.put(livro, dadosNoIntervalo);
+                }
+            }
+        }
+        if(!fornecedorEncontrado){
+            throw new FornecedorNaoEncontradoException();
         }
         return lista;
     }

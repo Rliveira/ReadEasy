@@ -1,9 +1,10 @@
 package br.ufrpe.readeasy.business;
 
 import br.ufrpe.readeasy.beans.*;
+import br.ufrpe.readeasy.data.IRepositorioUsuario;
 import br.ufrpe.readeasy.data.RepositorioUsuario;
 import br.ufrpe.readeasy.exceptions.*;
-import br.ufrpe.readeasy.data.IRepositorioUsuario;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ControladorUsuario implements IControladorUsuario{
                             throw new MenorDeIdadeException(usuario.getIdade());
                         }
                     } else {
-                        throw new DataInvalidaException(usuario.getDataNascimento());
+                        throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento " +
+                                "anterior a data atual.");
                     }
                 } else {
                     throw new CampoVazioException();
@@ -97,7 +99,7 @@ public class ControladorUsuario implements IControladorUsuario{
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
                     }
-                        usuario.setNome(nome);
+                    usuario.setNome(nome);
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
                         cpf = usuario.getCpf();
                     } else {
@@ -114,34 +116,35 @@ public class ControladorUsuario implements IControladorUsuario{
                         if (!dataNascimento.isBefore(LocalDate.now())){
                             usuario.setDataNascimento(dataNascimento);
                         } else{
-                            throw new DataInvalidaException(dataNascimento);
+                            throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento" +
+                                    " anterior a data atual.");
                         }
 
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
                     }
-                        usuario.setLogin(login);
+                    usuario.setLogin(login);
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
                     }
-                        usuario.setSenha(senha);
+                    usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
                     }
-                        usuario.setEndereco(endereco);
+                    usuario.setEndereco(endereco);
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
                     }
-                        usuario.setTelefone(telefone);
+                    usuario.setTelefone(telefone);
                     if (ehAdm == ((Funcionario) usuario).isAdm()) {
                         ehAdm = ((Funcionario) usuario).isAdm();
                     }
-                        ((Funcionario) usuario).setAdm(ehAdm);
+                    ((Funcionario) usuario).setAdm(ehAdm);
                     if (admResponsavel == null || admResponsavel.equals(((Funcionario) usuario).getAdmResponsavel())) {
                         admResponsavel = ((Funcionario) usuario).getAdmResponsavel();
                     }
-                        ((Funcionario) usuario).setAdmResponsavel(admResponsavel);
+                    ((Funcionario) usuario).setAdmResponsavel(admResponsavel);
                 } else {
                     throw new TipoUsuarioInvalidoException();
                 }
@@ -163,9 +166,9 @@ public class ControladorUsuario implements IControladorUsuario{
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
                     }
-                        usuario.setNome(nome);
+                    usuario.setNome(nome);
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
-                            cpf = usuario.getCpf();
+                        cpf = usuario.getCpf();
                     } else {
                         if (!repUsuario.existeUsuario(cpf)){
                             usuario.setCpf(cpf);
@@ -180,26 +183,27 @@ public class ControladorUsuario implements IControladorUsuario{
                         if (!dataNascimento.isBefore(LocalDate.now())){
                             usuario.setDataNascimento(dataNascimento);
                         } else{
-                            throw new DataInvalidaException(dataNascimento);
+                            throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento" +
+                                    " anterior a data atual.");
                         }
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
                     }
-                        usuario.setLogin(login);
+                    usuario.setLogin(login);
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
                     }
-                        usuario.setSenha(senha);
+                    usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
                     }
-                        usuario.setEndereco(endereco);
+                    usuario.setEndereco(endereco);
 
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
                     }
-                        usuario.setTelefone(telefone);
+                    usuario.setTelefone(telefone);
 
                 } else {
                     throw new TipoUsuarioInvalidoException();
@@ -223,7 +227,7 @@ public class ControladorUsuario implements IControladorUsuario{
                     if (nome.isEmpty() || nome.equals(usuario.getNome())) {
                         nome = usuario.getNome();
                     }
-                        usuario.setNome(nome);
+                    usuario.setNome(nome);
 
                     if (cpf.isEmpty() || cpf.equals(usuario.getCpf())) {
                         cpf = usuario.getCpf();
@@ -241,33 +245,34 @@ public class ControladorUsuario implements IControladorUsuario{
                         if (!dataNascimento.isBefore(LocalDate.now())){
                             usuario.setDataNascimento(dataNascimento);
                         } else{
-                            throw new DataInvalidaException(dataNascimento);
+                            throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento" +
+                                    " anterior a data atual.");
                         }
 
                     }
                     if (login.isEmpty() || login.equals(usuario.getLogin())) {
                         login = usuario.getLogin();
                     }
-                        usuario.setLogin(login);
+                    usuario.setLogin(login);
 
                     if (senha.isEmpty() || senha.equals(usuario.getSenha())) {
                         senha = usuario.getSenha();
                     }
-                        usuario.setSenha(senha);
+                    usuario.setSenha(senha);
                     if (endereco == null || endereco.equals(usuario.getEndereco())) {
                         endereco = usuario.getEndereco();
                     }
-                        usuario.setEndereco(endereco);
+                    usuario.setEndereco(endereco);
 
                     if (telefone.isEmpty() || telefone.equals(usuario.getTelefone())) {
                         telefone = usuario.getTelefone();
                     }
-                        usuario.setTelefone(telefone);
+                    usuario.setTelefone(telefone);
 
                     if (tipoFornecedor == null || tipoFornecedor.equals(((Fornecedor) usuario).getTipoFornecedor())){
                         tipoFornecedor = ((Fornecedor) usuario).getTipoFornecedor();
                     }
-                        ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
+                    ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
 
                 } else {
                     throw new TipoUsuarioInvalidoException();
@@ -313,11 +318,11 @@ public class ControladorUsuario implements IControladorUsuario{
             if (repUsuario.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
                     if (endereco != null) {
-                       if (((Cliente) usuario).getEnderecosentrega().contains(endereco)) {
-                           ((Cliente) usuario).removerEndereco(endereco);
-                       } else {
-                           throw new EnderecoInexistenteException(endereco.getCep());
-                       }
+                        if (((Cliente) usuario).getEnderecosentrega().contains(endereco)) {
+                            ((Cliente) usuario).removerEndereco(endereco);
+                        } else {
+                            throw new EnderecoInexistenteException(endereco.getCep());
+                        }
                     } else {
                         throw new CampoVazioException();
                     }

@@ -27,4 +27,6 @@ import java.util.Map;
         ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
 
         List<Cliente> listarMelhoresClientesPorGasto(Map<Cliente, Double> clienteGasto);
+
+        List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio, LocalDateTime dataFim);
     }

@@ -5,14 +5,14 @@ import br.ufrpe.readeasy.beans.Usuario;
 import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-public class AdmPerfilController {
+public class AdmPerfilController implements Initializable {
 
     @FXML
     private Button btnEditarPerfil;
@@ -134,7 +134,7 @@ public class AdmPerfilController {
         }
     }
 
-    protected void onBtnEditarPerfilClick() throws TipoUsuarioInvalidoException, UsuarioExistenteException, UsuarioInexistenteException, UsuarioNuloException, DataInvalidaException {
+    protected void onBtnEditarPerfilClick() {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
         String usuario = txtFusuario.getText();
@@ -148,8 +148,48 @@ public class AdmPerfilController {
         LocalDate dataNascimento = dtPckData.getValue();
 
         Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-        ControladorUsuario.getInstance().atualizarFuncionario(this.usuario, nome, cpf, dataNascimento, usuario, senha, endereco, telefone, true, null);
+        try {
+            ControladorUsuario.getInstance().atualizarFuncionario(this.usuario, nome, cpf, dataNascimento,
+                    usuario, senha, endereco, telefone, true, null);
+        } catch (TipoUsuarioInvalidoException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Tipo de usuário inválido");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        } catch (UsuarioExistenteException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário já existente");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        } catch (DataInvalidaException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data inválida");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        } catch (UsuarioInexistenteException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário inexistente");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        } catch (UsuarioNuloException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário nulo");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.atualizarLabels();
+    }
 }

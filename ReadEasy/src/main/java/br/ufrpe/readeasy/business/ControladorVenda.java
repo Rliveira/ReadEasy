@@ -174,4 +174,14 @@ public class ControladorVenda implements IControladorVenda
             throw new HistoricoVazioException();
         }
     }
+
+    @Override
+    public List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio,
+                                                 LocalDateTime dataFim) throws HistoricoVazioException {
+        List<Venda> lista = repoVenda.listarVendasPorFornecedor(nomeFornecedor, dataInicio, dataFim);
+        if(lista.isEmpty()){
+            throw new HistoricoVazioException();
+        }
+        return lista;
+    }
 }
