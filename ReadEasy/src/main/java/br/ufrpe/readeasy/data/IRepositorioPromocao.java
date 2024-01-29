@@ -12,7 +12,7 @@ public interface IRepositorioPromocao {
     public void remover(Promocao promocao);
 
     public void atualizar(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
-                          LocalDate dataDeExpiracao, boolean ativa);
+                          LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa);
 
     public List<Promocao> listarTodasPromocoes();
 

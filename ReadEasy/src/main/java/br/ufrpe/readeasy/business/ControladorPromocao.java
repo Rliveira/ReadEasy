@@ -25,7 +25,7 @@ public class ControladorPromocao implements IControladorPromocao{
 
 
     public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException, PromocaoNulaException,
-            PromocaoInseridaComSucessoException {
+            PromocaoInseridaComSucessoException{
         if(promocao != null){
             if(!repPromocoes.existePromocao(promocao.getId())){
                 if (!promocao.getTitulo().isEmpty() && promocao.getPorcentagemDeDesconto() >= 0 &&
@@ -59,8 +59,8 @@ public class ControladorPromocao implements IControladorPromocao{
         }
     }
 
-    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeDiarias,
-                                  int qtdMinimaDeLocacoes, LocalDate dataDeExpiracao, boolean ativa)
+    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
+                                  int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
             throws PromocaoNulaException, PromocaoInexistenteException, PromocaoAtualizadaException {
 
         if (promocao != null) {
@@ -80,7 +80,8 @@ public class ControladorPromocao implements IControladorPromocao{
                     dataDeExpiracao = promocao.getDataDeExpiracao();
                 }
 
-                repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeDiarias, dataDeExpiracao, ativa);
+                repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,
+                        dataDeExpiracao, ativa);
                 throw new PromocaoAtualizadaException();
 
             }else{
@@ -93,6 +94,9 @@ public class ControladorPromocao implements IControladorPromocao{
 
     public List<Promocao> listarTodasPromocoes(){
         return repPromocoes.listarTodasPromocoes();
+    }
+    public List<Promocao> listarTodasPromocoesAtivas(){
+        return repPromocoes.listarTodasPromocoesAtivas();
     }
 
     public boolean existePromocao(String id){

@@ -35,10 +35,11 @@ public class RepositorioPromocao implements IRepositorioPromocao{
 
     @Override
     public void atualizar(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
-                          LocalDate dataDeExpiracao, boolean ativa){
+                          LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa){
         promocao.setTitulo(titulo);
         promocao.setPorcentagemDeDesconto(porcentagemDeDesconto);
         promocao.setQtdMinimaDeLivros(qtdMinimaDeLivros);
+        promocao.setDataDeCriacao(dataDeCriacao);
         promocao.setDataDeExpiracao(dataDeExpiracao);
         promocao.setAtiva(ativa);
     }

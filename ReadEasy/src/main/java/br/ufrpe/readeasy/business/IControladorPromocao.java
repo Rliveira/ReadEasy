@@ -9,17 +9,18 @@ import java.util.List;
 public interface IControladorPromocao {
 
     void inserirPromocao (Promocao promocao) throws PromocaoExistenteException,
-            PromocaoNulaException, PromocaoAtualizadaException, PromocaoInseridaComSucessoException;
+            PromocaoNulaException, PromocaoInseridaComSucessoException;
 
     void removerPromocao(Promocao promocao) throws PromocaoInexistenteException, PromocaoNulaException;
 
-    void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
-                                  int qtdMinimaDeDiarias, int qtdMinimaDeLocacoes,
-                                  LocalDate dataDeExpiracao, boolean ativa)
+    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
+                                  int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
             throws PromocaoNulaException, PromocaoInexistenteException, PromocaoAtualizadaException;
 
 
     List<Promocao> listarTodasPromocoes();
+
+    public List<Promocao> listarTodasPromocoesAtivas();
 
     boolean existePromocao(String id);
 
