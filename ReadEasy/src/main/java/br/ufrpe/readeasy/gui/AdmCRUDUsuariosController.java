@@ -1,17 +1,10 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Endereco;
-import br.ufrpe.readeasy.beans.Funcionario;
-import br.ufrpe.readeasy.beans.Usuario;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class admCRUDUsuariosController
+public class AdmCRUDUsuariosController
 {
     public Application app;
 
