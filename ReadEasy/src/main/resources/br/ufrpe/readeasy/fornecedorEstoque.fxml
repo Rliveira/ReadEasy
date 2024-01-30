@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorEstoqueController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorEstoqueController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -25,7 +31,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil" textFill="WHITE">
+            <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#trocarTelaPerfilFornecedor" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -54,7 +60,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
+            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoFornecedor" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -71,7 +77,7 @@
                </styleClass>
             </Button>
             <VBox prefHeight="154.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-            <Button fx:id="btnSair" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
+            <Button fx:id="btnSair" mnemonicParsing="false" onAction="#SairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
@@ -113,7 +119,7 @@
                   <TableView fx:id="tbEstoqueLivrosFornecedor" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="colLivro" minWidth="0.0" prefWidth="100.0" text="Livro" />
-                        <TableColumn fx:id="colAutor" minWidth="0.0" prefWidth="100.0" text="Autor" />
+                        <TableColumn fx:id="ColAutor" minWidth="0.0" prefWidth="100.0" text="Autor" />
                         <TableColumn fx:id="colQuantidade" prefWidth="100.0" text="Quantidade" />
                      </columns>
                      <VBox.margin>

@@ -2,7 +2,10 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Promocao;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.exceptions.PromocaoExistenteException;
+import br.ufrpe.readeasy.exceptions.PromocaoInexistenteException;
+import br.ufrpe.readeasy.exceptions.PromocaoInseridaComSucessoException;
+import br.ufrpe.readeasy.exceptions.PromocaoNulaException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,11 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import java.util.Optional;
-
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class AdmCRUDPromocoesController {
 
@@ -80,6 +82,51 @@ public class AdmCRUDPromocoesController {
 
     @FXML
     private TableColumn<Promocao, LocalDate> clnDtFim;
+
+    //Métodos de troca de tela:
+    @FXML
+    public void trocarTelaEstoqueAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    }
+
+    @FXML
+    public void trocarTelaUsuariosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
+    }
+
+    @FXML
+    public void trocarTelaHistoricoAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    public void trocarTelaLivrosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
+    }
+
+    @FXML
+    public void trocarTelaPerfilAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
+    }
+
+    @FXML
+    public void trocarTelaRelatoriosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
+    }
+
+    @FXML
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
 
     @FXML
     void btnAdicionarPromocao(ActionEvent event) {
@@ -243,6 +290,27 @@ public class AdmCRUDPromocoesController {
                 }
             });
             return row;
+        });
+    }
+
+    @FXML
+    public void btnSairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
         });
     }
 }

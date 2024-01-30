@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.ClienteCadastroController">
    <children>
       <VBox prefHeight="660.0" prefWidth="175.0" styleClass="corDeFundo" stylesheets="@css/Style.css" HBox.hgrow="NEVER">
          <children>
-            <Pane prefHeight="50.0" prefWidth="175.0" style="-fx-background-color: tranparent;" VBox.vgrow="NEVER" />
+            <Pane prefHeight="50.0" prefWidth="175.0" VBox.vgrow="NEVER" />
             <HBox prefHeight="45.0" prefWidth="175.0" VBox.vgrow="NEVER">
                <children>
                   <Pane prefHeight="45.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="102.0" stylesheets="@css/Style.css" text="Voltar" textFill="WHITE" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnVoltar" mnemonicParsing="false" onAction="#trocarTelaLogin" prefHeight="45.0" prefWidth="102.0" stylesheets="@css/Style.css" text="Voltar" textFill="WHITE" HBox.hgrow="ALWAYS">
                      <graphic>
                         <FontAwesomeIcon fill="WHITE" glyphName="ARROW_CIRCLE_O_LEFT" size="25" />
                      </graphic>
@@ -47,7 +38,7 @@
             </HBox>
             <VBox prefHeight="610.0" prefWidth="175.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="230.0" prefWidth="100.0" style="-fx-background-color: tranparent;" VBox.vgrow="ALWAYS" />
+                  <VBox prefHeight="230.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                   <HBox prefHeight="127.0" prefWidth="188.0">
                      <children>
                         <Pane prefHeight="200.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
@@ -69,44 +60,40 @@
             <Pane prefHeight="50.0" prefWidth="850.0" VBox.vgrow="ALWAYS" />
             <HBox prefHeight="40.0" prefWidth="818.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="58.0" prefWidth="366.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label prefHeight="46.0" prefWidth="365.0" text="Cadastro de Usuário">
-                           <font>
-                              <Font name="Tahoma Bold" size="36.0" />
-                           </font>
-                           <textFill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop>
-                                       <color>
-                                          <Color red="0.19779999554157257" green="0.33327001333236694" blue="0.46000000834465027" />
-                                       </color>
-                                    </Stop>
-                                    <Stop offset="0.006729475100942127">
-                                       <color>
-                                          <Color red="0.19779999554157257" green="0.33327001333236694" blue="0.46000000834465027" />
-                                       </color>
-                                    </Stop>
-                                    <Stop offset="0.5222072678331091">
-                                       <color>
-                                          <Color red="0.20000000298023224" green="0.5333333611488342" blue="0.6000000238418579" />
-                                       </color>
-                                    </Stop>
-                                    <Stop offset="1.0">
-                                       <color>
-                                          <Color red="0.20000000298023224" green="0.5333333611488342" blue="0.6000000238418579" />
-                                       </color>
-                                    </Stop>
-                                 </stops>
-                              </LinearGradient>
-                           </textFill>
-                        </Label>
-                     </children>
+                  <Label prefHeight="46.0" prefWidth="365.0" text="Cadastro de Usuário">
+                     <font>
+                        <Font name="Tahoma Bold" size="36.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.19779999554157257" green="0.33327001333236694" blue="0.46000000834465027" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.006729475100942127">
+                                 <color>
+                                    <Color red="0.19779999554157257" green="0.33327001333236694" blue="0.46000000834465027" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="0.5222072678331091">
+                                 <color>
+                                    <Color red="0.20000000298023224" green="0.5333333611488342" blue="0.6000000238418579" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.20000000298023224" green="0.5333333611488342" blue="0.6000000238418579" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
                      <HBox.margin>
                         <Insets left="65.0" />
                      </HBox.margin>
-                  </VBox>
+                  </Label>
                </children>
             </HBox>
             <HBox prefHeight="5.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -127,7 +114,7 @@
                   <Pane prefHeight="319.0" prefWidth="65.0" HBox.hgrow="ALWAYS" />
                   <VBox prefHeight="343.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField prefHeight="30.0" prefWidth="280.0" promptText="Nome" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFNome" prefHeight="30.0" prefWidth="280.0" promptText="Nome" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -136,11 +123,11 @@
                               <String fx:value="textFieldF" />
                            </styleClass>
                         </TextField>
-                        <Pane prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: trabs;" VBox.vgrow="ALWAYS">
+                        <Pane prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin></Pane>
-                        <TextField prefHeight="30.0" prefWidth="280.0" promptText="CPF" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFCpf" prefHeight="30.0" prefWidth="280.0" promptText="CPF" stylesheets="@css/Style.css">
                            <styleClass>
                               <String fx:value="textFieldDesign" />
                               <String fx:value="textFieldF" />
@@ -153,7 +140,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="42.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Nome de Usuário" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFUsuario" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Nome de Usuário" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -166,7 +153,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="343.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFSenha" layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -179,7 +166,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="350.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="171.0" prefHeight="30.0" prefWidth="280.0" promptText="Telefone" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFTelefone" layoutX="10.0" layoutY="171.0" prefHeight="30.0" prefWidth="280.0" promptText="Telefone" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -192,7 +179,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="233.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <DatePicker prefHeight="30.0" prefWidth="309.0" promptText="Data de nascimento" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                        <DatePicker fx:id="dtpkDataNascimento" prefHeight="30.0" prefWidth="309.0" promptText="Data de nascimento" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
                      </children>
                   </VBox>
                   <HBox prefHeight="100.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
@@ -204,7 +191,7 @@
                   </HBox>
                   <VBox prefHeight="343.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFCEP" prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -214,7 +201,7 @@
                            </styleClass>
                         </TextField>
                         <Pane prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="145.0" prefHeight="30.0" prefWidth="280.0" promptText="Bairro" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFBairro" layoutX="10.0" layoutY="145.0" prefHeight="30.0" prefWidth="280.0" promptText="Bairro" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -227,7 +214,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="42.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField prefHeight="30.0" prefWidth="280.0" promptText="Rua" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFRua" prefHeight="30.0" prefWidth="280.0" promptText="Rua" stylesheets="@css/Style.css">
                            <styleClass>
                               <String fx:value="textFieldDesign" />
                               <String fx:value="textFieldF" />
@@ -240,7 +227,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="349.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Cidade" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFCidade" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Cidade" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -253,7 +240,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="348.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <TextField layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Estado" stylesheets="@css/Style.css">
+                        <TextField fx:id="txtFEstado" layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Estado" stylesheets="@css/Style.css">
                            <font>
                               <Font name="Times New Roman" size="16.0" />
                            </font>
@@ -279,7 +266,7 @@
             <HBox prefHeight="50.0" prefWidth="850.0">
                <children>
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="175.0" style="-fx-background-radius: 8px;" stylesheets="@css/Style.css" text="Cadastar">
+                  <Button fx:id="btnCadastrar" mnemonicParsing="false" prefHeight="50.0" prefWidth="175.0" style="-fx-background-radius: 8px;" stylesheets="@css/Style.css" text="Cadastar">
                      <styleClass>
                         <String fx:value="btnLogin" />
                         <String fx:value="btnLoginP" />

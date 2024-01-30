@@ -5,7 +5,6 @@ import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
 import br.ufrpe.readeasy.business.ControladorVenda;
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,7 +46,26 @@ public class FornecedorHistoricoController implements Initializable{
     @FXML
     private TableColumn<LivroVendido, String> clnAutor;
 
+    //Métodos de troca de tela:
+    @FXML
+    public void trocarTelaPerfilFornecedor(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Perfil");
+    }
 
+    @FXML
+    public void trocarTelaEstoqueFornecedor(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("fornecedorEstoque.fxml", "ReadEasy - Estoque");
+    }
+
+    @FXML
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.onBtnPesquisarClick();
@@ -73,35 +91,55 @@ public class FornecedorHistoricoController implements Initializable{
     }
 
     public void onBtnPesquisarClick() { //FIXME deve ser algo desse tipo
-        try {
-            Fornecedor fornecedor = ControladorFornecedor.getInstance().getFornecedorLogado();
-            LocalDateTime dataInicio = dtpkDataInicio.getValue().atStartOfDay();
-            LocalDateTime dataFim = btnpkDataFim.getValue().atTime(23, 59, 59);
-            ObservableList<LivroVendido> listaVendas = getVendas(fornecedor, dataInicio, dataFim);
-            //clnDataVenda.setCellValueFactory(cellData -> cellData.getValue().getVenda().dataEHoraProperty());
-            //precisa de um método pra pegar a data da venda
-            clnQuantidade.setCellValueFactory(cellData -> {
-                // Assume que "quantidade" é o nome do campo ou propriedade na sua classe
-                return new SimpleObjectProperty<>(cellData.getValue().getQuantidade());
-            });
-            clnTitulo.setCellValueFactory(cellData -> {
-                // Assume que "titulo" é o nome do campo ou propriedade na sua classe
-                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getTitulo());
-            });
-            clnAutor.setCellValueFactory(cellData -> {
-                // Assume que "autor" é o nome do campo ou propriedade na sua classe
-                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getAutor());
-            });
-            tableHistorico.setItems(listaVendas);
-        } catch (HistoricoVazioException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Histórico de vendas");
-            alert.setHeaderText(null);
-            alert.setContentText("Não há vendas nesse período!");
-            alert.showAndWait();
-        }
+//        try {
+//            Fornecedor fornecedor = ControladorFornecedor.getInstance().getFornecedorLogado();
+//            LocalDateTime dataInicio = dtpkDataInicio.getValue().atStartOfDay();
+//            LocalDateTime dataFim = btnpkDataFim.getValue().atTime(23, 59, 59);
+//            ObservableList<LivroVendido> listaVendas = getVendas(fornecedor, dataInicio, dataFim);
+//            //clnDataVenda.setCellValueFactory(cellData -> cellData.getValue().getVenda().dataEHoraProperty());
+//            //precisa de um método pra pegar a data da venda
+//            clnQuantidade.setCellValueFactory(cellData -> {
+//                // Assume que "quantidade" é o nome do campo ou propriedade na sua classe
+//                return new SimpleObjectProperty<>(cellData.getValue().getQuantidade());
+//            });
+//            clnTitulo.setCellValueFactory(cellData -> {
+//                // Assume que "titulo" é o nome do campo ou propriedade na sua classe
+//                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getTitulo());
+//            });
+//            clnAutor.setCellValueFactory(cellData -> {
+//                // Assume que "autor" é o nome do campo ou propriedade na sua classe
+//                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getAutor());
+//            });
+//            tableHistorico.setItems(listaVendas);
+//        } catch (HistoricoVazioException e) {
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Histórico de vendas");
+//            alert.setHeaderText(null);
+//            alert.setContentText("Não há vendas nesse período!");
+//            alert.showAndWait();
+//        }
 
     }
 
+    @FXML
+    public void SairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
+    }
 
 }

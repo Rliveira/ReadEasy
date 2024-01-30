@@ -1,11 +1,13 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.beans.Usuario;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 
-public class AdmEstoqueController {
+public class AdmRelatoriosController {
 
     @FXML
     private Button btnPerfil;
@@ -22,47 +24,70 @@ public class AdmEstoqueController {
     @FXML
     private Button btnRelatorios;
     @FXML
-    private Button btnSair;
+    private Button btnPesquisar1;
     @FXML
-    private Button btnAdicionar;
+    private Button btnPesquisar2;
 
     @FXML
-    private ImageView ivCapaDoLivro;
+    private BarChart<String, Double> bcDados;
+    @FXML
+    private CategoryAxis catX;
+    @FXML
+    private NumberAxis catY;
 
     @FXML
-    private ComboBox <String> cbLivro;
+    private BarChart<String, Integer> bcRankingLivros;
+    @FXML
+    private CategoryAxis catXLivros;
+    @FXML
+    private NumberAxis catYNumeroDeVendas;
 
     @FXML
-    private TextField tfPesquisar;
+    private ComboBox<String> cbCategoria;
     @FXML
-    private TextField tfQuantidade;
+    private ComboBox<String> cbMesOuAno1;
+    @FXML
+    private ComboBox<String> cbMesOuAno2;
+    @FXML
+    private ComboBox<String> cbPeriodo1;
+    @FXML
+    private ComboBox<String> cbPeriodo2;
 
     @FXML
-    private TableView<Livro> tvEstoque;
+    private Label LblVendasDiarias;
     @FXML
-    private TableColumn<Livro, String> colLivro;
+    private Label lblFaturamentoDiario;
     @FXML
-    private TableColumn<Livro, String> colFornecedor;
+    private Label lblComprasDiarias;
+
     @FXML
-    private TableColumn<Livro, Integer> colQuantidade;
+    private TableView<Usuario> tvUsuariosMaisCompras;
+    @FXML
+    private TableColumn<Usuario, String> colUsuario1;
+    @FXML
+    private TableColumn<Usuario, Integer> colTotal1;
+
+    @FXML
+    private TableView<Usuario> TVUsuariosMaisGasto;
+    @FXML
+    private TableColumn<Usuario, String> colUsuario2;
+    @FXML
+    private TableColumn<Usuario, Integer> colTotal2;
 
     //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaUsuariosAdm(){
+    public void trocarTelaEstoqueAdm(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
+        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
     }
 
-    @FXML
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
     public void trocarTelaLivrosAdm(){
         ScreenManager sm = ScreenManager.getInstance();
         sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
+    }
+
+    public void trocarTelaHistoricoAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
     }
 
     @FXML
@@ -77,20 +102,16 @@ public class AdmEstoqueController {
         sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
     }
 
-    @FXML
-    public void trocarTelaRelatoriosAdm(){
+    public void trocarTelaUsuariosAdm(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
+        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
     }
 
-    @FXML
     private void trocarTelaLogin(){
         ScreenManager sm = ScreenManager.getInstance();
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
-    //outros métodos:
-    @FXML
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
@@ -100,6 +121,7 @@ public class AdmEstoqueController {
         ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
         ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(simButton, naoButton);
+
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {

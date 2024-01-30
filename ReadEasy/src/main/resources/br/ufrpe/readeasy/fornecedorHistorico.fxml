@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorHistoricoController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorHistoricoController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -32,7 +25,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Line>
-            <Button id="btnPerfil" fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
+            <Button id="btnPerfil" fx:id="btnPerfil" mnemonicParsing="false" onAction="#trocarTelaPerfilFornecedor" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -48,7 +41,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button id="btnEstoque" fx:id="btnEstoque" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
+            <Button id="btnEstoque" fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueFornecedor" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -82,7 +75,7 @@
                </styleClass>
             </Button>
             <VBox prefHeight="400.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-            <Button id="btnSair" fx:id="btnSair" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
+            <Button id="btnSair" fx:id="btnSair" mnemonicParsing="false" onAction="#SairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
@@ -121,7 +114,7 @@
                   </HBox>
                   <VBox prefHeight="103.0" prefWidth="1146.0">
                      <children>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
                         <HBox prefHeight="40.0" prefWidth="1146.0">
                            <children>
                               <Pane prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: transparent;" />
@@ -140,18 +133,19 @@
                                     <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" />
                                  </graphic>
                                  <HBox.margin>
-                                    <Insets bottom="15.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Button>
                               <Pane prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </HBox>
+                        <Pane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" />
                      </children>
                   </VBox>
                   <TableView id="table" fx:id="tableHistorico" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css">
                      <columns>
                         <TableColumn id="colTitulo" fx:id="clnTitulo" prefWidth="250.4000244140625" text="Título" />
-                        <TableColumn id="colAuto" fx:id="clnAutor" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Autor" />
+                        <TableColumn id="colAuto" fx:id="colAutor" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Autor" />
                         <TableColumn id="colQuantidade" fx:id="clnQuantidade" minWidth="0.0" prefWidth="153.60009765625" text="Quantidade" />
                         <TableColumn id="colData" fx:id="clnDataVenda" prefWidth="153.60009765625" text="Data de Venda" />
                      </columns>

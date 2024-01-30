@@ -27,7 +27,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
+            <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#trocarTelaPerfilAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -59,7 +59,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnEstoque" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
+            <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -75,7 +75,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnUsuarios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
+            <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#trocarTelaUsuariosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -91,7 +91,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnPromocoes" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
+            <Button fx:id="btnPromocoes" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" onAction="#trocarTelaPromocoesAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -107,7 +107,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
+            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -123,7 +123,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnRelatorios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios" textFill="WHITE">
+            <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -140,7 +140,7 @@
                </styleClass>
             </Button>
             <VBox prefHeight="190.0" prefWidth="221.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="btnSair" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
+            <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>

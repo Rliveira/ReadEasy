@@ -2,10 +2,8 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
-import br.ufrpe.readeasy.beans.Venda;
 import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.exceptions.*;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,6 +48,14 @@ public class ClienteCadastroController implements Initializable {
     @FXML
     private TextField txtFUsuario;
 
+    //métodos de troca de tela:
+    @FXML
+    public void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //outros métodos:
     protected void onBtnCadastrarClick(ActionEvent event) throws IOException {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();

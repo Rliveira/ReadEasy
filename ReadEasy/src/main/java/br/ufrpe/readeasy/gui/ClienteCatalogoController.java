@@ -2,13 +2,7 @@ package br.ufrpe.readeasy.gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 
 
@@ -68,6 +62,26 @@ public class ClienteCatalogoController {
     @FXML
     private ImageView imgvLivro;
 
+    //Métodos de troca de tela:
+    @FXML
+    private void trocarTelaHistoricoCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clienteMinhasCompras.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    private void trocarTelaPerfilCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Perfil");
+    }
+
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //outros métodos:
+
     @FXML
     void btnAdicionar(ActionEvent event) {
 
@@ -88,4 +102,24 @@ public class ClienteCatalogoController {
 
     }
 
+    public void btnSairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
+    }
 }

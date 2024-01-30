@@ -1,16 +1,8 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.business.ServidorReadEasy;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-
-import java.time.LocalDate;
+import javafx.scene.control.*;
 
 public class ClientePerfilController {
 
@@ -92,7 +84,24 @@ public class ClientePerfilController {
     @FXML
     private Button btnAlterarEndereco;
 
+    //Métodos de troca de tela:
+    @FXML
+    private void trocarTelaCatalogoCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
+    }
 
+    @FXML
+    private void trocarTelaHistoricoCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clienteMinhasCompras.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
     @FXML
     void btnAtualizarPerfil(ActionEvent event) {
 
@@ -114,4 +123,24 @@ public class ClientePerfilController {
 
     }
 
+    public void btnSairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
+    }
 }

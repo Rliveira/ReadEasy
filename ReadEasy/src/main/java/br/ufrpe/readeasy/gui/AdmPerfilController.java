@@ -110,27 +110,70 @@ public class AdmPerfilController implements Initializable {
     @FXML
     private TextField txtFusuario;
 
-    private Usuario usuario; // Usuário que está logado no momento
+    private Usuario usuarioLogado; // Usuário que está logado no momento
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        // Atualizar os labels com as informações do usuário
-        atualizarLabels();
+    //Métodos de troca de tela:
+    @FXML
+    public void trocarTelaEstoqueAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    }
+    @FXML
+
+    public void trocarTelaLivrosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
+    }
+
+    @FXML
+    public void trocarTelaHistoricoAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    public void trocarTelaPromocoesAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
+    }
+
+    @FXML
+    public void trocarTelaRelatoriosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatoórios");
+    }
+
+    @FXML
+    public void trocarTelaUsuariosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
+    }
+
+    @FXML
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.atualizarLabels();
     }
 
     private void atualizarLabels() {
-        if (usuario != null) {
-            lblNome.setText(usuario.getNome());
-            lblCPF.setText(usuario.getCpf());
-            lblData.setText(usuario.getDataNascimento().toString());
-            lblUsuario.setText(usuario.getLogin());
-            lblSenha.setText(usuario.getSenha());
-            lblRua.setText(usuario.getEndereco().getRua());
-            lblBairro.setText(usuario.getEndereco().getBairro());
-            lblCidade.setText(usuario.getEndereco().getCidade());
-            lblEstado.setText(usuario.getEndereco().getEstado());
-            lblCep.setText(String.valueOf(usuario.getEndereco().getCep()));
-            lblTelefone.setText(usuario.getTelefone());
+        if (usuarioLogado != null) {
+            lblNome.setText(usuarioLogado.getNome());
+            lblCPF.setText(usuarioLogado.getCpf());
+            lblData.setText(usuarioLogado.getDataNascimento().toString());
+            lblUsuario.setText(usuarioLogado.getLogin());
+            lblSenha.setText(usuarioLogado.getSenha());
+            lblRua.setText(usuarioLogado.getEndereco().getRua());
+            lblBairro.setText(usuarioLogado.getEndereco().getBairro());
+            lblCidade.setText(usuarioLogado.getEndereco().getCidade());
+            lblEstado.setText(usuarioLogado.getEndereco().getEstado());
+            lblCep.setText(String.valueOf(usuarioLogado.getEndereco().getCep()));
+            lblTelefone.setText(usuarioLogado.getTelefone());
         }
     }
 
@@ -149,7 +192,7 @@ public class AdmPerfilController implements Initializable {
 
         Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
         try {
-            ControladorUsuario.getInstance().atualizarFuncionario(this.usuario, nome, cpf, dataNascimento,
+            ControladorUsuario.getInstance().atualizarFuncionario(this.usuarioLogado, nome, cpf, dataNascimento,
                     usuario, senha, endereco, telefone, true, null);
         } catch (TipoUsuarioInvalidoException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -184,12 +227,37 @@ public class AdmPerfilController implements Initializable {
         }
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    @FXML
+    public void btnSairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.atualizarLabels();
+
+    //GETs and Sets:
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
     }
+
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
+
+
 }

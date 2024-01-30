@@ -69,5 +69,63 @@ public class AdmLivrosController {
     @FXML
     private ListView<Genero> lvGenerosDoLivro;
 
+    //Métodos de troca de tela:
+    public void trocarTelaEstoqueAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    }
 
+    public void trocarTelaHistoricoAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    public void trocarTelaPerfilAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
+    }
+
+    @FXML
+    public void trocarTelaPromocoesAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
+    }
+
+    public void trocarTelaRelatoriosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
+    }
+
+    public void trocarTelaUsuariosAdm(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuarios");
+    }
+
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
+    public void btnSairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
+    }
 }

@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmCRUDPromocoesController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmCRUDPromocoesController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -33,7 +25,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
+            <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#trocarTelaPerfilAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -49,7 +41,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnLivros" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
+            <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivrosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -65,7 +57,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnEstoque" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
+            <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -81,7 +73,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnUsuarios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
+            <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#trocarTelaUsuariosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -114,7 +106,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
+            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -131,7 +123,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnRelatorios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;&#10;" textFill="WHITE">
+            <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -147,8 +139,8 @@
                   <String fx:value="btnBarraLateralH" />
                </styleClass>
             </Button>
-            <VBox prefHeight="147.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
+            <VBox prefHeight="199.0" prefWidth="221.0" VBox.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
@@ -161,7 +153,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
                <VBox.margin>
-                  <Insets bottom="3.0" left="1.0" right="3.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
          </children></VBox>
@@ -185,15 +177,15 @@
                         <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <VBox prefHeight="15.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-                  <VBox prefHeight="30.0" style="-fx-background-color: tranparent;" VBox.vgrow="ALWAYS" />
+                  <VBox prefHeight="15.0" VBox.vgrow="ALWAYS" />
+                  <VBox prefHeight="30.0" VBox.vgrow="ALWAYS" />
                   <HBox>
                      <children>
                         <VBox prefHeight="236.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Pane prefHeight="112.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <Pane prefHeight="112.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
                                     <VBox prefHeight="23.0" prefWidth="544.0">
                                        <children>
                                           <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
@@ -235,7 +227,7 @@
                                           </DatePicker>
                                        </children>
                                     </VBox>
-                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                            </children>
@@ -245,10 +237,10 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <VBox prefHeight="40.0" style="-fx-background-color: transparent;" />
+                  <VBox prefHeight="40.0" />
                   <HBox prefHeight="67.0" prefWidth="512.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                        <Pane prefHeight="159.0" prefWidth="75.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -283,7 +275,7 @@
                               <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="20" wrappingWidth="20.0" />
                            </graphic>
                         </Button>
-                        <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                        <Pane prefHeight="159.0" prefWidth="75.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="15.0" />

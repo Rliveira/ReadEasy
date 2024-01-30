@@ -1,13 +1,11 @@
 package br.ufrpe.readeasy.gui;
 
-import javafx.application.Application;
+import br.ufrpe.readeasy.beans.Usuario;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 public class FuncionarioPerfilController
 {
-    public Application app;
 
     @FXML
     private Button btnPerfil;
@@ -63,4 +61,66 @@ public class FuncionarioPerfilController
     @FXML
     private Label LabelEstado;
 
+    private Usuario usuarioLogado;
+
+    //métodos de troca de tela:
+    @FXML
+    public void trocarTelaEstoqueFuncionario(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("funcionarioEstoque.fxml", "ReadEasy - Estoque");
+    }
+
+    @FXML
+    public void trocarTelaHistoricoFuncionario(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("funcionarioHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
+    }
+
+    @FXML
+    public void trocarTelaRelatoriosFuncionario(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("funcionarioRelatorios.fxml", "ReadEasy - Relatorios");
+    }
+
+    @FXML
+    public void trocarTelaLivroFuncionario(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
+    }
+
+
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
+    public void SairDaConta(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Escolha uma opção.");
+
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
+
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+            }
+            else {
+                alert.close();
+            }
+        });
+    }
+
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }
+
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
 }

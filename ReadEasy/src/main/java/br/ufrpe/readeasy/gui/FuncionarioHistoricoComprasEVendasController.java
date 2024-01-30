@@ -3,9 +3,8 @@ package br.ufrpe.readeasy.gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 
-public class FuncionarioCRUDLivrosController {
+public class FuncionarioHistoricoComprasEVendasController {
 
     @FXML
     private Button btnPerfil;
@@ -26,66 +25,65 @@ public class FuncionarioCRUDLivrosController {
     private Button btnSair;
 
     @FXML
-    private ImageView imgvCapaLivro;
+    private DatePicker dtpDataDeInicioVendas;
 
     @FXML
-    private Button btnDownloadImagem;
+    private DatePicker dtpDataDeFimVendas;
 
     @FXML
-    private TextField tfTitulo;
+    private Button btnPesquisarVendas;
 
     @FXML
-    private TextField tfAutor;
+    private TableView<?> tvVendas;
 
     @FXML
-    private TextField tfPreco;
+    private TableColumn<?, ?> clnTituloVendas;
 
     @FXML
-    private ComboBox<?> cbGenero;
+    private TableColumn<?, ?> clnAutorVendas;
 
     @FXML
-    private ComboBox<?> cbFornecedor;
+    private TableColumn<?, ?> clnFornecedorVendas;
 
     @FXML
-    private Button btnAdicionarLivro;
+    private TableColumn<?, ?> clnQuantidadeVendas;
 
     @FXML
-    private TextField tfPesquisar;
+    private TableColumn<?, ?> clnPrecoVendas;
 
     @FXML
-    private TableView<?> tbvCatálogo;
+    private TableColumn<?, ?> clnClienteVendas;
 
     @FXML
-    private TableColumn<?, ?> clnTitulo;
+    private DatePicker dtpDataDeInicioCompras;
 
     @FXML
-    private TableColumn<?, ?> clnAutor;
+    private DatePicker dtpDataDeFimCompras;
 
     @FXML
-    private TableColumn<?, ?> clnFornecedor;
+    private Button btnPesquisarCompras;
 
     @FXML
-    private TableColumn<?, ?> clnPreco;
+    private TableView<?> tvCompras;
 
     @FXML
-    private Button btnDeletarLivro;
+    private TableColumn<?, ?> clnTituloCompras;
 
     @FXML
-    private Button btnEditarLivro;
+    private TableColumn<?, ?> clnAutorCompras;
 
     @FXML
-    private TableView<?> tbvGeneros;
+    private TableColumn<?, ?> clnFornecedorCompras;
 
     @FXML
-    private TableColumn<?, ?> clnTodosOsGeneros;
+    private TableColumn<?, ?> clnQuantidadeCompras;
 
     @FXML
-    private Button btnAdicionarGenero;
+    private TableColumn<?, ?> clnPrecoCompras;
 
     @FXML
-    private Button btnDeletarGenero;
+    private TableColumn<?, ?> clnClienteCompras;
 
-    //métodos de troca de tela
     @FXML
     public void trocarTelaEstoqueFuncionario(){
         ScreenManager sm = ScreenManager.getInstance();
@@ -93,9 +91,9 @@ public class FuncionarioCRUDLivrosController {
     }
 
     @FXML
-    public void trocarTelaHistoricoFuncionario(){
+    public void trocarTelaLivroFuncionario(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
+        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
     }
 
     @FXML
@@ -118,47 +116,12 @@ public class FuncionarioCRUDLivrosController {
 
     //Outros métodos:
     @FXML
-    void btnCadastrarGenero(ActionEvent event) {
+    void btnPesquisarComprasPorData(ActionEvent event) {
 
     }
 
     @FXML
-    void btnCadastrarLivro(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnDeletarGenero(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnDeletarLivro(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnDownloadImagem(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnEditarLivro(ActionEvent event) {
-
-    }
-
-    @FXML
-    void cbSelecionarFornecedor(ActionEvent event) {
-
-    }
-
-    @FXML
-    void cbSelecionarGênero(ActionEvent event) {
-
-    }
-
-    @FXML
-    void tfPesquisarLivro(ActionEvent event) {
+    void btnPesquisarVendasPorData(ActionEvent event) {
 
     }
 

@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.LoginController">
    <children>
       <VBox prefHeight="600.0" prefWidth="500.0" styleClass="corDeFundo" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
          <children>
@@ -118,7 +111,7 @@
                                     </LinearGradient>
                                  </fill>
                               </FontAwesomeIcon>
-                              <TextField prefHeight="30.0" prefWidth="280.0" promptText="Usuário" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="tfUsuario" prefHeight="30.0" prefWidth="280.0" promptText="Usuário" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets left="3.0" />
                                  </HBox.margin>
@@ -160,7 +153,7 @@
                                     </LinearGradient>
                                  </fill>
                               </FontAwesomeIcon>
-                              <TextField prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="tfSenha" prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets left="3.0" />
                                  </HBox.margin>
@@ -187,7 +180,7 @@
                   <Pane prefHeight="200.0" prefWidth="55.0" HBox.hgrow="ALWAYS" />
                   <HBox prefHeight="39.0" prefWidth="190.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="190.0" style="-fx-background-radius: 8px;" stylesheets="@css/Style.css" text="Login" HBox.hgrow="ALWAYS">
+                        <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="60.0" prefWidth="190.0" style="-fx-background-radius: 8px;" stylesheets="@css/Style.css" text="Login" HBox.hgrow="ALWAYS">
                            <styleClass>
                               <String fx:value="btnLogin" />
                               <String fx:value="btnLoginP" />
@@ -213,7 +206,7 @@
                         <Insets right="60.0" />
                      </HBox.margin>
                   </Label>
-                  <Label style="-fx-underline: true;" styleClass="labelCadastre-seH" stylesheets="@css/Style.css" text="Cadastre-se" HBox.hgrow="ALWAYS">
+                  <Label fx:id="lblCadastreSe" onDragDetected="#trocarTelaCadastro" onMouseClicked="#trocarTelaCadastro" style="-fx-underline: true;" styleClass="labelCadastre-seH" stylesheets="@css/Style.css" text="Cadastre-se" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>

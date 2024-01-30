@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="funcionarioPerfilController.java">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioPerfilController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -30,7 +25,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@../../../../../../../../../../../Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Perfil" textFill="WHITE">
+            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -39,7 +34,6 @@
                </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnEfeitoP" />
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
@@ -47,7 +41,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnLivros" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
+            <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivroFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -63,7 +57,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnEstoque" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@../../../../../../../../../../../Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Estoque" textFill="WHITE">
+            <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -79,7 +73,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@../../../../../../../../../../../Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Histórico" textFill="WHITE">
+            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -96,7 +90,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
             </Button>
-            <Button fx:id="btnRelatorio" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios" textFill="WHITE">
+            <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
@@ -109,8 +103,8 @@
                   <String fx:value="btnBarraLateralH" />
                </styleClass>
             </Button>
-            <VBox prefHeight="418.0" prefWidth="146.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-            <Button fx:id="btnSair" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@../../../../../../../../../../../Documents/GitHub/ReadEasy/ReadEasy/src/main/resources/br/ufrpe/readeasy/css/Style.css" text="Sair" textFill="WHITE">
+            <VBox prefHeight="307.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+            <Button fx:id="btnSair" mnemonicParsing="false" onAction="#SairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
@@ -123,7 +117,7 @@
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
                <VBox.margin>
-                  <Insets bottom="3.0" left="1.0" right="3.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
          </children>
@@ -134,7 +128,7 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #CCCCCC;" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="768.0" prefWidth="343.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="768.0" prefWidth="343.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                            <children>
@@ -150,7 +144,7 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <VBox prefHeight="278.0" prefWidth="523.0" style="-fx-background-color: #ffffff;" styleClass="shadow" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="278.0" prefWidth="523.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Pane prefHeight="93.0" prefWidth="458.0" VBox.vgrow="ALWAYS" />
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -415,7 +409,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="183.0" prefWidth="1124.0" style="-fx-background-radius: 8px;" VBox.vgrow="ALWAYS" />
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="183.0" prefWidth="1124.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
