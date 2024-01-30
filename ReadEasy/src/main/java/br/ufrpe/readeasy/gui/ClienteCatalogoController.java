@@ -39,6 +39,9 @@ public class ClienteCatalogoController {
     private ComboBox<?> cbAplicarPromocao;
 
     @FXML
+    private ComboBox<?> cbEnderecoEntrega;
+
+    @FXML
     private Label lblTotal;
 
     @FXML
@@ -89,6 +92,11 @@ public class ClienteCatalogoController {
 
     @FXML
     void btnAplicarPromocaoACompra(ActionEvent event) {
+
+    }
+
+    @FXML
+    void cbEscolherEnderecoEntrega(ActionEvent event) {
 
     }
 

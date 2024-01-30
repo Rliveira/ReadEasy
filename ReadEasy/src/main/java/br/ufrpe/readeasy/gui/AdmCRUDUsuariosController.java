@@ -1,6 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -41,6 +42,12 @@ public class AdmCRUDUsuariosController
 
     @FXML
     private Button btnSair;
+
+    @FXML
+    private ComboBox<?> cbCargo;
+
+    @FXML
+    private ComboBox<?> cbTipoFornecedor;
 
     @FXML
     private TextField txtFieldPesquisar;
@@ -168,6 +175,17 @@ public class AdmCRUDUsuariosController
                 alert.close();
             }
         });
+    }
+
+    //outros métodos:
+    @FXML
+    void cbEscolherCargo(ActionEvent event) {
+
+    }
+
+    @FXML
+    void cbEscolherTipoFornecedor(ActionEvent event) {
+
     }
 
 }
