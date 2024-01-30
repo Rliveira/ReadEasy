@@ -1,5 +1,6 @@
 package br.ufrpe.readeasy;
 
+import br.ufrpe.readeasy.gui.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,8 +11,11 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admTelaHistoricoComprasEVendas.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        ScreenManager.setStage(stage);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admCRUDPromocoes.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+        stage.setMinWidth(1200);
+        stage.setMinHeight(700);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();

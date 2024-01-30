@@ -8,5 +8,6 @@ module com.example.readeasy {
     requires fontawesomefx;
 
     opens br.ufrpe.readeasy to javafx.fxml;
+    opens br.ufrpe.readeasy.gui to javafx.fxml;
     exports br.ufrpe.readeasy;
 }
