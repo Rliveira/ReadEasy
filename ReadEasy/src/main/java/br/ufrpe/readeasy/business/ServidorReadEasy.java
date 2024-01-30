@@ -153,9 +153,9 @@ public class ServidorReadEasy {
         controladorLivro.removerGenero(livro, genero);
     }
 
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade) throws LivroNaoExistenteException
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataVendaFornecedor ) throws LivroNaoExistenteException
             , LivroNuloException, QuantidadeInvalidaException {
-        controladorLivro.aumentarQuantidadeEmEstoque(livro, quantidade);
+        controladorLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataVendaFornecedor);
     }
 
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
