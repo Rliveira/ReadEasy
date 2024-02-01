@@ -4,8 +4,10 @@ import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ServidorReadEasy {
@@ -35,10 +37,14 @@ public class ServidorReadEasy {
     public void cadastrarAdmInicial(){
         if (!controladorUsuario.existeUsuario("12384274165")) {
             try {
+                Funcionario admInicial = new Funcionario("Lucas Albuquerque", "12384274165",
+                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
+                        new Endereco(59624712, "Rua Fictícia", "Bairro",
+                                "Cidade", "Estado"), "(81)99196-9420", true, null);
                 controladorUsuario.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
                         new Endereco(59624712, "Rua Fictícia", "Bairro",
-                        "Cidade", "Estado"), "(81)99196-9420", true, null));
+                        "Cidade", "Estado"), "(81)99196-9420", true, admInicial));
             } catch (UsuarioNuloException | UsuarioExistenteException | TipoUsuarioInvalidoException |
                     CampoVazioException | MenorDeIdadeException | DataInvalidaException e) {
                 throw new RuntimeException(e.getMessage());
@@ -55,8 +61,8 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(usuario);
     }
 
-    public void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
-        controladorUsuario.checarLogin(login, senha);
+    public Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+        return controladorUsuario.checarLogin(login, senha);
     }
 
     public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
@@ -104,20 +110,28 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(cpf);
     }
 
-    public void listarUsuarios() {
-        controladorUsuario.listarUsuarios();
+    public List<Usuario> listarUsuarios()
+    {
+        List<Usuario> listaInterna = controladorUsuario.listarUsuarios();
+        return listaInterna;
     }
 
-    public void listarClientes() {
-        controladorUsuario.listarClientes();
+    public List<Cliente> listarClientes()
+    {
+        List<Cliente> listaInterna = controladorUsuario.listarClientes();
+        return listaInterna;
     }
 
-    public void listarFuncionarios() {
-        controladorUsuario.listarFuncionarios();
+    public List<Funcionario> listarFuncionarios()
+    {
+        List<Funcionario> listaInterna = controladorUsuario.listarFuncionarios();
+        return listaInterna;
     }
 
-    public void listarAdms() {
-        controladorUsuario.listarAdms();
+    public List<Funcionario> listarAdms()
+    {
+        List<Funcionario> listaInterna = controladorUsuario.listarAdms();
+        return listaInterna;
     }
 
     public void listarFornecedores() {
@@ -222,14 +236,6 @@ public class ServidorReadEasy {
         controladorVenda.historicoDeComprasDoCliente(cliente);
     }
 
-    public void listarMelhoresClientesPorCompra() throws HistoricoVazioException {
-        controladorVenda.listarMelhoresClientesPorCompra();
-    }
-
-    public void listarMelhoresClientesPorGasto() throws HistoricoVazioException {
-        controladorVenda.listarMelhoresClientesPorGasto();
-    }
-
     public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException,
             PromocaoNulaException, PromocaoInseridaComSucessoException {
         controladorPromocao.inserirPromocao(promocao);
@@ -282,6 +288,44 @@ public class ServidorReadEasy {
 
     public List<Endereco> listarEnderecos() {
         return controladorEndereco.listarEnderecos();
+    }
+
+    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
+    {
+        Map<Cliente, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
+        return listaInterna;
+    }
+
+    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
+    {
+        Map<Cliente, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
+        return listaInterna;
+    }
+
+    public Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        Map<Livro, Integer> listaInterna = controladorVenda.ranquearLivrosMaisVendidosEntreDatas(dataEHoraInicio,
+                dataEHoraFim);
+        return listaInterna;
+    }
+
+    public int calcularTotalLivrosVendidosEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public double calcularTotalLucroEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException
+    {
+        Map<Livro, Map<LocalDate, Integer>> listaInterna = controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor,
+                dataInicio, dataFim);
+
+        return listaInterna;
     }
 
 
