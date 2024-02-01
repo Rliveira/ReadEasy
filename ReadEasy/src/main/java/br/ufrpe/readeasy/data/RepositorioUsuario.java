@@ -83,15 +83,12 @@ public class RepositorioUsuario implements IRepositorioUsuario{
         ((Cliente) usuario).removerEndereco(endereco);
     }
 
-    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
         if (usuario != null) {
             if (this.existeUsuario(usuario.getCpf())) {
                 if (usuario instanceof Cliente) {
-                    ArrayList<Endereco> enderecos = ((Cliente) usuario).getEnderecosentrega();
-                    System.out.println("Lista de endereços:");
-                    for (Endereco e : enderecos) {
-                        System.out.println(e);
-                    }
+                    List<Endereco> enderecos = ((Cliente) usuario).getEnderecosentrega();
+                    return Collections.unmodifiableList(enderecos);
                 } else {
                     throw new TipoUsuarioInvalidoException();
                 }

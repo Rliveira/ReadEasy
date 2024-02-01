@@ -4,6 +4,7 @@ import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -68,16 +69,19 @@ public class RepositorioVenda implements IRepositorioVenda
     }
 
     @Override
-    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim)
+    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataDeInicio, LocalDate dataDeFim)
     {
-        if (dataInicio == null)
+        if (dataDeInicio == null)
         {
-            dataInicio = LocalDateTime.MIN;
+            dataDeInicio = LocalDate.MIN;
         }
-        if (dataFim == null)
+        if (dataDeFim == null)
         {
-            dataFim = LocalDateTime.now();
+            dataDeFim = LocalDate.now();
         }
+
+        LocalDateTime dataInicio = dataDeInicio.atStartOfDay();
+        LocalDateTime dataFim = dataDeFim.atTime(23,59,59,59);
 
         List<Venda> historico = new ArrayList<>();
 

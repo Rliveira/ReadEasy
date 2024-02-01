@@ -143,8 +143,4 @@ public class Venda
 
         return sb.toString();
     }
-
-    public ObservableValue<String> getTituloProperty() { //TODO: Verificar se é necessário e se está correto
-        return null;
-    }
 }

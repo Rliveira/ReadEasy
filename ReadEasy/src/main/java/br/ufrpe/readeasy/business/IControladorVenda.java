@@ -6,6 +6,7 @@ import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface IControladorVenda
                         livros) throws VendaInvalidaException, UsuarioNuloException, UsuarioInexistenteException,
                         ListaDeLivrosVaziaException;
     List<Venda> historicoDeVendas() throws HistoricoVazioException;
-    List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim);
+    List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     List<Venda> listarVendas();
     List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException;
     List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException;

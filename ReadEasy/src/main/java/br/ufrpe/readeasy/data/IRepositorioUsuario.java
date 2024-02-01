@@ -25,7 +25,7 @@ public interface IRepositorioUsuario {
 
     public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco);
 
-    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
             UsuarioNuloException;
 
     List<Usuario> listarUsuarios();

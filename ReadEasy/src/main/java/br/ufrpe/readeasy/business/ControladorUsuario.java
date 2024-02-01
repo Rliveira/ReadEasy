@@ -338,9 +338,9 @@ public class ControladorUsuario implements IControladorUsuario{
     }
 
     @Override
-    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
             UsuarioNuloException {
-        repUsuario.listarEnderecosDeEntrega(usuario);
+        return repUsuario.listarEnderecosDeEntrega(usuario);
     }
 
     @Override

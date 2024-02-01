@@ -3,6 +3,8 @@ package br.ufrpe.readeasy.data;
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.Map;
 
         List<Venda> historicoDeVendas();
 
-        List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim);
+        List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
 
         List<Cliente> listarMelhoresClientesPorCompra(Map<Cliente, Integer> map);
 

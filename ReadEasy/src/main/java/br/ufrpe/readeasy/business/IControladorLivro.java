@@ -26,6 +26,7 @@ public interface IControladorLivro {
     void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
             QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException;
     Livro buscarLivro(UUID id);
+    Livro buscarLivroPorNome(String titulo);
     List<Livro> listarTodosOslivrosEmOrdemAlfabetica();
     List<Livro> listarLivrosPorAutor(String nomeAutor);
     List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException;
@@ -34,4 +35,8 @@ public interface IControladorLivro {
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException;
     List<Livro> listarEOrdenarLivrosPorPreco();
     Map<Livro, Integer> listarQuantidadeDeEstoque();
+
+    List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
+
+    List<Livro> listarTodosOsLivrosEmOrdemAlfabetica();
 }

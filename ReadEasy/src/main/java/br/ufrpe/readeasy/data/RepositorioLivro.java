@@ -168,6 +168,20 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
+    public Livro buscarLivroPorNome(String titulo) {
+        boolean achou = false;
+        Livro livro = null;
+
+        for(int i = 0; i < livros.size() && !achou; i++){
+            if(livros.get(i).getTitulo().equals(titulo)){
+                livro = livros.get(i);
+                achou = true;
+            }
+        }
+        return livro;
+    }
+
+    @Override
     public List<Livro> listarLivrosPorAutor(String autor) {
         List<Livro> lista = new ArrayList<>();
 
@@ -245,6 +259,36 @@ public class RepositorioLivro implements IRepositorioLivro {
         if(!fornecedorEncontrado){
             throw new FornecedorNaoEncontradoException();
         }
+        return lista;
+    }
+
+    @Override
+    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        List<Livro> lista = new ArrayList<>();
+
+        if(dataInicio == null ){
+           dataInicio = LocalDate.MIN;
+        }
+        if(dataFim == null){
+            dataFim = LocalDate.now();
+        }
+
+        if (dataInicio.isAfter(dataFim)) {
+            throw new DataInvalidaException("'Data de início' ou 'Data de fim' inválida(s)");
+        }
+
+        for (Livro livro : livros) {
+                Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
+
+                for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
+                    LocalDate dataAtualizacao = entry.getKey();
+
+                    if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                            (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+                        lista.add(livro);
+                    }
+                }
+            }
         return lista;
     }
 

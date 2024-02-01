@@ -6,6 +6,7 @@ import br.ufrpe.readeasy.exceptions.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ServidorReadEasy {
@@ -35,10 +36,14 @@ public class ServidorReadEasy {
     public void cadastrarAdmInicial(){
         if (!controladorUsuario.existeUsuario("12384274165")) {
             try {
+                Funcionario admInicial = new Funcionario("Lucas Albuquerque", "12384274165",
+                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
+                        new Endereco(59624712, "Rua Fictícia", "Bairro", "Cidade",
+                                "Estado"), "(81)99196-9420", true, null);
                 controladorUsuario.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
                         new Endereco(59624712, "Rua Fictícia", "Bairro",
-                        "Cidade", "Estado"), "(81)99196-9420", true, null));
+                        "Cidade", "Estado"), "(81)99196-9420", true, admInicial));
             } catch (UsuarioNuloException | UsuarioExistenteException | TipoUsuarioInvalidoException |
                     CampoVazioException | MenorDeIdadeException | DataInvalidaException e) {
                 throw new RuntimeException(e.getMessage());
@@ -91,9 +96,9 @@ public class ServidorReadEasy {
         controladorUsuario.removerEnderecoDeEntrega(usuario, endereco);
     }
 
-    public void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
             UsuarioNuloException {
-        controladorUsuario.listarEnderecosDeEntrega(usuario);
+        return controladorUsuario.listarEnderecosDeEntrega(usuario);
     }
 
     public Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
@@ -104,24 +109,24 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(cpf);
     }
 
-    public void listarUsuarios() {
-        controladorUsuario.listarUsuarios();
+    public List<Usuario> listarUsuarios() {
+        return controladorUsuario.listarUsuarios();
     }
 
-    public void listarClientes() {
-        controladorUsuario.listarClientes();
+    public List<Cliente> listarClientes() {
+        return controladorUsuario.listarClientes();
     }
 
-    public void listarFuncionarios() {
-        controladorUsuario.listarFuncionarios();
+    public List<Funcionario> listarFuncionarios() {
+        return controladorUsuario.listarFuncionarios();
     }
 
-    public void listarAdms() {
-        controladorUsuario.listarAdms();
+    public List<Funcionario> listarAdms() {
+        return controladorUsuario.listarAdms();
     }
 
-    public void listarFornecedores() {
-        controladorUsuario.listarFornecedores();
+    public List<Fornecedor> listarFornecedores() {
+        return controladorUsuario.listarFornecedores();
     }
 
     public boolean existeUsuario(String cpf) {
@@ -167,28 +172,28 @@ public class ServidorReadEasy {
         return controladorLivro.buscarLivro(id);
     }
 
-    public void listarTodosOslivrosEmOrdemAlfabetica() {
-        controladorLivro.listarTodosOslivrosEmOrdemAlfabetica();
+    public List<Livro> listarTodosOslivrosEmOrdemAlfabetica() {
+        return controladorLivro.listarTodosOslivrosEmOrdemAlfabetica();
     }
 
-    public void listarLivrosPorAutor(String nomeAutor) throws CampoVazioException {
-        controladorLivro.listarLivrosPorAutor(nomeAutor);
+    public List<Livro> listarLivrosPorAutor(String nomeAutor) throws CampoVazioException {
+        return controladorLivro.listarLivrosPorAutor(nomeAutor);
     }
 
-    public void listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException {
-        controladorLivro.listarLivrosPorGenero(genero);
+    public List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException {
+        return controladorLivro.listarLivrosPorGenero(genero);
     }
 
-    public void listarLivrosPorFornecedor(Fornecedor fornecedor) {
-        controladorLivro.listarLivrosPorFornecedor(fornecedor);
+    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) {
+        return controladorLivro.listarLivrosPorFornecedor(fornecedor);
     }
 
-    public void listarEOrdenarLivrosPorPreco() {
-        controladorLivro.listarEOrdenarLivrosPorPreco();
+    public List<Livro> listarEOrdenarLivrosPorPreco() {
+        return controladorLivro.listarEOrdenarLivrosPorPreco();
     }
 
-    public void listarQuantidadeDeEstoque() {
-        controladorLivro.listarQuantidadeDeEstoque();
+    public Map<Livro, Integer> listarQuantidadeDeEstoque() {
+        return controladorLivro.listarQuantidadeDeEstoque();
     }
 
     public void inserirVenda(Venda venda) throws VendaInvalidaException, UsuarioNuloException {
@@ -205,29 +210,29 @@ public class ServidorReadEasy {
         controladorVenda.atualizarVenda(venda, cliente, livros);
     }
 
-    public void historicoDeVendas() throws HistoricoVazioException {
-        controladorVenda.historicoDeVendas();
+    public List<Venda> historicoDeVendas() throws HistoricoVazioException {
+        return controladorVenda.historicoDeVendas();
     }
 
-    public void HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
-        controladorVenda.HistoricoDeVendasPorPeriodo(dataInicio.atStartOfDay(),
-                dataFim.atTime(23, 59, 59));
+    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        return controladorVenda.HistoricoDeVendasPorPeriodo(dataInicio,
+                dataFim);
     }
 
-    public void listarVendas() {
-        controladorVenda.listarVendas();
+    public List<Venda> listarVendas() {
+        return controladorVenda.listarVendas();
     }
 
-    public void historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
-        controladorVenda.historicoDeComprasDoCliente(cliente);
+    public List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
+         return controladorVenda.historicoDeComprasDoCliente(cliente);
     }
 
-    public void listarMelhoresClientesPorCompra() throws HistoricoVazioException {
-        controladorVenda.listarMelhoresClientesPorCompra();
+    public List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+        return controladorVenda.listarMelhoresClientesPorCompra();
     }
 
-    public void listarMelhoresClientesPorGasto() throws HistoricoVazioException {
-        controladorVenda.listarMelhoresClientesPorGasto();
+    public List<Cliente> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+        return controladorVenda.listarMelhoresClientesPorGasto();
     }
 
     public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException,
@@ -282,6 +287,18 @@ public class ServidorReadEasy {
 
     public List<Endereco> listarEnderecos() {
         return controladorEndereco.listarEnderecos();
+    }
+
+    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        return controladorLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
+    }
+
+    public Livro buscarLivroPorNome(String titulo) {
+        return controladorLivro.buscarLivroPorNome(titulo);
+    }
+
+    public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
+        return controladorLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
 
 

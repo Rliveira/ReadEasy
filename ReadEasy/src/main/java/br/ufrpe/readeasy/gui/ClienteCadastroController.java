@@ -3,6 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.business.ControladorUsuario;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,7 +73,7 @@ public class ClienteCadastroController implements Initializable {
             Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
             Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
             try {
-                ControladorUsuario.getInstance().cadastrarUsuario(cliente);
+                ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Cadastro de Cliente");
                 alert.setHeaderText(null);
@@ -112,10 +113,6 @@ public class ClienteCadastroController implements Initializable {
                 alert.showAndWait();
         }
 
-    }
-
-    protected void onBtnVoltarClick(ActionEvent event) throws IOException {
-        // TODO implementação do método de voltar
     }
 
     @Override

@@ -34,7 +34,7 @@ public interface IControladorUsuario {
     void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
             TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoInexistenteException;
 
-    void listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
+    List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
             UsuarioNuloException;
 
     Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException;

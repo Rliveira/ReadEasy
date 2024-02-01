@@ -12,12 +12,13 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ScreenManager.setStage(stage);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("clienteCatalogo.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admHistoricoComprasEVendas.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setMinWidth(1200);
         stage.setMinHeight(700);
         stage.setTitle("Hello!");
         stage.setScene(scene);
+        TesteHistóricoCompraEVenda.InicializarTesteHistóricoCompraEVenda();
         stage.show();
     }
 

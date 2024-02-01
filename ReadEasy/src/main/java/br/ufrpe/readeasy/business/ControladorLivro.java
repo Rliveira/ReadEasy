@@ -171,6 +171,11 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
+    public Livro buscarLivroPorNome(String titulo) {
+        return repLivro.buscarLivroPorNome(titulo);
+    }
+
+    @Override
     public List<Livro> listarTodosOslivrosEmOrdemAlfabetica(){
         return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
@@ -217,6 +222,16 @@ public class ControladorLivro implements IControladorLivro {
     @Override
     public Map<Livro, Integer> listarQuantidadeDeEstoque(){
         return repLivro.listarQuantidadeDeEstoque();
+    }
+
+    @Override
+    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        return repLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
+    }
+
+    @Override
+    public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
+        return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
 
 }

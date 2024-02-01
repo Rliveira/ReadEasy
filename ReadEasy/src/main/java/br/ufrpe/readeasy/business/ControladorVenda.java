@@ -7,6 +7,7 @@ import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioVenda;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,7 +105,7 @@ public class ControladorVenda implements IControladorVenda
     }
 
     @Override
-    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
+    public List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
         return repoVenda.HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
     }
 
