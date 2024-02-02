@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioPerfilController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioPerfilController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -243,7 +248,7 @@
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="10.0" prefHeight="227.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="LabelNome" text="(Nome)">
+                                          <Label fx:id="labelNome" text="(Nome)">
                                              <VBox.margin>
                                                 <Insets top="25.0" />
                                              </VBox.margin>
@@ -251,7 +256,7 @@
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="LabelCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
+                                          <Label fx:id="labelCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -259,7 +264,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelDataNascimento" layoutX="10.0" layoutY="178.0" text="(Data de nascimento)">
+                                          <Label fx:id="labelDataNascimento" layoutX="10.0" layoutY="178.0" text="(Data de nascimento)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -267,7 +272,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelNomeUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
+                                          <Label fx:id="labelNomeUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -275,7 +280,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelSenha" layoutX="10.0" layoutY="218.0" text="(senha)">
+                                          <Label fx:id="labelSenha" layoutX="10.0" layoutY="218.0" text="(senha)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -283,7 +288,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
+                                          <Label fx:id="labelTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -291,7 +296,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelTipoFornecedor" layoutX="10.0" layoutY="155.0" text="(Tipo)  ">
+                                          <Label fx:id="labelTipoFornecedor" layoutX="10.0" layoutY="155.0" text="(Tipo)  ">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -358,7 +363,7 @@
                                     </VBox>
                                     <VBox layoutX="588.0" layoutY="10.0" prefHeight="227.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="LabelCEP" text="(CEP)">
+                                          <Label fx:id="labelCEP" text="(CEP)">
                                              <VBox.margin>
                                                 <Insets top="25.0" />
                                              </VBox.margin>
@@ -366,7 +371,7 @@
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="LabelRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
+                                          <Label fx:id="labelRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -374,7 +379,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
+                                          <Label fx:id="labelBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -382,7 +387,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
+                                          <Label fx:id="labelCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>
@@ -390,7 +395,7 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label fx:id="LabelEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
+                                          <Label fx:id="labelEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
                                              <font>
                                                 <Font name="Tahoma" size="18.0" />
                                              </font>

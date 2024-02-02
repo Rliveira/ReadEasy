@@ -4,13 +4,13 @@ import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
-<<<<<<< HEAD
+
 
 import java.time.LocalDate;
-=======
+
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 
->>>>>>> 5b244cffe1379e2c25989d60f27b333b97c90337
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

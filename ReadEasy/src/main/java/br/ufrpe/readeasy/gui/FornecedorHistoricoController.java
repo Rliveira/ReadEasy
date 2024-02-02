@@ -85,7 +85,7 @@ public class FornecedorHistoricoController implements Initializable{
 
     public void onBtnPesquisarClick() { //FIXME deve ser algo desse tipo
         try {
-            Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = getVendas((Fornecedor) FornecedorPerfilController.getUsuarioLogado(), dtpkDataInicio.getValue(), dtpkDataFim.getValue());
+            Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = getVendas((Fornecedor) SessaoUsuario.getUsuarioLogado(), dtpkDataInicio.getValue(), dtpkDataFim.getValue());
 
             List<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> todasAsEntradas = new ArrayList<>();
             for (Map.Entry<Livro, List<Map.Entry<LocalDate, Integer>>> livroListEntry : livroDataMap.entrySet()) {

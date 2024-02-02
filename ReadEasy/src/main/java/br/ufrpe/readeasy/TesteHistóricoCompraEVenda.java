@@ -2,7 +2,7 @@ package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.gui.FornecedorPerfilController;
+import br.ufrpe.readeasy.gui.SessaoUsuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -69,7 +69,7 @@ public class TesteHistóricoCompraEVenda {
 
             System.out.println("Histórico de vendas:");
 
-            FornecedorPerfilController.setUsuarioLogado(fornecedor);
+            SessaoUsuario.setUsuarioLogado(fornecedor);
 
         }  catch (Exception e) {
             System.out.println(e.getMessage());

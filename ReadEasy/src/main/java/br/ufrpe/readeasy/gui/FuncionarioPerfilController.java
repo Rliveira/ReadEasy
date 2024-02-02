@@ -1,8 +1,9 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Usuario;
+import br.ufrpe.readeasy.beans.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 
 public class FuncionarioPerfilController
 {
@@ -26,42 +27,79 @@ public class FuncionarioPerfilController
     private Button btnSair;
 
     @FXML
-    private Label LabelNome;
+    private Label labelNome;
 
     @FXML
-    private Label LabelCPF;
+    private Label labelCPF;
 
     @FXML
-    private Label LabelDataNascimento;
+    private Label labelDataNascimento;
 
     @FXML
-    private Label LabelNomeUsuario;
+    private Label labelNomeUsuario;
 
     @FXML
-    private Label LabelSenha;
+    private Label labelSenha;
 
     @FXML
-    private Label LabelTelefone;
+    private Label labelTelefone;
 
     @FXML
-    private Label LabelTipoFornecedor;
+    private Label labelTipoFornecedor;
 
     @FXML
-    private Label LabelCEP;
+    private Label labelCEP;
 
     @FXML
-    private Label LabelRua;
+    private Label labelRua;
 
     @FXML
-    private Label LabelBairro;
+    private Label labelBairro;
 
     @FXML
-    private Label LabelCidade;
+    private Label labelCidade;
 
     @FXML
-    private Label LabelEstado;
+    private Label labelEstado;
 
-    private Usuario usuarioLogado;
+    @FXML
+    public void initialize()
+    {
+        if(SessaoUsuario.getUsuarioLogado() instanceof Funcionario)
+        {
+            if(((Funcionario) SessaoUsuario.getUsuarioLogado()).isAdm())
+            {
+                labelTipoFornecedor.setText("Administrador");
+                labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
+                labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
+                labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
+                labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
+                labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
+                labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
+                labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
+                labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
+                labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
+                labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
+                labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
+            }
+            else
+            {
+                labelTipoFornecedor.setText("Funcionário");
+                labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
+                labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
+                labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
+                labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
+                labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
+                labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
+                labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
+                labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
+                labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
+                labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
+                labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
+            }
+        }
+    }
+
 
     //métodos de troca de tela:
     @FXML
@@ -116,11 +154,8 @@ public class FuncionarioPerfilController
         });
     }
 
-    public Usuario getUsuarioLogado() {
-        return usuarioLogado;
-    }
-
-    public void setUsuarioLogado(Usuario usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
+    public void setUsuarioLogado(Usuario usuario)
+    {
+        SessaoUsuario.setUsuarioLogado(usuario);
     }
 }
