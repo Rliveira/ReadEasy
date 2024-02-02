@@ -61,7 +61,7 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(usuario);
     }
 
-    public Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+    public boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
         return controladorUsuario.checarLogin(login, senha);
     }
 

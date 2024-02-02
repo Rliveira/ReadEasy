@@ -1,10 +1,14 @@
 package br.ufrpe.readeasy.gui;
 
+import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Fornecedor;
+import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.data.RepositorioLivro;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.time.LocalDate;
 
 public class FornecedorPerfilController
 {
@@ -23,42 +27,60 @@ public class FornecedorPerfilController
     private Button btnSair;
 
     @FXML
-    private Label LabelNome;
+    private Label labelNome;
 
     @FXML
-    private Label LabelCPF;
+    private Label labelCPF;
 
     @FXML
-    private Label LabelDataNascimento;
+    private Label labelDataNascimento;
 
     @FXML
-    private Label LabelNomeUsuario;
+    private Label labelNomeUsuario;
 
     @FXML
-    private Label LabelSenha;
+    private Label labelSenha;
 
     @FXML
-    private Label LabelTelefone;
+    private Label labelTelefone;
 
     @FXML
-    private Label LabelTipoFornecedor;
+    private Label labelTipoFornecedor;
 
     @FXML
-    private Label LabelCEP;
+    private Label labelCEP;
 
     @FXML
-    private Label LabelRua;
+    private Label labelRua;
 
     @FXML
-    private Label LabelBairro;
+    private Label labelBairro;
 
     @FXML
-    private Label LabelCidade;
+    private Label labelCidade;
 
     @FXML
-    private Label LabelEstado;
+    private Label labelEstado;
+    public void initialize()
+    {
 
-    private static Usuario usuarioLogado;
+        if(SessaoUsuario.getUsuarioLogado() instanceof Fornecedor)
+        {
+            labelTipoFornecedor.setText(((Fornecedor) SessaoUsuario.getUsuarioLogado()).getTipoFornecedor().toString());
+            labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
+            labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
+            labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
+            labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
+            labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
+            labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
+            labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
+            labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
+            labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
+            labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
+            labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
+        }
+
+    }
 
     //métodos de troca de tela
     public void trocarTelaEstoqueFornecedor(){
@@ -98,12 +120,8 @@ public class FornecedorPerfilController
         });
     }
 
-    //Gets and Sets:
-    public static Usuario getUsuarioLogado() {
-        return usuarioLogado;
-    }
-
-    public static void setUsuarioLogado(Usuario usuarioLogadoAgora) {
-        usuarioLogado = usuarioLogadoAgora;
+    public void setUsuarioLogado(Usuario usuario)
+    {
+        SessaoUsuario.setUsuarioLogado(usuario);
     }
 }

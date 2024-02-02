@@ -82,9 +82,6 @@ public class ControladorVenda implements IControladorVenda
             {
                 throw new UsuarioInexistenteException(cliente.getCpf());
             }
-            /*{
-                throw new UsuarioNuloException();
-            } */
         } else throw new VendaInvalidaException();
     }
     @Override
