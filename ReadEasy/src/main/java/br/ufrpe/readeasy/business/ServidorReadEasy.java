@@ -302,4 +302,8 @@ public class ServidorReadEasy {
     }
 
 
+    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor, LocalDate DataInicio,
+                                                         LocalDate DataFim) throws DataInvalidaException {
+        return controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor, DataInicio, DataFim);
+    }
 }

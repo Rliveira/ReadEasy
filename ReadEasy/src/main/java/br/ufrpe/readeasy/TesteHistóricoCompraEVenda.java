@@ -2,6 +2,7 @@ package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.gui.FornecedorPerfilController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,15 +12,16 @@ public class TesteHistóricoCompraEVenda {
     public static void InicializarTesteHistóricoCompraEVenda() {
         System.out.println("TesteHistóricoCompraEVenda");
         ServidorReadEasy servidor = ServidorReadEasy.getInstance();
-        Fornecedor fornecedor = new Fornecedor("Fornecedor 1", "1234567890",
-                LocalDate.of(2020, 1, 1), "forn", "1234",
+        Fornecedor fornecedor = new Fornecedor("Fornecedor 1", "098876865",
+                LocalDate.of(1909, 1, 1), "forn", "1234",
                 new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"),
                 "12312314", TipoFornecedor.EDITORA);
         Fornecedor fornecedor2 = new Fornecedor("Fornecedor 2", "1234567890",
-                LocalDate.of(2020, 1, 1), "forn", "1234",
+                LocalDate.of(1990, 1, 1), "forn", "1234",
                 new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"),
                 "12312314", TipoFornecedor.DISTRIBUIDORA_DE_LIVRO);
         try{
+            servidor.cadastrarUsuario(fornecedor);
             servidor.adicionarLivro(new Livro("O Pequeno Príncipe", "Antoine de Saint-Exupéry", 20.00, fornecedor));
             servidor.adicionarLivro(new Livro("To Kill a Mockingbird", "Harper Lee", 24.99, fornecedor2));
             servidor.adicionarLivro(new Livro("1984", "George Orwell", 19.99, fornecedor));
@@ -65,6 +67,8 @@ public class TesteHistóricoCompraEVenda {
             servidor.atualizarVenda(venda2, (Cliente)servidor.procurarUsuario("1234512390"), new ArrayList<LivroVendido>(List.of(livroVendido2,livroVendido4, livroVendido5)));
 
             System.out.println("Histórico de vendas:");
+
+            FornecedorPerfilController.setUsuarioLogado(fornecedor);
 
         }  catch (Exception e) {
             System.out.println(e.getMessage());

@@ -3,6 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.beans.Usuario;
 import br.ufrpe.readeasy.business.ControladorUsuario;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -192,7 +193,7 @@ public class AdmPerfilController implements Initializable {
 
         Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
         try {
-            ControladorUsuario.getInstance().atualizarFuncionario(this.usuarioLogado, nome, cpf, dataNascimento,
+            ServidorReadEasy.getInstance().atualizarFuncionario(this.usuarioLogado, nome, cpf, dataNascimento,
                     usuario, senha, endereco, telefone, true, null);
         } catch (TipoUsuarioInvalidoException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

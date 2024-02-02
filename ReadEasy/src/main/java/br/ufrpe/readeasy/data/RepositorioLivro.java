@@ -232,6 +232,12 @@ public class RepositorioLivro implements IRepositorioLivro {
     @Override
     public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException {
+        if(dataInicio == null ){
+            dataInicio = LocalDate.MIN;
+        }
+        if(dataFim == null){
+            dataFim = LocalDate.now();
+        }
 
         Map<Livro, Map<LocalDate, Integer>> lista = new HashMap<>();
         boolean fornecedorEncontrado = false;

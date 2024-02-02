@@ -1,10 +1,12 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Fornecedor;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ControladorVenda;
-import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.exceptions.*;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,10 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class FornecedorHistoricoController implements Initializable{
 
@@ -33,18 +34,18 @@ public class FornecedorHistoricoController implements Initializable{
     @FXML
     private DatePicker dtpkDataInicio;
     @FXML
-    private DatePicker btnpkDataFim;
+    private DatePicker dtpkDataFim;
 
     @FXML
-    private TableView<LivroVendido> tableHistorico;
+    private TableView<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> tableHistorico;
     @FXML
-    private TableColumn<LivroVendido, LocalDateTime> clnDataVenda;
+    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate> clnDataVenda;
     @FXML
-    private TableColumn<LivroVendido, Integer> clnQuantidade;
+    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnQuantidade;
     @FXML
-    private TableColumn<LivroVendido, String> clnTitulo;
+    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnTitulo;
     @FXML
-    private TableColumn<LivroVendido, String> clnAutor;
+    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnAutor;
 
     //Métodos de troca de tela:
     @FXML
@@ -68,60 +69,62 @@ public class FornecedorHistoricoController implements Initializable{
     //Outros métodos:
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.onBtnPesquisarClick();
-
+        dtpkDataInicio.setValue(LocalDate.MIN);
+        dtpkDataFim.setValue(LocalDate.now());
     }
 
-    //esse método tem exceções pq só é usado por outro método que já trata as exceções
-    private ObservableList<LivroVendido> getVendas
-            (Fornecedor fornecedor, LocalDateTime dataInicio, LocalDateTime dataFim) throws HistoricoVazioException {
-        List<Venda> vendas = ControladorVenda.getInstance().listarVendasPorFornecedor
-                (fornecedor.getNome(), dataInicio, dataFim);
-        if (vendas.isEmpty()) {
-            throw new HistoricoVazioException();
-        } else {
-            ObservableList<LivroVendido> listaVendas = FXCollections.observableArrayList();
-            List<LivroVendido> livrosVendidos = new ArrayList<>();
-            for (Venda venda : vendas) {
-                livrosVendidos.addAll(venda.getLivrosVendidos());
-            }
-            listaVendas.addAll(livrosVendidos);
-            return listaVendas;
+    private Map<Livro, List<Map.Entry<LocalDate, Integer>>> getVendas
+            (Fornecedor fornecedor, LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        Map<Livro, List<Map.Entry<LocalDate, Integer>>> listaCompras = new HashMap<>();
+        for (Livro livro : ServidorReadEasy.getInstance()
+                .ListarHistoricoDeVendasFornecedor(fornecedor, dataInicio, dataFim).keySet()) {
+            listaCompras.put(livro, new ArrayList<>(livro.getRegistroAtualizacaoEstoque().entrySet()));
         }
+        return listaCompras;
     }
 
     public void onBtnPesquisarClick() { //FIXME deve ser algo desse tipo
-//        try {
-//            Fornecedor fornecedor = ControladorFornecedor.getInstance().getFornecedorLogado();
-//            LocalDateTime dataInicio = dtpkDataInicio.getValue().atStartOfDay();
-//            LocalDateTime dataFim = btnpkDataFim.getValue().atTime(23, 59, 59);
-//            ObservableList<LivroVendido> listaVendas = getVendas(fornecedor, dataInicio, dataFim);
-//            //clnDataVenda.setCellValueFactory(cellData -> cellData.getValue().getVenda().dataEHoraProperty());
-//            //precisa de um método pra pegar a data da venda
-//            clnQuantidade.setCellValueFactory(cellData -> {
-//                // Assume que "quantidade" é o nome do campo ou propriedade na sua classe
-//                return new SimpleObjectProperty<>(cellData.getValue().getQuantidade());
-//            });
-//            clnTitulo.setCellValueFactory(cellData -> {
-//                // Assume que "titulo" é o nome do campo ou propriedade na sua classe
-//                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getTitulo());
-//            });
-//            clnAutor.setCellValueFactory(cellData -> {
-//                // Assume que "autor" é o nome do campo ou propriedade na sua classe
-//                return new SimpleObjectProperty<>(cellData.getValue().getLivro().getAutor());
-//            });
-//            tableHistorico.setItems(listaVendas);
-//        } catch (HistoricoVazioException e) {
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Histórico de vendas");
-//            alert.setHeaderText(null);
-//            alert.setContentText("Não há vendas nesse período!");
-//            alert.showAndWait();
-//        }
+        try {
+            Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = getVendas((Fornecedor) FornecedorPerfilController.getUsuarioLogado(), dtpkDataInicio.getValue(), dtpkDataFim.getValue());
 
+            List<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> todasAsEntradas = new ArrayList<>();
+            for (Map.Entry<Livro, List<Map.Entry<LocalDate, Integer>>> livroListEntry : livroDataMap.entrySet()) {
+                for (Map.Entry<LocalDate, Integer> dataEntry : livroListEntry.getValue()) {
+                    todasAsEntradas.add(Map.entry(livroListEntry.getKey(), dataEntry));
+                }
+            }
+
+            Comparator<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> comparadorPorData = Comparator
+                    .comparing((Map.Entry<Livro, Map.Entry<LocalDate, Integer>> entry) -> entry.getValue().getKey())
+                    .reversed();
+
+            todasAsEntradas.sort(comparadorPorData);
+            ObservableList<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> items = FXCollections.observableArrayList(todasAsEntradas);
+
+            clnTitulo.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getTitulo()));
+            clnAutor.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getAutor()));
+            clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getValue().getKey()));
+            clnQuantidade.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getValue().getValue()).asObject());
+
+            tableHistorico.setItems(items);
+
+        } catch (DataInvalidaException e) {
+            System.out.println(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data inválida");
+            alert.setContentText("Confira se a data de início não é posterior à data de fim e que ambas não são posteriores à data atual.");
+            alert.showAndWait();
+        } catch (FornecedorNaoEncontradoException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Fornecedor não encontrado");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
-    @FXML
+        @FXML
     public void SairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");

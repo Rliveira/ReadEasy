@@ -1,6 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Usuario;
+import br.ufrpe.readeasy.data.RepositorioLivro;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -57,7 +58,7 @@ public class FornecedorPerfilController
     @FXML
     private Label LabelEstado;
 
-    private Usuario usuarioLogado;
+    private static Usuario usuarioLogado;
 
     //métodos de troca de tela
     public void trocarTelaEstoqueFornecedor(){
@@ -98,11 +99,11 @@ public class FornecedorPerfilController
     }
 
     //Gets and Sets:
-    public Usuario getUsuarioLogado() {
+    public static Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
 
-    public void setUsuarioLogado(Usuario usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
+    public static void setUsuarioLogado(Usuario usuarioLogadoAgora) {
+        usuarioLogado = usuarioLogadoAgora;
     }
 }

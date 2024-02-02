@@ -204,9 +204,16 @@ public class ControladorLivro implements IControladorLivro {
     public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException {
 
+        if (dataInicio == null){
+            dataInicio = LocalDate.MIN;
+        }
+
+        if (dataFim == null){
+            dataFim = LocalDate.now();
+        }
+
         LocalDate dataAtual = LocalDate.now();
-        if (dataInicio.isAfter(dataFim) || dataInicio.isEqual(dataFim) ||
-                !dataInicio.isBefore(dataAtual) || !dataFim.isBefore(dataAtual)){
+        if (dataInicio.isAfter(dataFim)){
             throw new DataInvalidaException("Datas inválidas. Certifique-se de que a data de início não seja posterior"
                     +  " à data de fim e que ambas não sejam datas posteriores ou iguais à data atual.");
         }
