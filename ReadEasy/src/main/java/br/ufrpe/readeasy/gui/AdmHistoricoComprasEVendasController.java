@@ -158,7 +158,6 @@ public class AdmHistoricoComprasEVendasController {
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
-    //eu posso fazer um map que tem como chave a venda e como valor a lista de livros vendidos
 
     protected ObservableList<LivroVendido> ListaVendas(LocalDate dataInicio, LocalDate dataFim) {
 

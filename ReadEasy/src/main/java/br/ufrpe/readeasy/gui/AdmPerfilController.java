@@ -76,9 +76,6 @@ public class AdmPerfilController implements Initializable {
     private Label lblTelefone;
 
     @FXML
-    private Label lblTipo;
-
-    @FXML
     private Label lblUsuario;
 
     @FXML
@@ -159,6 +156,7 @@ public class AdmPerfilController implements Initializable {
     //Outros métodos:
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usuarioLogado = this.getUsuarioLogado();
         this.atualizarLabels();
     }
 
@@ -178,6 +176,7 @@ public class AdmPerfilController implements Initializable {
         }
     }
 
+    @FXML
     protected void onBtnEditarPerfilClick() {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
@@ -254,7 +253,7 @@ public class AdmPerfilController implements Initializable {
     //GETs and Sets:
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
-    }
+    } //FIXME atualizar o jeito que o usuário logado é pego
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
