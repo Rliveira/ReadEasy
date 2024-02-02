@@ -4,6 +4,7 @@ import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,13 @@ public class ServidorReadEasy {
             try {
                 Funcionario admInicial = new Funcionario("Lucas Albuquerque", "12384274165",
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
+<<<<<<< HEAD
                         new Endereco(59624712, "Rua Fictícia", "Bairro", "Cidade",
                                 "Estado"), "(81)99196-9420", true, null);
+=======
+                        new Endereco(59624712, "Rua Fictícia", "Bairro",
+                                "Cidade", "Estado"), "(81)99196-9420", true, null);
+>>>>>>> 5b244cffe1379e2c25989d60f27b333b97c90337
                 controladorUsuario.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
                         new Endereco(59624712, "Rua Fictícia", "Bairro",
@@ -60,8 +66,8 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(usuario);
     }
 
-    public void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
-        controladorUsuario.checarLogin(login, senha);
+    public Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+        return controladorUsuario.checarLogin(login, senha);
     }
 
     public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
@@ -109,6 +115,7 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(cpf);
     }
 
+<<<<<<< HEAD
     public List<Usuario> listarUsuarios() {
         return controladorUsuario.listarUsuarios();
     }
@@ -123,6 +130,30 @@ public class ServidorReadEasy {
 
     public List<Funcionario> listarAdms() {
         return controladorUsuario.listarAdms();
+=======
+    public List<Usuario> listarUsuarios()
+    {
+        List<Usuario> listaInterna = controladorUsuario.listarUsuarios();
+        return listaInterna;
+    }
+
+    public List<Cliente> listarClientes()
+    {
+        List<Cliente> listaInterna = controladorUsuario.listarClientes();
+        return listaInterna;
+    }
+
+    public List<Funcionario> listarFuncionarios()
+    {
+        List<Funcionario> listaInterna = controladorUsuario.listarFuncionarios();
+        return listaInterna;
+    }
+
+    public List<Funcionario> listarAdms()
+    {
+        List<Funcionario> listaInterna = controladorUsuario.listarAdms();
+        return listaInterna;
+>>>>>>> 5b244cffe1379e2c25989d60f27b333b97c90337
     }
 
     public List<Fornecedor> listarFornecedores() {
@@ -227,6 +258,7 @@ public class ServidorReadEasy {
          return controladorVenda.historicoDeComprasDoCliente(cliente);
     }
 
+<<<<<<< HEAD
     public List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
         return controladorVenda.listarMelhoresClientesPorCompra();
     }
@@ -235,6 +267,8 @@ public class ServidorReadEasy {
         return controladorVenda.listarMelhoresClientesPorGasto();
     }
 
+=======
+>>>>>>> 5b244cffe1379e2c25989d60f27b333b97c90337
     public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException,
             PromocaoNulaException, PromocaoInseridaComSucessoException {
         controladorPromocao.inserirPromocao(promocao);
@@ -289,9 +323,50 @@ public class ServidorReadEasy {
         return controladorEndereco.listarEnderecos();
     }
 
+<<<<<<< HEAD
     public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
         return controladorLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
     }
+=======
+    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
+    {
+        Map<Cliente, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
+        return listaInterna;
+    }
+
+    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
+    {
+        Map<Cliente, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
+        return listaInterna;
+    }
+
+    public Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        Map<Livro, Integer> listaInterna = controladorVenda.ranquearLivrosMaisVendidosEntreDatas(dataEHoraInicio,
+                dataEHoraFim);
+        return listaInterna;
+    }
+
+    public int calcularTotalLivrosVendidosEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public double calcularTotalLucroEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException
+    {
+        Map<Livro, Map<LocalDate, Integer>> listaInterna = controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor,
+                dataInicio, dataFim);
+
+        return listaInterna;
+    }
+
+>>>>>>> 5b244cffe1379e2c25989d60f27b333b97c90337
 
     public Livro buscarLivroPorNome(String titulo) {
         return controladorLivro.buscarLivroPorNome(titulo);

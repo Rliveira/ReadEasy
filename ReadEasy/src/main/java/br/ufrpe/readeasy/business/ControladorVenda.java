@@ -1,6 +1,7 @@
 package br.ufrpe.readeasy.business;
 
 import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
 import br.ufrpe.readeasy.data.IRepositorioVenda;
@@ -124,65 +125,29 @@ public class ControladorVenda implements IControladorVenda
         }
         return historicoInterno;
     }
+
     @Override
-    public List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException
-    {
-        Map<Cliente, Integer> clienteCompra = new HashMap<>();
-
-        if(!repoVenda.listarVendas().isEmpty())
-        {
-            for (int i = listarVendas().size() -1; i >= 0; i--)
-            {
-                clienteCompra.put(repoVenda.listarVendas().get(i).getCliente()
-                        , repoVenda.listarVendas().get(i).getLivrosVendidos().size());
-            }
-            List<Cliente> listaInterna = clienteCompra.entrySet()
-                    .stream()
-                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
-
-            return listaInterna;
-        }
-        else
-        {
-            throw new HistoricoVazioException();
-        }
-    }
-    @Override
-    public List<Cliente> listarMelhoresClientesPorGasto() throws HistoricoVazioException
-    {
-        if(!repoVenda.listarVendas().isEmpty())
-        {
-            Map<Cliente, Double> clienteGasto = new HashMap<>();
-
-            for (int i = 0; i < repoVenda.listarVendas().size(); i++)
-            {
-                clienteGasto.put(repoVenda.listarVendas().get(i).getCliente()
-                        , repoVenda.listarVendas().get(i).calcularTotal());
-            }
-
-            List<Cliente> listaInterna = clienteGasto.entrySet()
-                    .stream()
-                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
-
-            return listaInterna;
-        }
-        else
-        {
-            throw new HistoricoVazioException();
-        }
+    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+        return repoVenda.listarMelhoresClientesPorCompra();
     }
 
     @Override
-    public List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio,
-                                                 LocalDateTime dataFim) throws HistoricoVazioException {
-        List<Venda> lista = repoVenda.listarVendasPorFornecedor(nomeFornecedor, dataInicio, dataFim);
-        if(lista.isEmpty()){
-            throw new HistoricoVazioException();
-        }
-        return lista;
+    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+        return repoVenda.listarMelhoresClientesPorGasto();
+    }
+
+    @Override
+    public Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        return repoVenda.ranquearLivrosMaisVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    @Override
+    public int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        return repoVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    @Override
+    public double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        return repoVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
 }

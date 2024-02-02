@@ -1,12 +1,15 @@
 package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class RepositorioVenda implements IRepositorioVenda
@@ -96,47 +99,6 @@ public class RepositorioVenda implements IRepositorioVenda
         return historico;
     }
 
-    public List<Cliente> listarMelhoresClientesPorCompra(Map<Cliente, Integer> map)
-    {
-        List<Map.Entry<Cliente, Integer>> entryList = new ArrayList<>(map.entrySet());
-
-        entryList.sort(Map.Entry.comparingByValue());
-
-        List<Cliente> listaTopClientes = new ArrayList<>();
-        for (Map.Entry<Cliente, Integer> entry : entryList)
-        {
-            listaTopClientes.add(entry.getKey());
-        }
-        return listaTopClientes;
-    }
-
-    public List<Cliente> listarMelhoresClientesPorGasto(Map<Cliente, Double> map)
-    {
-        List<Map.Entry<Cliente, Double>> clienteGasto = new ArrayList<>(map.entrySet());
-
-        clienteGasto.sort(Map.Entry.comparingByValue());
-
-        List<Cliente> listaTopClientes = new ArrayList<>();
-        for (Map.Entry<Cliente, Double> entry : clienteGasto)
-        {
-            listaTopClientes.add(entry.getKey());
-        }
-        return listaTopClientes;
-    }
-
-    @Override
-    public List<Venda> listarVendasPorFornecedor(String nomeFornecedor, LocalDateTime dataInicio, LocalDateTime dataFim) {
-        List<Venda> vendasFornecedor = new ArrayList<>();
-
-        for (Venda venda : vendas) {
-            if (venda.getLivrosVendidos().get(0).getLivro().getFornecedor().getNome().equals(nomeFornecedor) &&
-                    venda.getDataEHora().isAfter(dataInicio) && venda.getDataEHora().isBefore(dataFim)) {
-                vendasFornecedor.add(venda);
-            }
-        }
-        return vendasFornecedor;
-    }
-
     @Override
     public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente)
     {
@@ -150,5 +112,104 @@ public class RepositorioVenda implements IRepositorioVenda
             }
         }
         return historicoCliente;
+    }
+
+    @Override
+    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+        Map<Cliente, Integer> clienteCompra = new HashMap<>();
+
+        if (!vendas.isEmpty()) {
+            for (Venda venda : vendas) {
+                clienteCompra.put(venda.getCliente(), clienteCompra.getOrDefault(venda.getCliente(), 0) + 1);
+            }
+
+            return clienteCompra.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.<Cliente, Integer>comparingByValue().reversed())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        } else {
+            throw new HistoricoVazioException();
+        }
+    }
+
+    @Override
+    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+        Map<Cliente, Double> clienteGasto = new HashMap<>();
+
+        if (!vendas.isEmpty()) {
+            for (Venda venda : vendas) {
+                Cliente cliente = venda.getCliente();
+                double totalGasto = clienteGasto.getOrDefault(cliente, 0.0) + venda.calcularTotal();
+                clienteGasto.put(cliente, totalGasto);
+            }
+
+            return clienteGasto.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.<Cliente, Double>comparingByValue().reversed())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        } else {
+            throw new HistoricoVazioException();
+        }
+    }
+    @Override
+    public Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio,
+                                                                    LocalDateTime dataEHoraFim){
+        List<LivroVendido> livrosVendidosNoIntervalo = listarLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+        Map<Livro, Integer> ranking = new HashMap<>();
+
+        for (LivroVendido livroVendido : livrosVendidosNoIntervalo) {
+            Livro livro = livroVendido.getLivro();
+            ranking.put(livro, ranking.getOrDefault(livro, 0) + livroVendido.getQuantidade());
+        }
+
+        Map<Livro, Integer> rankingOrdenado = ranking.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        return rankingOrdenado;
+    }
+
+    @Override
+    public int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        List<LivroVendido> livrosVendidosNoIntervalo = listarLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+        int totalLivrosVendidos = 0;
+
+        for (LivroVendido livroVendido : livrosVendidosNoIntervalo) {
+            totalLivrosVendidos += livroVendido.getQuantidade();
+        }
+
+        return totalLivrosVendidos;
+    }
+    @Override
+    public double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        List<LivroVendido> livrosVendidosNoIntervalo = listarLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+        double totalLucro = 0.0;
+
+        for (LivroVendido livroVendido : livrosVendidosNoIntervalo) {
+            int quantidade = livroVendido.getQuantidade();
+            double precoUnitario = livroVendido.getLivro().getPreco();
+            double lucroDaVenda = quantidade * precoUnitario;
+            totalLucro += lucroDaVenda;
+        }
+
+        return totalLucro;
+    }
+
+    private List<LivroVendido> listarLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        List<LivroVendido> livrosVendidosNoIntervalo = new ArrayList<>();
+
+        for (Venda venda : vendas) {
+            LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
+
+            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) && dataEHoraDaVenda.isEqual(dataEHoraFim) &&
+            (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
+
+                for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
+                    livrosVendidosNoIntervalo.add(livroVendido);
+                }
+            }
+        }
+        return livrosVendidosNoIntervalo;
     }
 }
