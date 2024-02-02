@@ -4,6 +4,7 @@ import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class ServidorReadEasy {
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
                         new Endereco(59624712, "Rua Fictícia", "Bairro", "Cidade",
                                 "Estado"), "(81)99196-9420", true, null);
+
                 controladorUsuario.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
                         LocalDate.of(2000, 1, 1), "admin", "admin1234",
                         new Endereco(59624712, "Rua Fictícia", "Bairro",
@@ -60,8 +62,8 @@ public class ServidorReadEasy {
         controladorUsuario.removerUsuario(usuario);
     }
 
-    public void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
-        controladorUsuario.checarLogin(login, senha);
+    public Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+        return controladorUsuario.checarLogin(login, senha);
     }
 
     public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
@@ -227,14 +229,6 @@ public class ServidorReadEasy {
          return controladorVenda.historicoDeComprasDoCliente(cliente);
     }
 
-    public List<Cliente> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
-        return controladorVenda.listarMelhoresClientesPorCompra();
-    }
-
-    public List<Cliente> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
-        return controladorVenda.listarMelhoresClientesPorGasto();
-    }
-
     public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException,
             PromocaoNulaException, PromocaoInseridaComSucessoException {
         controladorPromocao.inserirPromocao(promocao);
@@ -292,6 +286,34 @@ public class ServidorReadEasy {
     public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
         return controladorLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
     }
+    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
+    {
+        Map<Cliente, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
+        return listaInterna;
+    }
+
+    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
+    {
+        Map<Cliente, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
+        return listaInterna;
+    }
+
+    public Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        Map<Livro, Integer> listaInterna = controladorVenda.ranquearLivrosMaisVendidosEntreDatas(dataEHoraInicio,
+                dataEHoraFim);
+        return listaInterna;
+    }
+
+    public int calcularTotalLivrosVendidosEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public double calcularTotalLucroEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
+    {
+        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+    }
 
     public Livro buscarLivroPorNome(String titulo) {
         return controladorLivro.buscarLivroPorNome(titulo);
@@ -307,3 +329,4 @@ public class ServidorReadEasy {
         return controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor, DataInicio, DataFim);
     }
 }
+

@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.gui.FornecedorPerfilController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class TesteHistóricoCompraEVenda {
                     "cli", "1234", new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"),
                     "12312314"));
 
-            Venda venda1 = new Venda((Cliente)servidor.procurarUsuario("1234567890"));
+            Venda venda1 = new Venda((Cliente)servidor.procurarUsuario("1234567890"), LocalDateTime.of(2020, 7, 1, 12, 0, 0));
             LivroVendido livroVendido1 = new LivroVendido(servidor.buscarLivroPorNome("O Pequeno Príncipe"), 2);
             LivroVendido livroVendido2 = new LivroVendido(servidor.buscarLivroPorNome("To Kill a Mockingbird"), 3);
             LivroVendido livroVendido3 = new LivroVendido(servidor.buscarLivroPorNome("1984"), 1);
@@ -60,7 +61,7 @@ public class TesteHistóricoCompraEVenda {
             servidor.inserirVenda(venda1);
             servidor.atualizarVenda(venda1, (Cliente)servidor.procurarUsuario("1234567890"), new ArrayList<LivroVendido>(List.of(livroVendido1, livroVendido3)));
 
-            Venda venda2 = new Venda((Cliente)servidor.procurarUsuario("1234512390"));
+            Venda venda2 = new Venda((Cliente)servidor.procurarUsuario("1234512390"), LocalDateTime.of(2020, 8, 1, 12, 0, 0));
             LivroVendido livroVendido4 = new LivroVendido(servidor.buscarLivroPorNome("The Great Gatsby"), 1);
             LivroVendido livroVendido5 = new LivroVendido(servidor.buscarLivroPorNome("Harry Potter and the Sorcerer's Stone"), 2);
             servidor.inserirVenda(venda2);

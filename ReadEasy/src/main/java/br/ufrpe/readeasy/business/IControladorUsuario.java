@@ -4,7 +4,6 @@ import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IControladorUsuario {
@@ -12,7 +11,7 @@ public interface IControladorUsuario {
             DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException;
     void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException;
 
-    void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException;
+    Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException;
 
     void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                               String senha, Endereco endereco, String telefone, boolean ehAdm,

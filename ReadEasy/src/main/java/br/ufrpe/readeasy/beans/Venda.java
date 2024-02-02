@@ -22,10 +22,10 @@ public class Venda
     private LocalDateTime dataEHora;
 
     //CONSTRUTOR:
-    public Venda(Cliente cliente) {
-        this.livrosVendidos = new ArrayList<LivroVendido>();
+    public Venda(Cliente cliente, LocalDateTime dataEHora) {
+        this.livrosVendidos = new ArrayList<>();
         this.cliente = cliente;
-        this.dataEHora = LocalDateTime.now();
+        this.dataEHora = dataEHora;
     }
 
     //MÉTODOS:
