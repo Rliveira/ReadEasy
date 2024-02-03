@@ -133,38 +133,33 @@ public class ServidorReadEasy {
         return controladorUsuario.existeUsuario(cpf);
     }
 
-    public void adicionarLivro(Livro livro) throws LivroNuloException, CampoVazioException,
-            PrecoInvalidoException, LivroExistenteException {
+    public void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException {
         controladorLivro.adicionarLivro(livro);
     }
 
-    public void removerLivro(Livro livro) throws LivroNuloException, CampoVazioException, LivroNaoExistenteException {
+    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
         controladorLivro.removerLivro(livro);
     }
 
     public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
-            throws LivroNaoExistenteException, CampoVazioException, LivroNuloException,
-            PrecoInvalidoException, UsuarioNuloException, DataInvalidaException, MenorDeIdadeException {
+            throws PrecoInvalidoException, LivroExistenteException {
         controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
     }
 
-    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException, CampoVazioException,
-            LivroNuloException, LivroNaoExistenteException {
+    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
         controladorLivro.adicionarGenero(livro, genero);
     }
 
-    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, CampoVazioException,
-            LivroNuloException, LivroNaoExistenteException {
+    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException {
         controladorLivro.removerGenero(livro, genero);
     }
 
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataVendaFornecedor ) throws LivroNaoExistenteException
-            , LivroNuloException, QuantidadeInvalidaException {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataVendaFornecedor ) throws QuantidadeInvalidaException {
         controladorLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataVendaFornecedor);
     }
 
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException {
+            QuantidadeInvalidaException {
         controladorLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
     }
 
@@ -184,7 +179,7 @@ public class ServidorReadEasy {
         return controladorLivro.listarLivrosPorGenero(genero);
     }
 
-    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) {
+    public List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor) throws FornecedorNaoEncontradoException {
         return controladorLivro.listarLivrosPorFornecedor(fornecedor);
     }
 
