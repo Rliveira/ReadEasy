@@ -149,3 +149,12 @@
     -fx-font-family: "Times New Roman";
     -fx-font-size: 15px;
 }
+
+.listViewDesign{
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 18px;
+}
