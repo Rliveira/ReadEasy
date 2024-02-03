@@ -57,6 +57,7 @@ public class ClienteCadastroController implements Initializable {
     }
 
     //outros métodos:
+    @FXML
     protected void onBtnCadastrarClick(ActionEvent event) throws IOException {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
