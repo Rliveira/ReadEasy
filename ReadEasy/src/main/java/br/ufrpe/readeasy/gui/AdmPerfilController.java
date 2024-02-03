@@ -156,7 +156,7 @@ public class AdmPerfilController implements Initializable {
     //Outros métodos:
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usuarioLogado = this.getUsuarioLogado();
+        this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
         this.atualizarLabels();
     }
 
@@ -253,7 +253,7 @@ public class AdmPerfilController implements Initializable {
     //GETs and Sets:
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
-    } //FIXME atualizar o jeito que o usuário logado é pego
+    }
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;

@@ -76,10 +76,13 @@ public class ControladorUsuario implements IControladorUsuario{
     }
 
     @Override
-    public void checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+    public Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException {
+        Boolean loginCorreto = false;
         if (!login.isEmpty() && !senha.isEmpty()) {
             if (repUsuario.checarLogin(login, senha)) {
                 System.out.println("Login realizado com sucesso!");
+                loginCorreto = true;
+                return loginCorreto;
             } else {
                 throw new LoginInvalidoException();
             }

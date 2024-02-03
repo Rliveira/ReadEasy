@@ -47,6 +47,8 @@ public class FornecedorHistoricoController implements Initializable{
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnAutor;
 
+    private Usuario usuarioLogado;
+
     //Métodos de troca de tela:
     @FXML
     public void trocarTelaPerfilFornecedor(){
@@ -69,6 +71,7 @@ public class FornecedorHistoricoController implements Initializable{
     //Outros métodos:
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
         dtpkDataInicio.setValue(LocalDate.MIN);
         dtpkDataFim.setValue(LocalDate.now());
     }
@@ -145,4 +148,11 @@ public class FornecedorHistoricoController implements Initializable{
         });
     }
 
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }
+
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
 }
