@@ -135,7 +135,7 @@
                               <Pane prefHeight="38.0" prefWidth="81.0" style="-fx-background-color: transparent;" />
                               <DatePicker fx:id="dpDataFim" prefHeight="27.0" prefWidth="175.0" promptText="Data de Fim" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
                               <Pane prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: transparent;" />
-                              <Button fx:id="btnPesquisar" mnemonicParsing="false" prefHeight="33.0" prefWidth="142.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar" textFill="WHITE">
+                              <Button fx:id="btnPesquisar" mnemonicParsing="false" onAction="#onPesquisarClick" prefHeight="33.0" prefWidth="142.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar" textFill="WHITE">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" />
                                  </graphic>

@@ -1,5 +1,6 @@
 package br.ufrpe.readeasy;
 
+import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.gui.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,8 @@ public class HelloApplication extends Application {
         ScreenManager.setStage(stage);
         TesteHistóricoCompraEVenda.InicializarTesteHistóricoCompraEVenda();
         InicializadorDeDados.inicializarDados();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("funcionarioCRUDLivros.fxml"));
+        ServidorReadEasy.getInstance().cadastrarAdmInicial();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("clienteMinhasCompras.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setMinWidth(1200);
         stage.setMinHeight(700);

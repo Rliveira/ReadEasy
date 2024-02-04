@@ -24,8 +24,6 @@ public class LoginController {
     @FXML
     private Button btnLogin;
 
-    ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-
     @FXML
     public void onBtnLoginclick()
     {   boolean excecaoLevantada = false;
