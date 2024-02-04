@@ -19,21 +19,23 @@ ReadyEasy foi projetado para gerenciar compras e vendas dos produtos de uma livr
 
 ## Requisitos 
 
-*REQ1 O sistema será acessado por colaboradores, administradores e comuns, pelos fornecedores dos produtos, mediante login e senha.
+*REQ1 O sistema será acessado por funcionários ,administradores e comuns, pelos fornecedores dos livros e clientes mediante login e senha.
 
-*REQ2 Os funcionários administradores devem ser responsáveis pelo CRUD (Create, Recover, Update e Delete) dos prestadores de serviços, 
-que também poderão executar normalmente as funções que um funcionário comum executa.
+*REQ2 Os funcionários comuns serão incumbidos de fazer o CRUD (Create, Recover, Update e Delete) dos livros da livraria.
 
-*REQ3 Os Colaboradores comuns serão incumbidos de fazer o CRUD (Create, Recover, Update e Delete) dos produtos da livraria e dos clientes.
+*REQ3 Os funcionários deverão ter a possibilidade de buscar imagens na web dos livros para endossar o cadastro dos livros.
 
-*REQ4 Os Colaboradores comuns deverão ter a possibilidade de buscar imagens na web dos livros para endossar o cadastro dos livros.
+*REQ4 Os funcionários administradores serão responsáveis pelo CRUD (Create, Recover, Update e Delete) dos funcionários comuns e fornecedores, 
+e também poderão executar normalmente as funções que um funcionário comum executa.
 
-*REQ4 Os fornecedores da livrarias devem ter acesso a informações como estoque e quantitativo de venda dos seus produtos.
+*REQ5 Os fornecedores da livrarias devem ter acesso a informações do estoque dos seus produtos.
 
-*REQ5 As vendas devem estar associadas a um cliente, e os livros, a um fornecedor, além disso será feita uma buscas por promoções associadas aos livros da venda.
+*REQ6 As vendas devem estar associadas a um cliente, e os livros, a um fornecedor, além disso será feita uma buscas por promoções associadas aos livros da venda.
 
-*REQ6 Por meio do sistema será possível filtrar os produtos vendidos por período de tempo.
+*REQ7 Por meio do sistema será possível filtrar os produtos vendidos por período de tempo.
 
-*REQ7 Relatórios de vendas serão disponibilizados para consulta da livraria e dos fornecedores.
+*REQ8 Relatórios de vendas serão disponibilizados para consulta da livraria.
 
-*REQ8 O sistema deverá ranquear por número de compras os clientes, para melhor direcionamento de vendas. 
+*REQ9 O sistema deverá ranquear por número de compras os clientes, para melhor direcionamento de vendas. 
+
+*REQ10 Os clientes estão incumbidos de realizar o CRUD do seu perfil de usuário e endereços além de realizar as suas compras e visualizar o seu histórico de compras na livraria.
