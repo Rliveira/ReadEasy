@@ -2,6 +2,7 @@ package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.exceptions.GeneroExistenteException;
 import br.ufrpe.readeasy.gui.SessaoUsuario;
 
 import java.time.LocalDate;
@@ -73,6 +74,49 @@ public class TesteHistóricoCompraEVenda {
 
         }  catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+
+
+            Livro livro1 = servidor.buscarLivroPorNome("O Pequeno Príncipe");
+            Livro livro2 = servidor.buscarLivroPorNome("To Kill a Mockingbird");
+            Livro livro3 = servidor.buscarLivroPorNome("1984");
+            Livro livro4 = servidor.buscarLivroPorNome("The Great Gatsby");
+            Livro livro5 = servidor.buscarLivroPorNome("Harry Potter and the Sorcerer's Stone");
+            Livro livro6 = servidor.buscarLivroPorNome("The Hobbit");
+        Genero genero1 = Genero.ACAO;
+        Genero genero2 = Genero.ROMANCE;
+        Genero genero3 = Genero.FICCAO_CIENTIFICA;
+        Genero genero4 = Genero.FANTASIA;
+        Genero genero5 = Genero.COMEDIA;
+        Genero genero6 = Genero.CULINARIA;
+        Genero genero7 = Genero.TERROR;
+        Genero genero8 = Genero.ECONOMIA;
+        try {
+            servidor.adicionarGenero(livro1, genero1);
+            servidor.adicionarGenero(livro6, genero2);
+            servidor.adicionarGenero(livro3, genero1);
+            servidor.adicionarGenero(livro3, genero2);
+            servidor.adicionarGenero(livro1, genero4);
+            servidor.adicionarGenero(livro1, genero3);
+            servidor.adicionarGenero(livro6, genero1);
+            servidor.adicionarGenero(livro4, genero5);
+            servidor.adicionarGenero(livro5, genero7);
+            servidor.adicionarGenero(livro2, genero4);
+            servidor.adicionarGenero(livro4, genero6);
+            servidor.adicionarGenero(livro6, genero5);
+            servidor.adicionarGenero(livro6, genero6);
+            servidor.adicionarGenero(livro2, genero3);
+            servidor.adicionarGenero(livro3, genero4);
+            servidor.adicionarGenero(livro3, genero6);
+            servidor.adicionarGenero(livro1, genero7);
+            servidor.adicionarGenero(livro5, genero3);
+            servidor.adicionarGenero(livro4, genero2);
+            servidor.adicionarGenero(livro5, genero8);
+            servidor.adicionarGenero(livro1, genero6);
+            servidor.adicionarGenero(livro1, genero8);
+            servidor.adicionarGenero(livro4, genero3);
+        } catch (GeneroExistenteException e) {
+            throw new RuntimeException(e);
         }
     }
 }

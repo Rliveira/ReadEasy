@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TesteLivros {
-    public static void main(String[] args) throws RuntimeException {
+    public static void main(String[] args) {
         String data = "2001-08-23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataNasc = LocalDate.parse(data, formatter);
@@ -46,7 +46,7 @@ public class TesteLivros {
             controladorLivro.adicionarLivro(livro6);
             controladorLivro.adicionarLivro(livro7);
             controladorLivro.adicionarLivro(livro8);
-        } catch (LivroNuloException | CampoVazioException | PrecoInvalidoException | LivroExistenteException e) {
+        } catch ( PrecoInvalidoException | LivroExistenteException e) {
             System.out.println(e.getMessage());
         }
 
@@ -62,7 +62,7 @@ public class TesteLivros {
 
         try {
             controladorLivro.removerLivro(livro1);
-        } catch (LivroNuloException | CampoVazioException | LivroNaoExistenteException e) {
+        } catch (LivroNaoExistenteException e) {
             System.out.println(e.getMessage());
         }
 
@@ -74,7 +74,7 @@ public class TesteLivros {
 
         try{
             controladorLivro.adicionarLivro(livro1);
-        } catch (LivroNuloException | CampoVazioException | PrecoInvalidoException | LivroExistenteException e) {
+        } catch ( PrecoInvalidoException | LivroExistenteException e) {
             System.out.println(e.getMessage());;
         }
 
@@ -85,8 +85,9 @@ public class TesteLivros {
         System.out.println("Versão antiga: " + livro8.getTitulo() + " | " +  livro8.getAutor() + " | " + livro8.getPreco() + " | " + livro8.getFornecedor().getNome());
         try {
             controladorLivro.atualizarLivro(livro8, "The hobbit", "J. R. R. Tolkien", 50, fornecedor1);
-        } catch (LivroNaoExistenteException | CampoVazioException | LivroNuloException | PrecoInvalidoException |
-                 UsuarioNuloException | DataInvalidaException e) {
+        } catch ( PrecoInvalidoException e) {
+            throw new RuntimeException(e);
+        } catch (LivroExistenteException e) {
             throw new RuntimeException(e);
         }
 
@@ -115,7 +116,7 @@ public class TesteLivros {
             controladorLivro.adicionarGenero(livro7, genero2);
             controladorLivro.adicionarGenero(livro8, genero4);
             controladorLivro.adicionarGenero(livro4, genero3);
-        } catch (GeneroExistenteException | CampoVazioException | LivroNuloException | LivroNaoExistenteException e) {
+        } catch (GeneroExistenteException e) {
             throw new RuntimeException(e);
         }
 
@@ -136,7 +137,7 @@ public class TesteLivros {
 
         try {
             controladorLivro.removerGenero(livro1, genero4);
-        } catch (GeneroNaoExistenteException | CampoVazioException | LivroNuloException | LivroNaoExistenteException e) {
+        } catch (GeneroNaoExistenteException | LivroSemGeneroException e) {
             throw new RuntimeException(e);
         }
 
@@ -189,7 +190,7 @@ public class TesteLivros {
             controladorLivro.aumentarQuantidadeEmEstoque(livro7, 350, data10);
             controladorLivro.aumentarQuantidadeEmEstoque(livro4, 50, data11);
             controladorLivro.aumentarQuantidadeEmEstoque(livro3, 100, data12);
-        } catch (LivroNaoExistenteException | LivroNuloException | QuantidadeInvalidaException e) {
+        } catch ( QuantidadeInvalidaException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Depois da adição:" );
@@ -208,8 +209,7 @@ public class TesteLivros {
 
         try {
             controladorLivro.diminuirQuantidadeEmEstoque(livro1, 10);
-        } catch (EstoqueInsuficienteException | QuantidadeInvalidaException | LivroNaoExistenteException |
-                 LivroNuloException e) {
+        } catch (EstoqueInsuficienteException | QuantidadeInvalidaException e) {
             throw new RuntimeException(e);
         }
 
@@ -313,7 +313,7 @@ public class TesteLivros {
 
         System.out.println("14 - buscar livro do repositório");
 
-        Livro livro = controladorLivro.buscarLivro(livro2.getId());
+        Livro livro = controladorLivro.buscarLivroPorNome(livro2.getTitulo());
         System.out.println("Título: " + livro.getTitulo() + "  \nAutor: " +  livro.getAutor() + " \nPreço: " + livro.getPreco());
     }
 }

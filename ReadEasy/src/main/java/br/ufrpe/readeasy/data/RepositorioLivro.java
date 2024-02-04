@@ -31,7 +31,12 @@ public class RepositorioLivro implements IRepositorioLivro {
     @Override
     public void cadastrarLivro(Livro livro) throws LivroExistenteException {
         if (!this.livros.contains(livro)) {
-            this.livros.add(livro);
+            if(!verificarLivrosComTitulosIguais(livro.getTitulo(), livro)){
+                this.livros.add(livro);
+            }
+            else{
+                throw new LivroExistenteException();
+            }
         }
         else{
             throw new LivroExistenteException();
@@ -49,12 +54,18 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
-            throws LivroNaoExistenteException {
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor) throws LivroExistenteException {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
-            if (livros.get(i).getId().equals(livro.getId())) {
+            if(livros.get(i).getTitulo().equals(titulo) && !livros.get(i).getId().equals(livro.getId())){
+                throw new LivroExistenteException();
+            }
+            else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())
+                    && verificarLivrosComTitulosIguais(titulo, livro)){
+                throw new LivroExistenteException();
+            }
+            else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())){
                 livros.get(i).setTitulo(titulo);
                 livros.get(i).setAutor(autor);
                 livros.get(i).setPreco(preco);
@@ -62,15 +73,10 @@ public class RepositorioLivro implements IRepositorioLivro {
                 achou = true;
             }
         }
-        if (!achou) {
-            throw new LivroNaoExistenteException();
-        }
     }
 
     @Override
-    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException
-            , LivroNaoExistenteException {
-
+    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
         if(this.livros.contains(livro)){
             if (!livro.getGeneros().contains(genero)) {
                 livro.adicionarGenero(genero);
@@ -79,27 +85,24 @@ public class RepositorioLivro implements IRepositorioLivro {
                 throw new GeneroExistenteException(livro.getTitulo(), genero.getDescricaoEnum());
             }
         }
-        else {
-            throw new LivroNaoExistenteException();
-        }
     }
 
 
     @Override
-    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException
-            , LivroNaoExistenteException {
-
+    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException {
         if(this.livros.contains(livro)){
-            if (livro.getGeneros().contains(genero)) {
-                livro.removerGenero(genero);
+            if(livro.getGeneros().size() > 1){
+                if (livro.getGeneros().contains(genero)) {
+                    livro.removerGenero(genero);
+                }
+                else {
+                    throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero "
+                            + genero.getDescricaoEnum());
+                }
             }
-            else {
-                throw new GeneroNaoExistenteException("Não foi encontrado nenhum livro contendo o gênero "
-                        + genero.getDescricaoEnum());
+            else{
+                throw new LivroSemGeneroException();
             }
-        }
-        else {
-            throw new LivroNaoExistenteException();
         }
     }
 
@@ -118,19 +121,16 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao) throws LivroNaoExistenteException {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao) {
         if (livros.contains(livro)) {
             livro.aumentarQuantidade(quantidade);
             livro.atualizarRegistroDeEstoque(dataDaAtualizacao, quantidade);
-        }
-        else {
-            throw new LivroNaoExistenteException();
         }
     }
 
     @Override
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException, LivroNaoExistenteException {
+            QuantidadeInvalidaException {
         if (livros.contains(livro)) {
             if(livro.getQuantidade() != 0 ){
                 if(livro.getQuantidade() - quantidade >= 0){
@@ -143,8 +143,6 @@ public class RepositorioLivro implements IRepositorioLivro {
             else{
                 throw new EstoqueInsuficienteException();
             }
-        } else {
-            throw new LivroNaoExistenteException();
         }
     }
 
@@ -305,5 +303,18 @@ public class RepositorioLivro implements IRepositorioLivro {
         lista.addAll(livros);
         lista = ComparadorDeLivro.ordenarPorPreco(lista);
         return lista;
+    }
+
+    private boolean verificarLivrosComTitulosIguais(String nomeLivro, Livro livro){
+        boolean temtituloIgual = false;
+
+        for (int i = 0; i < livros.size() && !temtituloIgual; i++){
+            if(livros.get(i).getTitulo().equals(nomeLivro)){
+                if(!livros.get(i).getId().equals(livro.getId())){
+                    temtituloIgual = true;
+                }
+            }
+        }
+        return temtituloIgual;
     }
 }

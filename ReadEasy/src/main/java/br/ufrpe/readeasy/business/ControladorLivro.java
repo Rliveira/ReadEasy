@@ -33,15 +33,7 @@ public class ControladorLivro implements IControladorLivro {
 
     //MÉTODOS:
 
-    @Override
-    public void adicionarLivro(Livro livro) throws LivroNuloException, CampoVazioException, PrecoInvalidoException
-            , LivroExistenteException {
-        if(livro == null || livro.getTitulo() == null || livro.getAutor() == null || livro.getFornecedor() == null){
-            throw new LivroNuloException();
-        }
-        if(livro.getTitulo().isBlank() && !livro.getAutor().isBlank()){
-            throw new CampoVazioException();
-        }
+    public void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException {
         if(livro.getPreco() < 0){
             throw new PrecoInvalidoException();
         }
@@ -50,118 +42,54 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public void removerLivro(Livro livro) throws LivroNuloException, CampoVazioException, LivroNaoExistenteException {
-        if(livro == null || livro.getTitulo() == null || livro.getAutor() == null || livro.getFornecedor() == null){
-            throw new LivroNuloException();
-        }
-        if(livro.getTitulo().isBlank() && !livro.getAutor().isBlank()){
-            throw new CampoVazioException();
-        }
-
+    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
         repLivro.removerLivro(livro);
     }
 
     @Override
     public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
-            throws LivroNaoExistenteException, CampoVazioException, LivroNuloException,
-            PrecoInvalidoException, UsuarioNuloException, DataInvalidaException {
-
-        if(livro != null && livro.getTitulo() != null && livro.getAutor() != null && livro.getFornecedor() != null) {
-            if(!titulo.isBlank() && !autor.isBlank()) {
-                if(preco > 0){
-                    if(fornecedor.getNome() != null && fornecedor.getCpf() != null && fornecedor.getLogin() != null
-                            && fornecedor.getSenha() != null){
-                        if(!fornecedor.getNome().isBlank() && !fornecedor.getCpf().isBlank() && !fornecedor.getLogin().isBlank()
-                                && !fornecedor.getSenha().isBlank()){
-                            if(!fornecedor.getDataNascimento().isAfter(LocalDate.now())){
-                                    repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
-                            }
-                            else{
-                                throw new DataInvalidaException("A data Inválida, selecione uma data de nascimento" +
-                                        " anterior a data atual.");
-                            }
-                        }
-                        else{
-                            throw new CampoVazioException();
-                        }
-                    }
-                    else{
-                        throw new UsuarioNuloException();
-                    }
-                }
-                else{
-                    throw new PrecoInvalidoException();
-                }
-            }
-            else {
-                throw new CampoVazioException();
-            }
-        }
-        else {
-            throw new LivroNuloException();
-        }
-    }
-
-    @Override
-    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException, CampoVazioException
-            , LivroNuloException, LivroNaoExistenteException {
-
-        if(livro != null){
-            repLivro.adicionarGenero(livro, genero);
+            throws PrecoInvalidoException, LivroExistenteException {
+        if(preco >= 0){
+            repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
         }
         else{
-            throw new LivroNuloException();
+            throw new PrecoInvalidoException();
         }
     }
 
     @Override
-    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, CampoVazioException
-            , LivroNuloException, LivroNaoExistenteException {
+    public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
+        repLivro.adicionarGenero(livro, genero);
+    }
 
-        if(livro.getTitulo() != null) {
-            if(!livro.getTitulo().isBlank()) {
-                repLivro.removerGenero(livro, genero);
-            }
-            else {
-                throw new CampoVazioException();
-            }
-        }
-        else {
-            throw new LivroNuloException();
-        }
+    @Override
+    public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException{
+        repLivro.removerGenero(livro, genero);
     }
 
     @Override
     public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)
-            throws LivroNaoExistenteException, LivroNuloException, QuantidadeInvalidaException {
+            throws QuantidadeInvalidaException {
 
-        if (livro != null) {
-            if(quantidade > 0){
-                repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao);
-            }
-            else{
-                throw new QuantidadeInvalidaException();
-            }
+        if(quantidade > 0){
+            repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao);
         }
         else{
-            throw new LivroNuloException();
+            throw new QuantidadeInvalidaException();
         }
+
+
     }
 
     @Override
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException {
+            QuantidadeInvalidaException {
 
-        if (livro != null) {
-            if(quantidade > 0){
-                repLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
-            }
-            else{
-                throw new QuantidadeInvalidaException();
-            }
+        if(quantidade > 0){
+            repLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
         }
         else{
-            throw new LivroNuloException();
+            throw new QuantidadeInvalidaException();
         }
     }
 
@@ -176,7 +104,7 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public List<Livro> listarTodosOslivrosEmOrdemAlfabetica(){
+    public   List<Livro> listarTodosOslivrosEmOrdemAlfabetica(){
         return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
 

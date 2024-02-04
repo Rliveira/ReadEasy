@@ -186,11 +186,27 @@ public class AdmPerfilController implements Initializable {
         String bairro = txtFBairro.getText();
         String cidade = txtFCidade.getText();
         String estado = txtFEstado.getText();
-        int cep = Integer.parseInt(txtFCep.getText());
+        String cep = txtFCep.getText();
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtPckData.getValue();
 
-        Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+        if (!validarInputTf(cep) || !validarInputTf(telefone)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Campo de telefone ou CEP apresenta letras ou caracteres especiais");
+            alert.setContentText("Digite apenas números para continuar");
+            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(buttonType);
+
+            alert.showAndWait().ifPresent(buttonType1 -> {
+                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                    alert.close();
+                }
+            });
+            return;
+        }
+
+        Endereco endereco = new Endereco(Integer.parseInt(cep), rua, bairro, cidade, estado);
         try {
             ServidorReadEasy.getInstance().atualizarFuncionario(this.usuarioLogado, nome, cpf, dataNascimento,
                     usuario, senha, endereco, telefone, true, null);
@@ -257,6 +273,10 @@ public class AdmPerfilController implements Initializable {
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    private boolean validarInputTf(String inputTf) {
+        return inputTf.matches("\\d+");
     }
 
 

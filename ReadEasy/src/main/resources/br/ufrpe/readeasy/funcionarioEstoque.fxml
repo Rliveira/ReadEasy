@@ -170,7 +170,7 @@
                         <HBox prefHeight="30.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="30.0" prefWidth="51.0" HBox.hgrow="ALWAYS" />
-                              <ComboBox fx:id="cbLivro" prefHeight="30.0" prefWidth="200.0" promptText="Livro" styleClass="table-view" stylesheets="@css/Style.css" />
+                              <ComboBox fx:id="cbLivros" prefHeight="30.0" prefWidth="200.0" promptText="Livro" styleClass="table-view" stylesheets="@css/Style.css" />
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="54.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
@@ -178,7 +178,7 @@
                         <HBox prefHeight="50.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="50.0" prefWidth="72.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                              <TextField fx:id="tfQuantidade" prefHeight="30.0" prefWidth="200.0" promptText="Pesquisar" styleClass="textFieldDesign" stylesheets="@css/Style.css" text="Quantidade" />
+                              <TextField fx:id="tfQuantidade" prefHeight="30.0" prefWidth="200.0" promptText="Quantidade" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
                               <Pane layoutX="198.0" layoutY="10.0" prefHeight="50.0" prefWidth="71.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
@@ -190,7 +190,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </Pane>
-                              <Button fx:id="btnAdicionar" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
+                              <Button fx:id="btnAdicionar" mnemonicParsing="false" onAction="#btnAdicionarEstoqueDoLivro" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
                                  <font>
                                     <Font name="Times New Roman Bold" size="14.0" />
                                  </font>
@@ -201,7 +201,7 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnRemover" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Remover&#10;&#10;" textFill="WHITE">
+                              <Button fx:id="btnRemover" mnemonicParsing="false" onAction="#btnReduzirEstoqueDoLivro" prefHeight="50.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Remover&#10;&#10;" textFill="WHITE">
                                  <font>
                                     <Font name="Times New Roman Bold" size="14.0" />
                                  </font>
@@ -252,14 +252,14 @@
                                     <Insets right="5.0" top="7.0" />
                                  </HBox.margin>
                               </FontAwesomeIcon>
-                              <TextField fx:id="tfPesquisar" prefWidth="400.0" promptText="Pesquisar" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                              <TextField fx:id="tfPesquisar" onAction="#filtrarLivrosNaTabela" prefWidth="400.0" promptText="Pesquisar" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
                               <Pane layoutX="198.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <TableView fx:id="tbEstoqueLivraria" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tvEstoque" onMouseClicked="#popularCamposDoLivroSelecionadoPelaTabela" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="colLivro" prefWidth="243.20001554489136" text="Livro" />
                               <TableColumn fx:id="colFornecedor" minWidth="0.0" prefWidth="109.60009765625" text="Fornecedor" />

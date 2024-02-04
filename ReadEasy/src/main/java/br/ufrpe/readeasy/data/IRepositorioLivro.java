@@ -13,15 +13,12 @@ import java.util.UUID;
 public interface IRepositorioLivro {
     void cadastrarLivro(Livro livro) throws LivroExistenteException;
     void removerLivro(Livro livro) throws LivroNaoExistenteException;
-    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor)
-            throws LivroNaoExistenteException;
-    void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException
-            , LivroNaoExistenteException;
-    void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroNaoExistenteException;
-    void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)
-            throws LivroNaoExistenteException;
+    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor) throws LivroExistenteException;
+    void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException;
+    void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
+    void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao);
     void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException
-            , QuantidadeInvalidaException, LivroNaoExistenteException;
+            , QuantidadeInvalidaException;
     Livro buscarLivro(UUID id);
     List<Livro> listarTodosOsLivrosEmOrdemAlfabetica();
     List<Livro> listarLivrosPorAutor(String autor);

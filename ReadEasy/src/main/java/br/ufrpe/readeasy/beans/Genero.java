@@ -9,7 +9,12 @@ public enum Genero {
     FICCAO_CIENTIFICA("Ficção Científica"),
     NAO_FICCAO("Não Ficção"),
     ROMANCE("Romance"),
-    ACADEMICO("Acadêmico");
+    ACADEMICO("Acadêmico"),
+    COMEDIA("Comédia"),
+    CULINARIA("Culinária"),
+    AUTOBIOGRAFIA("Autobiografia"),
+    ECONOMIA("Economia"),
+    LITERATURA("Literatura");
 
     private final String descricaoEnum;
 

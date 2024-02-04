@@ -11,20 +11,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface IControladorLivro {
-    void adicionarLivro(Livro livro) throws LivroNuloException, CampoVazioException,
-            PrecoInvalidoException, LivroExistenteException;
-    void removerLivro(Livro livro) throws LivroNuloException, CampoVazioException, LivroNaoExistenteException;
+    void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException;
+    void removerLivro(Livro livro) throws LivroNaoExistenteException;
     void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
-            throws LivroNaoExistenteException, CampoVazioException, LivroNuloException,
-            PrecoInvalidoException, UsuarioNuloException, DataInvalidaException;
-    void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException, CampoVazioException,
-            LivroNuloException, LivroNaoExistenteException;
-    void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, CampoVazioException,
-            LivroNuloException, LivroNaoExistenteException;
+            throws LivroExistenteException, PrecoInvalidoException;
+    void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException;
+    void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
     void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)
-            throws LivroNaoExistenteException, LivroNuloException, QuantidadeInvalidaException;
+            throws QuantidadeInvalidaException;
     void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException, LivroNaoExistenteException, LivroNuloException;
+            QuantidadeInvalidaException;
     Livro buscarLivro(UUID id);
     Livro buscarLivroPorNome(String titulo);
     List<Livro> listarTodosOslivrosEmOrdemAlfabetica();

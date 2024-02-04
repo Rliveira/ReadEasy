@@ -8,10 +8,7 @@ import br.ufrpe.readeasy.exceptions.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,6 +54,7 @@ public class ClienteCadastroController implements Initializable {
     }
 
     //outros métodos:
+    @FXML
     protected void onBtnCadastrarClick(ActionEvent event) throws IOException {
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
@@ -66,11 +64,27 @@ public class ClienteCadastroController implements Initializable {
         String bairro = txtFBairro.getText();
         String cidade = txtFCidade.getText();
         String estado = txtFEstado.getText();
-        int cep = Integer.parseInt(txtFCEP.getText());
+        String cep = txtFCEP.getText();
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtpkDataNascimento.getValue();
 
-            Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+        if (!validarInputTf(cep) || !validarInputTf(telefone)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Campo de telefone ou CEP apresenta letras ou caracteres especiais");
+            alert.setContentText("Digite apenas números para continuar");
+            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(buttonType);
+
+            alert.showAndWait().ifPresent(buttonType1 -> {
+                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                    alert.close();
+                }
+            });
+            return;
+        }
+
+            Endereco endereco = new Endereco(Integer.parseInt(cep), rua, bairro, cidade, estado);
             Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
             try {
                 ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
@@ -115,8 +129,11 @@ public class ClienteCadastroController implements Initializable {
 
     }
 
+    private boolean validarInputTf(String inputTf) {
+        return inputTf.matches("\\d+");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO implementação do método de inicialização (não sei o que colocar aqui)
     }
 }
