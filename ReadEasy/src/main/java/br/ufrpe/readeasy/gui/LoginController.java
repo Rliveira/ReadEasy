@@ -24,8 +24,6 @@ public class LoginController {
     @FXML
     private Button btnLogin;
 
-    ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-
     @FXML
     public void onBtnLoginclick()
     {   boolean excecaoLevantada = false;
@@ -39,9 +37,14 @@ public class LoginController {
             {
                 for(int i=0; i<users.size();i++)
                 {
-                    if(login.equals(users.get(i).getLogin()) && senha.equals(users.get(i).getSenha()))
+                    boolean achou = false;
+                    if(((login.equals(users.get(i).getLogin()) && senha.equals(users.get(i).getSenha()))) || achou)
                     {
+                        achou = true;
+                        SessaoUsuario.getInstance();
                         SessaoUsuario.setUsuarioLogado(users.get(i));
+                        tfSenha.clear();
+                        tfUsuario.clear();
                     }
                 }
                 trocarTelaUsuario(SessaoUsuario.getUsuarioLogado());
@@ -110,7 +113,7 @@ public class LoginController {
         else{
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            sm.TrocarTela("clienteCadastro.fxml", "ReadEasy - Catálogo");
+            sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
         }
     }
 

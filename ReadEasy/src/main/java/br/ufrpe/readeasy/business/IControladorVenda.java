@@ -1,10 +1,7 @@
 package br.ufrpe.readeasy.business;
 
 
-import br.ufrpe.readeasy.beans.Cliente;
-import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
@@ -29,5 +26,6 @@ public interface IControladorVenda
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
     int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
     double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    List<CompraDTO> listarComprasDTO(Cliente cliente);
 }
 

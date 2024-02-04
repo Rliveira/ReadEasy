@@ -1,9 +1,6 @@
 package br.ufrpe.readeasy.business;
 
-import br.ufrpe.readeasy.beans.Cliente;
-import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioVenda;
 import br.ufrpe.readeasy.exceptions.*;
@@ -11,7 +8,6 @@ import br.ufrpe.readeasy.exceptions.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ControladorVenda implements IControladorVenda
 {
@@ -84,6 +80,7 @@ public class ControladorVenda implements IControladorVenda
             }
         } else throw new VendaInvalidaException();
     }
+
     @Override
     public List<Venda> historicoDeVendas() throws HistoricoVazioException
     {
@@ -121,6 +118,26 @@ public class ControladorVenda implements IControladorVenda
             throw new UsuarioNuloException();
         }
         return historicoInterno;
+    }
+
+    @Override
+    public List<CompraDTO> listarComprasDTO(Cliente cliente) {
+        List<CompraDTO> historicoCompras = new ArrayList<>();
+
+        // obtém o histórico de compras do cliente
+        List<Venda> historicoVendas = repoVenda.historicoDeVendas();
+
+        // converte as vendas do histórico para objetos CompraDTO
+        for (Venda venda : historicoVendas) {
+            for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
+                Livro livro = livroVendido.getLivro();
+                CompraDTO compraDTO = new CompraDTO(livro.getTitulo(), livro.getAutor(), livroVendido.getQuantidade(),
+                        livroVendido.getQuantidade(), venda.getDataEHora());
+                historicoCompras.add(compraDTO);
+            }
+        }
+
+        return historicoCompras;
     }
 
     @Override
