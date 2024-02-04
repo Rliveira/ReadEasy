@@ -331,5 +331,10 @@ public class ServidorReadEasy {
     public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
         return controladorLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
+
+    public List<CompraDTO> listarComprasDTO(Cliente cliente)
+    {
+        return controladorVenda.listarComprasDTO(cliente);
+    }
 }
 

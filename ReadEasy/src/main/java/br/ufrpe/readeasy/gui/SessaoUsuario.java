@@ -8,7 +8,7 @@ public class SessaoUsuario
     public static SessaoUsuario instance;
     public static Usuario usuarioLogado;
 
-    public static SessaoUsuario getInstance()
+    public static synchronized SessaoUsuario getInstance()
     {
         if(instance == null)
         {
@@ -17,11 +17,18 @@ public class SessaoUsuario
         return instance;
     }
 
-    public static Usuario getUsuarioLogado() {
+    public static synchronized Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
 
-    public static void setUsuarioLogado(Usuario usuarioLogado) {
-        SessaoUsuario.usuarioLogado = usuarioLogado;
+    public static synchronized void setUsuarioLogado(Usuario usuario)
+    {
+        usuarioLogado = usuario;
     }
+
+    public static void logOut()
+    {
+        usuarioLogado = null;
+    }
+
 }
