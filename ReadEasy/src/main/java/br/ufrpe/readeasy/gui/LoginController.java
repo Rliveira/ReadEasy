@@ -35,18 +35,18 @@ public class LoginController {
         {
             if(ServidorReadEasy.getInstance().checarLogin(login, senha))
             {
+                Usuario usuarioLogadoSucesso = null;
                 for(int i=0; i<users.size();i++)
                 {
-                    boolean achou = false;
-                    if(((login.equals(users.get(i).getLogin()) && senha.equals(users.get(i).getSenha()))) || achou)
+                    if(login.equals(users.get(i).getLogin()) && senha.equals(users.get(i).getSenha()))
                     {
-                        achou = true;
-                        SessaoUsuario.getInstance();
-                        SessaoUsuario.setUsuarioLogado(users.get(i));
+                        usuarioLogadoSucesso = users.get(i);
                         tfSenha.clear();
                         tfUsuario.clear();
                     }
                 }
+                SessaoUsuario.getInstance();
+                SessaoUsuario.setUsuarioLogado(usuarioLogadoSucesso);
                 trocarTelaUsuario(SessaoUsuario.getUsuarioLogado());
             }
         } catch (CampoVazioException e)
@@ -97,23 +97,23 @@ public class LoginController {
             if (funcionario.isAdm()){
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
-                sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
+                sm.TrocarTela("admPerfil.fxml", "ReadEasy - Relatorios");
             }
             else{
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
-                sm.TrocarTela("funcionarioEstoque.fxml", "ReadEasy - Estoque");
+                sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Estoque");
             }
         }
         else if(usuario instanceof Fornecedor){
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            sm.TrocarTela("fornecedorEstoque.fxml", "ReadEasy - Estoque");
+            sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Estoque");
         }
         else{
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
+            sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Catálogo");
         }
     }
 

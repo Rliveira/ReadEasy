@@ -104,7 +104,6 @@ public class ClienteMinhasComprasController
 
         carregarDadosTabela();
 
-        dpDataInicio.setValue(LocalDate.now());
         dpDataFim.setValue(LocalDate.now());
 
         if(SessaoUsuario.getUsuarioLogado() instanceof Cliente) {

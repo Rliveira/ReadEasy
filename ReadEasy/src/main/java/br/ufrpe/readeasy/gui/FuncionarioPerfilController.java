@@ -65,6 +65,8 @@ public class FuncionarioPerfilController
     @FXML
     public void initialize()
     {
+        SessaoUsuario.getInstance();
+
         if(SessaoUsuario.getUsuarioLogado() instanceof Funcionario)
         {
             if(((Funcionario) SessaoUsuario.getUsuarioLogado()).isAdm())

@@ -339,8 +339,7 @@ public class AdmCRUDUsuariosController
             int cep = Integer.parseInt(cepString);
             Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
 
-            String tipoUsuarioSelecionado = cbTipo.getValue();
-
+            String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
             if(tipoUsuarioSelecionado == null){
                 alert.setTitle("Erro");
                 alert.setHeaderText("Tipo de usuário não selecionado.");
@@ -355,10 +354,27 @@ public class AdmCRUDUsuariosController
                     }
                 });
             }
-            else{
-
+            else
+            {
                 Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
+                if(usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                        usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                        || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
+                {
+                    excecaoLevantada = true;
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Edição inválida!");
+                    alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
 
+                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    alert.getButtonTypes().setAll(okButton);
+
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                            alert.close();
+                        }
+                    });
+                }
                 //montagem do usuario:
                 if(tipoUsuarioSelecionado.equals("Administrador"))
                 {
@@ -381,24 +397,6 @@ public class AdmCRUDUsuariosController
                                 endereco, telefone, false,((Funcionario) usuario).getAdmResponsavel());
                     }
                 }
-
-                if(usuario instanceof Fornecedor && usuario instanceof Funcionario ||
-                        usuario instanceof Funcionario && usuario instanceof Fornecedor){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Edição inválida!");
-                    alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                            alert.close();
-                        }
-                    });
-                }
-                else{
                     try {
                         if(usuario instanceof Funcionario)
                         {
@@ -524,7 +522,6 @@ public class AdmCRUDUsuariosController
                 }
             }
         }
-    }
 
     @FXML
     public void onSelecionarItemTVclick(ActionEvent event)
@@ -652,6 +649,7 @@ public class AdmCRUDUsuariosController
         txtFieldCidade.clear();
         txtFieldEstado.clear();
         txtFieldSenha.clear();
+        dpDataNascimento = null;
     }
 
     @FXML

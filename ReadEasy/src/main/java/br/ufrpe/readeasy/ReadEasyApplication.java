@@ -9,18 +9,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class ReadEasyApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ScreenManager.setStage(stage);
         TesteHistóricoCompraEVenda.InicializarTesteHistóricoCompraEVenda();
         InicializadorDeDados.inicializarDados();
         ServidorReadEasy.getInstance().cadastrarAdmInicial();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admCRUDPromocoes.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(ReadEasyApplication.class.getResource("Login.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setMinWidth(1200);
         stage.setMinHeight(700);
-        stage.setTitle("Hello!");
+        stage.setTitle("ReadEasy - Login");
         stage.setScene(scene);
         stage.show();
     }

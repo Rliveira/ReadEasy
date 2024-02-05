@@ -17,7 +17,7 @@ public class SessaoUsuario
         return instance;
     }
 
-    public static synchronized Usuario getUsuarioLogado() {
+    public static Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
 

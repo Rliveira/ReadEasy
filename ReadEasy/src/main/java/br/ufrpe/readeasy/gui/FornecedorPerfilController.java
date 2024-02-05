@@ -64,6 +64,7 @@ public class FornecedorPerfilController
     public void initialize()
     {
 
+        SessaoUsuario.getInstance();
         if(SessaoUsuario.getUsuarioLogado() instanceof Fornecedor)
         {
             labelTipoFornecedor.setText(((Fornecedor) SessaoUsuario.getUsuarioLogado()).getTipoFornecedor().toString());

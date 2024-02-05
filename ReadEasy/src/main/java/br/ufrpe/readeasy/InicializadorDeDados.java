@@ -6,9 +6,7 @@ import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.business.ControladorVenda;
 import br.ufrpe.readeasy.business.IControladorVenda;
-import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.exceptions.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -105,7 +103,6 @@ public class InicializadorDeDados {
         } catch (GeneroExistenteException e) {
             throw new RuntimeException(e);
         }
-
         IControladorVenda controladorVenda = new ControladorVenda();
 
         Endereco end1 = new Endereco(18460154, "Rua dos Bobos", "Jardel", "Londres", "CE");
@@ -560,6 +557,49 @@ public class InicializadorDeDados {
             controladorVenda.inserirVenda(venda71);
         } catch (VendaInvalidaException | UsuarioNuloException e) {
             System.out.println(e.getMessage());;
+        }
+        Cliente cliente = new Cliente("Mariane", "49523655487", LocalDate.of(2001, 12, 20),
+                "mari", "ane", endereco1, "989765910");
+
+        try
+        {
+            ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
+        } catch (TipoUsuarioInvalidoException | CampoVazioException | UsuarioExistenteException |
+                 MenorDeIdadeException | UsuarioNuloException | DataInvalidaException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        Venda venda110 = new Venda(cliente, LocalDateTime.now());
+        LocalDateTime dataInicial = LocalDateTime.now();
+
+        Venda venda100 = new Venda(cliente, dataInicial);
+        int intervaloMeses = 12/10;
+        Venda venda101 = new Venda(cliente, dataInicial.plusMonths(intervaloMeses));
+        Venda venda102 = new Venda(cliente, dataInicial.plusMonths(2 * intervaloMeses));
+        Venda venda103 = new Venda(cliente, dataInicial.plusMonths(3 * intervaloMeses));
+        Venda venda104= new Venda(cliente, dataInicial.plusMonths(4 * intervaloMeses));
+        Venda venda105 = new Venda(cliente, dataInicial.plusMonths(5 * intervaloMeses));
+        Venda venda106 = new Venda(cliente, dataInicial.plusMonths(6 * intervaloMeses));
+        Venda venda107 = new Venda(cliente, dataInicial.plusMonths(7 * intervaloMeses));
+        Venda venda108 = new Venda(cliente, dataInicial.plusMonths(8 * intervaloMeses));
+        Venda venda109 = new Venda(cliente, dataInicial.plusMonths(9 * intervaloMeses));
+
+        try
+        {
+            ServidorReadEasy.getInstance().inserirVenda(venda100);
+            ServidorReadEasy.getInstance().inserirVenda(venda101);
+            ServidorReadEasy.getInstance().inserirVenda(venda102);
+            ServidorReadEasy.getInstance().inserirVenda(venda103);
+            ServidorReadEasy.getInstance().inserirVenda(venda104);
+            ServidorReadEasy.getInstance().inserirVenda(venda105);
+            ServidorReadEasy.getInstance().inserirVenda(venda106);
+            ServidorReadEasy.getInstance().inserirVenda(venda107);
+            ServidorReadEasy.getInstance().inserirVenda(venda108);
+            ServidorReadEasy.getInstance().inserirVenda(venda109);
+            ServidorReadEasy.getInstance().inserirVenda(venda110);
+
+        } catch (VendaInvalidaException | UsuarioNuloException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
