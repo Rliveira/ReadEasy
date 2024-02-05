@@ -145,9 +145,9 @@
                      </children>
                   </HBox>
                   <Pane layoutX="10.0" layoutY="451.0" prefHeight="80.0" prefWidth="570.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <HBox prefHeight="585.0" prefWidth="570.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <BarChart fx:id="bcRankingLivros" alternativeColumnFillVisible="true" prefHeight="330.0" prefWidth="335.0" HBox.hgrow="ALWAYS">
+                        <BarChart fx:id="bcRankingLivros" alternativeColumnFillVisible="true" prefHeight="487.0" prefWidth="430.0" HBox.hgrow="ALWAYS">
                           <xAxis>
                             <CategoryAxis fx:id="catXLivros" side="BOTTOM" />
                           </xAxis>
@@ -157,8 +157,8 @@
                         </BarChart>
                         <VBox prefHeight="288.0" prefWidth="130.0">
                            <children>
-                              <Pane prefHeight="30.0" prefWidth="161.0" VBox.vgrow="ALWAYS" />
-                              <ComboBox fx:id="cbPeriodo" prefHeight="35.0" prefWidth="126.0" promptText="Período" styleClass="table-view" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                              <Pane prefHeight="33.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
+                              <ComboBox fx:id="cbPeriodo" onAction="#inicializarCbPeriodo" prefHeight="35.0" prefWidth="126.0" promptText="Período" styleClass="table-view" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -168,23 +168,24 @@
                                     <Insets top="20.0" />
                                  </VBox.margin>
                               </ComboBox>
+                              <Pane prefHeight="61.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
+                              <HBox prefHeight="45.0" prefWidth="161.0">
+                                 <children>
+                                    <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="btnPesquisar" mnemonicParsing="false" onAction="#btnPesquisarRankingLivros" prefHeight="45.0" prefWidth="113.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                       <graphic>
+                                          <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                       </graphic>
+                                    </Button>
+                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="82.0" prefWidth="161.0" VBox.vgrow="ALWAYS" />
                            </children>
                            <HBox.margin>
                               <Insets right="10.0" top="10.0" />
                            </HBox.margin>
                         </VBox>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="45.0" prefWidth="161.0">
-                     <children>
-                        <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnPesquisar" mnemonicParsing="false" prefHeight="45.0" prefWidth="113.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
-                           </graphic>
-                        </Button>
-                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <Pane prefHeight="149.0" prefWidth="570.0" />
@@ -212,10 +213,10 @@
                   <HBox prefHeight="45.0" prefWidth="461.0">
                      <children>
                         <Pane prefHeight="100.0" prefWidth="103.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefHeight="46.0" prefWidth="240.0" HBox.hgrow="ALWAYS">
+                        <VBox prefHeight="46.0" prefWidth="335.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Pane prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
-                              <Label text="Usuários que gastam mais">
+                              <Label text="Usuários que mais realizam compras">
                                  <font>
                                     <Font name="Tahoma Bold" size="15.0" />
                                  </font>
@@ -223,13 +224,13 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <Pane layoutX="202.0" layoutY="10.0" prefHeight="45.0" prefWidth="59.0" HBox.hgrow="ALWAYS" />
+                        <Pane layoutX="202.0" layoutY="10.0" prefHeight="45.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <TableView fx:id="tvUsuariosMaisGasto" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tvUsuariosMaisCompras" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colUsuario1" prefWidth="178.3999752998352" text="Usuário" />
                       <TableColumn fx:id="colTotal1" prefWidth="176.00006103515625" text="Total" />
@@ -243,11 +244,11 @@
                   </TableView>
                   <HBox layoutX="10.0" layoutY="83.0" prefHeight="45.0" prefWidth="461.0">
                      <children>
-                        <Pane prefHeight="45.0" prefWidth="64.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefHeight="46.0" prefWidth="325.0" HBox.hgrow="ALWAYS">
+                        <Pane prefHeight="45.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+                        <VBox prefHeight="46.0" prefWidth="161.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Pane prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
-                              <Label text="Usuários que mais realizam compras" textAlignment="CENTER">
+                              <Label text="Usuários que gastam mais" textAlignment="CENTER">
                                  <font>
                                     <Font name="Tahoma Bold" size="15.0" />
                                  </font>
@@ -255,13 +256,13 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <Pane layoutX="202.0" layoutY="10.0" prefHeight="45.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+                        <Pane layoutX="202.0" layoutY="10.0" prefHeight="45.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <TableView fx:id="tvUsuariosMaisCompras" layoutX="20.0" layoutY="83.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tvUsuariosMaisGasto" layoutX="20.0" layoutY="83.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="colUsuario2" prefWidth="183.1999020576477" text="Usuário" />
                         <TableColumn fx:id="colTotal2" prefWidth="171.20013427734375" text="Total" />

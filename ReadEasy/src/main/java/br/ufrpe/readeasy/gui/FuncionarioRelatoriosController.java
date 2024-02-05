@@ -1,11 +1,24 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Usuario;
+import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.Map;
 
 public class FuncionarioRelatoriosController {
 
@@ -30,18 +43,23 @@ public class FuncionarioRelatoriosController {
     private NumberAxis catYNumeroDeVendas;
 
     @FXML
-    private TableView<Usuario> tvUsuariosMaisCompras;
+    private TableView<Cliente> tvUsuariosMaisCompras;
     @FXML
-    private TableColumn<Usuario, String> colUsuario1;
+    private TableColumn<Cliente, String> colUsuario1;
     @FXML
-    private TableColumn<Usuario, Integer> colTotal1;
+    private TableColumn<Cliente, Integer> colTotal1;
 
     @FXML
-    private TableView<Usuario> tvUsuariosMaisGasto;
+    private TableView<Cliente> tvUsuariosMaisGasto;
     @FXML
-    private TableColumn<Usuario, String> colUsuario2;
+    private TableColumn<Cliente, String> colUsuario2;
     @FXML
-    private TableColumn<Usuario, Integer> colTotal2;
+    private TableColumn<Cliente, Double> colTotal2;
+
+    @FXML
+    private ComboBox<String> cbPeriodo;
+    @FXML
+    private ComboBox<String> cbMesOuAno;
 
     //Métodos de troca de tela:
 
@@ -75,6 +93,247 @@ public class FuncionarioRelatoriosController {
     }
 
     //Outros métodos:
+
+    @FXML
+    public void initialize(){
+        inicializarCbCategoriaEPeriodo();
+        inicializarTvUsuariosQueMaisGastam();
+        inicializarTvUsuariosQueMaisCompram();
+        inicializarBcRankingComDadosDoMesAtual();
+    }
+
+    @FXML
+    private void inicializarCbCategoriaEPeriodo(){
+        cbPeriodo.getItems().addAll("Mensal" , "Ano atual");
+        cbMesOuAno.setDisable(true);
+    }
+    @FXML
+    private void inicializarCbPeriodo(){
+        String periodoSelecionado = cbPeriodo.getValue();
+
+        if(periodoSelecionado.equals("Mensal")){
+            cbMesOuAno.setDisable(false);
+            cbMesOuAno.getItems().clear();
+
+            String[] mesesDoAno = {"janeiro", "fevereiro", "março", "abril",
+                    "maio", "junho", "julho", "agosto",
+                    "setembro", "outubro", "novembro", "dezembro"
+            };
+
+            int mesAtual = LocalDate.now().getMonth().getValue();
+            for (int i = mesAtual; i >= 1; i--) {
+                cbMesOuAno.getItems().add(mesesDoAno[i - 1]);
+            }
+        }
+    }
+
+    @FXML
+    private void inicializarTvUsuariosQueMaisCompram() {
+        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Map<Cliente, Integer> clientesPorCompra = null;
+        try {
+            clientesPorCompra = servidorReadEasy.listarMelhoresClientesPorCompra();
+        } catch (HistoricoVazioException e) {
+            throw new RuntimeException(e);
+        }
+
+        ConstruirTvUsuariosQueMaisCompram(clientesPorCompra);
+        tvUsuariosMaisCompras.getItems().addAll(clientesPorCompra.keySet());
+    }
+
+    @FXML
+    private void ConstruirTvUsuariosQueMaisCompram(Map<Cliente, Integer> melhoresClientesPorCompra) {
+        tvUsuariosMaisCompras.getItems().clear();
+
+        colUsuario1.setCellValueFactory(cellData -> {
+            Cliente cliente = cellData.getValue();
+            String nome = cliente.getNome();
+            return new SimpleStringProperty(nome);
+        });
+
+        colTotal1.setCellValueFactory(cellData -> {
+            Integer compras = melhoresClientesPorCompra.get(cellData.getValue());
+            return new SimpleIntegerProperty(compras).asObject();
+        });
+    }
+
+    @FXML
+    private void inicializarTvUsuariosQueMaisGastam() {
+        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Map<Cliente, Double> clientesPorGasto = null;
+        try {
+            clientesPorGasto = servidorReadEasy.listarMelhoresClientesPorGasto();
+        } catch (HistoricoVazioException e) {
+            throw new RuntimeException(e);
+        }
+
+        ConstruirTvUsuariosQueMaisGastam(clientesPorGasto);
+        tvUsuariosMaisGasto.getItems().addAll(clientesPorGasto.keySet());
+    }
+
+    @FXML
+    private void ConstruirTvUsuariosQueMaisGastam(Map<Cliente, Double> melhoresClientesPorGasto) {
+        tvUsuariosMaisGasto.getItems().clear();
+
+        colUsuario2.setCellValueFactory(cellData -> {
+            Cliente cliente = cellData.getValue();
+            String nome = cliente.getNome();
+            return new SimpleStringProperty(nome);
+        });
+
+        colTotal2.setCellValueFactory(cellData -> {
+            Double gasto = melhoresClientesPorGasto.get(cellData.getValue());
+            return new SimpleDoubleProperty(gasto).asObject();
+        });
+
+        // Formatação da célula para exibir apenas dois dígitos após a vírgula
+        colTotal2.setCellFactory(column -> {
+            return new TableCell<Cliente, Double>() {
+                @Override
+                protected void updateItem(Double item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(String.format("%.2f", item));
+                    }
+                }
+            };
+        });
+    }
+
+    @FXML
+    private void inicializarBcRankingComDadosDoMesAtual() {
+        Month mesAtual = LocalDate.now().getMonth();
+
+        LocalDate dataInicio = LocalDate.of(LocalDate.now().getYear(), mesAtual, 1);
+        LocalDate dataFim = LocalDate.now();
+        LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
+
+        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
+
+        inicializarBcRankingDeLivros(rankingLivros);
+    }
+
+    @FXML
+    public void inicializarBcRankingDeLivros(Map<Livro, Integer> rankingLivros) {
+        bcRankingLivros.getData().clear();
+
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+
+        for (Map.Entry<Livro, Integer> entry : rankingLivros.entrySet()) {
+            Livro livro = entry.getKey();
+            String tituloLivro = livro.getTitulo();
+            Integer quantidadeVendas = entry.getValue();
+
+            series.getData().add(new XYChart.Data<>(tituloLivro, quantidadeVendas));
+        }
+
+        bcRankingLivros.getData().add(series);
+        catXLivros.setLabel("Livros Mais vendidos do dia");
+        catYNumeroDeVendas.setLabel("Quantidade de Vendas");
+    }
+
+    @FXML
+    public void btnPesquisarRankingLivros(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        String periodoSelecionado = cbPeriodo.getValue();
+
+        if (periodoSelecionado != null){
+            if(periodoSelecionado.equals("Mensal")){
+                String mes = cbMesOuAno.getValue();
+
+                if (mes != null){
+                    mes = converterParaIngles(mes);
+                    Month mesSelecionado = Month.valueOf(mes.toUpperCase());
+
+                    LocalDate dataInicio = LocalDate.of(LocalDate.now().getYear(), mesSelecionado, 1);
+                    LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
+                    LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
+
+                    ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                    Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
+
+                    inicializarBcRankingDeLivros(rankingLivros);
+                }
+                else{
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Mês não selecionado!");
+                    alert.setContentText("Escolha um mês para continuar.");
+
+                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    alert.getButtonTypes().setAll(okButton);
+
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                            alert.close();
+                        }
+                    });
+                }
+            }
+            else{
+                int anoSelecionado = LocalDate.now().getYear();
+
+                LocalDate dataInicio = LocalDate.of(anoSelecionado, Month.JANUARY, 1);
+                LocalDate dataFim = LocalDate.of(anoSelecionado, Month.DECEMBER, 31);
+                LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
+
+                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
+
+                inicializarBcRankingDeLivros(rankingLivros);
+            }
+        }
+        else{
+            alert.setTitle("Erro");
+            alert.setHeaderText("Opção não selecionada.");
+            alert.setContentText("Escolha uma opção para continuar.");
+
+            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                    alert.close();
+                }
+            });;
+        }
+    }
+
+    public String converterParaIngles(String mesEmPortugues) {
+        switch (mesEmPortugues.toLowerCase()) {
+            case "janeiro":
+                return "January";
+            case "fevereiro":
+                return "February";
+            case "março":
+                return "March";
+            case "abril":
+                return "April";
+            case "maio":
+                return "May";
+            case "junho":
+                return "June";
+            case "julho":
+                return "July";
+            case "agosto":
+                return "August";
+            case "setembro":
+                return "September";
+            case "outubro":
+                return "October";
+            case "novembro":
+                return "November";
+            case "dezembro":
+                return "December";
+            default:
+                // Retornar o próprio valor se não houver correspondência
+                return mesEmPortugues;
+        }
+    }
+
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
