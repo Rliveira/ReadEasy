@@ -96,12 +96,7 @@ public class FuncionarioHistoricoComprasEVendasController {
 
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate>clnDataDeCompras;
-
-//    @FXML
-//    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnPrecoCompras;
-//
-////    @FXML
-//    private TableColumn<?, ?> clnClienteCompras;
+    
 
     @FXML
     public void trocarTelaEstoqueFuncionario(){
