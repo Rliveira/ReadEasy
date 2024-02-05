@@ -1,11 +1,10 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ControladorVenda;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,37 +56,37 @@ public class AdmHistoricoComprasEVendasController {
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnAutorCompras;
 
     @FXML
-    private TableColumn<LivroVendido, String> clnAutorVendas;
+    private TableColumn<VendaDTO, String> clnAutorVendas;
 
     @FXML
-    private TableColumn<LivroVendido, String> clnClienteVendas;
+    private TableColumn<VendaDTO, String> clnClienteVendas;
 
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate> clnDataCompra;
 
     @FXML
-    private TableColumn<LivroVendido, LocalDateTime> clnDataVenda;
+    private TableColumn<VendaDTO, LocalDate> clnDataVenda;
 
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnFornecedorCompras;
 
     @FXML
-    private TableColumn<LivroVendido, String> clnFornecedorVendas;
+    private TableColumn<VendaDTO, String> clnFornecedorVendas;
 
     @FXML
-    private TableColumn<LivroVendido, Integer> clnPrecoVendas;
+    private TableColumn<VendaDTO, Double> clnPrecoVendas;
 
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnQuantidadeCompras;
 
     @FXML
-    private TableColumn<LivroVendido, Integer> clnQuantidadeVendas;
+    private TableColumn<VendaDTO, Integer> clnQuantidadeVendas;
 
     @FXML
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnTituloCompras;
 
     @FXML
-    private TableColumn<LivroVendido, String> clnTituloVendas;
+    private TableColumn<VendaDTO, String> clnTituloVendas;
 
     @FXML
     private DatePicker dtpkDataFimCompras;
@@ -108,12 +107,10 @@ public class AdmHistoricoComprasEVendasController {
     private Tab tabVendas;
 
     @FXML
-    private TableView<LivroVendido> tableHistoricoVendas;
+    private TableView<VendaDTO> tableHistoricoVendas;
 
     @FXML
     private TableView<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> tableHistoricoCompras;
-
-    private ObservableList<LivroVendido> listaVendas;
 
     //Métodos de troca de tela:
     @FXML
@@ -159,31 +156,25 @@ public class AdmHistoricoComprasEVendasController {
     }
 
 
-    protected ObservableList<LivroVendido> ListaVendas(LocalDate dataInicio, LocalDate dataFim) {
+    protected ObservableList<VendaDTO> ListaVendas(LocalDate dataInicio, LocalDate dataFim) {
 
-        List<Venda> vendas = ServidorReadEasy.getInstance().HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
-        listaVendas = FXCollections.observableArrayList();
-        List<LivroVendido> livrosVendidos = new ArrayList<>();
-        for (Venda venda : vendas) {
-            livrosVendidos.addAll(venda.getLivrosVendidos());
-            listaVendas.addAll(livrosVendidos);
-        }
-
+        List<VendaDTO> vendas = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(dataInicio, dataFim);
+        ObservableList<VendaDTO> listaVendas = FXCollections.observableArrayList();
+        listaVendas.addAll(vendas);
         return listaVendas;
     }
 
     @FXML
-    protected void onBtnPesquisarVendasClick(ActionEvent event) { //FIXME - provavelmente isso tá errado
+    protected void onBtnPesquisarVendasClick(ActionEvent event) {
 
-        listaVendas = ListaVendas(dtpkDataInicioVendas.getValue(), dtpkDataFimVendas.getValue());
-        clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivro().getTitulo()));
-        clnAutorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivro().getAutor()));
-        clnFornecedorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivro()
-                .getFornecedor().getNome()));
-        clnClienteVendas.setCellValueFactory(new PropertyValueFactory<>("cliente")); //TODO: tenho que dar um jeito de pegar o cliente e a data
-        clnDataVenda.setCellValueFactory(new PropertyValueFactory<>("dataEHora"));
-        clnQuantidadeVendas.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getLivro().getQuantidade()).asObject());
-        clnPrecoVendas.setCellValueFactory(param -> new SimpleIntegerProperty((int) param.getValue().getLivro().getPreco()).asObject());
+        ObservableList<VendaDTO> listaVendas = ListaVendas(dtpkDataInicioVendas.getValue(), dtpkDataFimVendas.getValue());
+        clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getTitulo()));
+        clnAutorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getAutor()));
+        clnFornecedorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getFornecedor().getNome()));
+        clnClienteVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getClienteDTO().getNome()));
+        clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataVendaDTO()));
+        clnQuantidadeVendas.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidadeDTO()).asObject());
+        clnPrecoVendas.setCellValueFactory(param -> new SimpleDoubleProperty((int) param.getValue().getLivroDTO().getPreco()).asObject());
         tableHistoricoVendas.setItems(listaVendas);
 
     }

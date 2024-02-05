@@ -331,5 +331,8 @@ public class ServidorReadEasy {
     {
         return controladorVenda.listarComprasDTO(cliente);
     }
+
+    public List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim){return controladorVenda.listarVendasLivrariaDTO(dataInicio, dataFim);}
+
 }
 

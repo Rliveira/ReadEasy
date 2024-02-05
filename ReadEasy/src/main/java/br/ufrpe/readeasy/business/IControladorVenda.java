@@ -21,6 +21,9 @@ public interface IControladorVenda
     List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     List<Venda> listarVendas();
     List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException;
+
+    List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim);
+
     Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
     Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);

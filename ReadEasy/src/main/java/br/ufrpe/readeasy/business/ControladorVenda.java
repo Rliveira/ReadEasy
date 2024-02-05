@@ -7,6 +7,7 @@ import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ControladorVenda implements IControladorVenda
@@ -137,6 +138,26 @@ public class ControladorVenda implements IControladorVenda
             }
         }
 
+        return historicoCompras;
+    }
+
+    @Override
+    public List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim) {
+        List<VendaDTO> historicoCompras = new ArrayList<>();
+
+        // obtém o histórico de compras do cliente
+        List<Venda> historicoVendas = repoVenda.HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
+
+        // converte as vendas do histórico para objetos CompraDTO
+        for (Venda venda : historicoVendas) {
+            for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
+                Livro livro = livroVendido.getLivro();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataVenda = venda.getDataEHora().toLocalDate();
+                VendaDTO vendaDTO = new VendaDTO(livro, livroVendido.getQuantidade(), venda.getCliente() ,dataVenda);
+                historicoCompras.add(vendaDTO);
+            }
+        }
         return historicoCompras;
     }
 
