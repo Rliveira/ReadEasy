@@ -79,10 +79,10 @@ public class Promocao {
     }
 
     public boolean isAtiva() {
-        if (LocalDate.now().isAfter(getDataDeExpiracao())) {
+        if (this.ativa && LocalDate.now().isAfter(getDataDeExpiracao())) {
             setAtiva(false);
         }
-        return isAtiva();
+        return this.ativa;
     }
 
     @Override

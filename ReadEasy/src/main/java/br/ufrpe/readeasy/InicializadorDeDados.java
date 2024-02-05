@@ -3,6 +3,7 @@ package br.ufrpe.readeasy;
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ControladorLivro;
 import br.ufrpe.readeasy.business.ControladorUsuario;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class InicializadorDeDados {
         Livro livro6 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor2);
         Livro livro7 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3);
         Livro livro8 = new Livro("Guerra e paz", "Liev Tolstói", 10, fornecedor3);
+
 
         ControladorLivro controladorLivro = ControladorLivro.getInstance();
         try {

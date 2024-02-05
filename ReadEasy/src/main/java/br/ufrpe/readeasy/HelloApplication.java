@@ -16,7 +16,7 @@ public class HelloApplication extends Application {
         TesteHistóricoCompraEVenda.InicializarTesteHistóricoCompraEVenda();
         InicializadorDeDados.inicializarDados();
         ServidorReadEasy.getInstance().cadastrarAdmInicial();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("funcionarioHistoricoComprasEVendas.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admCRUDPromocoes.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setMinWidth(1200);
         stage.setMinHeight(700);

@@ -2,14 +2,12 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Promocao;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.PromocaoExistenteException;
-import br.ufrpe.readeasy.exceptions.PromocaoInexistenteException;
-import br.ufrpe.readeasy.exceptions.PromocaoInseridaComSucessoException;
-import br.ufrpe.readeasy.exceptions.PromocaoNulaException;
+import br.ufrpe.readeasy.exceptions.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -83,6 +81,8 @@ public class AdmCRUDPromocoesController {
     @FXML
     private TableColumn<Promocao, LocalDate> clnDtFim;
 
+    private boolean editMode = false;
+
     //Métodos de troca de tela:
     @FXML
     public void trocarTelaEstoqueAdm(){
@@ -136,6 +136,7 @@ public class AdmCRUDPromocoesController {
         int qtdMinimaDeLivros = Integer.parseInt(tfQuantidadeMinimaDeLivros.getText());;
         LocalDate dataDeCriacao = dtpDataDeInicioDaPromocao.getValue();
         LocalDate dataDeExpiracao = dtpDataDeExpiracaoDaPromocao.getValue();
+
         boolean ativa = true;
 
         Promocao promocao = new Promocao(titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,dataDeExpiracao, ativa);
@@ -143,7 +144,6 @@ public class AdmCRUDPromocoesController {
             ServidorReadEasy.getInstance().inserirPromocao(promocao);
 
             List<Promocao> promocoesAtivas = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
-            promocoesAtivas.add(promocao);
 
             tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoesAtivas));
 
@@ -163,12 +163,6 @@ public class AdmCRUDPromocoesController {
             alert.setTitle("Erro no preenchimento de dados");
             alert.setHeaderText(null);
             alert.setContentText("Promoção nula.");
-            alert.showAndWait();
-        } catch (PromocaoInseridaComSucessoException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Cadastro de Promocao");
-            alert.setHeaderText(null);
-            alert.setContentText("Promocao cadastrada com sucesso!");
             alert.showAndWait();
         }
     }
@@ -206,16 +200,41 @@ public class AdmCRUDPromocoesController {
         Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
 
         if (promocaoSelecionada != null) {
+            if (!editMode) {
+                // Se não estiver no modo de edição, preencha os campos com os dados da promoção
+                tfTitulo.setText(promocaoSelecionada.getTitulo());
+                tfPorcentagemDeDesconto.setText(String.valueOf(promocaoSelecionada.getPorcentagemDeDesconto()));
+                tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocaoSelecionada.getQtdMinimaDeLivros()));
+                dtpDataDeInicioDaPromocao.setValue(promocaoSelecionada.getDataDeCriacao());
+                dtpDataDeExpiracaoDaPromocao.setValue(promocaoSelecionada.getDataDeExpiracao());
 
-            tfTitulo.setText(promocaoSelecionada.getTitulo());
-            tfPorcentagemDeDesconto.setText(String.valueOf(promocaoSelecionada.getPorcentagemDeDesconto()));
-            tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocaoSelecionada.getQtdMinimaDeLivros()));
-            dtpDataDeInicioDaPromocao.setValue(promocaoSelecionada.getDataDeCriacao());
-            dtpDataDeExpiracaoDaPromocao.setValue(promocaoSelecionada.getDataDeExpiracao());
+                btnAdicionar.setDisable(true);
+                btnDeletar.setDisable(true);
+                editMode = true;  // Altera para o modo de edição
+            } else {
+                // Se estiver no modo de edição, capture os dados alterados e atualize a promoção
+                String novoTitulo = tfTitulo.getText();
+                int novaPorcentagem = Integer.parseInt(tfPorcentagemDeDesconto.getText());
+                int novaQuantidade = Integer.parseInt(tfQuantidadeMinimaDeLivros.getText());
+                LocalDate novaDataInicio = dtpDataDeInicioDaPromocao.getValue();
+                LocalDate novaDataFim = dtpDataDeExpiracaoDaPromocao.getValue();
 
+                try {
+                    ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
+                            novaQuantidade, novaDataInicio, novaDataFim, true);
+                } catch (PromocaoNulaException e) {
+                    System.out.println("Promoção nula");
+                } catch (PromocaoInexistenteException e) {
+                    System.out.println("Promoção inexistente");
+                }
 
-            btnAdicionar.setDisable(true);
-            btnDeletar.setDisable(true);
+                // Volte ao estado inicial
+                btnAdicionar.setDisable(false);
+                btnDeletar.setDisable(false);
+                editMode = false;  // Sai do modo de edição
+
+                this.initialize();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aviso");
@@ -226,6 +245,8 @@ public class AdmCRUDPromocoesController {
     }
     @FXML
     public void initialize() {
+
+        List<Promocao> promocoesAtivas = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
 
         clnTitulo.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
@@ -240,7 +261,7 @@ public class AdmCRUDPromocoesController {
         });
         clnQtdMin.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
-            int qtdMin = promocao.getPorcentagemDeDesconto();
+            int qtdMin = promocao.getQtdMinimaDeLivros();
             return new SimpleIntegerProperty(qtdMin).asObject();
         });
 
@@ -252,11 +273,10 @@ public class AdmCRUDPromocoesController {
 
         clnDtFim.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
-            LocalDate dtFim = promocao.getDataDeCriacao();
+            LocalDate dtFim = promocao.getDataDeExpiracao();
             return new SimpleObjectProperty<>(dtFim);
         });
 
-        List<Promocao> promocoesAtivas = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
         tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoesAtivas));
 
         tbvPromocoesAtivas.setRowFactory(tv -> {

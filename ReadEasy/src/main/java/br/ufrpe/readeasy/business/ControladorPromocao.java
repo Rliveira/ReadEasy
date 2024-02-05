@@ -24,8 +24,7 @@ public class ControladorPromocao implements IControladorPromocao{
     }
 
 
-    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException, PromocaoNulaException,
-            PromocaoInseridaComSucessoException{
+    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException, PromocaoNulaException {
         if(promocao != null){
             if(!repPromocoes.existePromocao(promocao.getId())){
                 if (!promocao.getTitulo().isEmpty() && promocao.getPorcentagemDeDesconto() >= 0 &&
@@ -35,7 +34,7 @@ public class ControladorPromocao implements IControladorPromocao{
                         promocao.setId(repPromocoes.gerarId());
                     }while (repPromocoes.existePromocao(promocao.getId()));
                     repPromocoes.inserir(promocao);
-                    throw new PromocaoInseridaComSucessoException();
+
                 }
 
             }else{
@@ -61,7 +60,7 @@ public class ControladorPromocao implements IControladorPromocao{
 
     public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
                                   int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-            throws PromocaoNulaException, PromocaoInexistenteException, PromocaoAtualizadaException {
+            throws PromocaoNulaException, PromocaoInexistenteException {
 
         if (promocao != null) {
             if (repPromocoes.existePromocao(promocao.getId())) {
@@ -82,7 +81,6 @@ public class ControladorPromocao implements IControladorPromocao{
 
                 repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,
                         dataDeExpiracao, ativa);
-                throw new PromocaoAtualizadaException();
 
             }else{
                 throw new PromocaoInexistenteException(promocao.getTitulo());

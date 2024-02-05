@@ -223,8 +223,7 @@ public class ServidorReadEasy {
     }
 
 
-    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException,
-            PromocaoNulaException, PromocaoInseridaComSucessoException {
+    public void inserirPromocao(Promocao promocao) throws PromocaoNulaException, PromocaoExistenteException {
         controladorPromocao.inserirPromocao(promocao);
     }
 
@@ -234,7 +233,7 @@ public class ServidorReadEasy {
 
     public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
                           LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-            throws PromocaoNulaException, PromocaoInexistenteException, PromocaoAtualizadaException {
+            throws PromocaoNulaException, PromocaoInexistenteException {
         controladorPromocao.atualizarPromocao(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros,
                 dataDeCriacao, dataDeExpiracao, ativa);
     }

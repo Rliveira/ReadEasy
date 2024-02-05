@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TesteHistóricoCompraEVenda {
     public static void InicializarTesteHistóricoCompraEVenda() {
-        System.out.println("TesteHistóricoCompraEVenda");
+
         ServidorReadEasy servidor = ServidorReadEasy.getInstance();
         Fornecedor fornecedor = new Fornecedor("Fornecedor 1", "098876865",
                 LocalDate.of(1909, 1, 1), "forn", "1234",
@@ -22,6 +22,10 @@ public class TesteHistóricoCompraEVenda {
                 LocalDate.of(1990, 1, 1), "forn", "1234",
                 new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"),
                 "12312314", TipoFornecedor.DISTRIBUIDORA_DE_LIVRO);
+
+        Promocao promocao1 = new Promocao("promoção 1", 10, 5, LocalDate.now(), LocalDate.now().plusDays(10), true);
+        Promocao promocao2 = new Promocao("promoção 2", 20, 7, LocalDate.now(), LocalDate.now().plusDays(30), true);
+
         try{
             servidor.cadastrarUsuario(fornecedor);
             servidor.adicionarLivro(new Livro("O Pequeno Príncipe", "Antoine de Saint-Exupéry", 20.00, fornecedor));
@@ -68,7 +72,6 @@ public class TesteHistóricoCompraEVenda {
             servidor.inserirVenda(venda2);
             servidor.atualizarVenda(venda2, (Cliente)servidor.procurarUsuario("1234512390"), new ArrayList<LivroVendido>(List.of(livroVendido2,livroVendido4, livroVendido5)));
 
-            System.out.println("Histórico de vendas:");
 
             SessaoUsuario.setUsuarioLogado(fornecedor);
 
@@ -118,5 +121,14 @@ public class TesteHistóricoCompraEVenda {
         } catch (GeneroExistenteException e) {
             throw new RuntimeException(e);
         }
+
+        try{
+            servidor.inserirPromocao(promocao1);
+            servidor.inserirPromocao(promocao2);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
+
 }
