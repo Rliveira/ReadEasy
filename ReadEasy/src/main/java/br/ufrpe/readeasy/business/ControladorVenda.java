@@ -185,4 +185,24 @@ public class ControladorVenda implements IControladorVenda
     public double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
         return repoVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
+
+    @Override
+    public int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return repoVenda.calcularTotalDeVendasDiarias(dataEHoraInicio, dataEHoraFim);
+    }
+
+    @Override
+    public Map<LocalDate, Integer> listarLivrosVendidosPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return repoVenda.listarNumeroDeLivrosVendidosPorData(dataEHoraInicio, dataEHoraFim);
+    }
+
+    @Override
+    public Map<LocalDate, Integer> listarVendasPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return repoVenda.listarNumeroDeVendasPorData(dataEHoraInicio, dataEHoraFim);
+    }
+
+    @Override
+    public Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return repoVenda.listarLucroPorData(dataEHoraInicio, dataEHoraFim);
+    }
 }

@@ -288,7 +288,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -312,7 +312,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -326,7 +326,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -344,7 +344,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -363,7 +363,7 @@ public class AdmLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -391,7 +391,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -407,7 +407,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -424,7 +424,7 @@ public class AdmLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -456,7 +456,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -477,7 +477,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -492,7 +492,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -509,7 +509,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -527,7 +527,7 @@ public class AdmLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -559,7 +559,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -574,12 +574,11 @@ public class AdmLivrosController {
                     DialogPane dialogPane = alert.getDialogPane();
                     dialogPane.getStyleClass().add("my-alert-style");
 
-
                     ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -594,7 +593,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -609,7 +608,7 @@ public class AdmLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -642,7 +641,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -656,7 +655,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -672,7 +671,7 @@ public class AdmLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -687,7 +686,7 @@ public class AdmLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -702,7 +701,7 @@ public class AdmLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -826,7 +825,6 @@ public class AdmLivrosController {
     public void setFornecedores(List<Fornecedor> fornecedores) {
         this.fornecedores = fornecedores;
     }
-
 
     public List<Genero> getGeneros() {
         return generos;

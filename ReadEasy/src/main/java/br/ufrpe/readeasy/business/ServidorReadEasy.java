@@ -306,7 +306,7 @@ public class ServidorReadEasy {
 
     public double calcularTotalLucroEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
     {
-        return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
+        return controladorVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
 
 
@@ -332,6 +332,22 @@ public class ServidorReadEasy {
     }
 
     public List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim){return controladorVenda.listarVendasLivrariaDTO(dataInicio, dataFim);}
+
+    public int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return controladorVenda.calcularTotalDeVendasDiarias(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public Map<LocalDate, Integer> listarLivrosVendidosPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return controladorVenda.listarLivrosVendidosPorData(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public Map<LocalDate, Integer> listarVendasPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return controladorVenda.listarVendasPorData(dataEHoraInicio, dataEHoraFim);
+    }
+
+    public Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        return controladorVenda.listarLucroPorData(dataEHoraInicio, dataEHoraFim);
+    }
 
 }
 
