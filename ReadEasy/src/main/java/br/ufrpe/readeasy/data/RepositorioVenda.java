@@ -202,7 +202,7 @@ public class RepositorioVenda implements IRepositorioVenda
         for (Venda venda : vendas) {
             LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
 
-            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) && dataEHoraDaVenda.isEqual(dataEHoraFim) &&
+            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
             (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
 
                 for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
@@ -211,5 +211,95 @@ public class RepositorioVenda implements IRepositorioVenda
             }
         }
         return livrosVendidosNoIntervalo;
+    }
+
+    @Override
+    public int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
+        int totalVendas = 0;
+
+        for (Venda venda : vendas) {
+            LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
+
+            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
+                    (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
+                totalVendas++;
+            }
+        }
+
+        return  totalVendas;
+    }
+
+
+    @Override
+    public Map<LocalDate, Integer> listarNumeroDeLivrosVendidosPorData(LocalDateTime dataEHoraInicio,
+                                                                       LocalDateTime dataEHoraFim){
+        Map<LocalDate, Integer> totalLivrosPorData = new HashMap<>();
+        LocalDate datainicio = dataEHoraInicio.toLocalDate();
+
+        // Inicializa o mapa com todas as datas do intervalo e valores 0
+        while (!datainicio.isAfter(dataEHoraFim.toLocalDate())) {
+            totalLivrosPorData.put(datainicio, 0);
+            datainicio = datainicio.plusDays(1);
+        }
+
+        for (Venda venda : vendas){
+            LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
+
+            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
+                    (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
+
+                for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
+                    LocalDate dataDaVenda = dataEHoraDaVenda.toLocalDate();
+                    totalLivrosPorData.put(dataDaVenda, totalLivrosPorData.getOrDefault(dataDaVenda, 0)
+                            + livroVendido.getQuantidade());
+                }
+            }
+        }
+        return totalLivrosPorData;
+    }
+
+    @Override
+    public Map<LocalDate, Integer> listarNumeroDeVendasPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        Map<LocalDate, Integer> totalVendasPorData = new HashMap<>();
+        LocalDate datainicio = dataEHoraInicio.toLocalDate();
+
+        // Inicializa o mapa com todas as datas do intervalo e valores 0
+        while (!datainicio.isAfter(dataEHoraFim.toLocalDate())) {
+            totalVendasPorData.put(datainicio, 0);
+            datainicio = datainicio.plusDays(1);
+        }
+
+        for (Venda venda : vendas) {
+            LocalDateTime dataEHoraDaVenda = venda.getDataEHora().toLocalDate().atStartOfDay();
+
+            if ((dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
+                    (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim)))) {
+                totalVendasPorData.put(dataEHoraDaVenda.toLocalDate(), totalVendasPorData.getOrDefault(dataEHoraDaVenda.toLocalDate(), 0) + 1);
+            }
+        }
+        return totalVendasPorData;
+    }
+
+    @Override
+    public Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
+        Map<LocalDate, Double> totalLucroPorData = new HashMap<>();
+        LocalDate datainicio = dataEHoraInicio.toLocalDate();
+
+        // Inicializa o mapa com todas as datas do intervalo e valores 0
+        while (!datainicio.isAfter(dataEHoraFim.toLocalDate())) {
+            totalLucroPorData.put(datainicio, 0.0);
+            datainicio = datainicio.plusDays(1);
+        }
+
+        for (Venda venda : vendas) {
+            LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
+
+            if (dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
+                    (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
+                double lucroDaVenda = venda.calcularTotal();
+                totalLucroPorData.put(dataEHoraDaVenda.toLocalDate(), totalLucroPorData.getOrDefault(dataEHoraDaVenda.toLocalDate(), 0.0) + lucroDaVenda);
+            }
+        }
+        return totalLucroPorData;
     }
 }
