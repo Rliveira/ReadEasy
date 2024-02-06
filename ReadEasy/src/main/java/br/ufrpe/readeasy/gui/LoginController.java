@@ -18,7 +18,7 @@ public class LoginController {
     @FXML
     private TextField tfUsuario;
     @FXML
-    private TextField tfSenha;
+    private PasswordField pfSenha;
     @FXML
     private Label lblCadastreSe;
     @FXML
@@ -29,7 +29,7 @@ public class LoginController {
     {   boolean excecaoLevantada = false;
         List<Usuario> users = ServidorReadEasy.getInstance().listarUsuarios();
         String login = tfUsuario.getText();
-        String senha = tfSenha.getText();
+        String senha = pfSenha.getText();
 
         try
         {
@@ -41,7 +41,7 @@ public class LoginController {
                     if(login.equals(users.get(i).getLogin()) && senha.equals(users.get(i).getSenha()))
                     {
                         usuarioLogadoSucesso = users.get(i);
-                        tfSenha.clear();
+                        pfSenha.clear();
                         tfUsuario.clear();
                     }
                 }
