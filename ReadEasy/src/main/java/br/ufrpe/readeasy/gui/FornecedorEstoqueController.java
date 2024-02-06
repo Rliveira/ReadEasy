@@ -1,8 +1,16 @@
 package br.ufrpe.readeasy.gui;
 
+import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.beans.Usuario;
+import br.ufrpe.readeasy.business.ServidorReadEasy;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.util.List;
 
 public class FornecedorEstoqueController {
 
@@ -16,9 +24,9 @@ public class FornecedorEstoqueController {
     private Button btnSair;
 
     @FXML
-    private TableView<Livro> tbEstoqueLivrosFornecedor;
+    private TableView<Livro> tvEstoqueLivrosFornecedor;
     @FXML
-    private TableColumn<Livro, String> colLivro;
+    private TableColumn<Livro, String> colTitulo;
     @FXML
     private TableColumn<Livro, String> colAutor;
     @FXML
@@ -40,6 +48,52 @@ public class FornecedorEstoqueController {
     }
 
     //Outros métodos:
+    public void initialize(){
+        construirTabela();
+        inicializarTabela();
+    }
+
+    @FXML
+    private void construirTabela(){
+        colTitulo.setCellValueFactory(cellData -> {
+            Livro livro = cellData.getValue();
+            String titulo = livro.getTitulo();
+            return new SimpleStringProperty(titulo);
+        });
+
+        colAutor.setCellValueFactory(cellData -> {
+            Livro livro = cellData.getValue();
+            String autor = livro.getAutor();
+            return new SimpleStringProperty(autor);
+        });
+
+        colQuantidade.setCellValueFactory(cellData -> {
+            Livro livro = cellData.getValue();
+            Integer quantidade = livro.getQuantidade();
+            return new SimpleIntegerProperty(quantidade).asObject();
+        });
+    }
+
+    @FXML
+    private void inicializarTabela(){
+        Usuario usuario = SessaoUsuario.getUsuarioLogado();
+        if(usuario instanceof Fornecedor){
+            Fornecedor fornecedor = (Fornecedor) usuario ;
+            ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+            List<Livro> listaDeLivrosFornecedor = servidorReadEasy.listarLivrosPorFornecedor(fornecedor);
+
+            if(listaDeLivrosFornecedor.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Atenção!");
+                alert.setHeaderText("Não existe nenhum livro associado a sua conta para que você" +
+                        " possa visualizar o estoque de livros.");
+                alert.setContentText("Entre em contato como o gerente ou funcionário" +
+                        " da livraria para que ele associe um livro solucionar esse problema.");
+            }
+            tvEstoqueLivrosFornecedor.setItems(FXCollections.observableArrayList(listaDeLivrosFornecedor));
+        }
+    }
+
     public void SairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");

@@ -116,10 +116,10 @@
                      </children>
                   </HBox>
                   <VBox prefHeight="30.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                  <TableView fx:id="tbEstoqueLivrosFornecedor" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tvEstoqueLivrosFornecedor" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="colLivro" minWidth="0.0" prefWidth="100.0" text="Livro" />
-                        <TableColumn fx:id="ColAutor" minWidth="0.0" prefWidth="100.0" text="Autor" />
+                        <TableColumn fx:id="colTitulo" minWidth="0.0" prefWidth="100.0" text="Livro" />
+                        <TableColumn fx:id="colAutor" minWidth="0.0" prefWidth="100.0" text="Autor" />
                         <TableColumn fx:id="colQuantidade" prefWidth="100.0" text="Quantidade" />
                      </columns>
                      <VBox.margin>
