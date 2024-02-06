@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.LoginController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.LoginController">
    <children>
       <VBox prefHeight="600.0" prefWidth="500.0" styleClass="corDeFundo" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
          <children>
@@ -91,7 +91,7 @@
                   <Pane prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
                   <VBox prefHeight="100.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox prefHeight="45.0" prefWidth="360.0">
+                        <HBox prefHeight="45.0" prefWidth="360.0" VBox.vgrow="ALWAYS">
                            <children>
                               <FontAwesomeIcon glyphName="USER" size="25" wrappingWidth="25.0">
                                  <HBox.margin>
@@ -119,7 +119,7 @@
                                     </LinearGradient>
                                  </fill>
                               </FontAwesomeIcon>
-                              <TextField fx:id="tfUsuario" prefHeight="30.0" prefWidth="280.0" promptText="Usuário" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="tfUsuario" prefHeight="32.0" prefWidth="300.0" promptText="Usuário" stylesheets="@css/Style.css" HBox.hgrow="SOMETIMES">
                                  <HBox.margin>
                                     <Insets left="3.0" />
                                  </HBox.margin>
@@ -133,7 +133,7 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox prefHeight="45.0" prefWidth="360.0">
+                        <HBox prefHeight="45.0" prefWidth="360.0" VBox.vgrow="ALWAYS">
                            <children>
                               <FontAwesomeIcon glyphName="LOCK" selectionEnd="0" size="25" wrappingWidth="25.0">
                                  <HBox.margin>
@@ -161,7 +161,7 @@
                                     </LinearGradient>
                                  </fill>
                               </FontAwesomeIcon>
-                              <PasswordField fx:id="pfSenha" prefHeight="30.0" prefWidth="337.0" promptText="Senha" styleClass="textFieldDesign" stylesheets="@css/Style.css">
+                              <PasswordField fx:id="pfSenha" prefHeight="30.0" prefWidth="300.0" promptText="Senha" styleClass="textFieldDesign" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets top="8.0" />
                                  </HBox.margin>
