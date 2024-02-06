@@ -22,9 +22,9 @@ public class InicializadorDeDados {
         TipoFornecedor tipoFornecedor1 = TipoFornecedor.DOADOR_ANONIMO;
         TipoFornecedor tipoFornecedor2 = TipoFornecedor.DISTRIBUIDORA_DE_LIVRO;
         TipoFornecedor tipoFornecedor3 = TipoFornecedor.ESCRITOR_INDEPENDENTE;
-        Fornecedor fornecedor1 = new Fornecedor("Jão", "1234567", dataNasc,"Jvfrost", "1234" ,endereco1, "91234-5678", tipoFornecedor1);
-        Fornecedor fornecedor2 = new Fornecedor("lulu", "123456", dataNasc,"luluKillerPig123", "1234" ,endereco2, "98765-4321", tipoFornecedor2);
-        Fornecedor fornecedor3 = new Fornecedor("Ronyzito", "1234568", dataNasc,"ronald wesley", "1234" ,endereco3, "98765-4321", tipoFornecedor3);
+        Fornecedor fornecedor1 = new Fornecedor("Jão", "1234567", dataNasc,"Jvfrost", "1234" ,endereco1, "912345678", tipoFornecedor1);
+        Fornecedor fornecedor2 = new Fornecedor("lulu", "123456", dataNasc,"luluKillerPig123", "1234" ,endereco2, "987654321", tipoFornecedor2);
+        Fornecedor fornecedor3 = new Fornecedor("Ronyzito", "1234568", dataNasc,"ronald wesley", "1234" ,endereco3, "987654321", tipoFornecedor3);
 
         Livro livro1 = new Livro("Memórias póstumas De Brás Cubas", "Machado De Assis", 30, fornecedor1);
         Livro livro2 = new Livro("Harry Potter e as relíquias da morte", "Jk roling", 20, fornecedor1);

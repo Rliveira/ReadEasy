@@ -31,7 +31,7 @@ public class RepositorioLivro implements IRepositorioLivro {
     @Override
     public void cadastrarLivro(Livro livro) throws LivroExistenteException {
         if (!this.livros.contains(livro)) {
-            if(!verificarLivrosComTitulosIguais(livro.getTitulo(), livro)){
+            if(!verificarLivrosComTitulosIguais(livro)){
                 this.livros.add(livro);
             }
             else{
@@ -58,11 +58,10 @@ public class RepositorioLivro implements IRepositorioLivro {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
-            if(livros.get(i).getTitulo().equals(titulo) && !livros.get(i).getId().equals(livro.getId())){
+            if(verificarLivrosComTitulosIguais(livro)){
                 throw new LivroExistenteException();
             }
-            else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())
-                    && verificarLivrosComTitulosIguais(titulo, livro)){
+            else if (livros.get(i).getId().equals(livro.getId()) && verificarLivrosComTitulosIguais(livro)){
                 throw new LivroExistenteException();
             }
             else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())){
@@ -305,11 +304,11 @@ public class RepositorioLivro implements IRepositorioLivro {
         return lista;
     }
 
-    private boolean verificarLivrosComTitulosIguais(String nomeLivro, Livro livro){
+    private boolean verificarLivrosComTitulosIguais(Livro livro){
         boolean temtituloIgual = false;
 
         for (int i = 0; i < livros.size() && !temtituloIgual; i++){
-            if(livros.get(i).getTitulo().equals(nomeLivro)){
+            if(livros.get(i).getTitulo().equals(livro.getTitulo())){
                 if(!livros.get(i).getId().equals(livro.getId())){
                     temtituloIgual = true;
                 }
