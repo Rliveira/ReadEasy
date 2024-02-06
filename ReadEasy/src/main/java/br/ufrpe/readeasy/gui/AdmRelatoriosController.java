@@ -19,6 +19,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AdmRelatoriosController {
 
@@ -328,33 +329,6 @@ public class AdmRelatoriosController {
         bcDados.getData().add(series);
     }
 
-    private void configurarExibicaoDosDados(XYChart.Series<String, Number> series, Map<LocalDate, ? extends Number> dados) {
-        switch (getPeriodoDeAnalise()) {
-            case "Mensal", "Anos anteriores":
-                for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
-                    series.getData().add(new XYChart.Data<>(entry.getKey().format(DateTimeFormatter.ofPattern("dd/MM")), entry.getValue()));
-                }
-                break;
-            case "Ano atual":
-                Map<Integer, Double> dadosMensais = new HashMap<>();
-                int mesAtual = LocalDate.now().getMonthValue();
-
-                for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
-                    int entryMonth = entry.getKey().getMonthValue();
-                    double entryValue = entry.getValue() != null ? entry.getValue().doubleValue() : 0.0;
-
-                    if (entryMonth <= mesAtual && entryValue != 0) {
-                        dadosMensais.put(entryMonth, dadosMensais.getOrDefault(entryMonth, 0.0) + entryValue);
-                    }
-                }
-
-                for (Map.Entry<Integer, Double> entry : dadosMensais.entrySet()) {
-                    series.getData().add(new XYChart.Data<>(String.valueOf(entry.getKey()), entry.getValue()));
-                }
-                break;
-        }
-    }
-
     @FXML
     private void inicializarTvUsuariosQueMaisCompram() {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
@@ -653,58 +627,99 @@ public class AdmRelatoriosController {
         }
     }
 
+    private void configurarExibicaoDosDados(XYChart.Series<String, Number> series, Map<LocalDate, ? extends Number> dados) {
+        switch (getPeriodoDeAnalise()) {
+            case "Mensal", "Anos anteriores":
+                for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
+                    series.getData().add(new XYChart.Data<>(entry.getKey().format(DateTimeFormatter.ofPattern("dd/MM")), entry.getValue()));
+                }
+                break;
+            case "Ano atual":
+                Map<Integer, Double> dadosMensais = new HashMap<>();
+                int mesAtual = LocalDate.now().getMonthValue();
 
+                for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
+                    int entryMonth = entry.getKey().getMonthValue();
+                    double entryValue = entry.getValue() != null ? entry.getValue().doubleValue() : 0.0;
+
+                    if (entryMonth <= mesAtual && entryValue != 0) {
+                        dadosMensais.put(entryMonth, dadosMensais.getOrDefault(entryMonth, 0.0) + entryValue);
+                    }
+                }
+
+                for (Map.Entry<Integer, Double> entry : dadosMensais.entrySet()) {
+                    series.getData().add(new XYChart.Data<>(String.valueOf(entry.getKey()), entry.getValue()));
+                }
+                break;
+        }
+    }
 
     private void pesquisarCategoria(String categoria, LocalDateTime dataHoraInicio, LocalDateTime dataEHoraFim){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
 
         switch (categoria){
             case "Quantidade de livros":
-                setDadosPorData1(null);
-                setDadosPorData1(servidorReadEasy.listarLivrosVendidosPorData(dataHoraInicio, dataEHoraFim));
+                Map<LocalDate, Integer> livrosPorData = servidorReadEasy.listarLivrosVendidosPorData(dataHoraInicio, dataEHoraFim);
+                livrosPorData = new TreeMap<>(livrosPorData);
+                setDadosPorData1(livrosPorData);
                 break;
             case "N° de vendas":
-                setDadosPorData1(null);
-                setDadosPorData1(servidorReadEasy.listarVendasPorData(dataHoraInicio, dataEHoraFim));
+                Map<LocalDate, Integer> vendasPorData = servidorReadEasy.listarVendasPorData(dataHoraInicio, dataEHoraFim);
+                vendasPorData = new TreeMap<>(vendasPorData);
+                setDadosPorData1(vendasPorData);
                 break;
             case "Faturamento":
-                setDadosPorData2(null);
-                setDadosPorData2(servidorReadEasy.listarLucroPorData(dataHoraInicio, dataEHoraFim));
+                Map<LocalDate, Double> lucroPorData = servidorReadEasy.listarLucroPorData(dataHoraInicio, dataEHoraFim);
+                lucroPorData = new TreeMap<>(lucroPorData);
+                setDadosPorData2(lucroPorData);
                 break;
         }
     }
 
     public String converterParaIngles(String mesEmPortugues) {
+        String mes = "";
+
         switch (mesEmPortugues.toLowerCase()) {
             case "janeiro":
-                return "January";
+                mes = "January";
+                break;
             case "fevereiro":
-                return "February";
+                mes = "February";
+                break;
             case "março":
-                return "March";
+                mes = "March";
+                break;
             case "abril":
-                return "April";
+                mes = "April";
+                break;
             case "maio":
-                return "May";
+                mes = "May";
+                break;
             case "junho":
-                return "June";
+                mes = "June";
+                break;
             case "julho":
-                return "July";
+                mes = "July";
+                break;
             case "agosto":
-                return "August";
+                mes = "August";
+                break;
             case "setembro":
-                return "September";
+                mes = "September";
+                break;
             case "outubro":
-                return "October";
+                mes = "October";
+                break;
             case "novembro":
-                return "November";
+                mes = "November";
+                break;
             case "dezembro":
-                return "December";
-            default:
-                // Retornar o próprio valor se não houver correspondência
-                return mesEmPortugues;
+                mes = "December";
+                break;
         }
+        return mes;
     }
+
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
@@ -727,16 +742,8 @@ public class AdmRelatoriosController {
     }
 
     //gets and sets:
-    public Map<LocalDate, Integer> getDadosPorData1() {
-        return dadosPorData1;
-    }
-
     public void setDadosPorData1(Map<LocalDate, Integer> dadosPorData1) {
         this.dadosPorData1 = dadosPorData1;
-    }
-
-    public Map<LocalDate, Double> getDadosPorData2() {
-        return dadosPorData2;
     }
 
     public void setDadosPorData2(Map<LocalDate, Double> dadosPorData2) {
