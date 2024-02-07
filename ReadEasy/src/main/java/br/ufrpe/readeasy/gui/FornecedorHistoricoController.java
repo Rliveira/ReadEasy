@@ -85,7 +85,7 @@ public class FornecedorHistoricoController {
         return listaCompras;
     }
 
-    public void onBtnPesquisarClick() { 
+    public void onBtnPesquisarClick() {
         if (SessaoUsuario.getUsuarioLogado() instanceof Fornecedor){
             try {
                 Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = getVendas((Fornecedor) SessaoUsuario.getUsuarioLogado(), dtpkDataInicio.getValue(), dtpkDataFim.getValue());

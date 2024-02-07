@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IControladorUsuario {
+    void cadastrarAdmInicial();
+
     void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException,
             DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException;
     void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException;

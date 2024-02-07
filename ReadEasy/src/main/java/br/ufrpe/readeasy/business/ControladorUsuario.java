@@ -21,6 +21,26 @@ public class ControladorUsuario implements IControladorUsuario{
         }
         return instance;
     }
+
+    @Override
+    public void cadastrarAdmInicial(){
+        if (!repUsuario.existeUsuario("12384274165")) {
+            try {
+                Funcionario admInicial = new Funcionario("Lucas Albuquerque", "12384274165",
+                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
+                        new Endereco(59624712, "Rua Fictícia", "Bairro",
+                                "Cidade", "Estado"), "81991969420", true, null);
+                this.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
+                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
+                        new Endereco(59624712, "Rua Fictícia", "Bairro",
+                                "Cidade", "Estado"), "81991969420", true, admInicial));
+            } catch (UsuarioNuloException | UsuarioExistenteException | TipoUsuarioInvalidoException |
+                     CampoVazioException | MenorDeIdadeException | DataInvalidaException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+    }
+
     @Override
     public void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException,
             DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException {

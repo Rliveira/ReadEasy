@@ -1,6 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
 import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
@@ -10,7 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class AdmPerfilController {
@@ -163,7 +166,8 @@ public class AdmPerfilController {
         if (usuarioLogado != null) {
             lblNome.setText(usuarioLogado.getNome());
             lblCPF.setText(usuarioLogado.getCpf());
-            lblData.setText(usuarioLogado.getDataNascimento().toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            lblData.setText(usuarioLogado.getDataNascimento().format(formatter));
             lblUsuario.setText(usuarioLogado.getLogin());
             lblSenha.setText(usuarioLogado.getSenha());
             lblRua.setText(usuarioLogado.getEndereco().getRua());
@@ -176,23 +180,60 @@ public class AdmPerfilController {
     }
 
     @FXML
-    protected void onBtnEditarPerfilClick() { //FIXME: Não está atualizando os dados do usuário
+    protected void onBtnEditarPerfilClick() {
+        System.out.println(usuarioLogado);
         String nome = txtFNome.getText();
+        if (nome.isEmpty()) {
+            nome = usuarioLogado.getNome();
+        }
         String cpf = txtFCpf.getText();
+        if (cpf.isEmpty()) {
+            cpf = usuarioLogado.getCpf();
+            System.out.println(cpf);
+        }
         String usuario = txtFusuario.getText();
+        if (usuario.isEmpty()) {
+            usuario = usuarioLogado.getLogin();
+        }
         String senha = txtFSenha.getText();
+        if (senha.isEmpty()) {
+            senha = usuarioLogado.getSenha();
+        }
         String rua = txtFRua.getText();
+        if (rua.isEmpty()) {
+            rua = usuarioLogado.getEndereco().getRua();
+        }
         String bairro = txtFBairro.getText();
+        if (bairro.isEmpty()) {
+            bairro = usuarioLogado.getEndereco().getBairro();
+        }
         String cidade = txtFCidade.getText();
+        if (cidade.isEmpty()) {
+            cidade = usuarioLogado.getEndereco().getCidade();
+        }
         String estado = txtFEstado.getText();
+        if (estado.isEmpty()) {
+            estado = usuarioLogado.getEndereco().getEstado();
+        }
         String cep = txtFCep.getText();
+        if (cep.isEmpty()) {
+            cep = String.valueOf(usuarioLogado.getEndereco().getCep());
+            System.out.println(cep);
+        }
         String telefone = txtFTelefone.getText();
+        if (telefone.isEmpty()) {
+            telefone = usuarioLogado.getTelefone();
+            System.out.println(telefone);
+        }
         LocalDate dataNascimento = dtPckData.getValue();
+        if (dataNascimento == null) {
+            dataNascimento = usuarioLogado.getDataNascimento();
+        }
 
-        if (!validarInputTf(cep) || !validarInputTf(telefone)) {
+        if (!validarInputTf(cep) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
-            alert.setHeaderText("Campo de telefone ou CEP apresenta letras ou caracteres especiais");
+            alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
             alert.setContentText("Digite apenas números para continuar");
             ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
             alert.getButtonTypes().setAll(buttonType);
@@ -207,8 +248,9 @@ public class AdmPerfilController {
 
         Endereco endereco = new Endereco(Integer.parseInt(cep), rua, bairro, cidade, estado);
         try {
-            ServidorReadEasy.getInstance().atualizarFuncionario(this.usuarioLogado, nome, cpf, dataNascimento,
-                    usuario, senha, endereco, telefone, true, null);
+            Funcionario funcionario = (Funcionario) this.usuarioLogado;
+            ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
+                    usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
         } catch (TipoUsuarioInvalidoException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -240,6 +282,7 @@ public class AdmPerfilController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+        this.atualizarLabels();
     }
 
     @FXML

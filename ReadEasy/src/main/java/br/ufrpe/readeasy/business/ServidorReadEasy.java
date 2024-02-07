@@ -35,21 +35,7 @@ public class ServidorReadEasy {
     }
 
     public void cadastrarAdmInicial(){
-        if (!controladorUsuario.existeUsuario("12384274165")) {
-            try {
-                Funcionario admInicial = new Funcionario("Lucas Albuquerque", "12384274165",
-                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
-                        new Endereco(59624712, "Rua Fictícia", "Bairro",
-                                "Cidade", "Estado"), "(81)99196-9420", true, null);
-                controladorUsuario.cadastrarUsuario(new Funcionario("Lucas Albuquerque", "12384274165",
-                        LocalDate.of(2000, 1, 1), "admin", "admin1234",
-                        new Endereco(59624712, "Rua Fictícia", "Bairro",
-                        "Cidade", "Estado"), "(81)99196-9420", true, admInicial));
-            } catch (UsuarioNuloException | UsuarioExistenteException | TipoUsuarioInvalidoException |
-                    CampoVazioException | MenorDeIdadeException | DataInvalidaException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        }
+        controladorUsuario.cadastrarAdmInicial();
     }
 
     public void cadastrarUsuario(Usuario usuario) throws UsuarioNuloException, UsuarioExistenteException,

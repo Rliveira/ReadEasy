@@ -68,10 +68,10 @@ public class ClienteCadastroController{
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtpkDataNascimento.getValue();
 
-        if (!validarInputTf(cep) || !validarInputTf(telefone)) {
+        if (!validarInputTf(cep) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
-            alert.setHeaderText("Campo de telefone ou CEP apresenta letras ou caracteres especiais");
+            alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
             alert.setContentText("Digite apenas números para continuar");
             ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
             alert.getButtonTypes().setAll(buttonType);
