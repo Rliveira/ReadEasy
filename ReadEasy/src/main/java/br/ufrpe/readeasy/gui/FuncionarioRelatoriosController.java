@@ -61,6 +61,9 @@ public class FuncionarioRelatoriosController {
     @FXML
     private ComboBox<String> cbMesOuAno;
 
+    @FXML
+    private Label lblRanking;
+
     //Métodos de troca de tela:
 
     @FXML
@@ -100,16 +103,19 @@ public class FuncionarioRelatoriosController {
         inicializarTvUsuariosQueMaisGastam();
         inicializarTvUsuariosQueMaisCompram();
         inicializarBcRankingComDadosDoMesAtual();
+        lblRanking.setText("Ranking de livros de " + LocalDate.now());
     }
 
     @FXML
     private void inicializarCbCategoriaEPeriodo(){
+        cbPeriodo.getItems().clear();
         cbPeriodo.getItems().addAll("Mensal" , "Ano atual");
         cbMesOuAno.setDisable(true);
     }
     @FXML
     private void inicializarCbPeriodo(){
         String periodoSelecionado = cbPeriodo.getValue();
+        cbMesOuAno.getItems().clear();
 
         if(periodoSelecionado.equals("Mensal")){
             cbMesOuAno.setDisable(false);
@@ -303,35 +309,47 @@ public class FuncionarioRelatoriosController {
     }
 
     public String converterParaIngles(String mesEmPortugues) {
+        String mes = "";
+
         switch (mesEmPortugues.toLowerCase()) {
             case "janeiro":
-                return "January";
+                mes = "January";
+                break;
             case "fevereiro":
-                return "February";
+                mes = "February";
+                break;
             case "março":
-                return "March";
+                mes = "March";
+                break;
             case "abril":
-                return "April";
+                mes = "April";
+                break;
             case "maio":
-                return "May";
+                mes = "May";
+                break;
             case "junho":
-                return "June";
+                mes = "June";
+                break;
             case "julho":
-                return "July";
+                mes = "July";
+                break;
             case "agosto":
-                return "August";
+                mes = "August";
+                break;
             case "setembro":
-                return "September";
+                mes = "September";
+                break;
             case "outubro":
-                return "October";
+                mes = "October";
+                break;
             case "novembro":
-                return "November";
+                mes = "November";
+                break;
             case "dezembro":
-                return "December";
-            default:
-                // Retornar o próprio valor se não houver correspondência
-                return mesEmPortugues;
+                mes = "December";
+                break;
         }
+        return mes;
     }
 
     public void btnSairDaConta(){

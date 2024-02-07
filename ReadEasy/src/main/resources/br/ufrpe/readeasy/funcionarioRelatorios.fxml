@@ -133,7 +133,7 @@
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                      <children>
                         <Pane prefHeight="62.0" prefWidth="77.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                        <Label prefHeight="30.0" prefWidth="210.0" text="Ranking de livros" textFill="WHITE">
+                        <Label fx:id="lblRanking" prefHeight="30.0" prefWidth="210.0" text="Ranking de livros" textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
                            </font>

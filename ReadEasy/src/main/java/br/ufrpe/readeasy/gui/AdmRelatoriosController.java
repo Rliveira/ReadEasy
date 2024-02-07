@@ -138,6 +138,7 @@ public class AdmRelatoriosController {
     //outros métodos:
     @FXML
     public void initialize(){
+        limparComboBox();
         inicializarLabels();
         inicializarCbCategoriaEPeriodo();
         inicializarBcRankingComDadosDoMesAtual();
@@ -167,8 +168,19 @@ public class AdmRelatoriosController {
         lblFaturamentoDiario.setText(faturamentoFormatado);
     }
 
+    private void limparComboBox(){
+        cbCategoria.getItems().clear();
+        cbPeriodo1.getItems().clear();
+        cbPeriodo2.getItems().clear();
+        cbMesOuAno1.getItems().clear();
+        cbCategoria.getItems().clear();
+        cbMes.getItems().clear();
+        cbMes2.getItems().clear();
+    }
+
     @FXML
     private void inicializarCbCategoriaEPeriodo(){
+
         cbCategoria.getItems().addAll("Quantidade de livros", "N° de vendas", "Faturamento");
         cbPeriodo1.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores");
         cbPeriodo2.getItems().addAll("Mensal" , "Ano atual");
