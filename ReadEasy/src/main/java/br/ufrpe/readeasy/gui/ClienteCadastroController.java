@@ -15,7 +15,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class ClienteCadastroController implements Initializable {
+public class ClienteCadastroController{
 
     @FXML
     private Button btnCadastrar;
@@ -133,7 +133,4 @@ public class ClienteCadastroController implements Initializable {
         return inputTf.matches("\\d+");
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
 }

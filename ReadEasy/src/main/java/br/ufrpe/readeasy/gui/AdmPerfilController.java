@@ -13,7 +13,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class AdmPerfilController implements Initializable {
+public class AdmPerfilController {
 
     @FXML
     private Button btnEditarPerfil;
@@ -154,8 +154,7 @@ public class AdmPerfilController implements Initializable {
     }
 
     //Outros métodos:
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
         this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
         this.atualizarLabels();
     }
@@ -177,7 +176,7 @@ public class AdmPerfilController implements Initializable {
     }
 
     @FXML
-    protected void onBtnEditarPerfilClick() {
+    protected void onBtnEditarPerfilClick() { //FIXME: Não está atualizando os dados do usuário
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
         String usuario = txtFusuario.getText();

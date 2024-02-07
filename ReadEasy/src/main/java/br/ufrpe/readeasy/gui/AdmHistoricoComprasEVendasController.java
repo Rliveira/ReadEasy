@@ -165,7 +165,7 @@ public class AdmHistoricoComprasEVendasController {
     }
 
     @FXML
-    protected void onBtnPesquisarVendasClick(ActionEvent event) {
+    protected void onBtnPesquisarVendasClick() {
 
         ObservableList<VendaDTO> listaVendas = ListaVendas(dtpkDataInicioVendas.getValue(), dtpkDataFimVendas.getValue());
         clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getTitulo()));
@@ -200,7 +200,7 @@ public class AdmHistoricoComprasEVendasController {
     }
 
     @FXML
-    protected void onBtnPesquisarComprasClick(ActionEvent event) {
+    protected void onBtnPesquisarComprasClick() {
 
         Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = ListaCompras(dtpkDataInicioCompras.getValue(), dtpkDataFimCompras.getValue());
 
@@ -250,6 +250,7 @@ public class AdmHistoricoComprasEVendasController {
     }
 
     public void initialize() {
-
+        this.onBtnPesquisarComprasClick();
+        this.onBtnPesquisarVendasClick();
     }
 }
