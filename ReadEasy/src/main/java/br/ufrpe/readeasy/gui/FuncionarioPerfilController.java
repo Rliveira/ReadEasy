@@ -39,9 +39,6 @@ public class FuncionarioPerfilController
     private Label labelNomeUsuario;
 
     @FXML
-    private Label labelSenha;
-
-    @FXML
     private Label labelTelefone;
 
     @FXML
@@ -76,7 +73,6 @@ public class FuncionarioPerfilController
                 labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
                 labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
                 labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-                labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
                 labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
                 labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
                 labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
@@ -91,7 +87,6 @@ public class FuncionarioPerfilController
                 labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
                 labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
                 labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-                labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
                 labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
                 labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
                 labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());

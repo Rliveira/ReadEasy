@@ -39,9 +39,6 @@ public class FornecedorPerfilController
     private Label labelNomeUsuario;
 
     @FXML
-    private Label labelSenha;
-
-    @FXML
     private Label labelTelefone;
 
     @FXML
@@ -63,7 +60,6 @@ public class FornecedorPerfilController
     private Label labelEstado;
     public void initialize()
     {
-
         SessaoUsuario.getInstance();
         if(SessaoUsuario.getUsuarioLogado() instanceof Fornecedor)
         {
@@ -72,7 +68,6 @@ public class FornecedorPerfilController
             labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
             labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
             labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-            labelSenha.setText(SessaoUsuario.getUsuarioLogado().getSenha());
             labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
             labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
             labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
@@ -80,7 +75,6 @@ public class FornecedorPerfilController
             labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
             labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
         }
-
     }
 
     //métodos de troca de tela
@@ -119,10 +113,5 @@ public class FornecedorPerfilController
                 alert.close();
             }
         });
-    }
-
-    public void setUsuarioLogado(Usuario usuario)
-    {
-        SessaoUsuario.setUsuarioLogado(usuario);
     }
 }

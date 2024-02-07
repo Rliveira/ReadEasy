@@ -328,7 +328,7 @@ LocalDate dataNascimento = dpDataNascimento.getValue();
 
 if(validarInputTf(cepString) || validarInputTf(telefone)){
     alert.setTitle("Erro");
-    alert.setHeaderText("Campo de telefone ou cep contém letras ou caracteres especiais.");
+    alert.setHeaderText("Campo de telefone, CPF ou cep contém letras ou caracteres especiais.");
     alert.setContentText("Digite apenas números nos campos para continuar.");
 
     ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -366,36 +366,46 @@ else{
     else
     {
         Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
-        if(usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
-                usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
-                || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
+        if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
         {
-            excecaoLevantada = true;
             alert.setTitle("Erro");
             alert.setHeaderText("Edição inválida!");
-            alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    alert.close();
-                }
-            });
+            alert.setContentText("Não é possível editar o ADM Inicial");
+            alert.show();
+            return;
         }
-            try {
-                if(usuario instanceof Funcionario)
+        else
+        {
+            if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                    usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                    || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
+            {
+                excecaoLevantada = true;
+                alert.setTitle("Erro");
+                alert.setHeaderText("Edição inválida!");
+                alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+
+                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(okButton);
+
+                alert.showAndWait().ifPresent(buttonType ->
                 {
-                    if(((Funcionario) usuario).isAdm())
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
+                    {
+                        alert.close();
+                    }
+                });
+            }
+            try {
+                if (usuario instanceof Funcionario) {
+                    if (((Funcionario) usuario).isAdm())
                     {
                         ServidorReadEasy.getInstance().atualizarFuncionario(usuario, usuario.getNome(),
                                 usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
                                 usuario.getEndereco(), usuario.getTelefone(), true,
                                 ((Funcionario) usuario).getAdmResponsavel());
                         limparCampos();
-                    }
-                    else
+                    } else
                     {
                         ServidorReadEasy.getInstance().atualizarFuncionario(usuario, usuario.getNome(),
                                 usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
@@ -405,7 +415,7 @@ else{
                     }
                 }
 
-                if(usuario instanceof  Fornecedor)
+                if (usuario instanceof Fornecedor)
                 {
                     ServidorReadEasy.getInstance().atualizarFornecedor(usuario, usuario.getNome(),
                             usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
@@ -413,8 +423,7 @@ else{
                     limparCampos();
                 }
                 onAtualizarTabelaclick();
-            }
-            catch(TipoUsuarioInvalidoException e){
+            } catch (TipoUsuarioInvalidoException e) {
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
                 alert.setHeaderText("Tipo de usuário inválido");
@@ -428,8 +437,7 @@ else{
                         alert.close();
                     }
                 });
-            }
-            catch(DataInvalidaException e){
+            } catch (DataInvalidaException e) {
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
                 alert.setHeaderText("Data Inválida!");
@@ -443,8 +451,7 @@ else{
                         alert.close();
                     }
                 });
-            }
-            catch (UsuarioNuloException e){
+            } catch (UsuarioNuloException e) {
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
                 alert.setHeaderText("Usuário Nulo!");
@@ -458,9 +465,7 @@ else{
                         alert.close();
                     }
                 });
-            }
-
-            catch (UsuarioInexistenteException e){
+            } catch (UsuarioInexistenteException e) {
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
                 alert.setHeaderText("Usuário não existe");
@@ -474,8 +479,7 @@ else{
                         alert.close();
                     }
                 });
-            }
-            catch (UsuarioExistenteException e){
+            } catch (UsuarioExistenteException e) {
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
                 alert.setHeaderText("Usuário existente!");
@@ -491,7 +495,7 @@ else{
                 });
             }
         }
-        if(!excecaoLevantada){
+        if (!excecaoLevantada) {
             onAtualizarTabelaclick();
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setTitle("Sucesso");
@@ -507,6 +511,7 @@ else{
                 }
             });
         }
+    }
     }
 }
 
