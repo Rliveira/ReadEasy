@@ -73,9 +73,6 @@ public class AdmPerfilController {
     private Label lblRua;
 
     @FXML
-    private Label lblSenha;
-
-    @FXML
     private Label lblTelefone;
 
     @FXML
@@ -169,7 +166,6 @@ public class AdmPerfilController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             lblData.setText(usuarioLogado.getDataNascimento().format(formatter));
             lblUsuario.setText(usuarioLogado.getLogin());
-            lblSenha.setText(usuarioLogado.getSenha());
             lblRua.setText(usuarioLogado.getEndereco().getRua());
             lblBairro.setText(usuarioLogado.getEndereco().getBairro());
             lblCidade.setText(usuarioLogado.getEndereco().getCidade());
@@ -251,6 +247,13 @@ public class AdmPerfilController {
             Funcionario funcionario = (Funcionario) this.usuarioLogado;
             ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
                     usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Atualização de perfil");
+            alert.setHeaderText(null);
+            alert.setContentText("Perfil atualizado com sucesso!");
+            alert.showAndWait();
+
         } catch (TipoUsuarioInvalidoException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
