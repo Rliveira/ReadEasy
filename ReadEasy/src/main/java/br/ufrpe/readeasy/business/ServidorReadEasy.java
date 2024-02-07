@@ -218,7 +218,8 @@ public class ServidorReadEasy {
         return controladorVenda.listarVendas();
     }
 
-    public List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
+    public List<Venda> historicoDeComprasDoCliente(Cliente cliente)
+    {
          return controladorVenda.historicoDeComprasDoCliente(cliente);
     }
 

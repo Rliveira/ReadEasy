@@ -20,7 +20,7 @@ public interface IControladorVenda
     List<Venda> historicoDeVendas() throws HistoricoVazioException;
     List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     List<Venda> listarVendas();
-    List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException;
+    List<Venda> historicoDeComprasDoCliente(Cliente cliente);
 
     List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim);
 

@@ -64,7 +64,7 @@ public class ControladorVenda implements IControladorVenda
     }
     @Override
     public void atualizarVenda(Venda venda, Cliente cliente, ArrayList<LivroVendido> livros)
-                                throws VendaInvalidaException, UsuarioInexistenteException, ListaDeLivrosVaziaException
+            throws VendaInvalidaException, UsuarioInexistenteException, ListaDeLivrosVaziaException
     {
         if(!(venda == null))
         {
@@ -107,17 +107,15 @@ public class ControladorVenda implements IControladorVenda
 
 
     @Override
-    public List<Venda> historicoDeComprasDoCliente(Cliente cliente) throws UsuarioNuloException {
-        List<Venda> historicoInterno;
+    public List<Venda> historicoDeComprasDoCliente(Cliente cliente)
+    {
+        List<Venda> historicoInterno= null;
 
         if(cliente != null)
         {
             historicoInterno = repoVenda.historicoDeComprasDoUsuario(cliente);
         }
-        else
-        {
-            throw new UsuarioNuloException();
-        }
+
         return historicoInterno;
     }
 
