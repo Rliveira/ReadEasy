@@ -179,22 +179,22 @@ public void onBtnCadastrarUsuariosclick(ActionEvent event){
             });
         }
         else{
-            Usuario usuario;
-
-            //montagem do usuario:
-            if(tipoUsuarioSelecionado.equals("Administrador")){
-                usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, true,
-                        (Funcionario) SessaoUsuario.getUsuarioLogado());
-            }
-            else if(tipoUsuarioSelecionado.equals("Fornecedor")){
-                TipoFornecedor tipoFornecedor = cbTipoFornecedor.getValue();
-                usuario = new Fornecedor(nome,cpf, dataNascimento,login, senha, endereco, telefone,tipoFornecedor);
-            }
-            else{   //funcionário comum.
-                usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, false,
-                        (Funcionario) SessaoUsuario.getUsuarioLogado());
-            }
             try {
+                Usuario usuario;
+
+                //montagem do usuario:
+                if(tipoUsuarioSelecionado.equals(cargos.get(1))){
+                    usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, true,
+                            (Funcionario) SessaoUsuario.getUsuarioLogado());
+                }
+                else if(tipoUsuarioSelecionado.equals("Fornecedor")){
+                    TipoFornecedor tipoFornecedor = cbTipoFornecedor.getValue();
+                    usuario = new Fornecedor(nome,cpf, dataNascimento,login, senha, endereco, telefone,tipoFornecedor);
+                }
+                else{   //funcionário comum.
+                    usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, false,
+                            (Funcionario) SessaoUsuario.getUsuarioLogado());
+                }
                 servidorReadEasy.cadastrarUsuario(usuario);
             }catch (TipoUsuarioInvalidoException e){
                 excecaoLevantada = true;
@@ -321,6 +321,7 @@ String bairro = txtFieldBairro.getText();
 String cidade = txtFieldCidade.getText();
 String estado = txtFieldEstado.getText();
 String senha = txtFieldSenha.getText();
+TipoFornecedor tipoFornecedor = cbTipoFornecedor.getValue();
 
 String cepString = txtFieldCEP.getText();
 
@@ -342,84 +343,85 @@ if(validarInputTf(cepString) || validarInputTf(telefone)){
 }
 else{
     int cep = 0;
-    if(cepString.isEmpty())
-    {
+    if(cepString.isEmpty()) {
         cep = Integer.parseInt(cepString);
     }
-    Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-
-    String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
-    if(tipoUsuarioSelecionado == null){
-        alert.setTitle("Erro");
-        alert.setHeaderText("Tipo de usuário não selecionado.");
-        alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
-
-        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(okButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                alert.close();
-            }
-        });
-    }
-    else
-    {
-        Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
-        if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
-        {
-            alert.setTitle("Erro");
-            alert.setHeaderText("Edição inválida!");
-            alert.setContentText("Não é possível editar o ADM Inicial");
-            alert.show();
-            return;
-        }
         else
         {
-            if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
-                    usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
-                    || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
-            {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Edição inválida!");
-                alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType ->
-                {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
-                    {
-                        alert.close();
-                    }
-                });
-            }
             try {
+                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+
+                Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
+                if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
+                {
+
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Edição inválida!");
+                    alert.setContentText("Não é possível editar o ADM Inicial");
+                    alert.show();
+                    return;
+                }
+
+                String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
+                if(tipoUsuarioSelecionado == null){
+                    excecaoLevantada = true;
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Tipo de usuário não selecionado.");
+                    alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+
+                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    alert.getButtonTypes().setAll(okButton);
+
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                            alert.close();
+                        }
+                    });
+                }
+
+                if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                        usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                        || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
+                {
+                    excecaoLevantada = true;
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Edição inválida!");
+                    alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+
+                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    alert.getButtonTypes().setAll(okButton);
+
+                    alert.showAndWait().ifPresent(buttonType ->
+                    {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
+                        {
+                            alert.close();
+                        }
+                    });
+                }
                 if (usuario instanceof Funcionario) {
                     if (((Funcionario) usuario).isAdm())
                     {
-                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, usuario.getNome(),
-                                usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
-                                usuario.getEndereco(), usuario.getTelefone(), true,
-                                ((Funcionario) usuario).getAdmResponsavel());
+                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                                cpf, dataNascimento, login, senha,
+                                endereco, telefone, true,
+                                (Funcionario) SessaoUsuario.getUsuarioLogado());
                         limparCampos();
                     } else
                     {
-                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, usuario.getNome(),
-                                usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
-                                usuario.getEndereco(), usuario.getTelefone(), false,
-                                ((Funcionario) usuario).getAdmResponsavel());
+                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                                cpf, dataNascimento, login, senha,
+                                endereco, telefone, false,
+                                (Funcionario) SessaoUsuario.getUsuarioLogado());
                         limparCampos();
                     }
                 }
 
                 if (usuario instanceof Fornecedor)
                 {
-                    ServidorReadEasy.getInstance().atualizarFornecedor(usuario, usuario.getNome(),
-                            usuario.getCpf(), usuario.getDataNascimento(), usuario.getLogin(), usuario.getSenha(),
-                            usuario.getEndereco(), usuario.getTelefone(), ((Fornecedor) usuario).getTipoFornecedor());
+                    ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
+                            cpf, dataNascimento, login, senha,
+                            endereco, telefone, tipoFornecedor);
                     limparCampos();
                 }
                 onAtualizarTabelaclick();
@@ -495,7 +497,8 @@ else{
                 });
             }
         }
-        if (!excecaoLevantada) {
+        if (!excecaoLevantada)
+        {
             onAtualizarTabelaclick();
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setTitle("Sucesso");
@@ -512,8 +515,8 @@ else{
             });
         }
     }
-    }
 }
+
 
 @FXML
 public void onSelecionarItemTVclick(ActionEvent event)
