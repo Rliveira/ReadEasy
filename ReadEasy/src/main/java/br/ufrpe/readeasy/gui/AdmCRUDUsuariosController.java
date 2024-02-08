@@ -327,9 +327,11 @@ String cepString = txtFieldCEP.getText();
 
 LocalDate dataNascimento = dpDataNascimento.getValue();
 
-if(validarInputTf(cepString) || validarInputTf(telefone)){
+if(validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf))
+{
+    excecaoLevantada = true;
     alert.setTitle("Erro");
-    alert.setHeaderText("Campo de telefone, CPF ou cep contém letras ou caracteres especiais.");
+    alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
     alert.setContentText("Digite apenas números nos campos para continuar.");
 
     ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -342,150 +344,27 @@ if(validarInputTf(cepString) || validarInputTf(telefone)){
     });
 }
 else{
-    int cep = 0;
-    if(cepString.isEmpty()) {
-        cep = Integer.parseInt(cepString);
-    }
-        else
-        {
-            try {
-                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+    try {
+        int cep = Integer.parseInt(cepString);
+            Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
 
-                Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
-                if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
-                {
+            Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
+            if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
+            {
 
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Edição inválida!");
-                    alert.setContentText("Não é possível editar o ADM Inicial");
-                    alert.show();
-                    return;
-                }
+                alert.setTitle("Erro");
+                alert.setHeaderText("Edição inválida!");
+                alert.setContentText("Não é possível editar o ADM Inicial");
+                alert.show();
+                return;
+            }
 
-                String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
-                if(tipoUsuarioSelecionado == null){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Tipo de usuário não selecionado.");
-                    alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                            alert.close();
-                        }
-                    });
-                }
-
-                if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
-                        usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
-                        || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
-                {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Edição inválida!");
-                    alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType ->
-                    {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
-                        {
-                            alert.close();
-                        }
-                    });
-                }
-                if (usuario instanceof Funcionario) {
-                    if (((Funcionario) usuario).isAdm())
-                    {
-                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                                cpf, dataNascimento, login, senha,
-                                endereco, telefone, true,
-                                (Funcionario) SessaoUsuario.getUsuarioLogado());
-                        limparCampos();
-                    } else
-                    {
-                        ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                                cpf, dataNascimento, login, senha,
-                                endereco, telefone, false,
-                                (Funcionario) SessaoUsuario.getUsuarioLogado());
-                        limparCampos();
-                    }
-                }
-
-                if (usuario instanceof Fornecedor)
-                {
-                    ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
-                            cpf, dataNascimento, login, senha,
-                            endereco, telefone, tipoFornecedor);
-                    limparCampos();
-                }
-                onAtualizarTabelaclick();
-            } catch (TipoUsuarioInvalidoException e) {
+            String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
+            if(tipoUsuarioSelecionado == null){
                 excecaoLevantada = true;
                 alert.setTitle("Erro");
-                alert.setHeaderText("Tipo de usuário inválido");
-                alert.setContentText("Selecione um tipo de usuário válido para continuar.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        alert.close();
-                    }
-                });
-            } catch (DataInvalidaException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Data Inválida!");
-                alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        alert.close();
-                    }
-                });
-            } catch (UsuarioNuloException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário Nulo!");
-                alert.setContentText("Preencha todos os campos de texto.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        alert.close();
-                    }
-                });
-            } catch (UsuarioInexistenteException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário não existe");
-                alert.setContentText("Este usuário não está cadastrado no sistema;");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        alert.close();
-                    }
-                });
-            } catch (UsuarioExistenteException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário existente!");
-                alert.setContentText("Este usuário já está cadastrado no sistema.");
+                alert.setHeaderText("Tipo de usuário não selecionado.");
+                alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
 
                 ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
                 alert.getButtonTypes().setAll(okButton);
@@ -496,14 +375,58 @@ else{
                     }
                 });
             }
-        }
-        if (!excecaoLevantada)
-        {
+
+            if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                    usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                    || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
+            {
+                excecaoLevantada = true;
+                alert.setTitle("Erro");
+                alert.setHeaderText("Edição inválida!");
+                alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+
+                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(okButton);
+
+                alert.showAndWait().ifPresent(buttonType ->
+                {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
+                    {
+                        alert.close();
+                    }
+                });
+            }
+            if (usuario instanceof Funcionario) {
+                if (((Funcionario) usuario).isAdm())
+                {
+                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                            cpf, dataNascimento, login, senha,
+                            endereco, telefone, true,
+                            (Funcionario) SessaoUsuario.getUsuarioLogado());
+                    limparCampos();
+                } else
+                {
+                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                            cpf, dataNascimento, login, senha,
+                            endereco, telefone, false,
+                            (Funcionario) SessaoUsuario.getUsuarioLogado());
+                    limparCampos();
+                }
+            }
+
+            if (usuario instanceof Fornecedor)
+            {
+                ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
+                        cpf, dataNascimento, login, senha,
+                        endereco, telefone, tipoFornecedor);
+                limparCampos();
+            }
             onAtualizarTabelaclick();
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setTitle("Sucesso");
-            alert.setHeaderText("Edição concluída!");
-            alert.setContentText("Edição de usuário realizada com êxito.");
+        } catch (TipoUsuarioInvalidoException e) {
+            excecaoLevantada = true;
+            alert.setTitle("Erro");
+            alert.setHeaderText("Tipo de usuário inválido");
+            alert.setContentText("Selecione um tipo de usuário válido para continuar.");
 
             ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             alert.getButtonTypes().setAll(okButton);
@@ -513,7 +436,96 @@ else{
                     alert.close();
                 }
             });
-        }
+        } catch (DataInvalidaException e) {
+            excecaoLevantada = true;
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data Inválida!");
+            alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
+
+            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
+                }
+            });
+        } catch (UsuarioNuloException e) {
+            excecaoLevantada = true;
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário Nulo!");
+            alert.setContentText("Preencha todos os campos de texto.");
+
+            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
+                }
+            });
+        } catch (UsuarioInexistenteException e) {
+            excecaoLevantada = true;
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário não existe");
+            alert.setContentText("Este usuário não está cadastrado no sistema;");
+
+            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
+                }
+            });
+        } catch (UsuarioExistenteException e) {
+            excecaoLevantada = true;
+            alert.setTitle("Erro");
+            alert.setHeaderText("Usuário existente!");
+            alert.setContentText("Este usuário já está cadastrado no sistema.");
+
+            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
+                }
+            });
+        } catch (NumberFormatException e)
+    {
+        excecaoLevantada = true;
+        alert.setTitle("Erro");
+        alert.setHeaderText("Campo de cep contém letras ou caracteres especiais.");
+        alert.setContentText("Digite apenas números no campos para continuar.");
+
+        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+            }
+        });
+    }
+
+    }
+    if (!excecaoLevantada)
+    {
+        onAtualizarTabelaclick();
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText("Edição concluída!");
+        alert.setContentText("Edição de usuário realizada com êxito.");
+
+        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+            }
+        });
     }
 }
 
@@ -838,9 +850,17 @@ public void initialize()
     });
 }
 
-private boolean validarInputTf(String inputTf) {
-    return inputTf.matches("\\d");
+public boolean validarInputTf(String input) {
+    // Verifica se a entrada é nula ou vazia
+    if (input == null || input.isEmpty()) {
+        return false; // Retorna false se a entrada for nula ou vazia
+    }
+
+    // Verifica se a entrada contém apenas números
+    // Retorna true se contiver caracteres especiais, caso contrário, retorna false
+    return !input.matches("[0-9]+");
 }
+
 
 //Métodos de troca de tela:
 @FXML
