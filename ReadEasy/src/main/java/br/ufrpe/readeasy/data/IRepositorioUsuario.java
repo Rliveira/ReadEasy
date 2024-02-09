@@ -47,4 +47,5 @@ public interface IRepositorioUsuario {
 
     boolean checarLogin(String login, String senha);
 
+    void salvarArquivo();
 }

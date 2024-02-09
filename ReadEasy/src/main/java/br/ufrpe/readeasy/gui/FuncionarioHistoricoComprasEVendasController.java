@@ -95,8 +95,8 @@ public class FuncionarioHistoricoComprasEVendasController {
     private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnQuantidadeCompras;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate>clnDataDeCompras;
-    
+    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate> clnDataDeCompras;
+
 
     @FXML
     public void trocarTelaEstoqueFuncionario(){
@@ -139,8 +139,6 @@ public class FuncionarioHistoricoComprasEVendasController {
     }
 
     protected Map<Livro, List<Map.Entry<LocalDate, Integer>>> ListaCompras(LocalDate dataInicio, LocalDate dataFim) {
-
-
 
         Map<Livro, List<Map.Entry<LocalDate, Integer>>> listaCompras = new HashMap<>();
         try {

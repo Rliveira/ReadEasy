@@ -6,11 +6,12 @@ import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
 
-public class RepositorioLivro implements IRepositorioLivro {
+public class RepositorioLivro implements IRepositorioLivro, Serializable {
     private static RepositorioLivro instance;
     private List<Livro> livros;
 
@@ -22,7 +23,7 @@ public class RepositorioLivro implements IRepositorioLivro {
     //SINGLETON:
     public static RepositorioLivro getInstance() {
         if (instance == null) {
-            instance = new RepositorioLivro();
+            instance = lerDoArquivo();
         }
         return instance;
     }
@@ -270,7 +271,7 @@ public class RepositorioLivro implements IRepositorioLivro {
         List<Livro> lista = new ArrayList<>();
 
         if(dataInicio == null ){
-           dataInicio = LocalDate.MIN;
+            dataInicio = LocalDate.MIN;
         }
         if(dataFim == null){
             dataFim = LocalDate.now();
@@ -281,17 +282,17 @@ public class RepositorioLivro implements IRepositorioLivro {
         }
 
         for (Livro livro : livros) {
-                Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
+            Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
 
-                for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
-                    LocalDate dataAtualizacao = entry.getKey();
+            for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
+                LocalDate dataAtualizacao = entry.getKey();
 
-                    if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
-                            (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
-                        lista.add(livro);
-                    }
+                if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                        (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+                    lista.add(livro);
                 }
             }
+        }
         return lista;
     }
 
@@ -315,5 +316,55 @@ public class RepositorioLivro implements IRepositorioLivro {
             }
         }
         return temtituloIgual;
+    }
+
+    private static RepositorioLivro lerDoArquivo() {
+        RepositorioLivro instanciaLocal = null;
+
+        File in = new File("RepoLivros.dat");
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream(in);
+            ois = new ObjectInputStream(fis);
+            Object o = ois.readObject();
+            instanciaLocal = (RepositorioLivro) o;
+        } catch (Exception e) {
+            instanciaLocal = new RepositorioLivro();
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {/* Silent exception */
+                }
+            }
+        }
+
+        return instanciaLocal;
+    }
+
+    @Override
+    public void salvarArquivo() {
+        if (instance == null) {
+            return;
+        }
+        File out = new File("RepoLivros.dat");
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream(out);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    /* Silent */}
+            }
+        }
     }
 }

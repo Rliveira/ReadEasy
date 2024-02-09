@@ -1,6 +1,8 @@
 package br.ufrpe.readeasy.beans;
 
-public class Endereco {
+import java.io.Serializable;
+
+public class Endereco implements Serializable {
     private int cep;
     private String rua;
     private String bairro;

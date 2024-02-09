@@ -24,5 +24,6 @@ public interface IRepositorioPromocao {
 
     String gerarId();
 
+    void salvarArquivo();
 }
 

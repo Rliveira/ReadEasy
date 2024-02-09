@@ -32,4 +32,6 @@ public interface IRepositorioLivro {
     Map<Livro, Integer> listarQuantidadeDeEstoque();
 
     Livro buscarLivroPorNome(String titulo);
+
+    void salvarArquivo();
 }

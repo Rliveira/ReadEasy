@@ -48,7 +48,7 @@ public class ClienteMinhasComprasController
     private DatePicker dpDataFim;
 
     @FXML
-    private TableView tvTabelaCompras;
+    private TableView<CompraDTO> tvTabelaCompras;
 
     @FXML
     private TableColumn<CompraDTO, String> colTitulo;
@@ -106,8 +106,7 @@ public class ClienteMinhasComprasController
             tvTabelaCompras.setItems(itensFiltrados);
         } else
         {
-            tvTabelaCompras.setItems(FXCollections.observableArrayList(ServidorReadEasy.getInstance()
-                    .historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado())));
+            tvTabelaCompras.setItems(FXCollections.observableArrayList());
         }
     }
 
@@ -145,40 +144,15 @@ public class ClienteMinhasComprasController
 
     public void construirTabela()
     {
-        colTitulo.setCellValueFactory(cellData ->
-        {
-            CompraDTO compra = cellData.getValue();
-            String titulo = compra.getTituloLivro();
-            return new SimpleStringProperty(titulo);
-        });
+        colTitulo.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTituloLivro()));
 
-        colAutor.setCellValueFactory(cellData ->
-        {
-            CompraDTO compra = cellData.getValue();
-            String autor = compra.getAutorLivro();
-            return new SimpleStringProperty(autor);
-        });
+        colAutor.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAutorLivro()));
 
-        colQTD.setCellValueFactory(cellData ->
-        {
-            CompraDTO compra = cellData.getValue();
-            int qtd = compra.getQuantidade();
-            return new SimpleObjectProperty<>(qtd);
-        });
+        colQTD.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidade()).asObject());
 
-        colPreco.setCellValueFactory(cellData ->
-        {
-            CompraDTO compra = cellData.getValue();
-            double preco = compra.getPreco();
-            return new SimpleObjectProperty<>(preco);
-        });
+        colPreco.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getPreco()).asObject());
 
-        colDataCompra.setCellValueFactory(cellData -> {
-            CompraDTO compra = cellData.getValue();
-            LocalDateTime dataHora = compra.getDataCompra();
-            LocalDate data = dataHora.toLocalDate();
-            return new SimpleObjectProperty<>(data);
-        });
+        colDataCompra.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataCompra().toLocalDate()));
     }
 
     //Métodos de troca de tela:

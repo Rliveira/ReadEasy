@@ -6,13 +6,14 @@ import br.ufrpe.readeasy.beans.LivroVendido;
 import br.ufrpe.readeasy.beans.Venda;
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class RepositorioVenda implements IRepositorioVenda
+public class RepositorioVenda implements IRepositorioVenda, Serializable
 {
     private static IRepositorioVenda instance;
     private ArrayList<Venda> vendas;
@@ -25,7 +26,7 @@ public class RepositorioVenda implements IRepositorioVenda
     {
         if (instance == null)
         {
-            instance = new RepositorioVenda();
+            instance = lerDoArquivo();
         }
         return instance;
     }
@@ -62,10 +63,10 @@ public class RepositorioVenda implements IRepositorioVenda
 
         for (Venda venda: vendas)
         {
-         if(!venda.getCliente().getNome().isEmpty())
-         {
-             historico.add(venda);
-         }
+            if(!venda.getCliente().getNome().isEmpty())
+            {
+                historico.add(venda);
+            }
         }
         historico.sort(Comparator.comparing(Venda::getDataEHora).reversed());
         return historico;
@@ -203,7 +204,7 @@ public class RepositorioVenda implements IRepositorioVenda
             LocalDateTime dataEHoraDaVenda = venda.getDataEHora();
 
             if (dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
-            (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
+                    (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim))) {
 
                 for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
                     livrosVendidosNoIntervalo.add(livroVendido);
@@ -301,5 +302,55 @@ public class RepositorioVenda implements IRepositorioVenda
             }
         }
         return totalLucroPorData;
+    }
+
+    private static RepositorioVenda lerDoArquivo() {
+        RepositorioVenda instanciaLocal = null;
+
+        File in = new File("RepoVenda.dat");
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream(in);
+            ois = new ObjectInputStream(fis);
+            Object o = ois.readObject();
+            instanciaLocal = (RepositorioVenda) o;
+        } catch (Exception e) {
+            instanciaLocal = new RepositorioVenda();
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {/* Silent exception */
+                }
+            }
+        }
+
+        return instanciaLocal;
+    }
+
+    @Override
+    public void salvarArquivo() {
+        if (instance == null) {
+            return;
+        }
+        File out = new File("RepoVenda.dat");
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream(out);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    /* Silent */}
+            }
+        }
     }
 }

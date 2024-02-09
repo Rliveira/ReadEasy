@@ -1,6 +1,8 @@
 package br.ufrpe.readeasy.beans;
 
-public class LivroVendido {
+import java.io.Serializable;
+
+public class LivroVendido implements Serializable {
     private Livro livro;
     private int quantidade;
 
@@ -25,9 +27,9 @@ public class LivroVendido {
     }
 
     public void setLivro(Livro livro) {
-       if (livro != null) {
-           this.livro = livro;
-       }
+        if (livro != null) {
+            this.livro = livro;
+        }
     }
 
     public void setQuantidade(int quantidade) {

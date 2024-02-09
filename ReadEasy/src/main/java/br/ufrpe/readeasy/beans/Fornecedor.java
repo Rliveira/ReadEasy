@@ -1,8 +1,9 @@
 package br.ufrpe.readeasy.beans;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Fornecedor extends Usuario{
+public class Fornecedor extends Usuario implements Serializable {
     private TipoFornecedor tipoFornecedor;
 
     //CONSTRUTOR:

@@ -16,37 +16,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-    public interface IRepositorioVenda {
+public interface IRepositorioVenda {
 
-        void inserirVenda(Venda venda);
+    void inserirVenda(Venda venda);
 
-        void removerVenda(Venda venda);
+    void removerVenda(Venda venda);
 
-        void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros);
+    void atualizarVenda(Venda venda, Cliente cliente, LocalDateTime dataHora, ArrayList<LivroVendido> livros);
 
-        List<Venda> listarVendas();
+    List<Venda> listarVendas();
 
-        List<Venda> historicoDeVendas();
+    List<Venda> historicoDeVendas();
 
-        List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
+    List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
 
-        ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
+    ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
 
-        Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
+    Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
 
-        Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
+    Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
 
-        Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        Map<LocalDate, Integer> listarNumeroDeLivrosVendidosPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    Map<LocalDate, Integer> listarNumeroDeLivrosVendidosPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+    Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
-        Map<LocalDate, Integer> listarNumeroDeVendasPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
-    }
+    Map<LocalDate, Integer> listarNumeroDeVendasPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
+
+    void salvarArquivo();
+}

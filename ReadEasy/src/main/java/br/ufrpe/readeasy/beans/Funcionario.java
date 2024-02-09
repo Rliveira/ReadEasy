@@ -1,10 +1,11 @@
 package br.ufrpe.readeasy.beans;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class Funcionario extends Usuario {
+public class Funcionario extends Usuario implements Serializable {
     private boolean Adm;
     private Funcionario admResponsavel;
 

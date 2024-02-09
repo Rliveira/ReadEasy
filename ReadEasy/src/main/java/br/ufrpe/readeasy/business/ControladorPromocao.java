@@ -34,6 +34,7 @@ public class ControladorPromocao implements IControladorPromocao{
                         promocao.setId(repPromocoes.gerarId());
                     }while (repPromocoes.existePromocao(promocao.getId()));
                     repPromocoes.inserir(promocao);
+                    repPromocoes.salvarArquivo();
 
                 }
 
@@ -50,6 +51,7 @@ public class ControladorPromocao implements IControladorPromocao{
         if(promocao != null){
             if (repPromocoes.existePromocao(promocao.getId())) {
                 repPromocoes.remover(promocao);
+                repPromocoes.salvarArquivo();
             }else{
                 throw new PromocaoInexistenteException(promocao.getTitulo());
             }
@@ -81,6 +83,7 @@ public class ControladorPromocao implements IControladorPromocao{
 
                 repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,
                         dataDeExpiracao, ativa);
+                repPromocoes.salvarArquivo();
 
             }else{
                 throw new PromocaoInexistenteException(promocao.getTitulo());

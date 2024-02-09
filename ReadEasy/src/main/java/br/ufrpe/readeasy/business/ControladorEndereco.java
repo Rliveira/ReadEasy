@@ -35,6 +35,7 @@ public class ControladorEndereco implements IControladorEndereco{
                 if (cliente != null) {
                     cliente.adicionarEndereco(endereco);
                     repEnderecos.adicionarEndereco(endereco);
+                    repEnderecos.salvarArquivo();
                 } else {
                     throw new UsuarioInexistenteException(cpf);
                 }
@@ -54,8 +55,9 @@ public class ControladorEndereco implements IControladorEndereco{
                 if (cliente != null) {
                     cliente.removerEndereco(endereco);
                     repEnderecos.removerEndereco(endereco.getCep());
+                    repEnderecos.salvarArquivo();
                 } else {
-                     throw new UsuarioInexistenteException(cpf);
+                    throw new UsuarioInexistenteException(cpf);
                 }
             }else{
                 throw new EnderecoNuloException(endereco);

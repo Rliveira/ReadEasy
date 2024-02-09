@@ -17,4 +17,6 @@ public interface IRepositorioEndereco {
     public void adicionarEnderecoCliente(String cpf, Endereco endereco);
 
     public void removerEnderecoCliente(String cpf, Endereco endereco);
+
+    void salvarArquivo();
 }

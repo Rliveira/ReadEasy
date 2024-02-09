@@ -1,9 +1,10 @@
 package br.ufrpe.readeasy.beans;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Usuario{
+public abstract class Usuario implements Serializable {
 
     private String nome;
     private String cpf;

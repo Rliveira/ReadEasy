@@ -5,12 +5,13 @@ import br.ufrpe.readeasy.exceptions.TipoUsuarioInvalidoException;
 import br.ufrpe.readeasy.exceptions.UsuarioInexistenteException;
 import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RepositorioUsuario implements IRepositorioUsuario{
+public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
 
     private static IRepositorioUsuario instance;
     private ArrayList<Usuario> usuarios;
@@ -21,7 +22,7 @@ public class RepositorioUsuario implements IRepositorioUsuario{
 
     public static IRepositorioUsuario getInstance(){
         if (instance == null) {
-            instance = new RepositorioUsuario();
+            instance = lerDoArquivo();
         }
         return instance;
     }
@@ -200,6 +201,56 @@ public class RepositorioUsuario implements IRepositorioUsuario{
             }
         }
         return false;
+    }
+
+    private static RepositorioUsuario lerDoArquivo() {
+        RepositorioUsuario instanciaLocal = null;
+
+        File in = new File("RepoUsuarios.dat");
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream(in);
+            ois = new ObjectInputStream(fis);
+            Object o = ois.readObject();
+            instanciaLocal = (RepositorioUsuario) o;
+        } catch (Exception e) {
+            instanciaLocal = new RepositorioUsuario();
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {/* Silent exception */
+                }
+            }
+        }
+
+        return instanciaLocal;
+    }
+
+    @Override
+    public void salvarArquivo() {
+        if (instance == null) {
+            return;
+        }
+        File out = new File("RepoUsuarios.dat");
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream(out);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    /* Silent */}
+            }
+        }
     }
 }
 

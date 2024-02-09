@@ -39,11 +39,13 @@ public class ControladorLivro implements IControladorLivro {
         }
 
         repLivro.cadastrarLivro(livro);
+        repLivro.salvarArquivo();
     }
 
     @Override
     public void removerLivro(Livro livro) throws LivroNaoExistenteException {
         repLivro.removerLivro(livro);
+        repLivro.salvarArquivo();
     }
 
     @Override
@@ -51,6 +53,7 @@ public class ControladorLivro implements IControladorLivro {
             throws PrecoInvalidoException, LivroExistenteException {
         if(preco >= 0){
             repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
+            repLivro.salvarArquivo();
         }
         else{
             throw new PrecoInvalidoException();
@@ -60,11 +63,13 @@ public class ControladorLivro implements IControladorLivro {
     @Override
     public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
         repLivro.adicionarGenero(livro, genero);
+        repLivro.salvarArquivo();
     }
 
     @Override
     public void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException{
         repLivro.removerGenero(livro, genero);
+        repLivro.salvarArquivo();
     }
 
     @Override
@@ -73,6 +78,7 @@ public class ControladorLivro implements IControladorLivro {
 
         if(quantidade > 0){
             repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao);
+            repLivro.salvarArquivo();
         }
         else{
             throw new QuantidadeInvalidaException();
@@ -87,6 +93,7 @@ public class ControladorLivro implements IControladorLivro {
 
         if(quantidade > 0){
             repLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
+            repLivro.salvarArquivo();
         }
         else{
             throw new QuantidadeInvalidaException();

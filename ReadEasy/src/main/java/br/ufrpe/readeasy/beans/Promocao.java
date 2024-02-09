@@ -1,9 +1,10 @@
 package br.ufrpe.readeasy.beans;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Promocao {
+public class Promocao implements Serializable {
 
 
     private String id;

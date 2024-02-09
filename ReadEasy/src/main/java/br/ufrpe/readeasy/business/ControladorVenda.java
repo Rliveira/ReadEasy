@@ -39,6 +39,7 @@ public class ControladorVenda implements IControladorVenda
             if (venda.getCliente()!=null)
             {
                 repoVenda.inserirVenda(venda);
+                repoVenda.salvarArquivo();
             }
             else
             {
@@ -56,6 +57,7 @@ public class ControladorVenda implements IControladorVenda
         if(repoVenda.historicoDeVendas().contains(venda))
         {
             repoVenda.removerVenda(venda);
+            repoVenda.salvarArquivo();
         }
         else
         {
@@ -73,6 +75,7 @@ public class ControladorVenda implements IControladorVenda
                 if (!livros.isEmpty())
                 {
                     repoVenda.atualizarVenda(venda, cliente, venda.getDataEHora(), livros);
+                    repoVenda.salvarArquivo();
 
                 } else throw new ListaDeLivrosVaziaException();
             } else

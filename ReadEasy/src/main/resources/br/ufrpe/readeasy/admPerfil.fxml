@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmPerfilController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmPerfilController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -221,14 +221,6 @@
                                                 <Insets top="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label layoutX="10.0" layoutY="218.0" text="Senha:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
                                           <Label layoutX="10.0" layoutY="258.0" text="Telefone:">
                                              <font>
                                                 <Font name="Tahoma" size="16.0" />
@@ -269,14 +261,6 @@
                                              </VBox.margin>
                                           </Label>
                                           <Label fx:id="lblUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblSenha" layoutX="10.0" layoutY="218.0" text="(senha)">
                                              <font>
                                                 <Font name="Tahoma" size="16.0" />
                                              </font>

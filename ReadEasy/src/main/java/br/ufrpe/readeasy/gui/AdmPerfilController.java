@@ -247,6 +247,7 @@ public class AdmPerfilController {
             Funcionario funcionario = (Funcionario) this.usuarioLogado;
             ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
                     usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
+            this.atualizarLabels();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Atualização de perfil");
@@ -285,7 +286,7 @@ public class AdmPerfilController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
-        this.atualizarLabels();
+
     }
 
     @FXML

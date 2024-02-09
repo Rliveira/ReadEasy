@@ -3,12 +3,13 @@ package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.Promocao;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RepositorioPromocao implements IRepositorioPromocao{
+public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
 
     private static IRepositorioPromocao instance;
     private ArrayList<Promocao> promocoes;
@@ -19,7 +20,7 @@ public class RepositorioPromocao implements IRepositorioPromocao{
 
     public static IRepositorioPromocao getInstance(){
         if (instance == null) {
-            instance = new RepositorioPromocao();
+            instance = lerDoArquivo();
         }
         return instance;
     }
@@ -96,5 +97,55 @@ public class RepositorioPromocao implements IRepositorioPromocao{
         }
 
         return sb.toString();
+    }
+
+    private static RepositorioPromocao lerDoArquivo() {
+        RepositorioPromocao instanciaLocal = null;
+
+        File in = new File("RepoPromocao.dat");
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream(in);
+            ois = new ObjectInputStream(fis);
+            Object o = ois.readObject();
+            instanciaLocal = (RepositorioPromocao) o;
+        } catch (Exception e) {
+            instanciaLocal = new RepositorioPromocao();
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException e) {/* Silent exception */
+                }
+            }
+        }
+
+        return instanciaLocal;
+    }
+
+    @Override
+    public void salvarArquivo() {
+        if (instance == null) {
+            return;
+        }
+        File out = new File("RepoPromocao.dat");
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream(out);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    /* Silent */}
+            }
+        }
     }
 }

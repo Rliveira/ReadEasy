@@ -2,10 +2,11 @@ package br.ufrpe.readeasy.beans;
 
 import br.ufrpe.readeasy.data.RepositorioUsuario;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Cliente extends Usuario{
+public class Cliente extends Usuario implements Serializable {
     private ArrayList<Endereco> enderecosentrega;
 
     //CONSTRUTOR:

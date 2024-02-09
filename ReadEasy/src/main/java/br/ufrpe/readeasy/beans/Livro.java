@@ -1,12 +1,13 @@
 package br.ufrpe.readeasy.beans;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Livro {
+public class Livro implements Serializable {
     private UUID id;
     private String titulo;
     private String autor;
