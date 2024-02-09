@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public interface IRepositorioLivro {
     void cadastrarLivro(Livro livro) throws LivroExistenteException;
     void removerLivro(Livro livro) throws LivroNaoExistenteException;
-    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor) throws LivroExistenteException;
+    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor, URL urlLivro) throws LivroExistenteException;
     void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
     void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao);

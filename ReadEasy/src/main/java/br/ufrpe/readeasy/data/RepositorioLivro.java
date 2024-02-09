@@ -6,6 +6,7 @@ import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class RepositorioLivro implements IRepositorioLivro {
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor) throws LivroExistenteException {
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro) throws LivroExistenteException {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
@@ -69,6 +70,7 @@ public class RepositorioLivro implements IRepositorioLivro {
                 livros.get(i).setAutor(autor);
                 livros.get(i).setPreco(preco);
                 livros.get(i).setFornecedor(fornecedor);
+                livros.get(i).setCapaDoLivro(urlLivro);
                 achou = true;
             }
         }

@@ -3,6 +3,7 @@ package br.ufrpe.readeasy.business;
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -127,9 +128,9 @@ public class ServidorReadEasy {
         controladorLivro.removerLivro(livro);
     }
 
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
             throws PrecoInvalidoException, LivroExistenteException {
-        controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
+        controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, urlLivro);
     }
 
     public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
