@@ -7,6 +7,7 @@ import br.ufrpe.readeasy.data.IRepositorioLivro;
 import br.ufrpe.readeasy.data.RepositorioLivro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +50,10 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
             throws PrecoInvalidoException, LivroExistenteException {
         if(preco >= 0){
-            repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor);
+            repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, urlLivro);
             repLivro.salvarArquivo();
         }
         else{
@@ -111,7 +112,7 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public   List<Livro> listarTodosOslivrosEmOrdemAlfabetica(){
+    public  List<Livro> listarTodosOslivrosEmOrdemAlfabetica(){
         return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
 

@@ -10,8 +10,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class FuncionarioEstoqueController {
     private Button btnRemover;
 
     @FXML
-    private ImageView imCapaLivro;
+    private ImageView ivCapaDoLivro;
 
     @FXML
     private ComboBox<String> cbLivros;
@@ -86,7 +89,6 @@ public class FuncionarioEstoqueController {
     }
 
     //Outros métodos:
-
     public void initialize(){
         inicializarComboBoxLivro();
         construirTabela();
@@ -95,8 +97,10 @@ public class FuncionarioEstoqueController {
 
     @FXML
     private void inicializarComboBoxLivro(){
+        cbLivros.getSelectionModel().clearSelection();
+        cbLivros.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List <Livro>livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
         List<String> titulosLivro = new ArrayList<>();
 
         for (Livro livro : livros){
@@ -329,10 +333,19 @@ public class FuncionarioEstoqueController {
     @FXML
     public void popularCamposDoLivroSelecionadoPelaTabela() {
         Livro livroSelecionado = tvEstoque.getSelectionModel().getSelectedItem();
+        InputStream inputStream;
 
         if (livroSelecionado != null) {
             tfQuantidade.setText(String.valueOf(livroSelecionado.getQuantidade()));
             cbLivros.setValue(livroSelecionado.getTitulo());
+            try {
+                inputStream = livroSelecionado.getCapaDoLivro().openStream();
+            } catch (IOException e) {
+                //excessão inútil que sou forçado a fazer o try catch
+                throw new RuntimeException(e);
+            }
+            Image image = new Image(inputStream);
+            ivCapaDoLivro.setImage(image);
         }
 
     }
@@ -340,7 +353,9 @@ public class FuncionarioEstoqueController {
     private void limparCampos() {
         tfQuantidade.clear();
         cbLivros.getSelectionModel().clearSelection();
+        ivCapaDoLivro.setImage(null);
     }
+
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");

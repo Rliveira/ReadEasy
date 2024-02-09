@@ -102,6 +102,10 @@ public class ClientePerfilController {
         ScreenManager sm = ScreenManager.getInstance();
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
+
+    public void initialize(){
+        //preencher com os métodos para inicializar a tela
+    }
     @FXML
     void btnAtualizarPerfil(ActionEvent event) {
 

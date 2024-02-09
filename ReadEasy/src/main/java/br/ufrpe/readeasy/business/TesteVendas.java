@@ -1,8 +1,5 @@
 package br.ufrpe.readeasy.business;
 
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioVenda;
@@ -10,9 +7,10 @@ import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
 import br.ufrpe.readeasy.exceptions.VendaInvalidaException;
 
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TesteVendas
@@ -42,10 +40,10 @@ public class TesteVendas
         Fornecedor fornecedor3 = new Fornecedor("Americanas", "12122398", LocalDate.now(), "americabbb1",
                 "livros321", end4, "12354657", TipoFornecedor.EDITORA);
 
-        Livro livro1 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor1);
-        Livro livro2 = new Livro("Dragon Ball", "Akira Toriyama", 79.50, fornecedor2);
-        Livro livro3 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3);
-        Livro livro4 = new Livro("Racismo Estrutural", "Silvio Almeida", 95.50, fornecedor2);
+        Livro livro1 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor1, null);
+        Livro livro2 = new Livro("Dragon Ball", "Akira Toriyama", 79.50, fornecedor2, null);
+        Livro livro3 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3, null);
+        Livro livro4 = new Livro("Racismo Estrutural", "Silvio Almeida", 95.50, fornecedor2, null);
 
         LocalDate data1 = LocalDate.of(2023, 3, 15);
         LocalDate data2 = LocalDate.of(2023, 4, 20);

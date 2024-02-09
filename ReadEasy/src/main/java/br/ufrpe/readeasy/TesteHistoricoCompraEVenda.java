@@ -5,13 +5,13 @@ import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.GeneroExistenteException;
 import br.ufrpe.readeasy.gui.SessaoUsuario;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class TesteHistóricoCompraEVenda {
-    public static void InicializarTesteHistóricoCompraEVenda() {
+public class TesteHistoricoCompraEVenda {
+    public static void InicializarTesteHistoricoCompraEVenda() {
 
         ServidorReadEasy servidor = ServidorReadEasy.getInstance();
         Fornecedor fornecedor = new Fornecedor("Fornecedor 1", "098876865",
@@ -26,29 +26,54 @@ public class TesteHistóricoCompraEVenda {
         Promocao promocao1 = new Promocao("promoção 1", 10, 5, LocalDate.now(), LocalDate.now().plusDays(10), true);
         Promocao promocao2 = new Promocao("promoção 2", 20, 7, LocalDate.now(), LocalDate.now().plusDays(30), true);
 
+        String urlS1 = "https://m.media-amazon.com/images/I/71LJ4k-k9hL._SL1500_.jpg";
+        String urlS2 = "https://m.media-amazon.com/images/I/71FxgtFKcQL._SL1500_.jpg";
+        String urlS3 = "https://m.media-amazon.com/images/I/61t0bwt1s3L._SL1000_.jpg";
+        String urlS4 = "https://m.media-amazon.com/images/I/81QuEGw8VPL._SL1500_.jpg";
+        String urlS5 = "https://m.media-amazon.com/images/I/617ZJMlC86L._SL1294_.jpg";
+        String urlS6 = "https://upload.wikimedia.org/wikipedia/pt/7/72/The_Hobbit_Cover.JPG";
+
+        URL url1 = null;
+        URL url2 = null;
+        URL url3 = null;
+        URL url4 = null;
+        URL url5 = null;
+        URL url6 = null;
+
+        try {
+            url1 = new URL(urlS1);
+            url2 = new URL(urlS2);
+            url3 = new URL(urlS3);
+            url4 = new URL(urlS4);
+            url5 = new URL(urlS5);
+            url6 = new URL(urlS6);
+        } catch (MalformedURLException e) {
+            System.out.println("URL mal formada.");
+        }
+
+        Livro livro1 = new Livro("O Pequeno Príncipe", "Antoine de Saint-Exupéry", 20.00, fornecedor, url1);
+        Livro livro2 = new Livro("To Kill a Mockingbird", "Harper Lee", 24.99, fornecedor2, url2);
+        Livro livro3 = new Livro("1984", "George Orwell", 19.99, fornecedor, url3);
+        Livro livro4 = new Livro("The Great Gatsby", "F. Scott Fitzgerald", 29.99, fornecedor, url4);
+        Livro livro5 = new Livro("Harry Potter e a pedra filosfal", "J.K. Rowling", 34.99, fornecedor2, url5);
+        Livro livro6 = new Livro("The Hobbit", "J.R.R. Tolkien", 22.99, fornecedor2, url6);
+
         try{
             servidor.cadastrarUsuario(fornecedor);
-            servidor.adicionarLivro(new Livro("O Pequeno Príncipe", "Antoine de Saint-Exupéry", 20.00, fornecedor));
-            servidor.adicionarLivro(new Livro("To Kill a Mockingbird", "Harper Lee", 24.99, fornecedor2));
-            servidor.adicionarLivro(new Livro("1984", "George Orwell", 19.99, fornecedor));
-            servidor.adicionarLivro(new Livro("The Great Gatsby", "F. Scott Fitzgerald", 29.99, fornecedor));
-            servidor.adicionarLivro(new Livro("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 34.99, fornecedor2));
-            servidor.adicionarLivro(new Livro("The Hobbit", "J.R.R. Tolkien", 22.99, fornecedor2));
+            servidor.cadastrarUsuario(fornecedor2);
+            servidor.adicionarLivro(livro1);
+            servidor.adicionarLivro(livro2);
+            servidor.adicionarLivro(livro3);
+            servidor.adicionarLivro(livro4);
+            servidor.adicionarLivro(livro5);
+            servidor.adicionarLivro(livro6);
 
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("O Pequeno Príncipe"),
-                    10, LocalDate.of(2020, 1, 1));
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("To Kill a Mockingbird"),
-                    19, LocalDate.of(2020, 2, 13));
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("1984"),
-                    20, LocalDate.of(2020, 3, 15));
-
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("The Great Gatsby"), 5,
-                    LocalDate.of(2020, 4, 1));
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("Harry Potter and the Sorcerer's Stone"),
-                    15, LocalDate.of(2020, 5, 1));
-
-            servidor.aumentarQuantidadeEmEstoque(servidor.buscarLivroPorNome("The Hobbit"), 3,
-                    LocalDate.of(2020, 6, 1));
+            servidor.aumentarQuantidadeEmEstoque(livro1, 10, LocalDate.of(2020, 1, 1));
+            servidor.aumentarQuantidadeEmEstoque(livro2, 19, LocalDate.of(2020, 2, 13));
+            servidor.aumentarQuantidadeEmEstoque(livro3, 20, LocalDate.of(2020, 3, 15));
+            servidor.aumentarQuantidadeEmEstoque(livro4, 5, LocalDate.of(2020, 4, 1));
+            servidor.aumentarQuantidadeEmEstoque(livro5, 15, LocalDate.of(2020, 5, 1));
+            servidor.aumentarQuantidadeEmEstoque(livro6, 3, LocalDate.of(2020, 6, 1));
 
             servidor.cadastrarUsuario(new Cliente("Cliente 1", "1234567890",
                     LocalDate.of(1990, 1, 1), "cli", "1234",
@@ -59,19 +84,17 @@ public class TesteHistóricoCompraEVenda {
                     "12312314"));
 
             Venda venda1 = new Venda((Cliente)servidor.procurarUsuario("1234567890"), LocalDateTime.of(2020, 7, 1, 12, 0, 0));
-            LivroVendido livroVendido1 = new LivroVendido(servidor.buscarLivroPorNome("O Pequeno Príncipe"), 2);
-            LivroVendido livroVendido2 = new LivroVendido(servidor.buscarLivroPorNome("To Kill a Mockingbird"), 3);
-            LivroVendido livroVendido3 = new LivroVendido(servidor.buscarLivroPorNome("1984"), 1);
-
-            servidor.inserirVenda(venda1);
-            servidor.atualizarVenda(venda1, (Cliente)servidor.procurarUsuario("1234567890"), new ArrayList<LivroVendido>(List.of(livroVendido1, livroVendido3)));
+            venda1.adicionarLivro(livro1, 2);
+            venda1.adicionarLivro(livro6, 3);
+            venda1.adicionarLivro(livro3, 1);
 
             Venda venda2 = new Venda((Cliente)servidor.procurarUsuario("1234512390"), LocalDateTime.of(2020, 8, 1, 12, 0, 0));
-            LivroVendido livroVendido4 = new LivroVendido(servidor.buscarLivroPorNome("The Great Gatsby"), 1);
-            LivroVendido livroVendido5 = new LivroVendido(servidor.buscarLivroPorNome("Harry Potter and the Sorcerer's Stone"), 2);
-            servidor.inserirVenda(venda2);
-            servidor.atualizarVenda(venda2, (Cliente)servidor.procurarUsuario("1234512390"), new ArrayList<LivroVendido>(List.of(livroVendido2,livroVendido4, livroVendido5)));
+            venda2.adicionarLivro(livro2, 1);
+            venda2.adicionarLivro(livro4, 1);
+            venda2.adicionarLivro(livro5, 2);
 
+            servidor.inserirVenda(venda1);
+            servidor.inserirVenda(venda2);
 
             SessaoUsuario.setUsuarioLogado(fornecedor);
 
@@ -79,13 +102,6 @@ public class TesteHistóricoCompraEVenda {
             System.out.println(e.getMessage());
         }
 
-
-            Livro livro1 = servidor.buscarLivroPorNome("O Pequeno Príncipe");
-            Livro livro2 = servidor.buscarLivroPorNome("To Kill a Mockingbird");
-            Livro livro3 = servidor.buscarLivroPorNome("1984");
-            Livro livro4 = servidor.buscarLivroPorNome("The Great Gatsby");
-            Livro livro5 = servidor.buscarLivroPorNome("Harry Potter and the Sorcerer's Stone");
-            Livro livro6 = servidor.buscarLivroPorNome("The Hobbit");
         Genero genero1 = Genero.ACAO;
         Genero genero2 = Genero.ROMANCE;
         Genero genero3 = Genero.FICCAO_CIENTIFICA;

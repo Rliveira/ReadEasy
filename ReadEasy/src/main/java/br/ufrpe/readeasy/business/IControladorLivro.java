@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.exceptions.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public interface IControladorLivro {
     void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException;
     void removerLivro(Livro livro) throws LivroNaoExistenteException;
-    void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor)
+    void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
             throws LivroExistenteException, PrecoInvalidoException;
     void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;

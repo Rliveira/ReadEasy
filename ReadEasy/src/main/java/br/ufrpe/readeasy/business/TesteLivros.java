@@ -25,14 +25,14 @@ public class TesteLivros {
         Fornecedor fornecedor2 = new Fornecedor("lulu", "123456", dataNasc,"luluKillerPig123", "1234" ,endereco2, "98765-4321", tipoFornecedor2);
         Fornecedor fornecedor3 = new Fornecedor("Ronyzito", "123456", dataNasc,"ronald wesley", "1234" ,endereco3, "98765-4321", tipoFornecedor3);
 
-        Livro livro1 = new Livro("Memórias póstumas De Brás Cubas", "Machado De Assis", 30, fornecedor1);
-        Livro livro2 = new Livro("Harry Potter e a pedra filosofal", "Jk roling", 20, fornecedor1);
-        Livro livro3 = new Livro("As cronicas de narnia o leão", "C.S. Lewis", 70, fornecedor1);
-        Livro livro4 = new Livro("O diário de um banana", "Jeff Kinney", 10, fornecedor2);
-        Livro livro5 = new Livro("Dragon Ball", "Akira Toriyama", 79.50, fornecedor2);
-        Livro livro6 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor2);
-        Livro livro7 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3);
-        Livro livro8 = new Livro("O diário de um banana", "Jeff Kinney", 10, fornecedor3);
+        Livro livro1 = new Livro("Memórias póstumas De Brás Cubas", "Machado De Assis", 30, fornecedor1, null);
+        Livro livro2 = new Livro("Harry Potter e a pedra filosofal", "Jk roling", 20, fornecedor1, null);
+        Livro livro3 = new Livro("As cronicas de narnia o leão", "C.S. Lewis", 70, fornecedor1, null);
+        Livro livro4 = new Livro("O diário de um banana", "Jeff Kinney", 10, fornecedor2, null);
+        Livro livro5 = new Livro("Dragon Ball", "Akira Toriyama", 79.50, fornecedor2, null);
+        Livro livro6 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor2, null);
+        Livro livro7 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3, null);
+        Livro livro8 = new Livro("O diário de um banana", "Jeff Kinney", 10, fornecedor3, null);
 
         ControladorLivro controladorLivro = ControladorLivro.getInstance();
 
@@ -84,7 +84,7 @@ public class TesteLivros {
 
         System.out.println("Versão antiga: " + livro8.getTitulo() + " | " +  livro8.getAutor() + " | " + livro8.getPreco() + " | " + livro8.getFornecedor().getNome());
         try {
-            controladorLivro.atualizarLivro(livro8, "The hobbit", "J. R. R. Tolkien", 50, fornecedor1);
+            controladorLivro.atualizarLivro(livro8, "The hobbit", "J. R. R. Tolkien", 50, fornecedor1, null);
         } catch ( PrecoInvalidoException e) {
             throw new RuntimeException(e);
         } catch (LivroExistenteException e) {

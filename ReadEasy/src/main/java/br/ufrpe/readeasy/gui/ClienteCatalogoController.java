@@ -84,6 +84,10 @@ public class ClienteCatalogoController {
     }
 
     //outros métodos:
+    public void initialize(){
+        //preencher com os métodos para inicializar a tela
+    }
+
 
     @FXML
     void btnAdicionar(ActionEvent event) {

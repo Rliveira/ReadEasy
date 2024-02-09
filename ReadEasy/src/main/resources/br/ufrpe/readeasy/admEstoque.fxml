@@ -178,24 +178,20 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="20.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <Pane prefWidth="512.0" VBox.vgrow="ALWAYS" />
-                        <HBox prefHeight="141.0" prefWidth="512.0">
+                        <Pane prefWidth="352.0" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="175.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: Transparent;" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </Pane>
-                              <VBox prefHeight="179.0" prefWidth="175.0">
+                              <VBox prefHeight="175.0" prefWidth="203.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                  <children>
-                                    <VBox prefHeight="175.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
-                                       <children>
-                                          <ImageView fx:id="ivCapaDoLivro" fitHeight="175.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" />
-                                       </children>
-                                    </VBox>
+                                    <ImageView fx:id="ivCapaDoLivro" fitHeight="200.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
-                              <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                              <Pane prefHeight="175.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <Pane layoutX="10.0" layoutY="72.0" prefHeight="30.0" prefWidth="512.0" />

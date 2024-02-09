@@ -220,25 +220,29 @@ public class FuncionarioRelatoriosController {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
 
-        inicializarBcRankingDeLivros(rankingLivros);
+        inicializarBcRankingDeLivros(rankingLivros, "Livros mais vendidos do mês");
     }
 
     @FXML
-    public void inicializarBcRankingDeLivros(Map<Livro, Integer> rankingLivros) {
+    public void inicializarBcRankingDeLivros(Map<Livro, Integer> rankingLivros, String titutoGraficoX) {
         bcRankingLivros.getData().clear();
-
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
         for (Map.Entry<Livro, Integer> entry : rankingLivros.entrySet()) {
             Livro livro = entry.getKey();
             String tituloLivro = livro.getTitulo();
-            Integer quantidadeVendas = entry.getValue();
 
+            // Limitar o título do livro a 22 caracteres e adicionar reticências se for maior
+            if (tituloLivro.length() > 22) {
+                tituloLivro = tituloLivro.substring(0, 22) + "...";
+            }
+
+            Integer quantidadeVendas = entry.getValue();
             series.getData().add(new XYChart.Data<>(tituloLivro, quantidadeVendas));
         }
 
         bcRankingLivros.getData().add(series);
-        catXLivros.setLabel("Livros Mais vendidos do dia");
+        catXLivros.setLabel(titutoGraficoX);
         catYNumeroDeVendas.setLabel("Quantidade de Vendas");
     }
 
@@ -262,7 +266,7 @@ public class FuncionarioRelatoriosController {
                     ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                     Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
 
-                    inicializarBcRankingDeLivros(rankingLivros);
+                    inicializarBcRankingDeLivros(rankingLivros, "Livros mais vendidos do mês de" + cbMesOuAno.getValue());
                 }
                 else{
                     alert.setTitle("Erro");
@@ -289,7 +293,7 @@ public class FuncionarioRelatoriosController {
                 ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                 Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
 
-                inicializarBcRankingDeLivros(rankingLivros);
+                inicializarBcRankingDeLivros(rankingLivros, "Livros mais vendidos do ano");
             }
         }
         else{
