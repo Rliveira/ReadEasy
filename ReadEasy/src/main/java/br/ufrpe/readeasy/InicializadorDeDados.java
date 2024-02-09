@@ -1,18 +1,19 @@
 package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ControladorLivro;
 import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.business.ControladorVenda;
-import br.ufrpe.readeasy.business.IControladorVenda;
 import br.ufrpe.readeasy.exceptions.*;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InicializadorDeDados {
     public static void inicializarDados(){
+        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         String data = "2001-08-23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataNasc = LocalDate.parse(data, formatter);
@@ -25,27 +26,61 @@ public class InicializadorDeDados {
         Fornecedor fornecedor1 = new Fornecedor("Jão", "1234567", dataNasc,"Jvfrost", "1234" ,endereco1, "912345678", tipoFornecedor1);
         Fornecedor fornecedor2 = new Fornecedor("lulu", "123456", dataNasc,"luluKillerPig123", "1234" ,endereco2, "987654321", tipoFornecedor2);
         Fornecedor fornecedor3 = new Fornecedor("Ronyzito", "1234568", dataNasc,"ronald wesley", "1234" ,endereco3, "987654321", tipoFornecedor3);
-
-        Livro livro1 = new Livro("Memórias póstumas De Brás Cubas", "Machado De Assis", 30, fornecedor1);
-        Livro livro2 = new Livro("Harry Potter e as relíquias da morte", "Jk roling", 20, fornecedor1);
-        Livro livro3 = new Livro("As cronicas de narnia o leão", "C.S. Lewis", 70, fornecedor1);
-        Livro livro4 = new Livro("O diário de um banana", "Jeff Kinney", 10, fornecedor2);
-        Livro livro5 = new Livro("Dragon Ball", "Akira Toriyama", 79.50, fornecedor2);
-        Livro livro6 = new Livro("Yuyu Hakusho", "Yoshihiro Togashi", 29.99, fornecedor2);
-        Livro livro7 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3);
-        Livro livro8 = new Livro("Guerra e paz", "Liev Tolstói", 10, fornecedor3);
+        Funcionario funcionario1 = new Funcionario("Ronyzito", "1234568515", dataNasc,"adm2", "1234" ,endereco3, "987654321", true, null);
+        Funcionario funcionario2 = new Funcionario("Ronyzito", "1234568515", dataNasc,"ronyzito", "1234" ,endereco3, "987654321", false, funcionario1);
 
 
-        ControladorLivro controladorLivro = ControladorLivro.getInstance();
+        String urlS1 = "https://lojasemear.com.br/product_images/u/691/p7733__91582_std.jpg";
+        String urlS2 = "https://m.media-amazon.com/images/I/81PbdwXqKkL._SL1500_.jpg";
+        String urlS3 = "https://m.media-amazon.com/images/I/7158aW38zxL._AC_UF1000,1000_QL80_.jpg";
+        String urlS4 = "https://m.media-amazon.com/images/I/81TmHlRleJL._SL1500_.jpg";
+        String urlS5 = "https://m.media-amazon.com/images/I/71IIA44vw1L._SL1000_.jpg";
+        String urlS6 = "https://m.media-amazon.com/images/I/81uRHF8TGfL._SL1500_.jpg";
+        String urlS7 = "https://m.media-amazon.com/images/I/81ObqL6bR5S._SL1500_.jpg";
+        String urlS8 = "https://m.media-amazon.com/images/I/814J+usGFjL._SL1500_.jpg";
+
+        URL url1 = null;
+        URL url2 = null;
+        URL url3 = null;
+        URL url4 = null;
+        URL url5 = null;
+        URL url6 = null;
+        URL url7 = null;
+        URL url8 = null;
+
         try {
-            controladorLivro.adicionarLivro(livro1);
-            controladorLivro.adicionarLivro(livro2);
-            controladorLivro.adicionarLivro(livro3);
-            controladorLivro.adicionarLivro(livro4);
-            controladorLivro.adicionarLivro(livro5);
-            controladorLivro.adicionarLivro(livro6);
-            controladorLivro.adicionarLivro(livro7);
-            controladorLivro.adicionarLivro(livro8);
+            url1 = new URL(urlS1);
+            url2 = new URL(urlS2);
+            url3 = new URL(urlS3);
+            url4 = new URL(urlS4);
+            url5 = new URL(urlS5);
+            url6 = new URL(urlS6);
+            url7 = new URL(urlS7);
+            url8 = new URL(urlS8);
+
+
+        } catch (MalformedURLException e) {
+            System.out.println("URL mal formada.");
+        }
+
+        Livro livro1 = new Livro("Memórias póstumas De Brás Cubas", "Machado De Assis", 30, fornecedor1, url1);
+        Livro livro2 = new Livro("Harry Potter e as relíquias da morte", "J.K. Rowling", 20, fornecedor1, url2);
+        Livro livro3 = new Livro("As crônicas de narnia o leão, a Feiticeira e o Guarda roupa", "C.S. Lewis", 70, fornecedor1, url3);
+        Livro livro4 = new Livro("Jujutsu Kaisen vol. 1", "Gege Akutami", 10, fornecedor2, url4);
+        Livro livro5 = new Livro("Dragon Ball vol. 1", "Akira Toriyama", 79.50, fornecedor2, url5);
+        Livro livro6 = new Livro("Yuyu Hakusho vol. 1", "Yoshihiro Togashi", 29.99, fornecedor2, url6);
+        Livro livro7 = new Livro("Dom Casmurro", "Machado de Assis", 50, fornecedor3, url7);
+        Livro livro8 = new Livro("Guerra e paz", "Liev Tolstói", 10, fornecedor3, url8);
+
+        try {
+            servidorReadEasy.adicionarLivro(livro1);
+            servidorReadEasy.adicionarLivro(livro2);
+            servidorReadEasy.adicionarLivro(livro3);
+            servidorReadEasy.adicionarLivro(livro4);
+            servidorReadEasy.adicionarLivro(livro5);
+            servidorReadEasy.adicionarLivro(livro6);
+            servidorReadEasy.adicionarLivro(livro7);
+            servidorReadEasy.adicionarLivro(livro8);
         } catch ( PrecoInvalidoException | LivroExistenteException e) {
             System.out.println(e.getMessage());
         }
@@ -53,9 +88,10 @@ public class InicializadorDeDados {
         ControladorUsuario controladorUsuario = ControladorUsuario.getInstance();
 
         try {
-            controladorUsuario.cadastrarUsuario(fornecedor1);
-            controladorUsuario.cadastrarUsuario(fornecedor2);
-            controladorUsuario.cadastrarUsuario(fornecedor3);
+            servidorReadEasy.cadastrarUsuario(fornecedor1);
+            servidorReadEasy.cadastrarUsuario(fornecedor2);
+            servidorReadEasy.cadastrarUsuario(fornecedor3);
+            servidorReadEasy.cadastrarUsuario(funcionario2);
 
         } catch (TipoUsuarioInvalidoException | MenorDeIdadeException | DataInvalidaException | CampoVazioException | UsuarioExistenteException | UsuarioNuloException e) {
             System.out.println(e.getMessage());
@@ -70,40 +106,39 @@ public class InicializadorDeDados {
         Genero genero7 = Genero.TERROR;
         Genero genero8 = Genero.ECONOMIA;
         try {
-            controladorLivro.adicionarGenero(livro1, genero1);
-            controladorLivro.adicionarGenero(livro6, genero2);
-            controladorLivro.adicionarGenero(livro2, genero2);
-            controladorLivro.adicionarGenero(livro3, genero1);
-            controladorLivro.adicionarGenero(livro3, genero2);
-            controladorLivro.adicionarGenero(livro1, genero4);
-            controladorLivro.adicionarGenero(livro1, genero3);
-            controladorLivro.adicionarGenero(livro6, genero1);
-            controladorLivro.adicionarGenero(livro4, genero5);
-            controladorLivro.adicionarGenero(livro5, genero7);
-            controladorLivro.adicionarGenero(livro2, genero4);
-            controladorLivro.adicionarGenero(livro7, genero2);
-            controladorLivro.adicionarGenero(livro8, genero4);
-            controladorLivro.adicionarGenero(livro4, genero6);
-            controladorLivro.adicionarGenero(livro6, genero5);
-            controladorLivro.adicionarGenero(livro6, genero6);
-            controladorLivro.adicionarGenero(livro2, genero3);
-            controladorLivro.adicionarGenero(livro3, genero4);
-            controladorLivro.adicionarGenero(livro3, genero6);
-            controladorLivro.adicionarGenero(livro8, genero8);
-            controladorLivro.adicionarGenero(livro1, genero7);
-            controladorLivro.adicionarGenero(livro5, genero3);
-            controladorLivro.adicionarGenero(livro4, genero2);
-            controladorLivro.adicionarGenero(livro5, genero8);
-            controladorLivro.adicionarGenero(livro1, genero6);
-            controladorLivro.adicionarGenero(livro7, genero8);
-            controladorLivro.adicionarGenero(livro7, genero6);
-            controladorLivro.adicionarGenero(livro1, genero8);
-            controladorLivro.adicionarGenero(livro8, genero1);
-            controladorLivro.adicionarGenero(livro4, genero3);
+            servidorReadEasy.adicionarGenero(livro1, genero1);
+            servidorReadEasy.adicionarGenero(livro6, genero2);
+            servidorReadEasy.adicionarGenero(livro2, genero2);
+            servidorReadEasy.adicionarGenero(livro3, genero1);
+            servidorReadEasy.adicionarGenero(livro3, genero2);
+            servidorReadEasy.adicionarGenero(livro1, genero4);
+            servidorReadEasy.adicionarGenero(livro1, genero3);
+            servidorReadEasy.adicionarGenero(livro6, genero1);
+            servidorReadEasy.adicionarGenero(livro4, genero5);
+            servidorReadEasy.adicionarGenero(livro5, genero7);
+            servidorReadEasy.adicionarGenero(livro2, genero4);
+            servidorReadEasy.adicionarGenero(livro7, genero2);
+            servidorReadEasy.adicionarGenero(livro8, genero4);
+            servidorReadEasy.adicionarGenero(livro4, genero6);
+            servidorReadEasy.adicionarGenero(livro6, genero5);
+            servidorReadEasy.adicionarGenero(livro6, genero6);
+            servidorReadEasy.adicionarGenero(livro2, genero3);
+            servidorReadEasy.adicionarGenero(livro3, genero4);
+            servidorReadEasy.adicionarGenero(livro3, genero6);
+            servidorReadEasy.adicionarGenero(livro8, genero8);
+            servidorReadEasy.adicionarGenero(livro1, genero7);
+            servidorReadEasy.adicionarGenero(livro5, genero3);
+            servidorReadEasy.adicionarGenero(livro4, genero2);
+            servidorReadEasy.adicionarGenero(livro5, genero8);
+            servidorReadEasy.adicionarGenero(livro1, genero6);
+            servidorReadEasy.adicionarGenero(livro7, genero8);
+            servidorReadEasy.adicionarGenero(livro7, genero6);
+            servidorReadEasy.adicionarGenero(livro1, genero8);
+            servidorReadEasy.adicionarGenero(livro8, genero1);
+            servidorReadEasy.adicionarGenero(livro4, genero3);
         } catch (GeneroExistenteException e) {
             throw new RuntimeException(e);
         }
-        IControladorVenda controladorVenda = new ControladorVenda();
 
         Endereco end1 = new Endereco(18460154, "Rua dos Bobos", "Jardel", "Londres", "CE");
         Endereco end2 = new Endereco(18460182, "Rua Bom Jesus", "Recife Antigo", "Recife", "RJ");
@@ -487,119 +522,77 @@ public class InicializadorDeDados {
 
 
         try {
-            controladorVenda.inserirVenda(venda1);
-            controladorVenda.inserirVenda(venda2);
-            controladorVenda.inserirVenda(venda3);
-            controladorVenda.inserirVenda(venda4);
-            controladorVenda.inserirVenda(venda5);
-            controladorVenda.inserirVenda(venda6);
-            controladorVenda.inserirVenda(venda7);
-            controladorVenda.inserirVenda(venda8);
-            controladorVenda.inserirVenda(venda9);
-            controladorVenda.inserirVenda(venda10);
-            controladorVenda.inserirVenda(venda11);
-            controladorVenda.inserirVenda(venda12);
-            controladorVenda.inserirVenda(venda13);
-            controladorVenda.inserirVenda(venda14);
-            controladorVenda.inserirVenda(venda15);
-            controladorVenda.inserirVenda(venda16);
-            controladorVenda.inserirVenda(venda17);
-            controladorVenda.inserirVenda(venda18);
-            controladorVenda.inserirVenda(venda19);
-            controladorVenda.inserirVenda(venda20);
-            controladorVenda.inserirVenda(venda21);
-            controladorVenda.inserirVenda(venda22);
-            controladorVenda.inserirVenda(venda23);
-            controladorVenda.inserirVenda(venda24);
-            controladorVenda.inserirVenda(venda25);
-            controladorVenda.inserirVenda(venda26);
-            controladorVenda.inserirVenda(venda27);
-            controladorVenda.inserirVenda(venda28);
-            controladorVenda.inserirVenda(venda29);
-            controladorVenda.inserirVenda(venda30);
-            controladorVenda.inserirVenda(venda31);
-            controladorVenda.inserirVenda(venda32);
-            controladorVenda.inserirVenda(venda33);
-            controladorVenda.inserirVenda(venda34);
-            controladorVenda.inserirVenda(venda35);
-            controladorVenda.inserirVenda(venda36);
-            controladorVenda.inserirVenda(venda37);
-            controladorVenda.inserirVenda(venda38);
-            controladorVenda.inserirVenda(venda39);
-            controladorVenda.inserirVenda(venda40);
-            controladorVenda.inserirVenda(venda41);
-            controladorVenda.inserirVenda(venda42);
-            controladorVenda.inserirVenda(venda43);
-            controladorVenda.inserirVenda(venda44);
-            controladorVenda.inserirVenda(venda45);
-            controladorVenda.inserirVenda(venda46);
-            controladorVenda.inserirVenda(venda47);
-            controladorVenda.inserirVenda(venda48);
-            controladorVenda.inserirVenda(venda49);
-            controladorVenda.inserirVenda(venda50);
-            controladorVenda.inserirVenda(venda54);
-            controladorVenda.inserirVenda(venda55);
-            controladorVenda.inserirVenda(venda56);
-            controladorVenda.inserirVenda(venda57);
-            controladorVenda.inserirVenda(venda58);
-            controladorVenda.inserirVenda(venda59);
-            controladorVenda.inserirVenda(venda60);
-            controladorVenda.inserirVenda(venda61);
-            controladorVenda.inserirVenda(venda62);
-            controladorVenda.inserirVenda(venda63);
-            controladorVenda.inserirVenda(venda64);
-            controladorVenda.inserirVenda(venda65);
-            controladorVenda.inserirVenda(venda66);
-            controladorVenda.inserirVenda(venda67);
-            controladorVenda.inserirVenda(venda68);
-            controladorVenda.inserirVenda(venda69);
-            controladorVenda.inserirVenda(venda70);
-            controladorVenda.inserirVenda(venda71);
+            servidorReadEasy.inserirVenda(venda1);
+            servidorReadEasy.inserirVenda(venda2);
+            servidorReadEasy.inserirVenda(venda3);
+            servidorReadEasy.inserirVenda(venda4);
+            servidorReadEasy.inserirVenda(venda5);
+            servidorReadEasy.inserirVenda(venda6);
+            servidorReadEasy.inserirVenda(venda7);
+            servidorReadEasy.inserirVenda(venda8);
+            servidorReadEasy.inserirVenda(venda9);
+            servidorReadEasy.inserirVenda(venda10);
+            servidorReadEasy.inserirVenda(venda11);
+            servidorReadEasy.inserirVenda(venda12);
+            servidorReadEasy.inserirVenda(venda13);
+            servidorReadEasy.inserirVenda(venda14);
+            servidorReadEasy.inserirVenda(venda15);
+            servidorReadEasy.inserirVenda(venda16);
+            servidorReadEasy.inserirVenda(venda17);
+            servidorReadEasy.inserirVenda(venda18);
+            servidorReadEasy.inserirVenda(venda19);
+            servidorReadEasy.inserirVenda(venda20);
+            servidorReadEasy.inserirVenda(venda21);
+            servidorReadEasy.inserirVenda(venda22);
+            servidorReadEasy.inserirVenda(venda23);
+            servidorReadEasy.inserirVenda(venda24);
+            servidorReadEasy.inserirVenda(venda25);
+            servidorReadEasy.inserirVenda(venda26);
+            servidorReadEasy.inserirVenda(venda27);
+            servidorReadEasy.inserirVenda(venda28);
+            servidorReadEasy.inserirVenda(venda29);
+            servidorReadEasy.inserirVenda(venda30);
+            servidorReadEasy.inserirVenda(venda31);
+            servidorReadEasy.inserirVenda(venda32);
+            servidorReadEasy.inserirVenda(venda33);
+            servidorReadEasy.inserirVenda(venda34);
+            servidorReadEasy.inserirVenda(venda35);
+            servidorReadEasy.inserirVenda(venda36);
+            servidorReadEasy.inserirVenda(venda37);
+            servidorReadEasy.inserirVenda(venda38);
+            servidorReadEasy.inserirVenda(venda39);
+            servidorReadEasy.inserirVenda(venda40);
+            servidorReadEasy.inserirVenda(venda41);
+            servidorReadEasy.inserirVenda(venda42);
+            servidorReadEasy.inserirVenda(venda43);
+            servidorReadEasy.inserirVenda(venda44);
+            servidorReadEasy.inserirVenda(venda45);
+            servidorReadEasy.inserirVenda(venda46);
+            servidorReadEasy.inserirVenda(venda47);
+            servidorReadEasy.inserirVenda(venda48);
+            servidorReadEasy.inserirVenda(venda49);
+            servidorReadEasy.inserirVenda(venda50);
+            servidorReadEasy.inserirVenda(venda54);
+            servidorReadEasy.inserirVenda(venda55);
+            servidorReadEasy.inserirVenda(venda56);
+            servidorReadEasy.inserirVenda(venda57);
+            servidorReadEasy.inserirVenda(venda58);
+            servidorReadEasy.inserirVenda(venda59);
+            servidorReadEasy.inserirVenda(venda60);
+            servidorReadEasy.inserirVenda(venda61);
+            servidorReadEasy.inserirVenda(venda62);
+            servidorReadEasy.inserirVenda(venda63);
+            servidorReadEasy.inserirVenda(venda64);
+            servidorReadEasy.inserirVenda(venda65);
+            servidorReadEasy.inserirVenda(venda66);
+            servidorReadEasy.inserirVenda(venda67);
+            servidorReadEasy.inserirVenda(venda68);
+            servidorReadEasy.inserirVenda(venda69);
+            servidorReadEasy.inserirVenda(venda70);
+            servidorReadEasy.inserirVenda(venda71);
         } catch (VendaInvalidaException | UsuarioNuloException e) {
             System.out.println(e.getMessage());;
         }
-        Cliente cliente = new Cliente("Mariane", "49523655487", LocalDate.of(2001, 12, 20),
-                "mari", "ane", endereco1, "989765910");
 
-        try
-        {
-            ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
-        } catch (TipoUsuarioInvalidoException | CampoVazioException | UsuarioExistenteException |
-                 MenorDeIdadeException | UsuarioNuloException | DataInvalidaException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        Venda venda110 = new Venda(cliente, LocalDateTime.now());
-        LocalDateTime dataInicial = LocalDateTime.now();
-
-        Venda venda100 = new Venda(cliente, dataInicial);
-        int intervaloMeses = 12/10;
-        Venda venda101 = new Venda(cliente, dataInicial.plusMonths(intervaloMeses));
-        Venda venda102 = new Venda(cliente, dataInicial.plusMonths(2 * intervaloMeses));
-        Venda venda103 = new Venda(cliente, dataInicial.plusMonths(3 * intervaloMeses));
-        Venda venda104= new Venda(cliente, dataInicial.plusMonths(4 * intervaloMeses));
-        Venda venda105 = new Venda(cliente, dataInicial.plusMonths(5 * intervaloMeses));
-        Venda venda106 = new Venda(cliente, dataInicial.plusMonths(6 * intervaloMeses));
-        Venda venda107 = new Venda(cliente, dataInicial.plusMonths(7 * intervaloMeses));
-        Venda venda108 = new Venda(cliente, dataInicial.plusMonths(8 * intervaloMeses));
-        Venda venda109 = new Venda(cliente, dataInicial.plusMonths(9 * intervaloMeses));
-
-        try
-        {
-            ServidorReadEasy.getInstance().inserirVenda(venda100);
-            ServidorReadEasy.getInstance().inserirVenda(venda101);
-            ServidorReadEasy.getInstance().inserirVenda(venda102);
-            ServidorReadEasy.getInstance().inserirVenda(venda103);
-            ServidorReadEasy.getInstance().inserirVenda(venda104);
-            ServidorReadEasy.getInstance().inserirVenda(venda105);
-            ServidorReadEasy.getInstance().inserirVenda(venda106);
-            ServidorReadEasy.getInstance().inserirVenda(venda107);
-            ServidorReadEasy.getInstance().inserirVenda(venda108);
-            ServidorReadEasy.getInstance().inserirVenda(venda109);
-            ServidorReadEasy.getInstance().inserirVenda(venda110);
-
-        } catch (VendaInvalidaException | UsuarioNuloException e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 }
