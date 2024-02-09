@@ -1,5 +1,6 @@
 package br.ufrpe.readeasy.beans;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +14,12 @@ public class Livro {
     private double preco;
     private ArrayList<Genero> generos;
     private Fornecedor fornecedor;
-    private String imagem;
+    private URL capaDoLivro;
     private int quantidade;
     private Map<LocalDate, Integer> registroAtualizacaoEstoque;
 
     //CONSTRUTOR:
-    public Livro(String titulo, String autor, double preco, Fornecedor fornecedor) {
+    public Livro(String titulo, String autor, double preco, Fornecedor fornecedor, URL capaDoLivro) {
         this.id = UUID.randomUUID();
         this.titulo = titulo;
         this.autor = autor;
@@ -27,6 +28,7 @@ public class Livro {
         this.fornecedor = fornecedor;
         this.quantidade = 0;
         this.registroAtualizacaoEstoque = new HashMap<>();
+        this.capaDoLivro = capaDoLivro;
     }
 
     //MÉTODOS:
@@ -114,13 +116,11 @@ public class Livro {
         this.quantidade = quantidade;
     }
 
-    public String getImagem() {
-        return imagem;
+    public URL getCapaDoLivro() {
+        return capaDoLivro;
     }
-    public void setImagem(String imagem) {
-        if (!imagem.isEmpty()) {
-            this.imagem = imagem;
-        }
+    public void setCapaDoLivro(URL capaDoLivro) {
+        this.capaDoLivro = capaDoLivro;
     }
 
     public Map<LocalDate, Integer> getRegistroAtualizacaoEstoque() {
@@ -135,7 +135,7 @@ public class Livro {
                 ", preco=" + preco +
                 ", generos=" + generos +
                 ", fornecedor=" + fornecedor +
-                ", imagem='" + imagem + '\'' +
+                ", imagem='" + capaDoLivro + '\'' +
                 '}';
     }
 }
