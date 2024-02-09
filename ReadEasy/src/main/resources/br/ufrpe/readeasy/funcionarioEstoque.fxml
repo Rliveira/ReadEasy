@@ -158,7 +158,7 @@
                                  <children>
                                     <VBox prefHeight="175.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                        <children>
-                                          <ImageView fx:id="imCapaLivro" fitHeight="175.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="ivCapaDoLivro" fitHeight="175.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </VBox>
                                  </children>

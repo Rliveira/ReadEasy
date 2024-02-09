@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioCRUDLivrosController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioCRUDLivrosController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" BorderPane.alignment="CENTER">
          <children>
@@ -129,7 +142,7 @@
    <center>
       <VBox prefHeight="768.0" prefWidth="127.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane onMouseClicked="#inicializarOuAtualizarCbLivros" prefHeight="768.0" prefWidth="200.0" stylesheets="@css/Style.css" tabClosingPolicy="UNAVAILABLE">
+            <TabPane onMouseClicked="#atualizarCbLivros" prefHeight="768.0" prefWidth="200.0" stylesheets="@css/Style.css" tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab text="Gerenciamento de livros">
                      <content>
@@ -151,36 +164,25 @@
                                           <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="78.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <VBox prefHeight="26.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
-                                    <HBox prefHeight="245.0" prefWidth="557.0">
+                                    <VBox prefHeight="19.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
+                                    <HBox prefHeight="207.0" prefWidth="429.0">
                                        <children>
                                           <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: Transparent;" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
                                           </Pane>
-                                          <VBox prefHeight="259.0" prefWidth="175.0">
+                                          <VBox prefHeight="154.0" prefWidth="175.0">
                                              <children>
-                                                <VBox prefHeight="175.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+                                                <VBox prefHeight="206.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                                    <children>
-                                                      <ImageView fx:id="ivCapaDoLivro" fitHeight="150.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="ivCapaDoLivro" fitHeight="200.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
                                                          <VBox.margin>
                                                             <Insets />
                                                          </VBox.margin>
                                                       </ImageView>
                                                    </children>
                                                 </VBox>
-                                                <Button fx:id="btnDownloadImagem" mnemonicParsing="false" prefHeight="79.0" prefWidth="175.0" styleClass="btnDownloadCapaWeb" stylesheets="@css/Style.css" text="Download &#10;imagem&#10;&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="9.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <FontAwesomeIcon fill="WHITE" glyphName="DOWNLOAD" size="25" wrappingWidth="30.0" />
-                                                   </graphic>
-                                                   <VBox.margin>
-                                                      <Insets top="10.0" />
-                                                   </VBox.margin>
-                                                </Button>
                                              </children>
                                           </VBox>
                                           <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
@@ -189,7 +191,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </HBox>
-                                    <VBox prefHeight="30.0" VBox.vgrow="ALWAYS" />
+                                    <VBox prefHeight="25.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
                                     <HBox>
                                        <children>
                                           <VBox prefHeight="236.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
@@ -199,9 +201,10 @@
                                                       <Pane prefHeight="112.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                                       <VBox prefHeight="23.0" prefWidth="544.0">
                                                          <children>
+                                                            <TextField fx:id="tfURLCapaDoLivro" layoutX="10.0" layoutY="10.0" onKeyTyped="#atualizarImageView" prefHeight="30.0" prefWidth="175.0" promptText="Link da capa do livro" style="-fx-border-color: linear-gradient(to bottom right, #4a93c2, #2f6a8e); -fx-border-radius: 8px; -fx-background-radius: 8px;" />
                                                             <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
                                                                <VBox.margin>
-                                                                  <Insets />
+                                                                  <Insets top="15.0" />
                                                                </VBox.margin>
                                                                <styleClass>
                                                                   <String fx:value="textFieldDesign" />
@@ -210,7 +213,7 @@
                                                             </TextField>
                                                             <TextField fx:id="tfAutor" prefHeight="30.0" prefWidth="175.0" promptText="Autor" stylesheets="@css/Style.css">
                                                                <VBox.margin>
-                                                                  <Insets top="20.0" />
+                                                                  <Insets top="15.0" />
                                                                </VBox.margin>
                                                                <styleClass>
                                                                   <String fx:value="textFieldDesign" />
@@ -219,7 +222,7 @@
                                                             </TextField>
                                                             <TextField fx:id="tfPreco" prefHeight="30.0" prefWidth="175.0" promptText="Preço" stylesheets="@css/Style.css">
                                                                <VBox.margin>
-                                                                  <Insets top="20.0" />
+                                                                  <Insets top="15.0" />
                                                                </VBox.margin>
                                                                <styleClass>
                                                                   <String fx:value="textFieldDesign" />
@@ -233,22 +236,36 @@
                                                 </HBox>
                                                 <HBox prefHeight="129.0" prefWidth="524.0">
                                                    <children>
-                                                      <Pane layoutX="455.0" layoutY="10.0" prefHeight="92.0" prefWidth="300.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                      <VBox prefHeight="92.0" prefWidth="290.0">
+                                                      <Pane layoutX="455.0" layoutY="10.0" prefHeight="96.0" prefWidth="146.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                      <VBox prefHeight="96.0" prefWidth="141.0">
                                                          <children>
-                                                            <ComboBox fx:id="cbGenero" prefHeight="30.0" prefWidth="175.0" promptText="Gênero" styleClass="table-view" stylesheets="@css/Style.css">
+                                                            <Label prefHeight="18.0" prefWidth="49.0" text="Gênero:">
                                                                <VBox.margin>
-                                                                  <Insets top="15.0" />
+                                                                  <Insets left="25.0" top="25.0" />
                                                                </VBox.margin>
-                                                            </ComboBox>
-                                                            <ComboBox fx:id="cbFornecedor" prefHeight="30.0" prefWidth="175.0" promptText="Fornecedor" styleClass="table-view" stylesheets="@css/Style.css">
+                                                            </Label>
+                                                            <Label text="Fornecedor:">
+                                                               <VBox.margin>
+                                                                  <Insets top="30.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox prefHeight="96.0" prefWidth="250.0">
+                                                         <children>
+                                                            <ComboBox fx:id="cbGenero" prefHeight="30.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css">
                                                                <VBox.margin>
                                                                   <Insets top="20.0" />
                                                                </VBox.margin>
                                                             </ComboBox>
+                                                            <ComboBox fx:id="cbFornecedor" prefHeight="30.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css">
+                                                               <VBox.margin>
+                                                                  <Insets top="15.0" />
+                                                               </VBox.margin>
+                                                            </ComboBox>
                                                          </children>
                                                       </VBox>
-                                                      <Pane prefHeight="92.0" prefWidth="300.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                      <Pane prefHeight="92.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -312,7 +329,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                                  <children>
-                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow">
+                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                                        <children>
                                           <Pane prefHeight="62.0" prefWidth="116.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                           <Label text="Cátalogo da livraria" textFill="WHITE">
@@ -345,8 +362,8 @@
                                        <columns>
                                           <TableColumn fx:id="colTitulo" prefWidth="200.0" text="Título" />
                                           <TableColumn fx:id="colAutor" minWidth="8.800048828125" prefWidth="100.0" text="Autor" />
-                                          <TableColumn fx:id="colFornecedor" minWidth="0.0" prefWidth="101.60003662109375" text="Fornecedor" />
-                                          <TableColumn fx:id="colPreco" minWidth="0.0" prefWidth="138.39990234375" text="Preço" />
+                                          <TableColumn fx:id="colFornecedor" minWidth="0.0" prefWidth="91.0" text="Fornecedor" />
+                                          <TableColumn fx:id="colPreco" minWidth="0.0" prefWidth="149.79998779296875" text="Preço" />
                                        </columns>
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -365,7 +382,7 @@
                         </HBox>
                      </content>
                   </Tab>
-                  <Tab onSelectionChanged="#inicializarOuAtualizarCbLivros" text="Gênero de livros">
+                  <Tab onSelectionChanged="#atualizarCbLivros" text="Gênero de livros">
                      <content>
                         <HBox prefHeight="730.0" prefWidth="1110.0" style="-fx-background-color: #CCCCCC;">
                            <children>

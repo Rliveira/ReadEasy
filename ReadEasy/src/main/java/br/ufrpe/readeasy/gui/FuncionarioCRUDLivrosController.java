@@ -12,8 +12,15 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +63,8 @@ public class FuncionarioCRUDLivrosController {
     private TextField tfPreco;
     @FXML
     private TextField tfPesquisar;
+    @FXML
+    private TextField tfURLCapaDoLivro;
 
     @FXML
     private ComboBox<String> cbFornecedor;
@@ -125,25 +134,69 @@ public class FuncionarioCRUDLivrosController {
     //Outros métodos:
     @FXML
     public void initialize(){
-        inicializarComboBoxFornecedor();
-        inicializarComboBoxGenero();
+        limparCampos();
+        limparComboBox();
+        inicializarCbFornecedor();
+        inicializarCbGenero();
         inicializarListViewTodosOsGeneros();
         construirTabela();
         inicializarTabela();
+        atualizarCbLivros();
+    }
+
+    public void atualizarImageView() {
+        String urlString = tfURLCapaDoLivro.getText();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        if (!urlString.isBlank()) {
+            try {
+                URL url = new URL(urlString);
+                URI uri = url.toURI(); // Verifica se a URL é bem formada
+                InputStream inputStream = url.openStream();
+                Image image = new Image(inputStream);
+                ivCapaDoLivro.setImage(image);
+            } catch (MalformedURLException | URISyntaxException e) {
+                alert.setTitle("Erro");
+                alert.setHeaderText("Link incompleto ou link inválido.");
+                alert.setContentText("Copie e cole um link completo e válido para continuar.");
+                ivCapaDoLivro.setImage(null);
+
+                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(okButton);
+
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                        alert.close();
+                    }
+                });
+            } catch (IOException e) {
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao carregar a imagem.");
+                alert.setContentText("Copie e cole um link completo e válido para continuar.");
+                ivCapaDoLivro.setImage(null);
+
+                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(okButton);
+
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                        alert.close();
+                    }
+                });
+            }
+        }
     }
 
     @FXML
-    public void inicializarOuAtualizarCbLivros(){
+    public void atualizarCbLivros(){
         if(cbLivros.getItems().isEmpty() || atualizarComboBoxLivros){
-            cbLivros.getItems().clear();
             lvGenerosDoLivro.getItems().clear();
-            inicializarComboBoxLivro();
+            inicializarCbLivro();
             setAtualizarComboBoxLivros(false);
         }
     }
 
-
-    private void inicializarComboBoxGenero(){
+    private void inicializarCbGenero(){
         this.generos = Arrays.asList(Genero.values());
 
         List<String> nomesGenero = new ArrayList<>();
@@ -155,7 +208,7 @@ public class FuncionarioCRUDLivrosController {
     }
 
     @FXML
-    private void inicializarComboBoxFornecedor(){
+    private void inicializarCbFornecedor(){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         List<Fornecedor> fornecedores = servidorReadEasy.listarFornecedores();
         List<String> nomesFornecedores = new ArrayList<>();
@@ -169,7 +222,9 @@ public class FuncionarioCRUDLivrosController {
     }
 
     @FXML
-    private void inicializarComboBoxLivro(){
+    private void inicializarCbLivro(){
+        cbLivros.getSelectionModel().clearSelection();
+        cbLivros.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         List <Livro>livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
         List<String> titulosLivro = new ArrayList<>();
@@ -260,8 +315,8 @@ public class FuncionarioCRUDLivrosController {
     @FXML
     public void btnAdicionarLivro(ActionEvent event){
         boolean excecaoLevantada = false;
-        boolean precoDigitadoCorretamente;
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        URL urlLivro;
 
         String titulo = tfTitulo.getText();
         String autor = tfAutor.getText();
@@ -270,9 +325,9 @@ public class FuncionarioCRUDLivrosController {
         Fornecedor fornecedor = procurarFornecedorPeloNome(nomeFornecedor);
         String nomeGenero = cbGenero.getValue();
         Genero genero = procurarGeneroPeloNome(nomeGenero);
-        precoDigitadoCorretamente = validarInputTfPreco(textoPreco);
+        String urlString = tfURLCapaDoLivro.getText();
 
-        if(precoDigitadoCorretamente){
+        if(validarInputTfPreco(textoPreco)){
             if(titulo.isBlank() || autor.isBlank() || fornecedor == null || genero == null){
                 alert.setTitle("Erro");
                 alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
@@ -282,15 +337,21 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
             }
             else{
+                try {
+                    urlLivro = new URL(urlString);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+
                 textoPreco = textoPreco.replace(',', '.');
                 double preco = Double.parseDouble(textoPreco);
-                Livro livro = new Livro(titulo, autor, preco, fornecedor);
+                Livro livro = new Livro(titulo, autor, preco, fornecedor, urlLivro);
 
                 ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                 try {
@@ -306,7 +367,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -320,7 +381,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -338,7 +399,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -357,7 +418,7 @@ public class FuncionarioCRUDLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -385,7 +446,7 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -401,7 +462,7 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -418,7 +479,7 @@ public class FuncionarioCRUDLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -428,20 +489,20 @@ public class FuncionarioCRUDLivrosController {
     @FXML
     public void btnEditarLivro(ActionEvent event){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        URL urlLivro = null;
         boolean excecaoLevantada = false;
-        boolean resultado;
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
+        String urllivro = tfURLCapaDoLivro.getText();
         String titulo = tfTitulo.getText();
         String autor = tfAutor.getText();
         String textoPreco = tfPreco.getText();
         String nomeFornecedor = cbFornecedor.getValue();
         Fornecedor fornecedor = procurarFornecedorPeloNome(nomeFornecedor);
+        String urlString = tfURLCapaDoLivro.getText();
 
-        resultado = validarInputTfPreco(textoPreco);
-
-        if(resultado){
-            if(titulo.isBlank() || autor.isBlank() || fornecedor == null){
+        if(validarInputTfPreco(textoPreco)){
+            if(titulo.isBlank() || autor.isBlank() || fornecedor == null || urlString.isBlank()){
                 alert.setTitle("Erro");
                 alert.setHeaderText("Operação inválida!");
                 alert.setContentText("Algum(s) campo(s) estão vazio(s), Preencha todos os campos corretemente para continuar");
@@ -450,17 +511,23 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
             }
             else{
+                try {
+                    urlLivro = new URL(urlString);
+                } catch (IOException e) {
+                    System.out.println("Exceção inutil");
+                }
+
                 textoPreco = textoPreco.replace(',', '.');
                 double preco = Double.parseDouble(textoPreco);
 
                 try {
-                    servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor);
+                    servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, urlLivro);
                 }  catch (LivroExistenteException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
@@ -471,7 +538,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -486,7 +553,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -503,7 +570,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -521,7 +588,7 @@ public class FuncionarioCRUDLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -553,7 +620,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -568,12 +635,11 @@ public class FuncionarioCRUDLivrosController {
                     DialogPane dialogPane = alert.getDialogPane();
                     dialogPane.getStyleClass().add("my-alert-style");
 
-
                     ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -588,7 +654,7 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -603,7 +669,7 @@ public class FuncionarioCRUDLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -636,7 +702,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -650,7 +716,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -666,7 +732,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -681,7 +747,7 @@ public class FuncionarioCRUDLivrosController {
                 alert.getButtonTypes().setAll(okButton);
 
                 alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                         alert.close();
                     }
                 });
@@ -696,7 +762,7 @@ public class FuncionarioCRUDLivrosController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -760,6 +826,7 @@ public class FuncionarioCRUDLivrosController {
     @FXML
     public void popularCamposDoLivroSelecionadoPelaTabela() {
         Livro livroSelecionado = tvCatalogoLivros.getSelectionModel().getSelectedItem();
+        InputStream inputStream;
 
         if (livroSelecionado != null) {
             tfTitulo.setText(livroSelecionado.getTitulo());
@@ -767,15 +834,44 @@ public class FuncionarioCRUDLivrosController {
             tfPreco.setText(String.valueOf(livroSelecionado.getPreco()));
             cbFornecedor.setValue(livroSelecionado.getFornecedor().getNome());
             cbGenero.setValue(livroSelecionado.getGeneros().get(0).getDescricaoEnum());
+
+            try {
+                inputStream = livroSelecionado.getCapaDoLivro().openStream();
+            } catch (IOException e) {
+                //excessão inútil que sou forçado ac fazer o try catch
+                throw new RuntimeException(e);
+            }
+            Image image = new Image(inputStream);
+            ivCapaDoLivro.setImage(image);
+            String urlLivro = livroSelecionado.getCapaDoLivro().toString();
+            tfURLCapaDoLivro.setText(urlLivro);
         }
         setLivroSelecionado(livroSelecionado);
     }
-
 
     private void limparCampos() {
         tfTitulo.clear();
         tfAutor.clear();
         tfPreco.clear();
+        tfURLCapaDoLivro.clear();
+        cbFornecedor.getSelectionModel().clearSelection();
+        cbGenero.getSelectionModel().clearSelection();
+        cbLivros.getSelectionModel().clearSelection();
+        lvTodosOsGeneros.getSelectionModel().clearSelection();
+        lvGenerosDoLivro.getSelectionModel().clearSelection();
+        ivCapaDoLivro.setImage(null);
+        cbGenero.setPromptText("Gênero");
+        cbFornecedor.setPromptText("Fornecedor");
+    }
+
+    private void limparComboBox() {
+        cbGenero.getItems().clear();
+        cbLivros.getItems().clear();
+        cbFornecedor.getItems().clear();
+
+        // Adicionar prompt text novamente
+        cbGenero.setPromptText("Gênero");
+        cbFornecedor.setPromptText("Fornecedor");
     }
 
     private boolean validarInputTfPreco(String textoTfPreco) {
@@ -820,7 +916,6 @@ public class FuncionarioCRUDLivrosController {
     public void setFornecedores(List<Fornecedor> fornecedores) {
         this.fornecedores = fornecedores;
     }
-
 
     public List<Genero> getGeneros() {
         return generos;

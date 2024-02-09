@@ -14,7 +14,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 
-import java.text.DecimalFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -43,23 +42,23 @@ public class AdmRelatoriosController {
     private Button btnPesquisar2;
 
     @FXML
-    private BarChart<String, Number> bcDados;
+    private BarChart<String, Integer> bcDados;
     @FXML
     private CategoryAxis catX;
     @FXML
-    private NumberAxis catY;
+    private NumberAxis catY1;
 
     @FXML
     private BarChart<String, Integer> bcRankingLivros;
     @FXML
     private CategoryAxis catXLivros;
     @FXML
-    private NumberAxis catYNumeroDeVendas;
+    private NumberAxis catY2;
 
     @FXML
     private ComboBox<String> cbCategoria;
     @FXML
-    private ComboBox<String> cbMesOuAno1;
+    private ComboBox<String> cbMesOuAno;
     @FXML
     private ComboBox<String> cbMes2;
     @FXML
@@ -158,21 +157,21 @@ public class AdmRelatoriosController {
         int numeroDeVendas = servidorReadEasy.calcularTotalDeVendasDiarias(inicioDoDia, fimDoDia);
         double faturamentoDiario = servidorReadEasy.calcularTotalLucroEntreDatas(inicioDoDia, fimDoDia);
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String faturamentoFormatado = df.format(faturamentoDiario);
+        String faturamentoFormatado = String.format("%.2f", faturamentoDiario);
 
         // Atualiza os rótulos (labels)
         lblRankingLivros.setText("Ranking de livros de " + LocalDate.now().getYear());
         lblQtdLivrosVendidosHoje.setText(String.valueOf(numeroDeLivrosVendidos));
         lblComprasDiarias.setText(String.valueOf(numeroDeVendas));
-        lblFaturamentoDiario.setText(faturamentoFormatado);
+        lblFaturamentoDiario.setText("R$: " + faturamentoFormatado);
     }
+
 
     private void limparComboBox(){
         cbCategoria.getItems().clear();
         cbPeriodo1.getItems().clear();
         cbPeriodo2.getItems().clear();
-        cbMesOuAno1.getItems().clear();
+        cbMesOuAno.getItems().clear();
         cbCategoria.getItems().clear();
         cbMes.getItems().clear();
         cbMes2.getItems().clear();
@@ -184,7 +183,7 @@ public class AdmRelatoriosController {
         cbCategoria.getItems().addAll("Quantidade de livros", "N° de vendas", "Faturamento");
         cbPeriodo1.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores");
         cbPeriodo2.getItems().addAll("Mensal" , "Ano atual");
-        cbMesOuAno1.setDisable(true);
+        cbMesOuAno.setDisable(true);
         cbMes2.setDisable(true);
         cbMes.setVisible(false);
     }
@@ -195,8 +194,8 @@ public class AdmRelatoriosController {
         String periodoSelecionado = cbPeriodo1.getValue();
         if(periodoSelecionado.equals("Mensal")){
             cbMes.setVisible(false);
-            cbMesOuAno1.setDisable(false);
-            cbMesOuAno1.getItems().clear();
+            cbMesOuAno.setDisable(false);
+            cbMesOuAno.getItems().clear();
 
             String[] mesesDoAno = {"janeiro", "fevereiro", "março", "abril",
                                      "maio", "junho", "julho", "agosto",
@@ -204,24 +203,24 @@ public class AdmRelatoriosController {
             };
             int mesAtual = LocalDate.now().getMonth().getValue();
             for (int i = mesAtual; i >= 1; i--) {
-                cbMesOuAno1.getItems().add(mesesDoAno[i - 1]);
+                cbMesOuAno.getItems().add(mesesDoAno[i - 1]);
             }
         }
 
         else if (periodoSelecionado.equals("Ano atual")) {
-            cbMesOuAno1.setDisable(true);
-            cbMesOuAno1.getItems().clear();
+            cbMesOuAno.setDisable(true);
+            cbMesOuAno.getItems().clear();
             cbMes.setVisible(false);
             cbMes.getItems().clear();
         }
 
         else if (periodoSelecionado.equals("Anos anteriores")) {
-            cbMesOuAno1.setDisable(false);
-            cbMesOuAno1.getItems().clear();
+            cbMesOuAno.setDisable(false);
+            cbMesOuAno.getItems().clear();
 
             int anoAtual = LocalDate.now().getYear();
             for (int i = anoAtual - 1; i >= 2020; i--) {
-                cbMesOuAno1.getItems().add(Integer.toString(i));
+                cbMesOuAno.getItems().add(Integer.toString(i));
             }
         }
     }
@@ -252,8 +251,8 @@ public class AdmRelatoriosController {
     }
 
     @FXML
-    public void inicializarcbMes(){
-        if(cbPeriodo1.getValue().equals("Anos anteriores") && cbMesOuAno1.getValue() != null){
+    public void inicializarCbMes(){
+        if(cbPeriodo1.getValue().equals("Anos anteriores") && cbMesOuAno.getValue() != null){
             cbMes.setVisible(true);
             cbMes.getItems().clear();
 
@@ -284,24 +283,35 @@ public class AdmRelatoriosController {
         inicializarBcRankingDeLivros(rankingLivros);
     }
 
-    @FXML
     public void inicializarBcRankingDeLivros(Map<Livro, Integer> rankingLivros) {
         bcRankingLivros.getData().clear();
-
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
+        // Limitar apenas aos 10 primeiros livros
+        int contador = 0;
         for (Map.Entry<Livro, Integer> entry : rankingLivros.entrySet()) {
+            if (contador >= 10) {
+                break; // Sai do loop após adicionar os 10 primeiros livros
+            }
+
             Livro livro = entry.getKey();
             String tituloLivro = livro.getTitulo();
-            Integer quantidadeVendas = entry.getValue();
 
+            // Limitar o título do livro a 22 caracteres e adicionar reticências se for maior
+            if (tituloLivro.length() > 22) {
+                tituloLivro = tituloLivro.substring(0, 22) + "...";
+            }
+
+            Integer quantidadeVendas = entry.getValue();
             series.getData().add(new XYChart.Data<>(tituloLivro, quantidadeVendas));
+
+            contador++;
         }
 
         bcRankingLivros.getData().add(series);
-        catXLivros.setLabel("Livros Mais vendidos do dia");
-        catYNumeroDeVendas.setLabel("Quantidade de Vendas");
+        catY1.setLabel("Quantidade de Vendas");
     }
+
 
     @FXML
     public void inicializarBcDadosComDadosDoMesAtual(){
@@ -321,25 +331,31 @@ public class AdmRelatoriosController {
     private void inicializarBcDados() {
         bcDados.getData().clear();
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
         switch (categoriaDePesquisa) {
             case "Quantidade de livros":
-                series.setName("Quantidade de Livros");
+                catY1.setLabel("Quantidade de Livros");
+                catX.setLabel("Livros vendidos");
                 configurarExibicaoDosDados(series, dadosPorData1);
                 break;
+
             case "N° de vendas":
-                series.setName("N° de Vendas");
+                catY1.setLabel("Quantidade de Vendas");
+                catX.setLabel("Número de vendas");
                 configurarExibicaoDosDados(series, dadosPorData1);
                 break;
+
             case "Faturamento":
-                series.setName("Faturamento");
+                catY1.setLabel("Valor da receita em R$ ");
+                catX.setLabel("Faturamento ");
                 configurarExibicaoDosDados(series, dadosPorData2);
                 break;
         }
 
         bcDados.getData().add(series);
     }
+
 
     @FXML
     private void inicializarTvUsuariosQueMaisCompram() {
@@ -539,7 +555,7 @@ public class AdmRelatoriosController {
 
     private void pesquisarDadosMensais(String categoriaSelecionada){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        String mes = cbMesOuAno1.getValue();
+        String mes = cbMesOuAno.getValue();
 
         if (mes != null){
             mes = converterParaIngles(mes);
@@ -589,7 +605,7 @@ public class AdmRelatoriosController {
 
     private void pesquisarDadosAnosAnteriores(String categoriaSelecionada){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        String ano = cbMesOuAno1.getValue();
+        String ano = cbMesOuAno.getValue();
 
         if (ano != null){
             Year anoSelecionado = Year.of(Integer.parseInt(ano));
@@ -639,11 +655,15 @@ public class AdmRelatoriosController {
         }
     }
 
-    private void configurarExibicaoDosDados(XYChart.Series<String, Number> series, Map<LocalDate, ? extends Number> dados) {
+    private void configurarExibicaoDosDados(XYChart.Series<String, Integer> series, Map<LocalDate, ? extends Number> dados) {
         switch (getPeriodoDeAnalise()) {
-            case "Mensal", "Anos anteriores":
+            case "Mensal":
+            case "Anos anteriores":
                 for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
-                    series.getData().add(new XYChart.Data<>(entry.getKey().format(DateTimeFormatter.ofPattern("dd/MM")), entry.getValue()));
+                    String chaveFormatada = entry.getKey().format(DateTimeFormatter.ofPattern("dd/MM"));
+                    Integer valor = entry.getValue().intValue(); // Converte para Integer
+
+                    series.getData().add(new XYChart.Data<>(chaveFormatada, valor));
                 }
                 break;
             case "Ano atual":
@@ -660,11 +680,14 @@ public class AdmRelatoriosController {
                 }
 
                 for (Map.Entry<Integer, Double> entry : dadosMensais.entrySet()) {
-                    series.getData().add(new XYChart.Data<>(String.valueOf(entry.getKey()), entry.getValue()));
+                    // Formatar o rótulo para exibir apenas o número do mês
+                    String chaveFormatada = String.valueOf(entry.getKey());
+                    series.getData().add(new XYChart.Data<>(chaveFormatada, entry.getValue().intValue())); // Converte para Integer
                 }
                 break;
         }
     }
+
 
     private void pesquisarCategoria(String categoria, LocalDateTime dataHoraInicio, LocalDateTime dataEHoraFim){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
