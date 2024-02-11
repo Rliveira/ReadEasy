@@ -345,13 +345,14 @@ if(validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf))
 }
 else{
     try {
+
         int cep = Integer.parseInt(cepString);
+
             Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-
             Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
-            if (usuario == ServidorReadEasy.getInstance().listarAdms().get(0))
-            {
 
+            if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165"))
+            {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Edição inválida!");
                 alert.setContentText("Não é possível editar o ADM Inicial");
@@ -375,6 +376,31 @@ else{
                     }
                 });
             }
+        else if (usuario instanceof Funcionario) {
+            if (((Funcionario) usuario).isAdm())
+            {
+                ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                        cpf, dataNascimento, login, senha,
+                        endereco, telefone, false,
+                        ((Funcionario) usuario).getAdmResponsavel());
+                limparCampos();
+            } else
+            {
+                ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
+                        cpf, dataNascimento, login, senha,
+                        endereco, telefone, true,
+                        ((Funcionario) usuario).getAdmResponsavel());
+                limparCampos();
+            }
+        }
+
+        else if (usuario instanceof Fornecedor)
+        {
+            ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
+                    cpf, dataNascimento, login, senha,
+                    endereco, telefone, tipoFornecedor);
+            limparCampos();
+        }
 
             if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
                     usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
@@ -396,32 +422,6 @@ else{
                     }
                 });
             }
-            if (usuario instanceof Funcionario) {
-                if (((Funcionario) usuario).isAdm())
-                {
-                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                            cpf, dataNascimento, login, senha,
-                            endereco, telefone, true,
-                            (Funcionario) SessaoUsuario.getUsuarioLogado());
-                    limparCampos();
-                } else
-                {
-                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                            cpf, dataNascimento, login, senha,
-                            endereco, telefone, false,
-                            (Funcionario) SessaoUsuario.getUsuarioLogado());
-                    limparCampos();
-                }
-            }
-
-            if (usuario instanceof Fornecedor)
-            {
-                ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
-                        cpf, dataNascimento, login, senha,
-                        endereco, telefone, tipoFornecedor);
-                limparCampos();
-            }
-            onAtualizarTabelaclick();
         } catch (TipoUsuarioInvalidoException e) {
             excecaoLevantada = true;
             alert.setTitle("Erro");
@@ -507,9 +507,11 @@ else{
                 alert.close();
             }
         });
+    } catch (CampoVazioException e) {
+        throw new RuntimeException(e);
     }
 
-    }
+}
     if (!excecaoLevantada)
     {
         onAtualizarTabelaclick();
@@ -537,9 +539,9 @@ public void onSelecionarItemTVclick(ActionEvent event)
 }
 
 @FXML
-public void onDeletarUsuarioclick(ActionEvent event) throws UsuarioNuloException, UsuarioInexistenteException {
+public void onDeletarUsuarioclick(ActionEvent event) throws UsuarioNuloException, UsuarioInexistenteException, CampoVazioException {
     Alert alert = null;
-    if (tvUsuarios.getSelectionModel().getSelectedItem() == ServidorReadEasy.getInstance().listarAdms().get(0))
+    if (tvUsuarios.getSelectionModel().getSelectedItem() == ServidorReadEasy.getInstance().procurarUsuario("12384274165"))
     {
         alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Ação proibida");
@@ -592,7 +594,6 @@ public void onDeletarUsuarioclick(ActionEvent event) throws UsuarioNuloException
             }
         });
     }
-
 }
 
 @FXML
@@ -607,7 +608,7 @@ public void onAtualizarTabelaclick ()
 @FXML
 public void onSelecionarTipoUsuarioclick(ActionEvent event)
 {
-    if(cbTipo.getSelectionModel().getSelectedItem().equals("Fornecedor"))
+    if(cbTipo.getSelectionModel().getSelectedItem().equals(cargos.get(2)))
     {
         cbTipoFornecedor.setVisible(true);
     }
@@ -627,7 +628,8 @@ public void popularCamposDoUsuarioSelecionado() {
     Object itemSelecionado = tvUsuarios.getSelectionModel().getSelectedItem();
 
     if (itemSelecionado != null) {
-        if (itemSelecionado instanceof Funcionario) {
+        if (itemSelecionado instanceof Funcionario)
+        {
             Funcionario funcionarioSelecionado = (Funcionario) itemSelecionado;
             popularCamposComDados(funcionarioSelecionado);
         } else if (itemSelecionado instanceof Fornecedor) {
@@ -669,10 +671,6 @@ private void popularCamposComDados(Usuario usuario)
     {
         cbTipo.setValue(cargos.get(2));
         cbTipoFornecedor.setValue(((Fornecedor) usuario).getTipoFornecedor());
-    }
-    if(usuario instanceof Cliente)
-    {
-        cbTipo.setValue(cargos.get(3));
     }
 }
 
@@ -766,6 +764,7 @@ public void construirTabela()
     {
         Usuario usuario = cellData.getValue();
         String tipo = null;
+
         if(usuario instanceof Funcionario)
         {
             if(((Funcionario) usuario).isAdm())
@@ -776,6 +775,7 @@ public void construirTabela()
             {
                 tipo = usuario.getClass().getSimpleName();
             }
+            return new SimpleStringProperty(tipo);
         }
         else if (usuario instanceof Fornecedor)
         {
@@ -829,7 +829,7 @@ public void initialize()
                             if (clickedButton == btnDeletar) {
                                 try {
                                     onDeletarUsuarioclick(new ActionEvent(clickedButton, btnDeletar));
-                                } catch (UsuarioNuloException | UsuarioInexistenteException e) {
+                                } catch (UsuarioNuloException | UsuarioInexistenteException  | CampoVazioException e) {
                                     e.printStackTrace();
                                 }
                             } else if (clickedButton == btnEditar) {
@@ -851,13 +851,9 @@ public void initialize()
 }
 
 public boolean validarInputTf(String input) {
-    // Verifica se a entrada é nula ou vazia
     if (input == null || input.isEmpty()) {
-        return false; // Retorna false se a entrada for nula ou vazia
+        return false;
     }
-
-    // Verifica se a entrada contém apenas números
-    // Retorna true se contiver caracteres especiais, caso contrário, retorna false
     return !input.matches("[0-9]+");
 }
 

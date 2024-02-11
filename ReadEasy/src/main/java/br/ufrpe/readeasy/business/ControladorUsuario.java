@@ -172,9 +172,6 @@ public class ControladorUsuario implements IControladorUsuario{
                     }
                     usuario.setTelefone(telefone);
                     repUsuario.salvarArquivo();
-                    if (ehAdm == ((Funcionario) usuario).isAdm()) {
-                        ehAdm = ((Funcionario) usuario).isAdm();
-                    }
                     ((Funcionario) usuario).setAdm(ehAdm);
                     repUsuario.salvarArquivo();
                     if (admResponsavel == null || admResponsavel.equals(((Funcionario) usuario).getAdmResponsavel())) {

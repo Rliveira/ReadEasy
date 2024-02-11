@@ -13,9 +13,6 @@ public class ReadEasyApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ScreenManager.setStage(stage);
-        TesteHistoricoCompraEVenda.InicializarTesteHistoricoCompraEVenda();
-        InicializadorDeDados.inicializarDados();
-        ServidorReadEasy.getInstance().cadastrarAdmInicial();
 
         FXMLLoader fxmlLoader = new FXMLLoader(ReadEasyApplication.class.getResource("Login.fxml"));
 
