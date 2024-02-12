@@ -7,9 +7,11 @@ import br.ufrpe.readeasy.business.ServidorReadEasy;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FornecedorEstoqueController {
@@ -24,6 +26,9 @@ public class FornecedorEstoqueController {
     private Button btnSair;
 
     @FXML
+    private TextField tfPesquisar;
+
+    @FXML
     private TableView<Livro> tvEstoqueLivrosFornecedor;
     @FXML
     private TableColumn<Livro, String> colTitulo;
@@ -31,6 +36,8 @@ public class FornecedorEstoqueController {
     private TableColumn<Livro, String> colAutor;
     @FXML
     private TableColumn<Livro, Integer> colQuantidade;
+
+    private List<Livro> listaDeLivrosFornecedor = new ArrayList<>();
 
     public void trocarTelaPerfilFornecedor(){
         ScreenManager sm = ScreenManager.getInstance();
@@ -76,6 +83,8 @@ public class FornecedorEstoqueController {
 
     @FXML
     private void inicializarTabela(){
+        tvEstoqueLivrosFornecedor.getItems().clear();
+
         Usuario usuario = SessaoUsuario.getUsuarioLogado();
         if(usuario instanceof Fornecedor){
             Fornecedor fornecedor = (Fornecedor) usuario ;
@@ -90,7 +99,29 @@ public class FornecedorEstoqueController {
                 alert.setContentText("Entre em contato como o gerente ou funcionário" +
                         " da livraria para que ele associe um livro solucionar esse problema.");
             }
+            setListaDeLivrosFornecedor(listaDeLivrosFornecedor);
             tvEstoqueLivrosFornecedor.setItems(FXCollections.observableArrayList(listaDeLivrosFornecedor));
+        }
+    }
+    @FXML
+    private void filtrarLivrosNaTabela() {
+        String termoPesquisa = tfPesquisar.getText();
+
+        if (termoPesquisa == null || termoPesquisa.trim().isEmpty()) {
+            tvEstoqueLivrosFornecedor.setItems(FXCollections.observableArrayList(getListaDeLivrosFornecedor()));
+        }
+        else {
+            FilteredList<Livro> livrosFiltrados = new FilteredList<>(FXCollections.observableArrayList(getListaDeLivrosFornecedor()));
+
+            livrosFiltrados.setPredicate(livro -> {
+                String termoLowerCase = termoPesquisa.toLowerCase();
+
+                return livro.getTitulo().toLowerCase().contains(termoLowerCase) ||
+                        livro.getAutor().toLowerCase().contains(termoLowerCase) ||
+                        String.valueOf(livro.getQuantidade()).contains(termoLowerCase);
+            });
+
+            tvEstoqueLivrosFornecedor.setItems(livrosFiltrados);
         }
     }
 
@@ -113,5 +144,14 @@ public class FornecedorEstoqueController {
                 alert.close();
             }
         });
+    }
+
+    //gets and sets:
+    public List<Livro> getListaDeLivrosFornecedor() {
+        return listaDeLivrosFornecedor;
+    }
+
+    public void setListaDeLivrosFornecedor(List<Livro> listaDeLivrosFornecedor) {
+        this.listaDeLivrosFornecedor = listaDeLivrosFornecedor;
     }
 }
