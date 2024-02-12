@@ -198,7 +198,7 @@
                         <HBox prefHeight="30.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="30.0" prefWidth="51.0" HBox.hgrow="ALWAYS" />
-                              <ComboBox fx:id="cbLivros" prefHeight="30.0" prefWidth="200.0" promptText="Livro" styleClass="table-view" />
+                              <ComboBox fx:id="cbLivros" onAction="#atualizarImageview" prefHeight="30.0" prefWidth="200.0" promptText="Livro" styleClass="table-view" />
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="54.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>

@@ -60,6 +60,8 @@ public class AdmEstoqueController {
     @FXML
     private TableColumn<Livro, Integer> colQuantidade;
 
+    private List<Livro> livros;
+
     //Métodos de troca de tela:
     @FXML
     public void trocarTelaUsuariosAdm(){
@@ -115,7 +117,8 @@ public class AdmEstoqueController {
         cbLivros.getSelectionModel().clearSelection();
         cbLivros.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List <Livro>livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List<Livro> livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        setLivros(livros);
         List<String> titulosLivro = new ArrayList<>();
 
         for (Livro livro : livros){
@@ -123,7 +126,6 @@ public class AdmEstoqueController {
         }
 
         cbLivros.getItems().addAll(titulosLivro);
-
     }
 
     @FXML
@@ -319,7 +321,6 @@ public class AdmEstoqueController {
         return qtdDigitadaCorretamente;
     }
 
-
     @FXML
     private void filtrarLivrosNaTabela() {
         String termoPesquisa = tfPesquisar.getText();
@@ -351,7 +352,6 @@ public class AdmEstoqueController {
         InputStream inputStream;
 
         if (livroSelecionado != null) {
-            tfQuantidade.setText(String.valueOf(livroSelecionado.getQuantidade()));
             cbLivros.setValue(livroSelecionado.getTitulo());
             try {
                 inputStream = livroSelecionado.getCapaDoLivro().openStream();
@@ -362,13 +362,45 @@ public class AdmEstoqueController {
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
         }
+    }
 
+    @FXML
+    public void atualizarImageview(){
+        String nomeLivro = cbLivros.getValue();
+
+        if(nomeLivro != null){
+            Livro livroSelecionado = provurarLivroPeloNome(nomeLivro);
+            InputStream inputStream;
+
+            try {
+                inputStream = livroSelecionado.getCapaDoLivro().openStream();
+            } catch (IOException e) {
+                //excessão inútil que sou forçado ac fazer o try catch
+                throw new RuntimeException(e);
+            }
+            Image image = new Image(inputStream);
+            ivCapaDoLivro.setImage(image);
+        }
     }
 
     private void limparCampos() {
         tfQuantidade.clear();
         cbLivros.getSelectionModel().clearSelection();
         ivCapaDoLivro.setImage(null);
+    }
+
+    private Livro provurarLivroPeloNome(String nomeLivro){
+        Livro livroSelecionado = null;
+        boolean achou = false;
+
+        for (int i = 0; i < getLivros().size() && !achou; i++){
+            if (livros.get(i).getTitulo().equals(nomeLivro)){
+                livroSelecionado = livros.get(i);
+                achou = true;
+            }
+        }
+
+        return livroSelecionado;
     }
 
     @FXML
@@ -390,5 +422,14 @@ public class AdmEstoqueController {
                 alert.close();
             }
         });
+    }
+
+    //GETS AND SETS:
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
     }
 }

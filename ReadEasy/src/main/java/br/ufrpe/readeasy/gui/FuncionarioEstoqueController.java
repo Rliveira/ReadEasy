@@ -58,6 +58,8 @@ public class FuncionarioEstoqueController {
     @FXML
     private TableColumn<Livro, String> colFornecedor;
 
+    private List<Livro> livros;
+
     //Métodos de troca de tela:
     @FXML
     public void trocarTelaPerfilFuncionario(){
@@ -88,7 +90,6 @@ public class FuncionarioEstoqueController {
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
-    //Outros métodos:
     public void initialize(){
         inicializarComboBoxLivro();
         construirTabela();
@@ -100,7 +101,8 @@ public class FuncionarioEstoqueController {
         cbLivros.getSelectionModel().clearSelection();
         cbLivros.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List <Livro>livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List<Livro> livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        setLivros(livros);
         List<String> titulosLivro = new ArrayList<>();
 
         for (Livro livro : livros){
@@ -108,7 +110,6 @@ public class FuncionarioEstoqueController {
         }
 
         cbLivros.getItems().addAll(titulosLivro);
-
     }
 
     @FXML
@@ -304,7 +305,6 @@ public class FuncionarioEstoqueController {
         return qtdDigitadaCorretamente;
     }
 
-
     @FXML
     private void filtrarLivrosNaTabela() {
         String termoPesquisa = tfPesquisar.getText();
@@ -336,18 +336,35 @@ public class FuncionarioEstoqueController {
         InputStream inputStream;
 
         if (livroSelecionado != null) {
-            tfQuantidade.setText(String.valueOf(livroSelecionado.getQuantidade()));
             cbLivros.setValue(livroSelecionado.getTitulo());
             try {
                 inputStream = livroSelecionado.getCapaDoLivro().openStream();
             } catch (IOException e) {
-                //excessão inútil que sou forçado a fazer o try catch
+                //excessão inútil que sou forçado ac fazer o try catch
                 throw new RuntimeException(e);
             }
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
         }
+    }
 
+    @FXML
+    public void atualizarImageview(){
+        String nomeLivro = cbLivros.getValue();
+
+        if(nomeLivro != null){
+            Livro livroSelecionado = provurarLivroPeloNome(nomeLivro);
+            InputStream inputStream;
+
+            try {
+                inputStream = livroSelecionado.getCapaDoLivro().openStream();
+            } catch (IOException e) {
+                //excessão inútil que sou forçado ac fazer o try catch
+                throw new RuntimeException(e);
+            }
+            Image image = new Image(inputStream);
+            ivCapaDoLivro.setImage(image);
+        }
     }
 
     private void limparCampos() {
@@ -356,6 +373,21 @@ public class FuncionarioEstoqueController {
         ivCapaDoLivro.setImage(null);
     }
 
+    private Livro provurarLivroPeloNome(String nomeLivro){
+        Livro livroSelecionado = null;
+        boolean achou = false;
+
+        for (int i = 0; i < getLivros().size() && !achou; i++){
+            if (livros.get(i).getTitulo().equals(nomeLivro)){
+                livroSelecionado = livros.get(i);
+                achou = true;
+            }
+        }
+
+        return livroSelecionado;
+    }
+
+    @FXML
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
@@ -366,7 +398,6 @@ public class FuncionarioEstoqueController {
         ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(simButton, naoButton);
 
-
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                 trocarTelaLogin();
@@ -375,5 +406,14 @@ public class FuncionarioEstoqueController {
                 alert.close();
             }
         });
+    }
+
+    //GETS AND SETS:
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
     }
 }
