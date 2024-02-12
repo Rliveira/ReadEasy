@@ -156,6 +156,16 @@ public class InicializadorDeDados {
         Cliente cliente5 = new Cliente("jão", "979798453", LocalDate.of(1998, 2,1),
                 "jv.moraes", "tlou69", end4, "40028922");
 
+        try {
+            servidorReadEasy.cadastrarUsuario(cliente1);
+            servidorReadEasy.cadastrarUsuario(cliente2);
+            servidorReadEasy.cadastrarUsuario(cliente3);
+            servidorReadEasy.cadastrarUsuario(cliente4);
+            servidorReadEasy.cadastrarUsuario(cliente5);
+        } catch (UsuarioNuloException | UsuarioExistenteException | TipoUsuarioInvalidoException | CampoVazioException |
+                 MenorDeIdadeException | DataInvalidaException e) {
+            throw new RuntimeException(e);
+        }
 
         LocalDateTime data1 = LocalDateTime.of(2024, 2, 4, 12, 30);
         LocalDateTime data2 = LocalDateTime.of(2024, 2, 4, 13, 45);
