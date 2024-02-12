@@ -201,7 +201,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <TableView fx:id="tvUsuarios" onSort="#onSelecionarItemTVclick" prefHeight="295.0" prefWidth="1100.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="tvUsuarios" prefHeight="295.0" prefWidth="1100.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="colNome" prefWidth="222.40000200271606" text="Nome" />
                                     <TableColumn fx:id="colCPF" prefWidth="146.0" text="CPF" />
