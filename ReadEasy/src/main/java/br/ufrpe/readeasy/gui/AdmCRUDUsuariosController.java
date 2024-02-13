@@ -608,13 +608,15 @@ public void onAtualizarTabelaclick ()
 @FXML
 public void onSelecionarTipoUsuarioclick(ActionEvent event)
 {
-    if(cbTipo.getSelectionModel().getSelectedItem().equals(cargos.get(2)))
-    {
-        cbTipoFornecedor.setVisible(true);
-    }
-    else
-    {
-        cbTipoFornecedor.setVisible(false);
+    if (cbTipo.getValue() != null){
+        if(cbTipo.getSelectionModel().getSelectedItem().equals(cargos.get(2)))
+        {
+            cbTipoFornecedor.setVisible(true);
+        }
+        else
+        {
+            cbTipoFornecedor.setVisible(false);
+        }
     }
 }
 
