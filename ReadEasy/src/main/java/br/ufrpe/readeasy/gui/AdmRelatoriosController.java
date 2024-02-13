@@ -95,6 +95,7 @@ public class AdmRelatoriosController {
     private Map<LocalDate, Double> dadosPorData2;
     String categoriaDePesquisa;
     String periodoDeAnalise;
+    boolean precisaApresentarOAlert;
 
     //Métodos de troca de tela:
     public void trocarTelaEstoqueAdm(){
@@ -137,6 +138,7 @@ public class AdmRelatoriosController {
     //outros métodos:
     @FXML
     public void initialize(){
+        setPrecisaApresentarOAlert(true);
         limparComboBox();
         inicializarLabels();
         inicializarCbCategoriaEPeriodo();
@@ -501,7 +503,7 @@ public class AdmRelatoriosController {
 
     @FXML
     public void btnPesquisarDados() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         String categoriaSelecionada = cbCategoria.getValue();
 
         if (categoriaSelecionada != null) {
@@ -511,15 +513,39 @@ public class AdmRelatoriosController {
                 switch (periodoSelecionado) {
                     case "Mensal":
                         pesquisarDadosMensais(categoriaSelecionada);
+                        setCategoriaDePesquisa(categoriaSelecionada);
+                        setPeriodoDeAnalise("Mensal");
                         break;
 
                     case "Ano atual":
                         pesquisarDadosAnoAtual(categoriaSelecionada);
+                        setCategoriaDePesquisa(categoriaSelecionada);
+                        setPeriodoDeAnalise("Ano atual");
                         break;
 
                     case "Anos anteriores":
                         pesquisarDadosAnosAnteriores(categoriaSelecionada);
+                        setCategoriaDePesquisa(categoriaSelecionada);
+                        setPeriodoDeAnalise("Anos anteriores");
                         break;
+                }
+                inicializarBcDados();
+
+                if (isPrecisaApresentarOAlert()){
+                    alert.setTitle("Atenção!");
+                    alert.setHeaderText("Ao mudar o periodo de análise" + '\n' +
+                            "clique 2 vezes no botão de pesquisar para" + '\n' +
+                            "que os dados sejam exibidos corretamente.");
+                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+                    alert.getButtonTypes().setAll(okButton);
+
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                            alert.close();
+                        }
+                    });
+
+                    setPrecisaApresentarOAlert(false);
                 }
             }
             else{
@@ -570,9 +596,7 @@ public class AdmRelatoriosController {
             LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
 
             pesquisarCategoria(categoriaSelecionada, dataInicio.atStartOfDay(), dataEHoraFim);
-            setCategoriaDePesquisa(categoriaSelecionada);
-            setPeriodoDeAnalise("Mensal");
-            inicializarBcDados();
+
         }
         else{
             alert.setTitle("Erro");
@@ -598,9 +622,6 @@ public class AdmRelatoriosController {
         LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
 
         pesquisarCategoria(categoriaSelecionada, dataInicio.atStartOfDay(), dataEHoraFim);
-        setCategoriaDePesquisa(categoriaSelecionada);
-        setPeriodoDeAnalise("Ano atual");
-        inicializarBcDados();
     }
 
     private void pesquisarDadosAnosAnteriores(String categoriaSelecionada){
@@ -620,9 +641,6 @@ public class AdmRelatoriosController {
                 LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
 
                 pesquisarCategoria(categoriaSelecionada, dataInicio.atStartOfDay(), dataEHoraFim);
-                setCategoriaDePesquisa(categoriaSelecionada);
-                setPeriodoDeAnalise("Anos anteriores");
-                inicializarBcDados();
             }
             else{
                 alert.setTitle("Erro");
@@ -799,5 +817,13 @@ public class AdmRelatoriosController {
 
     public void setPeriodoDeAnalise(String periodoDeAnalise) {
         this.periodoDeAnalise = periodoDeAnalise;
+    }
+
+    public boolean isPrecisaApresentarOAlert() {
+        return precisaApresentarOAlert;
+    }
+
+    public void setPrecisaApresentarOAlert(boolean precisaApresentarOAlert) {
+        this.precisaApresentarOAlert = precisaApresentarOAlert;
     }
 }
