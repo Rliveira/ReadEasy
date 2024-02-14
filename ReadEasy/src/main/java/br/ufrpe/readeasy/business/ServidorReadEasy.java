@@ -79,6 +79,11 @@ public class ServidorReadEasy {
         controladorUsuario.adicionarEnderecoDeEntrega(usuario, endereco);
     }
 
+    public void atualizarEndereco (Endereco endereco, int cep, String rua, String bairro, String cidade, String estado) throws
+            EnderecoNuloException, EnderecoInexistenteException{
+        controladorEndereco.atualizarEndereco(endereco, cep, rua, bairro, cidade, estado);
+    }
+
     public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
             TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoInexistenteException {
         controladorUsuario.removerEnderecoDeEntrega(usuario, endereco);
