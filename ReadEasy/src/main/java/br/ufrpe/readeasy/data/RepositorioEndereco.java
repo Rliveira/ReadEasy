@@ -2,8 +2,10 @@ package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Promocao;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,10 +56,28 @@ public class RepositorioEndereco implements IRepositorioEndereco, Serializable{
     }
 
     @Override
+    public void atualizarEndereco (Endereco endereco, int cep, String rua, String bairro, String cidade, String estado){
+       endereco.setCep(cep);
+       endereco.setRua(rua);
+       endereco.setBairro(bairro);
+       endereco.setCidade(cidade);
+       endereco.setEstado(estado);
+    }
+    @Override
     public void removerEnderecoCliente(String cpf, Endereco endereco) {
         Cliente cliente = RepositorioUsuario.getInstance().procurarCliente(cpf);
         cliente.removerEndereco(endereco);
         enderecos.remove(endereco.getCep(), endereco);
+    }
+
+    @Override
+    public boolean existeEndereco(int cep) {
+        for (Map.Entry<Integer, Endereco> entry : enderecos.entrySet()) {
+            if (entry.getValue().getCep() == cep) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static RepositorioEndereco lerDoArquivo() {

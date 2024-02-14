@@ -8,6 +8,8 @@ public interface IRepositorioEndereco {
 
     public void adicionarEndereco(Endereco endereco);
 
+    public void atualizarEndereco (Endereco endereco, int cep, String rua, String bairro, String cidade, String estado);
+
     public void removerEndereco(int cep);
 
     public Endereco obterEnderecoPorCep(int cep);
@@ -17,6 +19,8 @@ public interface IRepositorioEndereco {
     public void adicionarEnderecoCliente(String cpf, Endereco endereco);
 
     public void removerEnderecoCliente(String cpf, Endereco endereco);
+
+    public boolean existeEndereco(int cep);
 
     void salvarArquivo();
 }
