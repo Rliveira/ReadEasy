@@ -108,7 +108,7 @@ public class ClienteCatalogoController {
     }
 
     public void setarListaDeLivrosNoCatalogo() {
-        listaDeLivrosDoCatalogo.addAll(ServidorReadEasy.getInstance().listarTodosOsLivrosEmOrdemAlfabetica());
+        listaDeLivrosDoCatalogo.addAll(ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel());
         int coluna = 0;
         int linha = 1;
 

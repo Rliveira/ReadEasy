@@ -30,7 +30,7 @@ public interface IRepositorioLivro {
     List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
     List<Livro> listarEOrdenarLivrosPorPreco();
     Map<Livro, Integer> listarQuantidadeDeEstoque();
-    public List<Livro> listarLivrosComEstoqueDisponivel();
+    List<Livro> listarLivrosComEstoqueDisponivel();
     Livro buscarLivroPorNome(String titulo);
     void salvarArquivo();
 }
