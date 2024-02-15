@@ -149,6 +149,7 @@ public class LoginController {
 
             case "cliente":
                 ClienteCatalogoController clienteCatalogoController = screenManager.getClienteCatalogoController();
+                clienteCatalogoController.setPrecisaAtualizarCatalogo(true);
                 clienteCatalogoController.initialize();
                 break;
         }

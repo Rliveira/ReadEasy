@@ -466,4 +466,13 @@ public class ClientePerfilController {
             }
         });
     }
+
+
+    public TableView<Endereco> getTbvEnderecosCadastrados() {
+        return tbvEnderecosCadastrados;
+    }
+
+    public void setTbvEnderecosCadastrados(TableView<Endereco> tbvEnderecosCadastrados) {
+        this.tbvEnderecosCadastrados = tbvEnderecosCadastrados;
+    }
 }
