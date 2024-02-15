@@ -175,6 +175,10 @@ public class ServidorReadEasy {
         return controladorLivro.listarLivrosPorFornecedor(fornecedor);
     }
 
+    public List<Livro> listarLivrosComEstoqueDisponivel(){
+       return controladorLivro.listarLivrosComEstoqueDisponivel();
+    }
+
     public List<Livro> listarEOrdenarLivrosPorPreco() {
         return controladorLivro.listarEOrdenarLivrosPorPreco();
     }
