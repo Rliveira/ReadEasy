@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Cliente extends Usuario implements Serializable {
+    private static final long serialVersionUID = 6L;
     private ArrayList<Endereco> enderecosentrega;
 
     //CONSTRUTOR:

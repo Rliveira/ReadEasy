@@ -3,6 +3,7 @@ package br.ufrpe.readeasy.beans;
 import java.io.Serializable;
 
 public class LivroVendido implements Serializable {
+    private static final long serialVersionUID = 14L;
     private Livro livro;
     private int quantidade;
 

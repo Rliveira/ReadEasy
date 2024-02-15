@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 
 public class Funcionario extends Usuario implements Serializable {
+    private static final long serialVersionUID = 8L;
     private boolean Adm;
     private Funcionario admResponsavel;
 

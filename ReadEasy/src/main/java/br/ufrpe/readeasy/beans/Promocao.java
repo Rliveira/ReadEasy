@@ -5,8 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Promocao implements Serializable {
-
-
+    private static final long serialVersionUID = 5L;
     private String id;
     private String titulo;
     private int porcentagemDeDesconto;

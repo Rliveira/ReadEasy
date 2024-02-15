@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Livro implements Serializable {
+    private static final long serialVersionUID = 1L;
     private UUID id;
     private String titulo;
     private String autor;

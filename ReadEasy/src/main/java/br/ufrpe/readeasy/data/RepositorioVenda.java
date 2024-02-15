@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class RepositorioVenda implements IRepositorioVenda, Serializable
 {
+    private static final long serialVersionUID = 13L;
     private static IRepositorioVenda instance;
     private ArrayList<Venda> vendas;
     public RepositorioVenda()

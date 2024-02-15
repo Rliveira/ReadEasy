@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public abstract class Usuario implements Serializable {
-
+    private static final long serialVersionUID = 4L;
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;

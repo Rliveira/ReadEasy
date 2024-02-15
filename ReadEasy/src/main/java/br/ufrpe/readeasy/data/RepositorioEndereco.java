@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RepositorioEndereco implements IRepositorioEndereco, Serializable{
+    private static final long serialVersionUID = 9L;
     private static IRepositorioEndereco instance;
     private Map<Integer, Endereco> enderecos;
 

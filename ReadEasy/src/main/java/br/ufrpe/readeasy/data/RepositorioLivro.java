@@ -13,6 +13,7 @@ import java.util.*;
 
 
 public class RepositorioLivro implements IRepositorioLivro, Serializable {
+    private static final long serialVersionUID = 10L;
     private static RepositorioLivro instance;
     private List<Livro> livros;
 

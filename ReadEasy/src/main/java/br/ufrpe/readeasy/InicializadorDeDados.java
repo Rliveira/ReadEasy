@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InicializadorDeDados {
-    public static void inicializarDados(){
+    public static void main(String[] args){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         String data = "2001-08-23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

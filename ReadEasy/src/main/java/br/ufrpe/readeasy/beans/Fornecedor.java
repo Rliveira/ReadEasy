@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Fornecedor extends Usuario implements Serializable {
+    private static final long serialVersionUID = 7L;
     private TipoFornecedor tipoFornecedor;
 
     //CONSTRUTOR:

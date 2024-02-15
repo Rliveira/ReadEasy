@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Venda implements Serializable {
+    private static final long serialVersionUID = 3L;
     private ArrayList<LivroVendido> livrosVendidos;
     private Cliente cliente;
     private LocalDateTime dataEHora;

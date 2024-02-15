@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
+    private static final long serialVersionUID = 11L;
 
     private static IRepositorioPromocao instance;
     private ArrayList<Promocao> promocoes;

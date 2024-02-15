@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
+    private static final long serialVersionUID = 12L;
 
     private static IRepositorioUsuario instance;
     private ArrayList<Usuario> usuarios;
