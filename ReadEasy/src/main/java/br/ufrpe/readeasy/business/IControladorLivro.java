@@ -36,4 +36,6 @@ public interface IControladorLivro {
     List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
 
     List<Livro> listarTodosOsLivrosEmOrdemAlfabetica();
+
+    public List<Livro> listarLivrosComEstoqueDisponivel();
 }

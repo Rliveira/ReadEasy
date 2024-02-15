@@ -176,5 +176,9 @@ public class ControladorLivro implements IControladorLivro {
     public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
         return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
     }
+    @Override
+    public List<Livro> listarLivrosComEstoqueDisponivel() {
+        return repLivro.listarLivrosComEstoqueDisponivel();
+    }
 
 }
