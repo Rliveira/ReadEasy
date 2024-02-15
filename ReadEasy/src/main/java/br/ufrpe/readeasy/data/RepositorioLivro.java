@@ -320,6 +320,19 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
         return temtituloIgual;
     }
 
+    public List<Livro> listarLivrosComEstoqueDisponivel() {
+        List<Livro> livrosComEstoque = new ArrayList<>();
+
+        for (Livro livro : livros) {
+            if (livro.getQuantidade() >= 1) {
+                livrosComEstoque.add(livro);
+            }
+        }
+
+        return livrosComEstoque;
+    }
+
+
     private static RepositorioLivro lerDoArquivo() {
         RepositorioLivro instanciaLocal = null;
 

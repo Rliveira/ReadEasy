@@ -27,12 +27,10 @@ public interface IRepositorioLivro {
     List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor)  throws FornecedorNaoEncontradoException;
     Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedo
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException;
-
     List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
     List<Livro> listarEOrdenarLivrosPorPreco();
     Map<Livro, Integer> listarQuantidadeDeEstoque();
-
+    public List<Livro> listarLivrosComEstoqueDisponivel();
     Livro buscarLivroPorNome(String titulo);
-
     void salvarArquivo();
 }
