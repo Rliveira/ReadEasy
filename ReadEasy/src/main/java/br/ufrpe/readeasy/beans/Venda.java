@@ -21,6 +21,7 @@ public class Venda implements Serializable {
     private ArrayList<LivroVendido> livrosVendidos;
     private Cliente cliente;
     private LocalDateTime dataEHora;
+    private Endereco enderecoEntrega;
 
     //CONSTRUTOR:
     public Venda(Cliente cliente, LocalDateTime dataEHora) {
@@ -104,6 +105,14 @@ public class Venda implements Serializable {
 
     public void setLivrosVendidos(ArrayList<LivroVendido> livrosVendidos) {
         this.livrosVendidos = livrosVendidos;
+    }
+
+    public Endereco getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
+
+    public void setEnderecoEntrega(Endereco enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
     @Override

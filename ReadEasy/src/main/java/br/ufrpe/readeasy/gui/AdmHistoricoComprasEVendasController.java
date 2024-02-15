@@ -168,13 +168,13 @@ public class AdmHistoricoComprasEVendasController {
     protected void onBtnPesquisarVendasClick() {
 
         ObservableList<VendaDTO> listaVendas = ListaVendas(dtpkDataInicioVendas.getValue(), dtpkDataFimVendas.getValue());
-        clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getTitulo()));
-        clnAutorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getAutor()));
-        clnFornecedorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLivroDTO().getFornecedor().getNome()));
-        clnClienteVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getClienteDTO().getNome()));
-        clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataVendaDTO()));
-        clnQuantidadeVendas.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidadeDTO()).asObject());
-        clnPrecoVendas.setCellValueFactory(param -> new SimpleDoubleProperty((int) param.getValue().getLivroDTO().getPreco()).asObject());
+        clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTitulo()));
+        clnAutorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAutor()));
+        clnFornecedorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNomeFornecedor()));
+        clnClienteVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNomeCliente()));
+        clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataVenda()));
+        clnQuantidadeVendas.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidade()).asObject());
+        clnPrecoVendas.setCellValueFactory(param -> new SimpleDoubleProperty((int) param.getValue().getPreco()).asObject());
         tableHistoricoVendas.setItems(listaVendas);
 
     }
@@ -189,7 +189,6 @@ public class AdmHistoricoComprasEVendasController {
                 listaCompras.put(livro, new ArrayList<>(livro.getRegistroAtualizacaoEstoque().entrySet()));
             }
         } catch (DataInvalidaException e) {
-            System.out.println(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Data inválida");

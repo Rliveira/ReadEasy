@@ -520,7 +520,7 @@ public class FuncionarioCRUDLivrosController {
                 try {
                     urlLivro = new URL(urlString);
                 } catch (IOException e) {
-                    System.out.println("Exceção inutil");
+                    /*Silent Exception*/
                 }
 
                 textoPreco = textoPreco.replace(',', '.');

@@ -177,7 +177,6 @@ public class AdmPerfilController {
 
     @FXML
     protected void onBtnEditarPerfilClick() {
-        System.out.println(usuarioLogado);
         String nome = txtFNome.getText();
         if (nome.isEmpty()) {
             nome = usuarioLogado.getNome();
@@ -185,7 +184,7 @@ public class AdmPerfilController {
         String cpf = txtFCpf.getText();
         if (cpf.isEmpty()) {
             cpf = usuarioLogado.getCpf();
-            System.out.println(cpf);
+
         }
         String usuario = txtFusuario.getText();
         if (usuario.isEmpty()) {
@@ -214,12 +213,12 @@ public class AdmPerfilController {
         String cep = txtFCep.getText();
         if (cep.isEmpty()) {
             cep = String.valueOf(usuarioLogado.getEndereco().getCep());
-            System.out.println(cep);
+
         }
         String telefone = txtFTelefone.getText();
         if (telefone.isEmpty()) {
             telefone = usuarioLogado.getTelefone();
-            System.out.println(telefone);
+
         }
         LocalDate dataNascimento = dtPckData.getValue();
         if (dataNascimento == null) {

@@ -93,7 +93,6 @@ public class ControladorVenda implements IControladorVenda
         if (!repoVenda.historicoDeVendas().isEmpty())
         {
             historicoInterno = repoVenda.historicoDeVendas();
-            System.out.println(historicoInterno.toString());
         }
         else
         {
@@ -155,7 +154,8 @@ public class ControladorVenda implements IControladorVenda
                 Livro livro = livroVendido.getLivro();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataVenda = venda.getDataEHora().toLocalDate();
-                VendaDTO vendaDTO = new VendaDTO(livro, livroVendido.getQuantidade(), venda.getCliente() ,dataVenda);
+                VendaDTO vendaDTO = new VendaDTO(livro.getTitulo(), livro.getAutor(), livro.getFornecedor().getNome(),
+                        venda.getCliente().getNome(), livroVendido.getQuantidade(), dataVenda, livro.getPreco());
                 historicoCompras.add(vendaDTO);
             }
         }

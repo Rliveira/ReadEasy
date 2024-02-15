@@ -184,6 +184,9 @@ public class ClienteCatalogoController {
                         venda.adicionarLivro(livro, quantidade);
                     }
 
+                    Endereco endereco = procurarEnderecoPelaRua(cbEnderecoEntrega.getValue());
+                    venda.setEnderecoEntrega(endereco);
+
                     try {
                         ServidorReadEasy.getInstance().inserirVenda(venda);
                     } catch (VendaInvalidaException | UsuarioNuloException e) {

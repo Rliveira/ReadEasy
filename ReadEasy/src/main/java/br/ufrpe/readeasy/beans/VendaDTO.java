@@ -5,46 +5,77 @@ import java.time.LocalDateTime;
 
 public class VendaDTO {
 
-    private Livro livro;
+    private String titulo;
+    private String autor;
+    private String nomeFornecedor;
+    private String nomeCliente;
     private int quantidade;
-    private Cliente cliente;
     private LocalDate dataVenda;
-    public VendaDTO(Livro livro, int quantidade,Cliente cliente, LocalDate dataVenda) {
-        this.livro = livro;
+    private double preco;
+    public VendaDTO(String titulo, String autor, String nomeFornecedor, String nomeCliente,
+                    int quantidade, LocalDate dataVenda, double preco) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.nomeFornecedor = nomeFornecedor;
+        this.nomeCliente = nomeCliente;
         this.quantidade = quantidade;
-        this.cliente = cliente;
         this.dataVenda = dataVenda;
+        this.preco = preco;
     }
 
-    public Livro getLivroDTO() {
-        return livro;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setLivroDTO(Livro livro) {
-        this.livro = livro;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public int getQuantidadeDTO() {
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getNomeFornecedor() {
+        return nomeFornecedor;
+    }
+
+    public void setNomeFornecedor(String nomeFornecedor) {
+        this.nomeFornecedor = nomeFornecedor;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public int getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidadeDTO(int quantidade) {
+    public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
 
-    public LocalDate getDataVendaDTO() {
+    public LocalDate getDataVenda() {
         return dataVenda;
     }
 
-    public void setDataVendaDTO(LocalDate dataVenda) {
+    public void setDataVenda(LocalDate dataVenda) {
         this.dataVenda = dataVenda;
     }
 
-    public Cliente getClienteDTO() {
-        return cliente;
+    public double getPreco() {
+        return preco;
     }
 
-    public void setClienteDTO(Cliente cliente) {
-        this.cliente = cliente;
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
 }

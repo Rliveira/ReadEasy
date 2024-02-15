@@ -112,7 +112,6 @@ public class FornecedorHistoricoController {
                 tableHistorico.setItems(items);
 
             } catch (DataInvalidaException e) {
-                System.out.println(e.getMessage());
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro");
                 alert.setHeaderText("Data inválida");

@@ -68,8 +68,8 @@ public class ClienteMinhasComprasController
     @FXML
     public void initialize()
     {
-        construirTabela();
         carregarDadosTabela();
+        construirTabela();
 
         dpDataFim.setValue(LocalDate.now());
     }

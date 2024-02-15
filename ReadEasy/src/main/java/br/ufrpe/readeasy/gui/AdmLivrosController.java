@@ -526,7 +526,7 @@ public class AdmLivrosController {
                 try {
                     urlLivro = new URL(urlString);
                 } catch (IOException e) {
-                    System.out.println("Exceção inutil");
+                    /*Silent exception*/
                 }
 
                 textoPreco = textoPreco.replace(',', '.');

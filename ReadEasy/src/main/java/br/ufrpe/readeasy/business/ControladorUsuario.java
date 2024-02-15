@@ -105,7 +105,6 @@ public class ControladorUsuario implements IControladorUsuario{
         Boolean loginCorreto = false;
         if (!login.isEmpty() && !senha.isEmpty()) {
             if (repUsuario.checarLogin(login, senha)) {
-                System.out.println("Login realizado com sucesso!");
                 loginCorreto = true;
                 return loginCorreto;
             } else {
