@@ -2,6 +2,8 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
+import br.ufrpe.readeasy.exceptions.QuantidadeInvalidaException;
 import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
 import br.ufrpe.readeasy.exceptions.VendaInvalidaException;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -74,8 +76,6 @@ public class ClienteCatalogoController {
     List<Promocao> promocoes;
     boolean precisaAtualizarCatalogo = false;
     List<Endereco> enderecosUsuario;
-
-
     private List<Livro> listaDeLivrosDoCatalogo = new ArrayList<>();
 
     //Métodos de troca de tela:
@@ -108,6 +108,7 @@ public class ClienteCatalogoController {
     }
 
     public void setarListaDeLivrosNoCatalogo() {
+        listaDeLivrosDoCatalogo.clear();
         listaDeLivrosDoCatalogo.addAll(ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel());
         int coluna = 0;
         int linha = 1;
@@ -137,7 +138,7 @@ public class ClienteCatalogoController {
                 gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
                 gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
 
-                gpCatalogoLivraria.setVgap(50);
+                gpCatalogoLivraria.setVgap(10);
                 gpCatalogoLivraria.setHgap(10);
 
                 GridPane.setMargin(anchorPane, new Insets(10));
@@ -176,11 +177,11 @@ public class ClienteCatalogoController {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                     Cliente cliente = (Cliente) usuarioLogado;
                     Venda venda = new Venda(cliente, LocalDateTime.now());
+                    int quantidade;
 
                     for (int i = 0; i < tbCarrinho.getItems().size(); i++){
                         Livro livro = tbCarrinho.getItems().get(i).getLivro();
-                        int quantidade = tbCarrinho.getItems().get(i).getQuantidade();
-
+                        quantidade = tbCarrinho.getItems().get(i).getQuantidade();
                         venda.adicionarLivro(livro, quantidade);
                     }
 
@@ -208,6 +209,18 @@ public class ClienteCatalogoController {
                     });
 
                     tbCarrinho.getItems().clear();
+                    lblPreco.setText("0.00");
+
+                    //atualização do estoque após a compra:
+                    for (LivroVendido livroVendido : venda.getLivrosVendidos()){
+                        Livro livro = livroVendido.getLivro();
+                        try {
+                            ServidorReadEasy.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
+                        } catch (EstoqueInsuficienteException | QuantidadeInvalidaException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                 }
                 else {
                     alert.close();

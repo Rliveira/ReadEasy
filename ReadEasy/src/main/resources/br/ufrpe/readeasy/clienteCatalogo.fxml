@@ -114,7 +114,7 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="20.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <ScrollPane fx:id="spCatalogoDaLivraria" prefHeight="672.0" prefWidth="722.0" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                        <ScrollPane fx:id="spCatalogoDaLivraria" hbarPolicy="NEVER" prefHeight="672.0" prefWidth="722.0" style="-fx-background-radius: 8px; -fx-border-radius: 8px; -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
