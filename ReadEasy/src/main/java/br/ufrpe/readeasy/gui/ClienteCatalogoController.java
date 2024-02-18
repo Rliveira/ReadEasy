@@ -151,12 +151,12 @@ public class ClienteCatalogoController {
     }
 
     @FXML
-    void btnAplicarPromocaoACompra(ActionEvent event) {
+    void btnAplicarPromocaoACompra() {
         calcularTotal();
     }
 
     @FXML
-    void cbEscolherEnderecoEntrega(ActionEvent event) {
+    void cbEscolherEnderecoEntrega() {
 
     }
 

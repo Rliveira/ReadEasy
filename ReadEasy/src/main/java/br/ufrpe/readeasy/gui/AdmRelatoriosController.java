@@ -199,9 +199,9 @@ public class AdmRelatoriosController {
             cbMesOuAno.setDisable(false);
             cbMesOuAno.getItems().clear();
 
-            String[] mesesDoAno = {"janeiro", "fevereiro", "março", "abril",
-                                     "maio", "junho", "julho", "agosto",
-                                   "setembro", "outubro", "novembro", "dezembro"
+            String[] mesesDoAno = {"Janeiro", "Fevereiro", "Março", "Abril",
+                                     "Maio", "Junho", "Julho", "Agosto",
+                                   "Setembro", "Outubro", "Novembro", "Dezembro"
             };
             int mesAtual = LocalDate.now().getMonth().getValue();
             for (int i = mesAtual; i >= 1; i--) {
@@ -235,9 +235,9 @@ public class AdmRelatoriosController {
             cbMes2.setDisable(false);
             cbMes2.getItems().clear();
 
-            String[] mesesDoAno = {"janeiro", "fevereiro", "março", "abril",
-                    "maio", "junho", "julho", "agosto",
-                    "setembro", "outubro", "novembro", "dezembro"
+            String[] mesesDoAno = {"Janeiro", "Fevereiro", "Março", "Abril",
+                    "Maio", "Junho", "Julho", "Agosto",
+                    "Setembro", "Outubro", "Novembro", "Dezembro"
             };
 
             int mesAtual = LocalDate.now().getMonth().getValue();
@@ -259,9 +259,9 @@ public class AdmRelatoriosController {
             cbMes.getItems().clear();
 
             if(cbPeriodo1.getValue().equals("Anos anteriores")){
-                String[] mesesDoAno = {"janeiro", "fevereiro", "março", "abril",
-                        "maio", "junho", "julho", "agosto",
-                        "setembro", "outubro", "novembro", "dezembro"
+                String[] mesesDoAno = {"Janeiro", "Fevereiro", "Março", "Abril",
+                        "Maio", "Junho", "Julho", "Agosto",
+                        "Setembro", "Outubro", "Novembro", "Dezembro"
                 };
 
                 for (int i = 0; i < 12; i++) {

@@ -90,6 +90,7 @@ public class FuncionarioEstoqueController {
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
+    //Outros métodos:
     public void initialize(){
         inicializarComboBoxLivro();
         construirTabela();

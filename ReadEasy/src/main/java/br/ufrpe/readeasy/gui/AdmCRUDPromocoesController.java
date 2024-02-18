@@ -129,7 +129,7 @@ public class AdmCRUDPromocoesController {
     //Outros métodos:
 
     @FXML
-    void btnAdicionarPromocao(ActionEvent event) {
+    void btnAdicionarPromocao() {
 
         String titulo = tfTitulo.getText();
         int porcentagemDeDesconto = Integer.parseInt(tfPorcentagemDeDesconto.getText());
@@ -168,7 +168,7 @@ public class AdmCRUDPromocoesController {
     }
 
     @FXML
-    void btnDeletarPromocao(ActionEvent event) throws PromocaoNulaException, PromocaoInexistenteException {
+    void btnDeletarPromocao() {
 
         Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
 
@@ -183,7 +183,11 @@ public class AdmCRUDPromocoesController {
 
                 tbvPromocoesAtivas.getItems().remove(promocaoSelecionada);
 
-                ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
+                try {
+                    ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
+                } catch (PromocaoInexistenteException | PromocaoNulaException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -195,7 +199,7 @@ public class AdmCRUDPromocoesController {
     }
 
     @FXML
-    void btnEditarPromocao(ActionEvent event) {
+    void btnEditarPromocao() {
 
         Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
 
@@ -296,13 +300,9 @@ public class AdmCRUDPromocoesController {
                             if (secondEvent.getTarget() instanceof Button) {
                                 Button clickedButton = (Button) secondEvent.getTarget();
                                 if (clickedButton == btnDeletar) {
-                                    try {
-                                        btnDeletarPromocao(new ActionEvent(clickedButton, btnDeletar));
-                                    } catch (PromocaoNulaException | PromocaoInexistenteException e) {
-                                        e.printStackTrace();
-                                    }
+                                    btnDeletarPromocao();
                                 } else if (clickedButton == btnEditar) {
-                                    btnEditarPromocao(new ActionEvent(clickedButton, btnEditar));
+                                    btnEditarPromocao();
                                 }
                             }
                         }

@@ -175,7 +175,7 @@ public class AdmEstoqueController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -199,7 +199,7 @@ public class AdmEstoqueController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -217,7 +217,7 @@ public class AdmEstoqueController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -245,7 +245,7 @@ public class AdmEstoqueController {
             alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                     alert.close();
                 }
             });
@@ -269,7 +269,7 @@ public class AdmEstoqueController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -283,7 +283,7 @@ public class AdmEstoqueController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
@@ -300,7 +300,7 @@ public class AdmEstoqueController {
                     alert.getButtonTypes().setAll(okButton);
 
                     alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                             alert.close();
                         }
                     });
