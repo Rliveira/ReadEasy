@@ -34,8 +34,6 @@ public class ClienteCadastroController{
     @FXML
     private TextField txtFCpf;
     @FXML
-    private TextField txtFEstado;
-    @FXML
     private TextField txtFNome;
     @FXML
     private TextField txtFRua;
@@ -46,6 +44,9 @@ public class ClienteCadastroController{
     @FXML
     private TextField txtFUsuario;
 
+    @FXML
+    private ComboBox<String> cbEstado;
+
     //métodos de troca de tela:
     @FXML
     public void trocarTelaLogin(){
@@ -54,8 +55,12 @@ public class ClienteCadastroController{
     }
 
     //outros métodos:
+    public void initialize(){
+        inicializarCbEstado();
+    }
+
     @FXML
-    protected void onBtnCadastrarClick(ActionEvent event) throws IOException {
+    protected void onBtnCadastrarClick(ActionEvent event){
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
         String usuario = txtFUsuario.getText();
@@ -63,7 +68,7 @@ public class ClienteCadastroController{
         String rua = txtFRua.getText();
         String bairro = txtFBairro.getText();
         String cidade = txtFCidade.getText();
-        String estado = txtFEstado.getText();
+        String estado = cbEstado.getValue();
         String cep = txtFCEP.getText();
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtpkDataNascimento.getValue();
@@ -93,6 +98,10 @@ public class ClienteCadastroController{
                 alert.setHeaderText(null);
                 alert.setContentText("Cliente cadastrado com sucesso!");
                 alert.showAndWait();
+
+                ScreenManager sm = ScreenManager.getInstance();
+                sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+
             } catch (TipoUsuarioInvalidoException e) {
                 throw new RuntimeException(e);
             } catch (MenorDeIdadeException e) {
@@ -133,4 +142,15 @@ public class ClienteCadastroController{
         return inputTf.matches("\\d+");
     }
 
+    private void inicializarCbEstado() {
+        String[] estados = {
+                "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal",
+                "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul",
+                "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro",
+                "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina",
+                "São Paulo", "Sergipe", "Tocantins"
+        };
+
+        cbEstado.getItems().addAll(estados);
+    }
 }
