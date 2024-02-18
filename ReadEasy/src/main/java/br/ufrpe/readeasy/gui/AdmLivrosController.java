@@ -52,6 +52,8 @@ public class AdmLivrosController {
     @FXML
     private Button btnEditar;
     @FXML
+    private Button btnLimpar;
+    @FXML
     private Button btnAdicionar2;
     @FXML
     private Button btnDeletar2;
@@ -319,7 +321,7 @@ public class AdmLivrosController {
     }
 
     @FXML
-    public void btnAdicionarLivro(ActionEvent event){
+    public void btnAdicionarLivro(){
         boolean excecaoLevantada = false;
         Alert alert = new Alert(Alert.AlertType.ERROR);
         URL urlLivro;
@@ -432,7 +434,7 @@ public class AdmLivrosController {
     }
 
     @FXML
-    public void btnremoverLivro(ActionEvent event){
+    public void btnremoverLivro(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         boolean excecaoLevantada = false;
@@ -493,7 +495,7 @@ public class AdmLivrosController {
     }
 
     @FXML
-    public void btnEditarLivro(ActionEvent event){
+    public void btnEditarLivro(){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         URL urlLivro = null;
         boolean excecaoLevantada = false;
@@ -602,7 +604,7 @@ public class AdmLivrosController {
     }
 
     @FXML
-    public void btnAdicionarGenero(ActionEvent event){
+    public void btnAdicionarGenero(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
 
@@ -855,6 +857,7 @@ public class AdmLivrosController {
         setLivroSelecionado(livroSelecionado);
     }
 
+    @FXML
     private void limparCampos() {
         tfTitulo.clear();
         tfAutor.clear();
@@ -866,18 +869,12 @@ public class AdmLivrosController {
         lvTodosOsGeneros.getSelectionModel().clearSelection();
         lvGenerosDoLivro.getSelectionModel().clearSelection();
         ivCapaDoLivro.setImage(null);
-        cbGenero.setPromptText("Gênero");
-        cbFornecedor.setPromptText("Fornecedor");
     }
 
     private void limparComboBox() {
         cbGenero.getItems().clear();
         cbLivros.getItems().clear();
         cbFornecedor.getItems().clear();
-
-        // Adicionar prompt text novamente
-        cbGenero.setPromptText("Gênero");
-        cbFornecedor.setPromptText("Fornecedor");
     }
 
     private boolean validarInputTfPreco(String textoTfPreco) {
