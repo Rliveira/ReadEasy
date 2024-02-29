@@ -4,19 +4,19 @@ import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
 import br.ufrpe.readeasy.exceptions.QuantidadeInvalidaException;
-import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
-import br.ufrpe.readeasy.exceptions.VendaInvalidaException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -72,11 +72,16 @@ public class ClienteCatalogoController {
     @FXML
     private GridPane gpCatalogoLivraria;
 
-    Usuario usuarioLogado;
-    List<Promocao> promocoes;
-    boolean precisaAtualizarCatalogo = false;
-    List<Endereco> enderecosUsuario;
+    @FXML
+    private TextField tfPesquisar;
+
+    private Usuario usuarioLogado;
+    private List<Promocao> promocoes;
+    private List<Endereco> enderecosUsuario;
     private List<Livro> listaDeLivrosDoCatalogo = new ArrayList<>();
+    private List<LivroVendido> carrinho = new ArrayList<>();
+    private List<VBox> cartoesLivroCatalogo = new ArrayList<>();
+    private List<CartaoLivroController> controladores = new ArrayList<>();
 
     //Métodos de troca de tela:
     @FXML
@@ -98,12 +103,64 @@ public class ClienteCatalogoController {
 
     //outros métodos:
     public void initialize(){
-        if (isPrecisaAtualizarCatalogo()){
-            setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-            setarListaDeLivrosNoCatalogo();
-            inicializarTabelaCarrinho();
-            inicializarCbPromocoes();
-            inicializarCbEndereco();
+        setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
+        setarListaDeLivrosNoCatalogo();
+        inicializarTabelaCarrinho();
+        inicializarCbPromocoes();
+        inicializarCbEndereco();
+    }
+
+    @FXML
+    private void filtrarCartoesLivroNoGridPane() {
+        String termoPesquisa = tfPesquisar.getText().toLowerCase(); // Obtém o termo de pesquisa em minúsculas para facilitar a comparação
+        List<VBox> cartoesLivroFiltrados = new ArrayList<>();
+
+        if (termoPesquisa.trim().isEmpty()) {
+           setarListaDeLivrosNoCatalogo();
+        }
+        else {
+            List<VBox> cartoesFiltrados = new ArrayList<>();
+
+            for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
+                CartaoLivroController cartaoLivroController = controladores.get(i);
+                Livro livro = cartaoLivroController.getLivro();
+
+                if (livro != null) {
+                    boolean correspondeAoFiltro = livro.getTitulo().toLowerCase().contains(termoPesquisa) ||
+                            livro.getAutor().toLowerCase().contains(termoPesquisa) ||
+                            String.valueOf(livro.getPreco()).toLowerCase().contains(termoPesquisa) ||
+                            livro.getGeneros().stream().anyMatch(genero -> genero.getDescricaoEnum().toLowerCase().contains(termoPesquisa));
+
+                    if (correspondeAoFiltro) {
+                        cartoesFiltrados.add(cartoesLivroCatalogo.get(i));
+                    }
+                }
+            }
+            gpCatalogoLivraria.getChildren().clear();
+            int coluna = 0;
+            int linha = 1;
+
+            for(int i = 0; i < cartoesFiltrados.size(); i++){
+                if (coluna == 2) {
+                    coluna = 0;
+                    linha++;
+                }
+
+                gpCatalogoLivraria.add(cartoesFiltrados.get(i), coluna++, linha);
+
+                gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
+                gpCatalogoLivraria.setPrefWidth(600);
+                gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
+
+                gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
+                gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
+
+                gpCatalogoLivraria.setVgap(10);
+                gpCatalogoLivraria.setHgap(10);
+
+                GridPane.setMargin(cartoesFiltrados.get(i), new Insets(10));
+            }
         }
     }
 
@@ -113,27 +170,33 @@ public class ClienteCatalogoController {
         int coluna = 0;
         int linha = 1;
 
+        gpCatalogoLivraria.getChildren().clear();
+        cartoesLivroCatalogo.clear();
+        controladores.clear();
+
         try {
             for (int i = 0; i < listaDeLivrosDoCatalogo.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/cartaoLivro.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
+                VBox vbox = fxmlLoader.load();
 
                 CartaoLivroController cardController = fxmlLoader.getController();
                 cardController.setInformacoesDoLivro(listaDeLivrosDoCatalogo.get(i));
+
+                this.cartoesLivroCatalogo.add(vbox);
+                this.controladores.add(cardController);
 
                 if (coluna == 2) {
                     coluna = 0;
                     linha++;
                 }
 
-                gpCatalogoLivraria.add(anchorPane, coluna++, linha);
+                gpCatalogoLivraria.add(vbox, coluna++, linha);
 
                 gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
                 gpCatalogoLivraria.setPrefWidth(600);
                 gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
 
-                // Set grid height
                 gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
                 gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
                 gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
@@ -141,99 +204,111 @@ public class ClienteCatalogoController {
                 gpCatalogoLivraria.setVgap(10);
                 gpCatalogoLivraria.setHgap(10);
 
-                GridPane.setMargin(anchorPane, new Insets(10));
+                GridPane.setMargin(vbox, new Insets(10));
             }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        setPrecisaAtualizarCatalogo(false);
     }
 
     @FXML
     void btnAplicarPromocaoACompra() {
-        calcularTotal();
+        calcularTotalLabel();
     }
 
-    @FXML
-    void cbEscolherEnderecoEntrega() {
-
-    }
 
     @FXML
-    void btnFinalizarACompra(ActionEvent event) {
+    void btnFinalizarACompra() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        if (tbCarrinho.getItems() != null && cbEnderecoEntrega.getValue() != null){
-            alert.setTitle("Confirmação");
-            alert.setHeaderText("Deseja realmente finalizar a compra?");
-            alert.setContentText("Escolha uma opção.");
+        if (tbCarrinho.getItems() != null){
+            if(cbEnderecoEntrega.getValue() != null){
+                alert.setTitle("Confirmação");
+                alert.setHeaderText("Deseja realmente finalizar a compra?");
+                alert.setContentText("Escolha uma opção.");
 
-            ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-            ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-            alert.getButtonTypes().setAll(simButton, naoButton);
+                ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+                ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+                alert.getButtonTypes().setAll(simButton, naoButton);
 
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    Cliente cliente = (Cliente) usuarioLogado;
-                    Venda venda = new Venda(cliente, LocalDateTime.now());
-                    int quantidade;
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                        Cliente cliente = (Cliente) usuarioLogado;
+                        Endereco enderecoDeEntrega = procurarEnderecoPelaRua(cbEnderecoEntrega.getValue());
+                        String nomePromocao = cbAplicarPromocao.getValue();
+                        Promocao promocao = procurarPromocaoPeloNome(nomePromocao);
+                        Venda venda = new Venda(cliente, LocalDateTime.now(), enderecoDeEntrega, promocao);
 
-                    for (int i = 0; i < tbCarrinho.getItems().size(); i++){
-                        Livro livro = tbCarrinho.getItems().get(i).getLivro();
-                        quantidade = tbCarrinho.getItems().get(i).getQuantidade();
-                        venda.adicionarLivro(livro, quantidade);
-                    }
-
-                    Endereco endereco = procurarEnderecoPelaRua(cbEnderecoEntrega.getValue());
-                    venda.setEnderecoEntrega(endereco);
-
-                    try {
+                        for (int i = 0; i < tbCarrinho.getItems().size(); i++){
+                            Livro livro = tbCarrinho.getItems().get(i).getLivro();
+                            int quantidade = tbCarrinho.getItems().get(i).getQuantidade();
+                            venda.adicionarLivro(livro, quantidade);
+                        }
                         ServidorReadEasy.getInstance().inserirVenda(venda);
-                    } catch (VendaInvalidaException | UsuarioNuloException e) {
-                        throw new RuntimeException(e); //Exceção boba que não irá ocorrer
-                    }
 
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sucesso!");
-                    alert.setHeaderText("Compra realizada com sucesso!");
-                    alert.setContentText(null);
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sucesso!");
+                        alert.setHeaderText("Compra realizada com sucesso!");
+                        alert.setContentText(null);
 
-                    ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
+                        ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
+                        alert.getButtonTypes().setAll(okButton);
 
-                    alert.showAndWait().ifPresent(buttonType1 -> {
-                        if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                        alert.showAndWait().ifPresent(buttonType1 -> {
+                            if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                                alert.close();
+                            }
+                        });
 
-                    tbCarrinho.getItems().clear();
-                    lblPreco.setText("0.00");
+                        tbCarrinho.getItems().clear();
+                        lblPreco.setText("0.00");
 
-                    //atualização do estoque após a compra:
-                    for (LivroVendido livroVendido : venda.getLivrosVendidos()){
-                        Livro livro = livroVendido.getLivro();
-                        try {
-                            ServidorReadEasy.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
-                        } catch (EstoqueInsuficienteException | QuantidadeInvalidaException e) {
-                            throw new RuntimeException(e);
+                        //atualização do estoque após a compra:
+                        for (LivroVendido livroVendido : venda.getLivrosVendidos()){
+                            Livro livro = livroVendido.getLivro();
+                            try {
+                                ServidorReadEasy.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
+                            } catch (EstoqueInsuficienteException | QuantidadeInvalidaException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
+                    else {
+                        alert.close();
+                    }
+                });
+            }
+            else{
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setTitle("Erro!");
+                alert.setHeaderText("Campo de endereço não selecionado");
+                alert.setContentText("Selecione o endereço de entrega");
 
-                }
-                else {
-                    alert.close();
-                }
-            });
+                ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(okButton);
+
+                alert.showAndWait().ifPresent(buttonType1 -> {
+                    if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                        alert.close();
+                    }
+                });
+            }
         }
         else{
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setTitle("Erro!");
-            alert.setHeaderText("Campo de endereço não selecionado" + '\n' +
-                    " ou nenhum livro adicoionado ao carrinho.");
-            alert.setContentText("Selecione o endereço de entrega" + '\n' +
-                    " ou adicione um livro no carrinho para realizar a compra.");
+            alert.setHeaderText("Nenhum livro adicionado ao carrinho.");
+            alert.setContentText("Adicione um livro no carrinho para realizar a compra.");
+
+            ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait().ifPresent(buttonType1 -> {
+                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                    alert.close();
+                }
+            });
         }
     }
 
@@ -244,11 +319,21 @@ public class ClienteCatalogoController {
         setPromocoes(servidorReadEasy.listarTodasPromocoesAtivas());
         List<String> nomesPromocoes = new ArrayList<>();
 
-        for (Promocao promocao: promocoes){
-            nomesPromocoes.add(promocao.getTitulo());
+        for(int i = 0; i < this.promocoes.size(); i++){
+            if(calcularQuantidadeDeLivrosNoCarrinho() >= promocoes.get(i).getQtdMinimaDeLivros()) {
+                nomesPromocoes.add(promocoes.get(i).getTitulo());
+            }
         }
-
         cbAplicarPromocao.getItems().addAll(nomesPromocoes);
+    }
+
+    private int calcularQuantidadeDeLivrosNoCarrinho(){
+        int quantidade = 0;
+
+        for (int i = 0; i < tbCarrinho.getItems().size(); i++){
+            quantidade += tbCarrinho.getItems().get(i).getQuantidade();
+        }
+        return quantidade;
     }
 
     private Promocao procurarPromocaoPeloNome(String nomePromocao){
@@ -270,9 +355,17 @@ public class ClienteCatalogoController {
         List<Endereco> listaEnderecos = new ArrayList<>();
         List<String> nomesEndereco = new ArrayList<>();
 
-        TableView<Endereco> enderecos = ScreenManager.getInstance().getClientePerfilController().getTbvEnderecosCadastrados();
-        listaEnderecos.addAll(enderecos.getItems());
-        setEnderecosUsuario(listaEnderecos);
+        Usuario usuario = SessaoUsuario.getUsuarioLogado();
+        Cliente cliente;
+
+        if(usuario instanceof Cliente){
+            cliente = (Cliente) usuario;
+            listaEnderecos = cliente.getEnderecosentrega();
+        }
+
+        if (!listaEnderecos.isEmpty()){
+            setEnderecosUsuario(listaEnderecos);
+        }
 
         for (Endereco endereco : listaEnderecos){
             nomesEndereco.add(endereco.getRua());
@@ -319,12 +412,33 @@ public class ClienteCatalogoController {
 
     @FXML
     public void adicionarLivroATabela(LivroVendido livroVendido){
-        tbCarrinho.getItems().add(livroVendido);
-        calcularTotal();
+        boolean achou = false;
+
+        //loop para verificar se a tabela já contém o livro:
+        for(int i = 0; i < tbCarrinho.getItems().size() && !achou; i++){
+            Livro livro = tbCarrinho.getItems().get(i).getLivro();
+
+            if (livro.equals(livroVendido.getLivro())){
+                int quantidadeAtual = tbCarrinho.getItems().get(i).getQuantidade() + livroVendido.getQuantidade();
+                tbCarrinho.getItems().get(i).setQuantidade(quantidadeAtual);
+                achou = true;
+
+                //se a tebela já tiver ele atualiza o carrinho agr com a quantidade de livro atualizada.
+                tbCarrinho.getItems().clear();
+                tbCarrinho.getItems().addAll(carrinho);
+            }
+        }
+
+        //adiciona o livro novo no carrinho.
+        if (!achou){
+            tbCarrinho.getItems().add(livroVendido);
+            carrinho.add(livroVendido);
+        }
+        calcularTotalLabel();
     }
 
     @FXML
-    void btnRemoverDoCarrinho(ActionEvent event) {
+    void btnRemoverDoCarrinho() {
         LivroVendido livroSelecionado = tbCarrinho.getSelectionModel().getSelectedItem();
 
         if(livroSelecionado != null){
@@ -335,8 +449,11 @@ public class ClienteCatalogoController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
+                //Atualiza a tabela
                 tbCarrinho.getItems().remove(livroSelecionado);
-                calcularTotal();
+                carrinho.remove(livroSelecionado);
+                inicializarCbPromocoes();
+                calcularTotalLabel();
             }
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -345,11 +462,10 @@ public class ClienteCatalogoController {
             alert.setContentText("Nenhum livro selecionado para remoção.");
             alert.showAndWait();
         }
-
     }
 
     @FXML
-    public void calcularTotal() {
+    public void calcularTotalLabel() {
         double total = 0;
 
         for (LivroVendido livro : tbCarrinho.getItems()) {
@@ -385,7 +501,6 @@ public class ClienteCatalogoController {
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                setPrecisaAtualizarCatalogo(true);
                 trocarTelaLogin();
             }
             else {
@@ -402,14 +517,6 @@ public class ClienteCatalogoController {
         this.promocoes = promocoes;
     }
 
-    public boolean isPrecisaAtualizarCatalogo() {
-        return precisaAtualizarCatalogo;
-    }
-
-    public void setPrecisaAtualizarCatalogo(boolean precisaAtualizarCatalogo) {
-        this.precisaAtualizarCatalogo = precisaAtualizarCatalogo;
-    }
-
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
@@ -424,5 +531,13 @@ public class ClienteCatalogoController {
 
     public void setEnderecosUsuario(List<Endereco> enderecosUsuario) {
         this.enderecosUsuario = enderecosUsuario;
+    }
+
+    public List<LivroVendido> getCarrinho() {
+        return carrinho;
+    }
+
+    public void setCarrinho(List<LivroVendido> carrinho) {
+        this.carrinho = carrinho;
     }
 }
