@@ -58,24 +58,6 @@ public class FornecedorPerfilController
 
     @FXML
     private Label labelEstado;
-    public void initialize()
-    {
-        SessaoUsuario.getInstance();
-        if(SessaoUsuario.getUsuarioLogado() instanceof Fornecedor)
-        {
-            labelTipoFornecedor.setText(((Fornecedor) SessaoUsuario.getUsuarioLogado()).getTipoFornecedor().toString());
-            labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
-            labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
-            labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
-            labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-            labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
-            labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
-            labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
-            labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
-            labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
-            labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
-        }
-    }
 
     //métodos de troca de tela
     public void trocarTelaEstoqueFornecedor(){
@@ -94,6 +76,29 @@ public class FornecedorPerfilController
     }
 
     //Outros métodos:
+    public void initialize()
+    {
+        inicializarLabels();
+    }
+
+    @FXML
+    public void inicializarLabels(){
+        if(SessaoUsuario.getUsuarioLogado() instanceof Fornecedor)
+        {
+            labelTipoFornecedor.setText(((Fornecedor) SessaoUsuario.getUsuarioLogado()).getTipoFornecedor().toString());
+            labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
+            labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
+            labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
+            labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
+            labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
+            labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
+            labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
+            labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
+            labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
+            labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
+        }
+    }
+
     public void SairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");

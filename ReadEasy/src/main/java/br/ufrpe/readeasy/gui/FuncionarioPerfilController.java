@@ -59,45 +59,6 @@ public class FuncionarioPerfilController
     @FXML
     private Label labelEstado;
 
-    @FXML
-    public void initialize()
-    {
-        SessaoUsuario.getInstance();
-
-        if(SessaoUsuario.getUsuarioLogado() instanceof Funcionario)
-        {
-            if(((Funcionario) SessaoUsuario.getUsuarioLogado()).isAdm())
-            {
-                labelTipoFornecedor.setText("Administrador");
-                labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
-                labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
-                labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
-                labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-                labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
-                labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
-                labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
-                labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
-                labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
-                labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
-            }
-            else
-            {
-                labelTipoFornecedor.setText("Funcionário");
-                labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
-                labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
-                labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
-                labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
-                labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
-                labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
-                labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
-                labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
-                labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
-                labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
-            }
-        }
-    }
-
-
     //métodos de troca de tela:
     @FXML
     public void trocarTelaEstoqueFuncionario(){
@@ -130,6 +91,30 @@ public class FuncionarioPerfilController
     }
 
     //Outros métodos:
+    @FXML
+    public void initialize()
+    {
+        inicializarLabels();
+    }
+
+    @FXML
+    public void inicializarLabels(){
+        if(SessaoUsuario.getUsuarioLogado() instanceof Funcionario)
+        {
+            labelTipoFornecedor.setText("Funcionário");
+            labelNome.setText(SessaoUsuario.getUsuarioLogado().getNome());
+            labelCPF.setText(SessaoUsuario.getUsuarioLogado().getCpf());
+            labelDataNascimento.setText(SessaoUsuario.getUsuarioLogado().getDataNascimento().toString());
+            labelNomeUsuario.setText(SessaoUsuario.getUsuarioLogado().getLogin());
+            labelTelefone.setText(SessaoUsuario.getUsuarioLogado().getTelefone());
+            labelCEP.setText(String.valueOf(SessaoUsuario.getUsuarioLogado().getEndereco().getCep()));
+            labelRua.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getRua());
+            labelBairro.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getBairro());
+            labelCidade.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getCidade());
+            labelEstado.setText(SessaoUsuario.getUsuarioLogado().getEndereco().getEstado());
+        }
+    }
+
     public void SairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
@@ -149,10 +134,5 @@ public class FuncionarioPerfilController
                 alert.close();
             }
         });
-    }
-
-    public void setUsuarioLogado(Usuario usuario)
-    {
-        SessaoUsuario.setUsuarioLogado(usuario);
     }
 }
