@@ -3,18 +3,13 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.net.URL;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 
 public class AdmPerfilController {
 
@@ -34,7 +29,7 @@ public class AdmPerfilController {
     private Button btnPerfil;
 
     @FXML
-    private Button btnPromoções;
+    private Button btnPromocoes;
 
     @FXML
     private Button btnRelatorios;
@@ -91,9 +86,6 @@ public class AdmPerfilController {
     private TextField txtFCpf;
 
     @FXML
-    private TextField txtFEstado;
-
-    @FXML
     private TextField txtFNome;
 
     @FXML
@@ -107,6 +99,9 @@ public class AdmPerfilController {
 
     @FXML
     private TextField txtFusuario;
+
+    @FXML
+    private TextField txtFEstado;
 
     private Usuario usuarioLogado; // Usuário que está logado no momento
 
@@ -177,115 +172,68 @@ public class AdmPerfilController {
 
     @FXML
     protected void onBtnEditarPerfilClick() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
         String nome = txtFNome.getText();
-        if (nome.isEmpty()) {
-            nome = usuarioLogado.getNome();
-        }
         String cpf = txtFCpf.getText();
-        if (cpf.isEmpty()) {
-            cpf = usuarioLogado.getCpf();
-
-        }
         String usuario = txtFusuario.getText();
-        if (usuario.isEmpty()) {
-            usuario = usuarioLogado.getLogin();
-        }
         String senha = txtFSenha.getText();
-        if (senha.isEmpty()) {
-            senha = usuarioLogado.getSenha();
-        }
         String rua = txtFRua.getText();
-        if (rua.isEmpty()) {
-            rua = usuarioLogado.getEndereco().getRua();
-        }
         String bairro = txtFBairro.getText();
-        if (bairro.isEmpty()) {
-            bairro = usuarioLogado.getEndereco().getBairro();
-        }
         String cidade = txtFCidade.getText();
-        if (cidade.isEmpty()) {
-            cidade = usuarioLogado.getEndereco().getCidade();
-        }
         String estado = txtFEstado.getText();
-        if (estado.isEmpty()) {
-            estado = usuarioLogado.getEndereco().getEstado();
-        }
-        String cep = txtFCep.getText();
-        if (cep.isEmpty()) {
-            cep = String.valueOf(usuarioLogado.getEndereco().getCep());
-
-        }
+        String cepString = txtFCep.getText();
         String telefone = txtFTelefone.getText();
-        if (telefone.isEmpty()) {
-            telefone = usuarioLogado.getTelefone();
-
-        }
         LocalDate dataNascimento = dtPckData.getValue();
-        if (dataNascimento == null) {
-            dataNascimento = usuarioLogado.getDataNascimento();
-        }
 
-        if (!validarInputTf(cep) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (nome.isEmpty() || cpf.isEmpty() || usuario.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
+                || cidade.isEmpty() || estado == null || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
             alert.setTitle("Erro");
-            alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
-            alert.setContentText("Digite apenas números para continuar");
-            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(buttonType);
+            alert.setHeaderText("Campos não preenchidos.");
+            alert.setContentText("Certifique de preencher todos os campos para continuar.");
+            alert.showAndWait();
+        }
+        else{
+            if (!validarInputTf(cepString) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
+                alert.setTitle("Erro");
+                alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
+                alert.setContentText("Digite apenas números para continuar");
+                ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                alert.getButtonTypes().setAll(buttonType);
 
-            alert.showAndWait().ifPresent(buttonType1 -> {
-                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
+                alert.showAndWait().ifPresent(buttonType1 -> {
+                    if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                        alert.close();
+                    }
+                });
+            }
+            else{
+                int cep = Integer.parseInt(cepString);
+                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+                try {
+                    Funcionario funcionario = (Funcionario) this.usuarioLogado;
+                    ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
+                            usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
+                    this.atualizarLabels();
+
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Atualização de perfil");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Perfil atualizado com sucesso!");
+                    alert.showAndWait();
+                } catch (UsuarioExistenteException e) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Usuário já existente");
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                } catch (DataInvalidaException e) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Data inválida");
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
                 }
-            });
-            return;
+            }
         }
-
-        Endereco endereco = new Endereco(Integer.parseInt(cep), rua, bairro, cidade, estado);
-        try {
-            Funcionario funcionario = (Funcionario) this.usuarioLogado;
-            ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
-                    usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
-            this.atualizarLabels();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Atualização de perfil");
-            alert.setHeaderText(null);
-            alert.setContentText("Perfil atualizado com sucesso!");
-            alert.showAndWait();
-
-        } catch (TipoUsuarioInvalidoException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Tipo de usuário inválido");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        } catch (UsuarioExistenteException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Usuário já existente");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        } catch (DataInvalidaException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Data inválida");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        } catch (UsuarioInexistenteException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Usuário inexistente");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        } catch (UsuarioNuloException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Usuário nulo");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-
     }
 
     @FXML
@@ -310,8 +258,11 @@ public class AdmPerfilController {
         });
     }
 
+    private boolean validarInputTf(String inputTf) {
+        return inputTf.matches("\\d+");
+    }
 
-    //GETs and Sets:
+    //GETs and SETs:
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
@@ -319,10 +270,4 @@ public class AdmPerfilController {
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
     }
-
-    private boolean validarInputTf(String inputTf) {
-        return inputTf.matches("\\d+");
-    }
-
-
 }
