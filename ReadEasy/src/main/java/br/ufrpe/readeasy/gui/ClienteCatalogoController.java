@@ -7,12 +7,9 @@ import br.ufrpe.readeasy.exceptions.QuantidadeInvalidaException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -21,6 +18,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +59,9 @@ public class ClienteCatalogoController {
     private ComboBox<String> cbEnderecoEntrega;
 
     @FXML
+    private ComboBox<String> cbGenero;
+
+    @FXML
     private Label lblPreco;
 
     @FXML
@@ -75,6 +76,7 @@ public class ClienteCatalogoController {
     @FXML
     private TextField tfPesquisar;
 
+    private List<Genero> generos;
     private Usuario usuarioLogado;
     private List<Promocao> promocoes;
     private List<Endereco> enderecosUsuario;
@@ -104,67 +106,26 @@ public class ClienteCatalogoController {
     //outros métodos:
     public void initialize(){
         setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-        setarListaDeLivrosNoCatalogo();
+        inicializarCatalogoDeLivros();
         inicializarTabelaCarrinho();
         inicializarCbPromocoes();
         inicializarCbEndereco();
+        inicializarCbGenero();
     }
 
-    @FXML
-    private void filtrarCartoesLivroNoGridPane() {
-        String termoPesquisa = tfPesquisar.getText().toLowerCase(); // Obtém o termo de pesquisa em minúsculas para facilitar a comparação
-        List<VBox> cartoesLivroFiltrados = new ArrayList<>();
+    private void inicializarCbGenero(){
+        this.generos = Arrays.asList(Genero.values());
 
-        if (termoPesquisa.trim().isEmpty()) {
-           setarListaDeLivrosNoCatalogo();
+        List<String> nomesGenero = new ArrayList<>();
+
+        for (Genero genero : generos){
+            nomesGenero.add(genero.getDescricaoEnum());
         }
-        else {
-            List<VBox> cartoesFiltrados = new ArrayList<>();
-
-            for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
-                CartaoLivroController cartaoLivroController = controladores.get(i);
-                Livro livro = cartaoLivroController.getLivro();
-
-                if (livro != null) {
-                    boolean correspondeAoFiltro = livro.getTitulo().toLowerCase().contains(termoPesquisa) ||
-                            livro.getAutor().toLowerCase().contains(termoPesquisa) ||
-                            String.valueOf(livro.getPreco()).toLowerCase().contains(termoPesquisa) ||
-                            livro.getGeneros().stream().anyMatch(genero -> genero.getDescricaoEnum().toLowerCase().contains(termoPesquisa));
-
-                    if (correspondeAoFiltro) {
-                        cartoesFiltrados.add(cartoesLivroCatalogo.get(i));
-                    }
-                }
-            }
-            gpCatalogoLivraria.getChildren().clear();
-            int coluna = 0;
-            int linha = 1;
-
-            for(int i = 0; i < cartoesFiltrados.size(); i++){
-                if (coluna == 2) {
-                    coluna = 0;
-                    linha++;
-                }
-
-                gpCatalogoLivraria.add(cartoesFiltrados.get(i), coluna++, linha);
-
-                gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
-                gpCatalogoLivraria.setPrefWidth(600);
-                gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
-
-                gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
-                gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
-
-                gpCatalogoLivraria.setVgap(10);
-                gpCatalogoLivraria.setHgap(10);
-
-                GridPane.setMargin(cartoesFiltrados.get(i), new Insets(10));
-            }
-        }
+        cbGenero.getItems().clear();
+        cbGenero.getItems().addAll(nomesGenero);
     }
 
-    public void setarListaDeLivrosNoCatalogo() {
+    public void inicializarCatalogoDeLivros() {
         listaDeLivrosDoCatalogo.clear();
         listaDeLivrosDoCatalogo.addAll(ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel());
         int coluna = 0;
@@ -178,12 +139,12 @@ public class ClienteCatalogoController {
             for (int i = 0; i < listaDeLivrosDoCatalogo.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/cartaoLivro.fxml"));
-                VBox vbox = fxmlLoader.load();
+                VBox cartaoLivro = fxmlLoader.load();
 
                 CartaoLivroController cardController = fxmlLoader.getController();
                 cardController.setInformacoesDoLivro(listaDeLivrosDoCatalogo.get(i));
 
-                this.cartoesLivroCatalogo.add(vbox);
+                this.cartoesLivroCatalogo.add(cartaoLivro);
                 this.controladores.add(cardController);
 
                 if (coluna == 2) {
@@ -191,20 +152,8 @@ public class ClienteCatalogoController {
                     linha++;
                 }
 
-                gpCatalogoLivraria.add(vbox, coluna++, linha);
-
-                gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
-                gpCatalogoLivraria.setPrefWidth(600);
-                gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
-
-                gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
-                gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
-                gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
-
-                gpCatalogoLivraria.setVgap(10);
-                gpCatalogoLivraria.setHgap(10);
-
-                GridPane.setMargin(vbox, new Insets(10));
+                adicionarCartaoLivroNoGridPane(cartaoLivro, linha, coluna);
+                coluna++;
             }
 
         } catch (IOException e) {
@@ -213,10 +162,99 @@ public class ClienteCatalogoController {
     }
 
     @FXML
-    void btnAplicarPromocaoACompra() {
-        calcularTotalLabel();
+    private void filtrarCartoesLivroPorTF() {
+        cbGenero.getSelectionModel().clearSelection();
+        String termoPesquisa = tfPesquisar.getText().toLowerCase();
+
+        if (termoPesquisa.trim().isEmpty()) {
+           inicializarCatalogoDeLivros();
+        }
+        else {
+            List<VBox> cartoesFiltrados = new ArrayList<>();
+
+            for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
+                CartaoLivroController cartaoLivroController = controladores.get(i);
+                Livro livro = cartaoLivroController.getLivro();
+
+                if (livro != null) {
+                    boolean correspondeAoFiltro = livro.getTitulo().toLowerCase().contains(termoPesquisa) ||
+                            livro.getAutor().toLowerCase().contains(termoPesquisa) ||
+                            String.valueOf(livro.getPreco()).toLowerCase().contains(termoPesquisa);
+
+                    if (correspondeAoFiltro) {
+                        cartoesFiltrados.add(cartoesLivroCatalogo.get(i));
+                    }
+                }
+            }
+
+            remotarCatatalogo(cartoesFiltrados);
+        }
     }
 
+
+    @FXML
+    public void filtrarLivrosPeloGenero(){
+        String generoSeleciodado = cbGenero.getValue();
+
+        if(generoSeleciodado != null && !generoSeleciodado.isEmpty()){
+            List<VBox> cartoesFiltrados = new ArrayList<>();
+
+            for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
+                CartaoLivroController cartaoLivroController = controladores.get(i);
+                Livro livro = cartaoLivroController.getLivro();
+
+                if (livro != null) {
+                    List<Genero> generosDoLivro = livro.getGeneros();
+                    boolean correspondeAoFiltro = false;
+
+                    for(Genero genero : generosDoLivro){
+                        if (genero.getDescricaoEnum().equals(generoSeleciodado)){
+                            correspondeAoFiltro = true;
+                        }
+                    }
+
+                    if (correspondeAoFiltro) {
+                        cartoesFiltrados.add(cartoesLivroCatalogo.get(i));
+                    }
+                }
+            }
+
+            remotarCatatalogo(cartoesFiltrados);
+        }
+    }
+
+    private void remotarCatatalogo(List<VBox> cartoesFiltrados){
+        gpCatalogoLivraria.getChildren().clear();
+        int coluna = 0;
+        int linha = 1;
+
+        for(int i = 0; i < cartoesFiltrados.size(); i++){
+            if (coluna == 2) {
+                coluna = 0;
+                linha++;
+            }
+
+            adicionarCartaoLivroNoGridPane(cartoesFiltrados.get(i), linha, coluna);
+            coluna++;
+        }
+    }
+
+    private void adicionarCartaoLivroNoGridPane(VBox cartaoLivro, int linha, int coluna){
+        gpCatalogoLivraria.add(cartaoLivro, coluna, linha);
+
+        gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
+        gpCatalogoLivraria.setPrefWidth(590);
+        gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
+
+        gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
+        gpCatalogoLivraria.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        gpCatalogoLivraria.setMaxHeight(Region.USE_PREF_SIZE);
+
+        gpCatalogoLivraria.setVgap(10);
+        gpCatalogoLivraria.setHgap(10);
+
+        GridPane.setMargin(cartaoLivro, new Insets(10));
+    }
 
     @FXML
     void btnFinalizarACompra() {
@@ -423,7 +461,7 @@ public class ClienteCatalogoController {
                 tbCarrinho.getItems().get(i).setQuantidade(quantidadeAtual);
                 achou = true;
 
-                //se a tebela já tiver ele atualiza o carrinho agr com a quantidade de livro atualizada.
+                //se a tebela já tiver o livro ele atualiza o carrinho com a quantidade de livro atualizada.
                 tbCarrinho.getItems().clear();
                 tbCarrinho.getItems().addAll(carrinho);
             }
