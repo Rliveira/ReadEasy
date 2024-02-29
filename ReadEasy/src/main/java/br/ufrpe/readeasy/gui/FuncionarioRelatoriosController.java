@@ -43,16 +43,16 @@ public class FuncionarioRelatoriosController {
     private NumberAxis catYNumeroDeVendas;
 
     @FXML
-    private TableView<Cliente> tvUsuariosMaisCompras;
+    private TableView<String> tvUsuariosMaisCompras;
     @FXML
-    private TableColumn<Cliente, String> colUsuario1;
+    private TableColumn<String, String> colUsuario1;
     @FXML
-    private TableColumn<Cliente, Integer> colTotal1;
+    private TableColumn<String, Integer> colTotal1;
 
     @FXML
-    private TableView<Cliente> tvUsuariosMaisGasto;
+    private TableView<String> tvUsuariosMaisGasto;
     @FXML
-    private TableColumn<Cliente, String> colUsuario2;
+    private TableColumn<String, String> colUsuario2;
     @FXML
     private TableColumn<Cliente, Double> colTotal2;
 
@@ -136,7 +136,7 @@ public class FuncionarioRelatoriosController {
     @FXML
     private void inicializarTvUsuariosQueMaisCompram() {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        Map<Cliente, Integer> clientesPorCompra = null;
+        Map<String, Integer> clientesPorCompra = null;
         try {
             clientesPorCompra = servidorReadEasy.listarMelhoresClientesPorCompra();
         } catch (HistoricoVazioException e) {
@@ -148,12 +148,11 @@ public class FuncionarioRelatoriosController {
     }
 
     @FXML
-    private void ConstruirTvUsuariosQueMaisCompram(Map<Cliente, Integer> melhoresClientesPorCompra) {
+    private void ConstruirTvUsuariosQueMaisCompram(Map<String, Integer> melhoresClientesPorCompra) {
         tvUsuariosMaisCompras.getItems().clear();
 
         colUsuario1.setCellValueFactory(cellData -> {
-            Cliente cliente = cellData.getValue();
-            String nome = cliente.getNome();
+            String nome = String.valueOf(cellData.getValue());
             return new SimpleStringProperty(nome);
         });
 
@@ -166,7 +165,7 @@ public class FuncionarioRelatoriosController {
     @FXML
     private void inicializarTvUsuariosQueMaisGastam() {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        Map<Cliente, Double> clientesPorGasto = null;
+        Map<String, Double> clientesPorGasto = null;
         try {
             clientesPorGasto = servidorReadEasy.listarMelhoresClientesPorGasto();
         } catch (HistoricoVazioException e) {
@@ -178,12 +177,11 @@ public class FuncionarioRelatoriosController {
     }
 
     @FXML
-    private void ConstruirTvUsuariosQueMaisGastam(Map<Cliente, Double> melhoresClientesPorGasto) {
+    private void ConstruirTvUsuariosQueMaisGastam(Map<String, Double> melhoresClientesPorGasto) {
         tvUsuariosMaisGasto.getItems().clear();
 
         colUsuario2.setCellValueFactory(cellData -> {
-            Cliente cliente = cellData.getValue();
-            String nome = cliente.getNome();
+            String nome = String.valueOf(cellData.getValue());
             return new SimpleStringProperty(nome);
         });
 
