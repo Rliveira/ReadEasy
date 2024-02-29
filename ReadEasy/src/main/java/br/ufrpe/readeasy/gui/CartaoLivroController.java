@@ -45,28 +45,11 @@ public class CartaoLivroController {
 
     @FXML
     public void btnAdicionar(){
-        if(spnSeletor.getValue() != 0){
-            LivroVendido livroVendido = new LivroVendido(this.livro, spnSeletor.getValue());
-            ScreenManager.getInstance().getClienteCatalogoController().adicionarLivroATabela(livroVendido);
-            ScreenManager.getInstance().getClienteCatalogoController().inicializarCbPromocoes();
+        LivroVendido livroVendido = new LivroVendido(this.livro, spnSeletor.getValue());
+        ScreenManager.getInstance().getClienteCatalogoController().adicionarLivroATabela(livroVendido);
+        ScreenManager.getInstance().getClienteCatalogoController().inicializarCbPromocoes();
 
-            inicializarSpinner();
-        }
-        else{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Atenção!");
-            alert.setHeaderText("Você está tentando adicionar no carrinho um livro com 0 de quantidade.");
-            alert.setContentText("Selecione uma quantidade maior do que 0 para continuar com a adição do livro no carrinho.");
-
-            ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType1 -> {
-                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
-        }
+        inicializarSpinner();
     }
 
     //gets and sets:

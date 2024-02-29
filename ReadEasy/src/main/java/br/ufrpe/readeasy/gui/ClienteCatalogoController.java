@@ -167,7 +167,7 @@ public class ClienteCatalogoController {
         String termoPesquisa = tfPesquisar.getText().toLowerCase();
 
         if (termoPesquisa.trim().isEmpty()) {
-           inicializarCatalogoDeLivros();
+           remotarCatatalogo(cartoesLivroCatalogo);
         }
         else {
             List<VBox> cartoesFiltrados = new ArrayList<>();
@@ -260,7 +260,7 @@ public class ClienteCatalogoController {
     void btnFinalizarACompra() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        if (tbCarrinho.getItems() != null){
+        if (!tbCarrinho.getItems().isEmpty()){
             if(cbEnderecoEntrega.getValue() != null){
                 alert.setTitle("Confirmação");
                 alert.setHeaderText("Deseja realmente finalizar a compra?");
@@ -352,6 +352,17 @@ public class ClienteCatalogoController {
 
     @FXML
     public void inicializarCbPromocoes(){
+        boolean temPromocaoSelecionada = false;
+        String promocaoSelecionada = "";
+
+        //Se alguma promoção já foi anteriormente selecionada:
+        if(cbAplicarPromocao.getValue() != null){
+            temPromocaoSelecionada = true;
+            promocaoSelecionada = cbAplicarPromocao.getValue();
+        }
+
+        //Limpa o conteúdo anteriormente preenchido do combobox,
+        //caso tenha, preenche novamente com conteúdo novo.
         cbAplicarPromocao.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         setPromocoes(servidorReadEasy.listarTodasPromocoesAtivas());
@@ -363,6 +374,14 @@ public class ClienteCatalogoController {
             }
         }
         cbAplicarPromocao.getItems().addAll(nomesPromocoes);
+
+        //seleciona novamente a promoção que já havia sido selecionada pelo usuário
+        if(temPromocaoSelecionada){
+
+            if(cbAplicarPromocao.getItems() != null && cbAplicarPromocao.getItems().contains(promocaoSelecionada)){
+                cbAplicarPromocao.setValue(promocaoSelecionada);
+            }
+        }
     }
 
     private int calcularQuantidadeDeLivrosNoCarrinho(){
