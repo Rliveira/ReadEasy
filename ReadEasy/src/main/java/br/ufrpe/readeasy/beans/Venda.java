@@ -22,20 +22,32 @@ public class Venda implements Serializable {
     private Cliente cliente;
     private LocalDateTime dataEHora;
     private Endereco enderecoEntrega;
+    private Promocao promocaoAplicada;
 
     //CONSTRUTOR:
-    public Venda(Cliente cliente, LocalDateTime dataEHora) {
+    public Venda(Cliente cliente, LocalDateTime dataEHora, Endereco enderecoEntrega, Promocao promocaoAplicada) {
         this.livrosVendidos = new ArrayList<>();
         this.cliente = cliente;
         this.dataEHora = dataEHora;
+        this.enderecoEntrega = enderecoEntrega;
+        this.promocaoAplicada = promocaoAplicada;
     }
 
     //MÉTODOS:
     public double calcularTotal() {
         double total = 0;
+        int porcentagemDeDesconto = 0;
+
         for (LivroVendido livroVendido : livrosVendidos) {
             total += livroVendido.calcularTotal();
         }
+        //se tiver alguma promocao aplicada a venda:
+        if(this.promocaoAplicada != null){
+            porcentagemDeDesconto = this.getPromocaoAplicada().getPorcentagemDeDesconto();
+        }
+        double desconto = total * ((double) porcentagemDeDesconto /100);
+        total = total - desconto;
+
         return total;
     }
 
@@ -113,6 +125,14 @@ public class Venda implements Serializable {
 
     public void setEnderecoEntrega(Endereco enderecoEntrega) {
         this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public Promocao getPromocaoAplicada() {
+        return promocaoAplicada;
+    }
+
+    public void setPromocaoAplicada(Promocao promocaoAplicada) {
+        this.promocaoAplicada = promocaoAplicada;
     }
 
     @Override

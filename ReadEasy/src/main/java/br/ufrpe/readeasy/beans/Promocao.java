@@ -3,10 +3,11 @@ package br.ufrpe.readeasy.beans;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Promocao implements Serializable {
     private static final long serialVersionUID = 5L;
-    private String id;
+    private UUID id;
     private String titulo;
     private int porcentagemDeDesconto;
     private int qtdMinimaDeLivros;
@@ -14,9 +15,9 @@ public class Promocao implements Serializable {
     private LocalDate dataDeExpiracao;
     private boolean ativa;
 
-
     //CONSTRUTOR:
-    public Promocao(String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa) {
+    public Promocao(String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao) {
+        this.id = UUID.randomUUID();
         this.titulo = titulo;
         this.porcentagemDeDesconto = porcentagemDeDesconto;
         this.qtdMinimaDeLivros = qtdMinimaDeLivros;
@@ -26,12 +27,8 @@ public class Promocao implements Serializable {
     }
 
     //GETS AND SETS:
-    public String getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitulo() {
@@ -95,11 +92,6 @@ public class Promocao implements Serializable {
                 Objects.equals(titulo, promocao.titulo) &&
                 Objects.equals(dataDeCriacao, promocao.dataDeCriacao) &&
                 Objects.equals(dataDeExpiracao, promocao.dataDeExpiracao);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao, dataDeExpiracao, ativa);
     }
 
     @Override

@@ -10,8 +10,6 @@ public class Endereco implements Serializable {
     private String cidade;
     private String estado;
 
-
-
     //CONSTRUTOR:
     public Endereco(int cep, String rua, String bairro, String cidade, String estado) {
         this.cep = cep;

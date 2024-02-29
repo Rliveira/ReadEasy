@@ -16,12 +16,13 @@ public class Livro implements Serializable {
     private double preco;
     private ArrayList<Genero> generos;
     private Fornecedor fornecedor;
-    private URL capaDoLivro;
+    private URL UrlLivro;
+    private byte[] capaDoLivro;
     private int quantidade;
     private Map<LocalDate, Integer> registroAtualizacaoEstoque;
 
     //CONSTRUTOR:
-    public Livro(String titulo, String autor, double preco, Fornecedor fornecedor, URL capaDoLivro) {
+    public Livro(String titulo, String autor, double preco, Fornecedor fornecedor, byte[] capaDoLivro, URL UrlLivro) {
         this.id = UUID.randomUUID();
         this.titulo = titulo;
         this.autor = autor;
@@ -31,6 +32,7 @@ public class Livro implements Serializable {
         this.quantidade = 0;
         this.registroAtualizacaoEstoque = new HashMap<>();
         this.capaDoLivro = capaDoLivro;
+        this.UrlLivro = UrlLivro;
     }
 
     //MÉTODOS:
@@ -65,66 +67,51 @@ public class Livro implements Serializable {
     public UUID getId() {
         return id;
     }
-
     public String getTitulo() {
         return titulo;
     }
-
     public String getAutor() {
         return autor;
     }
-
     public double getPreco() {
         return preco;
     }
-
     public void setTitulo(String titulo) {
-        if (!titulo.isEmpty()) {
-            this.titulo = titulo;
-        }
+        this.titulo = titulo;
     }
-
     public void setAutor(String autor) {
-        if (!autor.isEmpty()) {
-            this.autor = autor;
-        }
+        this.autor = autor;
     }
-
     public void setPreco(double preco) {
-        if (preco > 0) {
             this.preco = preco;
-        }
     }
-
     public ArrayList<Genero> getGeneros() {
         return generos;
     }
-
     public Fornecedor getFornecedor() {
         return fornecedor;
     }
-
     public void setFornecedor(Fornecedor fornecedor) {
-        if (fornecedor != null) {
             this.fornecedor = fornecedor;
-        }
     }
-
     public int getQuantidade() {
         return quantidade;
     }
-
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-
-    public URL getCapaDoLivro() {
+    public byte[] getCapaDoLivro() {
         return capaDoLivro;
     }
-    public void setCapaDoLivro(URL capaDoLivro) {
+    public void setCapaDoLivro(byte[] capaDoLivro) {
         this.capaDoLivro = capaDoLivro;
     }
-
+    public URL getUrlLivro() {
+        return UrlLivro;
+    }
+    public void setUrlLivro(URL urlLivro) {
+        UrlLivro = urlLivro;
+    }
     public Map<LocalDate, Integer> getRegistroAtualizacaoEstoque() {
         return registroAtualizacaoEstoque;
     }

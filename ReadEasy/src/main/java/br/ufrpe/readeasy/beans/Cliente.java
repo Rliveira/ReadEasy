@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.data.RepositorioUsuario;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente extends Usuario implements Serializable {
     private static final long serialVersionUID = 6L;
@@ -29,6 +30,15 @@ public class Cliente extends Usuario implements Serializable {
                 break;
             }
         }
+    }
+
+    public void editarEnderecoDeEntrega(Endereco endereco, int novoCep, String novaRua, String novoBairro,
+                                        String novaCidade ,String novoEstado){
+        endereco.setCep(novoCep);
+        endereco.setRua(novaRua);
+        endereco.setBairro(novoBairro);
+        endereco.setCidade(novaCidade);
+        endereco.setEstado(novoEstado);
     }
 
     //GETS AND SETS:
