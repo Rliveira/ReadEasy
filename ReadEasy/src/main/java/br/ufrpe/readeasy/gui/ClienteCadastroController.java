@@ -2,18 +2,12 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
-import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 
 public class ClienteCadastroController{
 
@@ -43,9 +37,8 @@ public class ClienteCadastroController{
     private TextField txtFTelefone;
     @FXML
     private TextField txtFUsuario;
-
     @FXML
-    private ComboBox<String> cbEstado;
+    private TextField txtfEstado;
 
     //métodos de troca de tela:
     @FXML
@@ -54,13 +47,9 @@ public class ClienteCadastroController{
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
-    //outros métodos:
-    public void initialize(){
-        inicializarCbEstado();
-    }
-
+    //Outros métodos:
     @FXML
-    protected void onBtnCadastrarClick(ActionEvent event){
+    protected void onBtnCadastrarClick(){
         String nome = txtFNome.getText();
         String cpf = txtFCpf.getText();
         String usuario = txtFUsuario.getText();
@@ -68,7 +57,7 @@ public class ClienteCadastroController{
         String rua = txtFRua.getText();
         String bairro = txtFBairro.getText();
         String cidade = txtFCidade.getText();
-        String estado = cbEstado.getValue();
+        String estado = txtfEstado.getText();
         String cep = txtFCEP.getText();
         String telefone = txtFTelefone.getText();
         LocalDate dataNascimento = dtpkDataNascimento.getValue();
@@ -91,6 +80,7 @@ public class ClienteCadastroController{
 
             Endereco endereco = new Endereco(Integer.parseInt(cep), rua, bairro, cidade, estado);
             Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
+
             try {
                 ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -99,11 +89,11 @@ public class ClienteCadastroController{
                 alert.setContentText("Cliente cadastrado com sucesso!");
                 alert.showAndWait();
 
+                ServidorReadEasy.getInstance().adicionarEnderecoDeEntrega(cliente, endereco);
+
                 ScreenManager sm = ScreenManager.getInstance();
                 sm.TrocarTela("Login.fxml", "ReadEasy - Login");
 
-            } catch (TipoUsuarioInvalidoException e) {
-                throw new RuntimeException(e);
             } catch (MenorDeIdadeException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro no preenchimento de dados");
@@ -128,29 +118,13 @@ public class ClienteCadastroController{
                 alert.setHeaderText(null);
                 alert.setContentText("Usuário já cadastrado!");
                 alert.showAndWait();
-            } catch (UsuarioNuloException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro no preenchimento de dados");
-                alert.setHeaderText(null);
-                alert.setContentText("Usuário nulo!");
-                alert.showAndWait();
-        }
+            } catch (EnderecoExistenteException e) {
+                throw new RuntimeException(e);  //Essa excessão não irá ser levantada nessa parte do código
+            }
 
     }
 
     private boolean validarInputTf(String inputTf) {
         return inputTf.matches("\\d+");
-    }
-
-    private void inicializarCbEstado() {
-        String[] estados = {
-                "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal",
-                "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul",
-                "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro",
-                "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina",
-                "São Paulo", "Sergipe", "Tocantins"
-        };
-
-        cbEstado.getItems().addAll(estados);
     }
 }
