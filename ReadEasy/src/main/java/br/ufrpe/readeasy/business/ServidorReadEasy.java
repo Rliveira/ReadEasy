@@ -18,14 +18,12 @@ public class ServidorReadEasy {
     private IControladorLivro controladorLivro;
     private IControladorVenda controladorVenda;
     private IControladorPromocao controladorPromocao;
-    private IControladorEndereco controladorEndereco;
 
     private ServidorReadEasy() {
         this.controladorUsuario = ControladorUsuario.getInstance();
         this.controladorLivro = ControladorLivro.getInstance();
         this.controladorVenda = ControladorVenda.getInstance();
         this.controladorPromocao = ControladorPromocao.getInstance();
-        this.controladorEndereco = ControladorEndereco.getInstance();
     }
 
     public static ServidorReadEasy getInstance() {
@@ -39,12 +37,12 @@ public class ServidorReadEasy {
         controladorUsuario.cadastrarAdmInicial();
     }
 
-    public void cadastrarUsuario(Usuario usuario) throws UsuarioNuloException, UsuarioExistenteException,
-            TipoUsuarioInvalidoException, CampoVazioException, MenorDeIdadeException, DataInvalidaException {
+    public void cadastrarUsuario(Usuario usuario) throws UsuarioExistenteException, CampoVazioException,
+            MenorDeIdadeException, DataInvalidaException {
         controladorUsuario.cadastrarUsuario(usuario);
     }
 
-    public void removerUsuario(Usuario usuario) throws UsuarioNuloException, UsuarioInexistenteException {
+    public void removerUsuario(Usuario usuario) {
         controladorUsuario.removerUsuario(usuario);
     }
 
@@ -54,52 +52,42 @@ public class ServidorReadEasy {
 
     public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                                      String senha, Endereco endereco, String telefone, boolean ehAdm,
-                                     Funcionario admResponsavel) throws TipoUsuarioInvalidoException,
-            UsuarioExistenteException, DataInvalidaException, UsuarioInexistenteException, UsuarioNuloException {
+                                     Funcionario admResponsavel) throws UsuarioExistenteException, DataInvalidaException{
         controladorUsuario.atualizarFuncionario(usuario, nome, cpf, dataNascimento, login, senha, endereco, telefone,
                 ehAdm, admResponsavel);
     }
 
     public void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                                  String senha, Endereco endereco, String telefone) throws UsuarioExistenteException,
-            DataInvalidaException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
+            DataInvalidaException {
         controladorUsuario.atualizarCliente(usuario, nome, cpf, dataNascimento, login, senha, endereco, telefone);
     }
 
     public void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                                      String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor)
-            throws DataInvalidaException, UsuarioExistenteException, TipoUsuarioInvalidoException,
-            UsuarioInexistenteException, UsuarioNuloException {
+            throws DataInvalidaException, UsuarioExistenteException{
         controladorUsuario.atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha, endereco, telefone,
                 tipoFornecedor);
     }
 
-    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoExistenteException {
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws EnderecoExistenteException {
         controladorUsuario.adicionarEnderecoDeEntrega(usuario, endereco);
     }
 
-    public void atualizarEndereco (Endereco endereco, int cep, String rua, String bairro, String cidade, String estado) throws
-            EnderecoNuloException, EnderecoInexistenteException{
-        controladorEndereco.atualizarEndereco(endereco, cep, rua, bairro, cidade, estado);
+    public void atualizarEnderecoDeEntrega(Usuario usuario, Endereco endereco, int cep, String rua, String bairro, String cidade, String estado) throws EnderecoExistenteException, CampoVazioException {
+        controladorUsuario.atualizarEnderecoDeEntrega(usuario, endereco, cep, rua, bairro, cidade, estado);
     }
 
-    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoInexistenteException {
+    public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) {
         controladorUsuario.removerEnderecoDeEntrega(usuario, endereco);
     }
 
-    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
-            UsuarioNuloException {
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) {
         return controladorUsuario.listarEnderecosDeEntrega(usuario);
     }
 
-    public Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
+    public Usuario procurarUsuario(String cpf){
         return controladorUsuario.procurarUsuario(cpf);
-    }
-
-    public void removerUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException {
-        controladorUsuario.removerUsuario(cpf);
     }
 
     public List<Usuario> listarUsuarios() {
@@ -129,13 +117,13 @@ public class ServidorReadEasy {
         controladorLivro.adicionarLivro(livro);
     }
 
-    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
+    public void removerLivro(Livro livro) {
         controladorLivro.removerLivro(livro);
     }
 
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
-            throws PrecoInvalidoException, LivroExistenteException {
-        controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, urlLivro);
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor,
+                               byte[] capaDoLivro, URL urlLivro) throws PrecoInvalidoException, LivroExistenteException {
+        controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, capaDoLivro, urlLivro);
     }
 
     public void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException {
@@ -155,7 +143,7 @@ public class ServidorReadEasy {
         controladorLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
     }
 
-    public Livro buscarLivro(UUID id) throws LivroNaoExistenteException, CampoVazioException {
+    public Livro buscarLivro(UUID id) {
         return controladorLivro.buscarLivro(id);
     }
 
@@ -187,17 +175,16 @@ public class ServidorReadEasy {
         return controladorLivro.listarQuantidadeDeEstoque();
     }
 
-    public void inserirVenda(Venda venda) throws VendaInvalidaException, UsuarioNuloException {
+    public void inserirVenda(Venda venda) {
         controladorVenda.inserirVenda(venda);
     }
 
-    public void removerVenda(Venda venda) throws VendaNaoExisteException {
+    public void removerVenda(Venda venda) {
         controladorVenda.removerVenda(venda);
     }
 
     public void atualizarVenda(Venda venda, Cliente cliente,  ArrayList<LivroVendido>
-            livros) throws VendaInvalidaException, UsuarioNuloException, UsuarioInexistenteException,
-            ListaDeLivrosVaziaException {
+            livros) throws ListaDeLivrosVaziaException {
         controladorVenda.atualizarVenda(venda, cliente, livros);
     }
 
@@ -220,17 +207,17 @@ public class ServidorReadEasy {
     }
 
 
-    public void inserirPromocao(Promocao promocao) throws PromocaoNulaException, PromocaoExistenteException {
+    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException {
         controladorPromocao.inserirPromocao(promocao);
     }
 
-    public void removerPromocao(Promocao promocao) throws PromocaoInexistenteException, PromocaoNulaException {
+    public void removerPromocao(Promocao promocao){
         controladorPromocao.removerPromocao(promocao);
     }
 
     public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
                           LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-            throws PromocaoNulaException, PromocaoInexistenteException {
+             {
         controladorPromocao.atualizarPromocao(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros,
                 dataDeCriacao, dataDeExpiracao, ativa);
     }
@@ -243,48 +230,26 @@ public class ServidorReadEasy {
         return controladorPromocao.listarTodasPromocoesAtivas();
     }
 
-    public boolean existePromocao(String id) {
+    public boolean existePromocao(UUID id) {
         return controladorPromocao.existePromocao(id);
     }
 
-    public Promocao buscarPromocao(String id) {
+    public Promocao buscarPromocao(UUID id) {
         return controladorPromocao.buscarPromocao(id);
-    }
-
-    public String gerarId() {
-        return controladorPromocao.gerarId();
-    }
-
-    public void adicionarEnderecoCliente(String cpf, Endereco endereco) throws UsuarioInexistenteException, EnderecoNuloException,
-            ClienteNuloException {
-        controladorEndereco.adicionarEnderecoCliente(cpf, endereco);
-    }
-
-    public void removerEnderecoCliente(String cpf, Endereco endereco) throws UsuarioInexistenteException, EnderecoNuloException,
-            ClienteNuloException {
-        controladorEndereco.removerEnderecoCliente(cpf, endereco);
-    }
-
-    public Endereco obterEnderecoPorCep(int cep) {
-        return controladorEndereco.obterEnderecoPorCep(cep);
-    }
-
-    public List<Endereco> listarEnderecos() {
-        return controladorEndereco.listarEnderecos();
     }
 
     public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
         return controladorLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
     }
-    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
+    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
     {
-        Map<Cliente, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
+        Map<String, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
         return listaInterna;
     }
 
-    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
+    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
     {
-        Map<Cliente, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
+        Map<String, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
         return listaInterna;
     }
 
@@ -305,7 +270,6 @@ public class ServidorReadEasy {
     {
         return controladorVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
-
 
     public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException
