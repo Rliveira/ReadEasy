@@ -98,6 +98,7 @@ public class FornecedorEstoqueController {
                         " possa visualizar o estoque de livros.");
                 alert.setContentText("Entre em contato como o gerente ou funcionário" +
                         " da livraria para que ele associe um livro solucionar esse problema.");
+                alert.showAndWait();
             }
             setListaDeLivrosFornecedor(listaDeLivrosFornecedor);
             tvEstoqueLivrosFornecedor.setItems(FXCollections.observableArrayList(listaDeLivrosFornecedor));
