@@ -197,8 +197,16 @@
                         <Pane layoutX="10.0" layoutY="72.0" prefHeight="30.0" prefWidth="512.0" />
                         <HBox prefHeight="30.0" prefWidth="512.0">
                            <children>
-                              <Pane prefHeight="30.0" prefWidth="51.0" HBox.hgrow="ALWAYS" />
-                              <ComboBox fx:id="cbLivros" onAction="#atualizarImageview" prefHeight="30.0" prefWidth="200.0" promptText="Livro" styleClass="table-view" />
+                              <Pane prefHeight="15.0" prefWidth="15.0" HBox.hgrow="ALWAYS" />
+                              <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Livro:">
+                                 <font>
+                                    <Font name="Times New Roman" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="cbLivros" onAction="#atualizarImageview" prefHeight="30.0" prefWidth="200.0" styleClass="table-view" />
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="54.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>

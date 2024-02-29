@@ -13,8 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +150,7 @@ public class AdmEstoqueController {
 
     @FXML
     private void inicializarTabela(){
+        tvEstoque.getItems().clear();
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
         tvEstoque.setItems(FXCollections.observableArrayList(listaDeLivros));
@@ -170,15 +170,7 @@ public class AdmEstoqueController {
             alert.setTitle("Erro");
             alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
             alert.setContentText("Preencha-os corretemente para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
         else {
             resultado = validarInputTfQuantidade(inputQuantidade);
@@ -194,15 +186,8 @@ public class AdmEstoqueController {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Quantidade nula ou negativa digitada");
                     alert.setContentText("Digite uma quantidade positiva para continuar.");
+                    alert.showAndWait();
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
                     limparCampos();
                 }
                 if(!excecaoLevantada){
@@ -212,15 +197,7 @@ public class AdmEstoqueController {
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Quantidade de estoque do livro adicionado com êxito.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
             }
         }
@@ -240,15 +217,7 @@ public class AdmEstoqueController {
             alert.setTitle("Erro");
             alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
             alert.setContentText("Preencha-os corretemente para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
         else{
             resultado = validarInputTfQuantidade(inputQuantidade);
@@ -264,29 +233,13 @@ public class AdmEstoqueController {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
                     alert.setContentText("A quantidade digitada a ser removida é maior do que a quantidade em estoque.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 } catch (EstoqueInsuficienteException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
                     alert.setContentText("A quantidade em estoque é 0.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
                 if(!excecaoLevantada){
                     tvEstoque.getItems().clear();
@@ -295,15 +248,7 @@ public class AdmEstoqueController {
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Quantidade de estoque do livro adicionionado com êxito.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
             }
         }
@@ -349,16 +294,10 @@ public class AdmEstoqueController {
     @FXML
     public void popularCamposDoLivroSelecionadoPelaTabela() {
         Livro livroSelecionado = tvEstoque.getSelectionModel().getSelectedItem();
-        InputStream inputStream;
 
         if (livroSelecionado != null) {
             cbLivros.setValue(livroSelecionado.getTitulo());
-            try {
-                inputStream = livroSelecionado.getCapaDoLivro().openStream();
-            } catch (IOException e) {
-                //excessão inútil que sou forçado ac fazer o try catch
-                throw new RuntimeException(e);
-            }
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(livroSelecionado.getCapaDoLivro());
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
         }
@@ -369,15 +308,8 @@ public class AdmEstoqueController {
         String nomeLivro = cbLivros.getValue();
 
         if(nomeLivro != null){
-            Livro livroSelecionado = provurarLivroPeloNome(nomeLivro);
-            InputStream inputStream;
-
-            try {
-                inputStream = livroSelecionado.getCapaDoLivro().openStream();
-            } catch (IOException e) {
-                //excessão inútil que sou forçado ac fazer o try catch
-                throw new RuntimeException(e);
-            }
+            Livro livroSelecionado = procurarLivroPeloNome(nomeLivro);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(livroSelecionado.getCapaDoLivro());
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
         }
@@ -389,7 +321,7 @@ public class AdmEstoqueController {
         ivCapaDoLivro.setImage(null);
     }
 
-    private Livro provurarLivroPeloNome(String nomeLivro){
+    private Livro procurarLivroPeloNome(String nomeLivro){
         Livro livroSelecionado = null;
         boolean achou = false;
 

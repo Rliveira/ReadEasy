@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -138,7 +140,6 @@ public class AdmLivrosController {
         ScreenManager sm = ScreenManager.getInstance();
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
-
     //Outros métodos:
     @FXML
     public void initialize(){
@@ -340,26 +341,38 @@ public class AdmLivrosController {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
                 alert.setContentText("Preencha-os corretemente para continuar");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
+                alert.showAndWait();
             }
             else{
+                InputStream inputStream;
                 try {
                     urlLivro = new URL(urlString);
-                } catch (MalformedURLException e) {
+                    inputStream = urlLivro.openStream();
+
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
+                // Ler os bytes da imagem em um array de bytes
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+
+                while (true) {
+                    try {
+                        if ((bytesRead = inputStream.read(buffer)) == -1) break;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                // Armazenar os bytes da imagem em um array
+                byte[] imageBytes = outputStream.toByteArray();
+
                 textoPreco = textoPreco.replace(',', '.');
                 double preco = Double.parseDouble(textoPreco);
-                Livro livro = new Livro(titulo, autor, preco, fornecedor, urlLivro);
+                Livro livro = new Livro(titulo, autor, preco, fornecedor, imageBytes, urlLivro);
 
                 ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                 try {
@@ -370,47 +383,25 @@ public class AdmLivrosController {
                     alert.setTitle("Erro");
                     alert.setHeaderText("Preço de livro inválido!");
                     alert.setContentText("Você digitou um preço negativo, digite um valor positivo para continuar");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 } catch (LivroExistenteException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Cadastro inválido!");
                     alert.setContentText("você tentou cadastrar um livro já existente no catálogo.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 } catch (GeneroExistenteException e) {
                     throw new RuntimeException(e);
                 }
                 if (!excecaoLevantada){
                     tvCatalogoLivros.getItems().add(livro);
+
                     alert.setAlertType(Alert.AlertType.INFORMATION);
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Livro cadastrado com êxito.");
+                    alert.showAndWait();
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
                     limparCampos();
                     setAtualizarComboBoxLivros(true);
                 }
@@ -421,15 +412,7 @@ public class AdmLivrosController {
             alert.setHeaderText("");
             alert.setContentText("Campo de preço não preenchido corretamente." + '\n' +
                     "O conteúdo preço digitado não é um número.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
     }
 
@@ -442,38 +425,17 @@ public class AdmLivrosController {
         Livro livroSelecionado = getLivroSelecionado();
 
         if(livroSelecionado != null){
-            try {
-                servidorReadEasy.removerLivro(livroSelecionado);
-            } catch (LivroNaoExistenteException e) {
-                excecaoLevantada = true;
-                alert.setTitle("erro!");
-                alert.setHeaderText("Operação inválida!");
-                alert.setContentText("Você está entando remover um  livro não existente no catálogo");
+            servidorReadEasy.removerLivro(livroSelecionado);
 
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-            }
             if(!excecaoLevantada){
                 tvCatalogoLivros.getItems().remove(livroSelecionado);
+
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Mensagem");
                 alert.setHeaderText("Sucesso!");
                 alert.setContentText("Livro removido com êxito.");
+                alert.showAndWait();
 
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
                 limparCampos();
                 setAtualizarComboBoxLivros(true);
             }
@@ -497,11 +459,10 @@ public class AdmLivrosController {
     @FXML
     public void btnEditarLivro(){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        URL urlLivro = null;
+        URL urlLivro;
         boolean excecaoLevantada = false;
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        String urllivro = tfURLCapaDoLivro.getText();
         String titulo = tfTitulo.getText();
         String autor = tfAutor.getText();
         String textoPreco = tfPreco.getText();
@@ -514,74 +475,65 @@ public class AdmLivrosController {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Operação inválida!");
                 alert.setContentText("Algum(s) campo(s) estão vazio(s), Preencha todos os campos corretemente para continuar");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
+                alert.showAndWait();
             }
             else{
+                InputStream inputStream;
                 try {
                     urlLivro = new URL(urlString);
+                    inputStream = urlLivro.openStream();
+
                 } catch (IOException e) {
-                    /*Silent exception*/
+                    throw new RuntimeException(e);
                 }
+
+                // Ler os bytes da imagem em um array de bytes
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+
+                while (true) {
+                    try {
+                        if ((bytesRead = inputStream.read(buffer)) == -1) break;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                // Armazenar os bytes da imagem em um array
+                byte[] imageBytes = outputStream.toByteArray();
 
                 textoPreco = textoPreco.replace(',', '.');
                 double preco = Double.parseDouble(textoPreco);
 
                 try {
-                    servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, urlLivro);
+                    servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, imageBytes, urlLivro);
                 }  catch (LivroExistenteException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
                     alert.setContentText("você tentou editar um livro pra um nome de um livro já existente no catálogo.");
+                    alert.showAndWait();
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
                 }
                 catch (PrecoInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
                     alert.setContentText("Você digitou um preço negativo, digite um valor maior ou igual a 0 para continuar");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
                 if (!excecaoLevantada){
                     tvCatalogoLivros.getItems().clear();
                     inicializarTabela();
+
                     alert.setAlertType(Alert.AlertType.INFORMATION);
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Livro editado com êxito.");
+                    alert.showAndWait();
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
                     limparCampos();
                     setAtualizarComboBoxLivros(true);
                 }
@@ -591,15 +543,7 @@ public class AdmLivrosController {
             alert.setTitle("Erro!");
             alert.setHeaderText("Operação inválida!");
             alert.setContentText("Selecione um item da tabela ao lado e preencha o campo de preço com um número");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
     }
 
@@ -623,15 +567,7 @@ public class AdmLivrosController {
                     alert.setTitle("Erro!");
                     alert.setHeaderText("Você selecionou um gênero já existente no livro.");
                     alert.setContentText("Selecione um gênero novo no livro para continuar.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
                 if(!exceptionLevantada){
                     lvGenerosDoLivro.getItems().add(generoSelecionado);
@@ -639,18 +575,7 @@ public class AdmLivrosController {
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Gênero adicionado com êxito");
-
-                    DialogPane dialogPane = alert.getDialogPane();
-                    dialogPane.getStyleClass().add("my-alert-style");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
             }
             else{
@@ -672,20 +597,12 @@ public class AdmLivrosController {
             alert.setTitle("Erro!");
             alert.setHeaderText("Você não selecionou nenhum Livro!");
             alert.setContentText("Selecione algum livro para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
     }
 
     @FXML
-    public void btnRemoverGenero(ActionEvent event){
+    public void btnRemoverGenero(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
 
@@ -705,29 +622,13 @@ public class AdmLivrosController {
                     alert.setTitle("Erro!");
                     alert.setHeaderText("Você não selecionou um gênero já existente no livro.");
                     alert.setContentText("Selecione um gênero novo no livro para continuar.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 } catch (LivroSemGeneroException e){
                     exceptionLevantada = true;
                     alert.setTitle("Erro!");
                     alert.setHeaderText("Remoção de gênero inválida");
                     alert.setContentText("O Livro deve conter ao menos 1 gênero.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
                 if(!exceptionLevantada){
                     lvGenerosDoLivro.getItems().remove(generoSelecionado);
@@ -735,45 +636,21 @@ public class AdmLivrosController {
                     alert.setTitle("Mensagem");
                     alert.setHeaderText("Sucesso");
                     alert.setContentText("Gênero removido com êxito");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.showAndWait();
                 }
             }
             else{
                 alert.setTitle("Erro!");
                 alert.setHeaderText("Você não selecionou nenhum gênero para remover");
                 alert.setContentText("Selecione algum gênero para continuar.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
+                alert.showAndWait();
             }
         }
         else{
             alert.setTitle("Erro!");
             alert.setHeaderText("Você não selecionou nenhum Livro!");
             alert.setContentText("Selecione algum livro para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alert.showAndWait();
         }
     }
 
@@ -834,7 +711,6 @@ public class AdmLivrosController {
     @FXML
     public void popularCamposDoLivroSelecionadoPelaTabela() {
         Livro livroSelecionado = tvCatalogoLivros.getSelectionModel().getSelectedItem();
-        InputStream inputStream;
 
         if (livroSelecionado != null) {
             tfTitulo.setText(livroSelecionado.getTitulo());
@@ -843,18 +719,15 @@ public class AdmLivrosController {
             cbFornecedor.setValue(livroSelecionado.getFornecedor().getNome());
             cbGenero.setValue(livroSelecionado.getGeneros().get(0).getDescricaoEnum());
 
-            try {
-               inputStream = livroSelecionado.getCapaDoLivro().openStream();
-            } catch (IOException e) {
-                //excessão inútil que sou forçado ac fazer o try catch
-                throw new RuntimeException(e);
-            }
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(livroSelecionado.getCapaDoLivro());
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
-            String urlLivro = livroSelecionado.getCapaDoLivro().toString();
+
+            String urlLivro = String.valueOf(livroSelecionado.getUrlLivro());
             tfURLCapaDoLivro.setText(urlLivro);
+
+            setLivroSelecionado(livroSelecionado);
         }
-        setLivroSelecionado(livroSelecionado);
     }
 
     @FXML
@@ -911,7 +784,6 @@ public class AdmLivrosController {
             }
         });
     }
-
     //gets and Sets:
     public List<Fornecedor> getFornecedores() {
         return fornecedores;
