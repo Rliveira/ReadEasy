@@ -6,13 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 public class CartaoLivroController {
-    Livro livro;
+    private Livro livro;
 
     @FXML
     private Label lblnomedolivro;
@@ -29,19 +27,12 @@ public class CartaoLivroController {
     private ImageView imgvLivro;
 
     public void setInformacoesDoLivro(Livro livro){
-        InputStream inputStream;
         this.livro = livro;
         lblnomedolivro.setText(livro.getTitulo());
         lblPreco.setText("R$" + livro.getPreco());
-
-        try {
-            inputStream = livro.getCapaDoLivro().openStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);   //exceção que não irá acontecer
-        }
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(livro.getCapaDoLivro());
         Image image = new Image(inputStream);
         imgvLivro.setImage(image);
-
         inicializarSpinner();
     }
 
@@ -57,13 +48,15 @@ public class CartaoLivroController {
         if(spnSeletor.getValue() != 0){
             LivroVendido livroVendido = new LivroVendido(this.livro, spnSeletor.getValue());
             ScreenManager.getInstance().getClienteCatalogoController().adicionarLivroATabela(livroVendido);
+            ScreenManager.getInstance().getClienteCatalogoController().inicializarCbPromocoes();
+
+            inicializarSpinner();
         }
         else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Atenção!");
             alert.setHeaderText("Você está tentando adicionar no carrinho um livro com 0 de quantidade.");
             alert.setContentText("Selecione uma quantidade maior do que 0 para continuar com a adição do livro no carrinho.");
-
 
             ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
             alert.getButtonTypes().setAll(okButton);
