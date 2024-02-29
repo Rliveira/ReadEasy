@@ -22,6 +22,14 @@ public class LoginController {
     @FXML
     private Button btnLogin;
 
+    //métodos de troca de tela:
+    @FXML
+    public void trocarTelaCadastro(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clienteCadastro.fxml", "Cadastro - ReadEasy");
+    }
+
+    //Outros métodos:
     @FXML
     public void onBtnLoginclick()
     {   boolean excecaoLevantada = false;
@@ -81,13 +89,6 @@ public class LoginController {
 
     }
 
-    //métodos de troca de tela:
-    @FXML
-    public void trocarTelaCadastro(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteCadastro.fxml", "Cadastro - ReadEasy");
-    }
-
     @FXML
     private void trocarTelaUsuario(Usuario usuario){
         if(usuario instanceof Funcionario){
@@ -95,63 +96,27 @@ public class LoginController {
             if (funcionario.isAdm()){
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
-                inicializarTelas("adm");
+                sm.inicializarTelas("adm");
                 sm.TrocarTela("admPerfil.fxml", "ReadEasy - Relatorios");
             }
             else{
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
-                inicializarTelas("funcionário");
+                sm.inicializarTelas("funcionário");
                 sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Estoque");
             }
         }
         else if(usuario instanceof Fornecedor){
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            inicializarTelas("fornecedor");
+            sm.inicializarTelas("fornecedor");
             sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Estoque");
         }
         else{
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            inicializarTelas("cliente");
+            sm.inicializarTelas("cliente");
             sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Catálogo");
-        }
-    }
-
-    public void inicializarTelas(String tipoUsuario){
-        ScreenManager screenManager = ScreenManager.getInstance();
-
-        //As telas abaixo só precisam ser atualizados 1 vez por login realizado.
-        switch (tipoUsuario){
-            case "adm":
-                AdmCRUDPromocoesController admCRUDPromocoesController = screenManager.getAdmCRUDPromocoesController();
-                AdmLivrosController admLivrosController = ScreenManager.getInstance().getAdmLivrosController();
-                AdmRelatoriosController admRelatoriosController = screenManager.getAdmRelatoriosController();
-
-                admCRUDPromocoesController.initialize();
-                admLivrosController.initialize();
-                admRelatoriosController.initialize();
-                break;
-
-            case "funcionário":
-                FuncionarioRelatoriosController funcionarioRelatoriosController = screenManager.getFuncionariosRelatoriosController();
-                funcionarioRelatoriosController.initialize();
-                break;
-
-            case "fornecedor":
-                FornecedorEstoqueController fornecedorEstoqueController = screenManager.getFornecedorEstoqueController();
-                FornecedorHistoricoController fornecedorHistoricoController = screenManager.getFornecedorHistoricoController();
-
-                fornecedorEstoqueController.initialize();
-                fornecedorHistoricoController.initialize();
-                break;
-
-            case "cliente":
-                ClienteCatalogoController clienteCatalogoController = screenManager.getClienteCatalogoController();
-                clienteCatalogoController.setPrecisaAtualizarCatalogo(true);
-                clienteCatalogoController.initialize();
-                break;
         }
     }
 }

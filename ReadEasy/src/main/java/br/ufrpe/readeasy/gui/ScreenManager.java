@@ -219,6 +219,7 @@ public class ScreenManager {
 
             case "clienteCatalogo.fxml":
                 stage.setScene(clienteCatalogoScene);
+                clienteCatalogoController.initialize();
                 break;
 
             case "clientePerfil.fxml":
@@ -266,6 +267,35 @@ public class ScreenManager {
         stage.setTitle(title);
     }
 
+    public void inicializarTelas(String tipoUsuario){
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        //As telas abaixo só precisam ser atualizados 1 vez por login realizado.
+        switch (tipoUsuario){
+            case "adm":
+                AdmCRUDPromocoesController admCRUDPromocoesController = screenManager.getAdmCRUDPromocoesController();
+                AdmLivrosController admLivrosController = ScreenManager.getInstance().getAdmLivrosController();
+                AdmRelatoriosController admRelatoriosController = screenManager.getAdmRelatoriosController();
+
+                admCRUDPromocoesController.initialize();
+                admLivrosController.initialize();
+                admRelatoriosController.initialize();
+                break;
+
+            case "funcionário":
+                FuncionarioRelatoriosController funcionarioRelatoriosController = screenManager.getFuncionariosRelatoriosController();
+                funcionarioRelatoriosController.initialize();
+                break;
+
+            case "fornecedor":
+                FornecedorEstoqueController fornecedorEstoqueController = screenManager.getFornecedorEstoqueController();
+                FornecedorHistoricoController fornecedorHistoricoController = screenManager.getFornecedorHistoricoController();
+
+                fornecedorEstoqueController.initialize();
+                fornecedorHistoricoController.initialize();
+                break;
+        }
+    }
 
     //GETS and SETS:
     public static Stage getStage() {
