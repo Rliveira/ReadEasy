@@ -5,26 +5,16 @@ import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public interface IControladorPromocao {
 
-    void inserirPromocao (Promocao promocao) throws PromocaoNulaException, PromocaoExistenteException;
-
-    void removerPromocao(Promocao promocao) throws PromocaoInexistenteException, PromocaoNulaException;
-
-    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
-                                  int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-            throws PromocaoNulaException, PromocaoInexistenteException;
-
-
+    void inserirPromocao (Promocao promocao) throws PromocaoExistenteException;
+    void removerPromocao(Promocao promocao);
+    void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros
+            , LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa);
     List<Promocao> listarTodasPromocoes();
-
-    public List<Promocao> listarTodasPromocoesAtivas();
-
-    boolean existePromocao(String id);
-
-    Promocao buscarPromocao(String id);
-
-    String gerarId();
-
+    List<Promocao> listarTodasPromocoesAtivas();
+    boolean existePromocao(UUID id);
+    Promocao buscarPromocao(UUID id);
 }

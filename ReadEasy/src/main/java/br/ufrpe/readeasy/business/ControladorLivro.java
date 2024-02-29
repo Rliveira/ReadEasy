@@ -44,16 +44,16 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
+    public void removerLivro(Livro livro) {
         repLivro.removerLivro(livro);
         repLivro.salvarArquivo();
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, byte[] capaDoLivro, URL urlLivro)
             throws PrecoInvalidoException, LivroExistenteException {
         if(preco >= 0){
-            repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, urlLivro);
+            repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, capaDoLivro, urlLivro);
             repLivro.salvarArquivo();
         }
         else{

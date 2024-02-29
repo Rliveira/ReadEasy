@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
     private static final long serialVersionUID = 11L;
@@ -64,7 +65,7 @@ public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
     }
 
     @Override
-    public boolean existePromocao(String id){
+    public boolean existePromocao(UUID id){
         boolean existe = false;
         for(Promocao promocao : promocoes){
             if(promocao.getId().equals(id)) {
@@ -75,7 +76,7 @@ public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
     }
 
     @Override
-    public Promocao buscarPromocao(String id){
+    public Promocao buscarPromocao(UUID id){
         Promocao promocao1 = null;
         for(Promocao promocao : promocoes){
             if(promocao.getId().equals(id)) {
@@ -83,21 +84,6 @@ public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
             }
         }
         return promocao1;
-    }
-
-    @Override
-    public String gerarId() {
-        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            int index = random.nextInt(caracteres.length());
-            char caractere = caracteres.charAt(index);
-            sb.append(caractere);
-        }
-
-        return sb.toString();
     }
 
     private static RepositorioPromocao lerDoArquivo() {

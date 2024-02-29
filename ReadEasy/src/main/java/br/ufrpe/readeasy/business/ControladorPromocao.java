@@ -7,6 +7,7 @@ import br.ufrpe.readeasy.exceptions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class ControladorPromocao implements IControladorPromocao{
     private static ControladorPromocao instance;
@@ -24,15 +25,12 @@ public class ControladorPromocao implements IControladorPromocao{
     }
 
 
-    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException, PromocaoNulaException {
+    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException {
         if(promocao != null){
-            if(!repPromocoes.existePromocao(promocao.getId())){
+            if(!repPromocoes.listarTodasPromocoes().contains(promocao)){
                 if (!promocao.getTitulo().isEmpty() && promocao.getPorcentagemDeDesconto() >= 0 &&
                         promocao.getPorcentagemDeDesconto() <= 100 &&
                         promocao.getDataDeExpiracao().isAfter(LocalDate.now())){
-                    do{
-                        promocao.setId(repPromocoes.gerarId());
-                    }while (repPromocoes.existePromocao(promocao.getId()));
                     repPromocoes.inserir(promocao);
                     repPromocoes.salvarArquivo();
 
@@ -41,56 +39,34 @@ public class ControladorPromocao implements IControladorPromocao{
             }else{
                 throw new PromocaoExistenteException(promocao.getId());
             }
-        }else{
-            throw new PromocaoNulaException(promocao.getTitulo());
-        }
-
-    }
-
-    public void removerPromocao(Promocao promocao) throws PromocaoInexistenteException, PromocaoNulaException {
-        if(promocao != null){
-            if (repPromocoes.existePromocao(promocao.getId())) {
-                repPromocoes.remover(promocao);
-                repPromocoes.salvarArquivo();
-            }else{
-                throw new PromocaoInexistenteException(promocao.getTitulo());
-            }
-        }else{
-            throw new PromocaoNulaException(promocao.getTitulo());
         }
     }
 
-    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto,
-                                  int qtdMinimaDeLivros, LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-            throws PromocaoNulaException, PromocaoInexistenteException {
+    public void removerPromocao(Promocao promocao){
+        repPromocoes.remover(promocao);
+        repPromocoes.salvarArquivo();
+    }
 
-        if (promocao != null) {
-            if (repPromocoes.existePromocao(promocao.getId())) {
+    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros
+            ,LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa) {
 
-                if (titulo.isEmpty() || promocao.getTitulo().equals(titulo)) {
-                    titulo = promocao.getTitulo();
-                }
-
-                if (porcentagemDeDesconto < 0 || porcentagemDeDesconto > 100 || promocao.getPorcentagemDeDesconto() ==
-                        porcentagemDeDesconto) {
-                    porcentagemDeDesconto = promocao.getPorcentagemDeDesconto();
-
-                }
-
-                if (dataDeExpiracao.isBefore(LocalDate.now())) {
-                    dataDeExpiracao = promocao.getDataDeExpiracao();
-                }
-
-                repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,
-                        dataDeExpiracao, ativa);
-                repPromocoes.salvarArquivo();
-
-            }else{
-                throw new PromocaoInexistenteException(promocao.getTitulo());
-            }
-        }else{
-            throw new PromocaoNulaException(promocao.getTitulo());
+        if (titulo.isEmpty() || promocao.getTitulo().equals(titulo)) {
+            titulo = promocao.getTitulo();
         }
+
+        if (porcentagemDeDesconto < 0 || porcentagemDeDesconto > 100 || promocao.getPorcentagemDeDesconto() ==
+                porcentagemDeDesconto) {
+            porcentagemDeDesconto = promocao.getPorcentagemDeDesconto();
+
+        }
+
+        if (dataDeExpiracao.isBefore(LocalDate.now())) {
+            dataDeExpiracao = promocao.getDataDeExpiracao();
+        }
+
+        repPromocoes.atualizar(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,
+                dataDeExpiracao, ativa);
+        repPromocoes.salvarArquivo();
     }
 
     public List<Promocao> listarTodasPromocoes(){
@@ -100,15 +76,11 @@ public class ControladorPromocao implements IControladorPromocao{
         return repPromocoes.listarTodasPromocoesAtivas();
     }
 
-    public boolean existePromocao(String id){
+    public boolean existePromocao(UUID id){
         return repPromocoes.existePromocao(id);
     }
 
-    public Promocao buscarPromocao(String id){
+    public Promocao buscarPromocao(UUID id){
         return repPromocoes.buscarPromocao(id);
-    }
-
-    public String gerarId(){
-        return repPromocoes.gerarId();
     }
 }

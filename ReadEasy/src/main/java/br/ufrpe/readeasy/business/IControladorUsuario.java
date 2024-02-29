@@ -9,38 +9,35 @@ import java.util.List;
 public interface IControladorUsuario {
     void cadastrarAdmInicial();
 
-    void cadastrarUsuario(Usuario usuario) throws TipoUsuarioInvalidoException, MenorDeIdadeException,
-            DataInvalidaException, CampoVazioException, UsuarioExistenteException, UsuarioNuloException;
-    void removerUsuario(Usuario usuario) throws UsuarioInexistenteException, UsuarioNuloException;
+    void cadastrarUsuario(Usuario usuario) throws MenorDeIdadeException,
+            DataInvalidaException, CampoVazioException, UsuarioExistenteException;
+    void removerUsuario(Usuario usuario);
 
     Boolean checarLogin(String login, String senha) throws LoginInvalidoException, CampoVazioException;
 
     void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                               String senha, Endereco endereco, String telefone, boolean ehAdm,
-                              Funcionario admResponsavel) throws TipoUsuarioInvalidoException,
-            UsuarioExistenteException, DataInvalidaException, UsuarioInexistenteException, UsuarioNuloException;
+                              Funcionario admResponsavel) throws UsuarioExistenteException, DataInvalidaException;
+            ;
 
     void atualizarCliente(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                           String senha, Endereco endereco, String telefone) throws UsuarioExistenteException,
-            DataInvalidaException, TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException;
+            DataInvalidaException;
 
     void atualizarFornecedor(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
                                     String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor)
-            throws DataInvalidaException, UsuarioExistenteException, TipoUsuarioInvalidoException,
-            UsuarioInexistenteException, UsuarioNuloException;
+            throws DataInvalidaException, UsuarioExistenteException;
 
-    void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoExistenteException;
+    void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws EnderecoExistenteException;
 
-    void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws CampoVazioException,
-            TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException, EnderecoInexistenteException;
+    void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco);
 
-    List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException,
-            UsuarioNuloException;
+    void atualizarEnderecoDeEntrega( Usuario usuario, Endereco endereco, int cep, String novaRua, String novoBairo,
+                                     String novaCidade, String novoEstado) throws CampoVazioException, EnderecoExistenteException;
 
-    Usuario procurarUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException;
+    List<Endereco> listarEnderecosDeEntrega(Usuario usuario);
 
-    void removerUsuario(String cpf) throws UsuarioInexistenteException, CampoVazioException;
+    Usuario procurarUsuario(String cpf);
 
     List<Usuario> listarUsuarios();
 

@@ -12,11 +12,10 @@ import java.util.Map;
 
 public interface IControladorVenda
 {
-    void inserirVenda(Venda venda) throws VendaInvalidaException, UsuarioNuloException;
-    void removerVenda(Venda venda)throws VendaNaoExisteException;
+    void inserirVenda(Venda venda);
+    void removerVenda(Venda venda);
     void atualizarVenda(Venda venda, Cliente cliente,  ArrayList<LivroVendido>
-                        livros) throws VendaInvalidaException, UsuarioNuloException, UsuarioInexistenteException,
-                        ListaDeLivrosVaziaException;
+                        livros) throws ListaDeLivrosVaziaException;
     List<Venda> historicoDeVendas() throws HistoricoVazioException;
     List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     List<Venda> listarVendas();
@@ -24,8 +23,8 @@ public interface IControladorVenda
 
     List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim);
 
-    Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
-    Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
+    Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
+    Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
     int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
     double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);

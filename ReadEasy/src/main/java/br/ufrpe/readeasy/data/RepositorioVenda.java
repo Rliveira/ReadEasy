@@ -117,17 +117,17 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
     }
 
     @Override
-    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
-        Map<Cliente, Integer> clienteCompra = new HashMap<>();
+    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+        Map<String, Integer> clienteCompra = new HashMap<>();
 
         if (!vendas.isEmpty()) {
             for (Venda venda : vendas) {
-                clienteCompra.put(venda.getCliente(), clienteCompra.getOrDefault(venda.getCliente(), 0) + 1);
+                clienteCompra.put(venda.getCliente().getLogin(), clienteCompra.getOrDefault(venda.getCliente().getNome(), 0) + 1);
             }
 
             return clienteCompra.entrySet()
                     .stream()
-                    .sorted(Map.Entry.<Cliente, Integer>comparingByValue().reversed())
+                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         } else {
             throw new HistoricoVazioException();
@@ -135,19 +135,19 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
     }
 
     @Override
-    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
-        Map<Cliente, Double> clienteGasto = new HashMap<>();
+    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+        Map<String, Double> clienteGasto = new HashMap<>();
 
         if (!vendas.isEmpty()) {
             for (Venda venda : vendas) {
-                Cliente cliente = venda.getCliente();
+                String cliente = venda.getCliente().getLogin();
                 double totalGasto = clienteGasto.getOrDefault(cliente, 0.0) + venda.calcularTotal();
                 clienteGasto.put(cliente, totalGasto);
             }
 
             return clienteGasto.entrySet()
                     .stream()
-                    .sorted(Map.Entry.<Cliente, Double>comparingByValue().reversed())
+                    .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         } else {
             throw new HistoricoVazioException();

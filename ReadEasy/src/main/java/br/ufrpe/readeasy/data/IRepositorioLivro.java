@@ -13,8 +13,8 @@ import java.util.UUID;
 
 public interface IRepositorioLivro {
     void cadastrarLivro(Livro livro) throws LivroExistenteException;
-    void removerLivro(Livro livro) throws LivroNaoExistenteException;
-    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor, URL urlLivro) throws LivroExistenteException;
+    void removerLivro(Livro livro);
+    void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor, byte[] capaDoLivro, URL urlLivro) throws LivroExistenteException;
     void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
     void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao);

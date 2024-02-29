@@ -34,7 +34,7 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
     @Override
     public void cadastrarLivro(Livro livro) throws LivroExistenteException {
         if (!this.livros.contains(livro)) {
-            if(!verificarLivrosComTitulosIguais(livro)){
+            if(!verificarLivrosComTitulosIguais(livro.getTitulo())){
                 this.livros.add(livro);
             }
             else{
@@ -47,24 +47,19 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
     }
 
     @Override
-    public void removerLivro(Livro livro) throws LivroNaoExistenteException {
-        if (this.livros.contains(livro)) {
-            this.livros.remove(livro);
-        }
-        else{
-            throw new LivroNaoExistenteException();
-        }
+    public void removerLivro(Livro livro) {
+        this.livros.remove(livro);
     }
 
     @Override
-    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro) throws LivroExistenteException {
+    public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, byte[] capaDoLivro, URL urlLivro) throws LivroExistenteException {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
-            if(verificarLivrosComTitulosIguais(livro)){
+            if(verificarLivrosComTitulosIguais(titulo)){
                 throw new LivroExistenteException();
             }
-            else if (livros.get(i).getId().equals(livro.getId()) && verificarLivrosComTitulosIguais(livro)){
+            else if (livros.get(i).getId().equals(livro.getId()) && verificarLivrosComTitulosIguais(titulo)){
                 throw new LivroExistenteException();
             }
             else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())){
@@ -72,7 +67,8 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
                 livros.get(i).setAutor(autor);
                 livros.get(i).setPreco(preco);
                 livros.get(i).setFornecedor(fornecedor);
-                livros.get(i).setCapaDoLivro(urlLivro);
+                livros.get(i).setCapaDoLivro(capaDoLivro);
+                livros.get(i).setUrlLivro(urlLivro);
                 achou = true;
             }
         }
@@ -308,12 +304,12 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
         return lista;
     }
 
-    private boolean verificarLivrosComTitulosIguais(Livro livro){
+    private boolean verificarLivrosComTitulosIguais(String novoNome){
         boolean temtituloIgual = false;
 
         for (int i = 0; i < livros.size() && !temtituloIgual; i++){
-            if(livros.get(i).getTitulo().equals(livro.getTitulo())){
-                if(!livros.get(i).getId().equals(livro.getId())){
+            if(livros.get(i).getTitulo().equals(novoNome)){
+                if(!livros.get(i).getId().equals(novoNome)){
                     temtituloIgual = true;
                 }
             }

@@ -4,26 +4,16 @@ import br.ufrpe.readeasy.beans.Promocao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public interface IRepositorioPromocao {
-
-    public void inserir(Promocao promocao);
-
-    public void remover(Promocao promocao);
-
-    public void atualizar(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
+    void inserir(Promocao promocao);
+    void remover(Promocao promocao);
+    void atualizar(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
                           LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa);
-
-    public List<Promocao> listarTodasPromocoes();
-
-    public List<Promocao> listarTodasPromocoesAtivas();
-
-    boolean existePromocao(String id);
-
-    Promocao buscarPromocao(String id);
-
-    String gerarId();
-
+    List<Promocao> listarTodasPromocoes();
+    List<Promocao> listarTodasPromocoesAtivas();
+    boolean existePromocao(UUID id);
+    Promocao buscarPromocao(UUID id);
     void salvarArquivo();
 }
-

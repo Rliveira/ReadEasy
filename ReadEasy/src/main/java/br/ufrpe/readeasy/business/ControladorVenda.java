@@ -27,62 +27,37 @@ public class ControladorVenda implements IControladorVenda
         }
         return instance;
     }
+
     @Override
     public List<Venda> listarVendas()
     {
         return repoVenda.listarVendas();
     }
+
     @Override
-    public void inserirVenda(Venda venda) throws UsuarioNuloException, VendaInvalidaException
+    public void inserirVenda(Venda venda)
     {
-        if(venda!=null){
-            if (venda.getCliente()!=null)
-            {
-                repoVenda.inserirVenda(venda);
-                repoVenda.salvarArquivo();
-            }
-            else
-            {
-                throw new UsuarioNuloException();
-            }
-        }
-        else
-        {
-            throw new VendaInvalidaException();
-        }
+        repoVenda.inserirVenda(venda);
+        repoVenda.salvarArquivo();
     }
+
     @Override
-    public void removerVenda(Venda venda) throws VendaNaoExisteException
+    public void removerVenda(Venda venda)
     {
-        if(repoVenda.historicoDeVendas().contains(venda))
-        {
-            repoVenda.removerVenda(venda);
-            repoVenda.salvarArquivo();
-        }
-        else
-        {
-            throw new VendaNaoExisteException();
-        }
+        repoVenda.removerVenda(venda);
+        repoVenda.salvarArquivo();
     }
+
     @Override
     public void atualizarVenda(Venda venda, Cliente cliente, ArrayList<LivroVendido> livros)
-            throws VendaInvalidaException, UsuarioInexistenteException, ListaDeLivrosVaziaException
+            throws ListaDeLivrosVaziaException
     {
-        if(!(venda == null))
+        if (!livros.isEmpty())
         {
-            if(venda.getCliente() != null)
-            {
-                if (!livros.isEmpty())
-                {
-                    repoVenda.atualizarVenda(venda, cliente, venda.getDataEHora(), livros);
-                    repoVenda.salvarArquivo();
+            repoVenda.atualizarVenda(venda, cliente, venda.getDataEHora(), livros);
+            repoVenda.salvarArquivo();
 
-                } else throw new ListaDeLivrosVaziaException();
-            } else
-            {
-                throw new UsuarioInexistenteException(cliente.getCpf());
-            }
-        } else throw new VendaInvalidaException();
+        } else throw new ListaDeLivrosVaziaException();
     }
 
     @Override
@@ -163,12 +138,12 @@ public class ControladorVenda implements IControladorVenda
     }
 
     @Override
-    public Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
         return repoVenda.listarMelhoresClientesPorCompra();
     }
 
     @Override
-    public Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
         return repoVenda.listarMelhoresClientesPorGasto();
     }
 

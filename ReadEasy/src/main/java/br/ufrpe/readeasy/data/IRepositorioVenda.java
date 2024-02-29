@@ -32,9 +32,9 @@ public interface IRepositorioVenda {
 
     ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
 
-    Map<Cliente, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
+    Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
 
-    Map<Cliente, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
+    Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
 
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 

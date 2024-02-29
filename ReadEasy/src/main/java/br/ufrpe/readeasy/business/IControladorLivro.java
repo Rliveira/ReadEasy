@@ -13,9 +13,9 @@ import java.util.UUID;
 
 public interface IControladorLivro {
     void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException;
-    void removerLivro(Livro livro) throws LivroNaoExistenteException;
-    void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, URL urlLivro)
-            throws LivroExistenteException, PrecoInvalidoException;
+    void removerLivro(Livro livro);
+    void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor,
+                        byte[] capaDoLivro, URL urlLivro) throws LivroExistenteException, PrecoInvalidoException;
     void adicionarGenero(Livro livro, Genero genero) throws GeneroExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
     void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)

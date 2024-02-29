@@ -1,9 +1,7 @@
 package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.exceptions.TipoUsuarioInvalidoException;
-import br.ufrpe.readeasy.exceptions.UsuarioInexistenteException;
-import br.ufrpe.readeasy.exceptions.UsuarioNuloException;
+import br.ufrpe.readeasy.exceptions.EnderecoExistenteException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -43,11 +41,11 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
                                  String senha, Endereco endereco, String telefone){
         usuario.setSenha(login);
         usuario.setLogin(senha);
-        ((Cliente) usuario).setNome(nome);
-        ((Cliente) usuario).setCpf(cpf);
-        ((Cliente) usuario).setDataNascimento(dataNascimento);
-        ((Cliente) usuario).setEndereco(endereco);
-        ((Cliente) usuario).setTelefone(telefone);
+        usuario.setNome(nome);
+        usuario.setCpf(cpf);
+        usuario.setDataNascimento(dataNascimento);
+        usuario.setEndereco(endereco);
+        usuario.setTelefone(telefone);
     }
     @Override
     public void atualizarFuncionario(Usuario usuario, String nome, String cpf, LocalDate dataNascimento, String login,
@@ -55,11 +53,11 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
                                      Funcionario admResponsavel){
         usuario.setSenha(login);
         usuario.setLogin(senha);
-        ((Funcionario) usuario).setNome(nome);
-        ((Funcionario) usuario).setCpf(cpf);
-        ((Funcionario) usuario).setDataNascimento(dataNascimento);
-        ((Funcionario) usuario).setEndereco(endereco);
-        ((Funcionario) usuario).setTelefone(telefone);
+        usuario.setNome(nome);
+        usuario.setCpf(cpf);
+        usuario.setDataNascimento(dataNascimento);
+        usuario.setEndereco(endereco);
+        usuario.setTelefone(telefone);
         ((Funcionario) usuario).setAdm(ehAdm);
         ((Funcionario) usuario).setAdmResponsavel(admResponsavel);
     }
@@ -68,44 +66,71 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
                                     String senha, Endereco endereco, String telefone, TipoFornecedor tipoFornecedor){
         usuario.setSenha(login);
         usuario.setLogin(senha);
-        ((Fornecedor) usuario).setNome(nome);
-        ((Fornecedor) usuario).setCpf(cpf);
-        ((Fornecedor) usuario).setDataNascimento(dataNascimento);
-        ((Fornecedor) usuario).setEndereco(endereco);
-        ((Fornecedor) usuario).setTelefone(telefone);
+        usuario.setNome(nome);
+        usuario.setCpf(cpf);
+        usuario.setDataNascimento(dataNascimento);
+        usuario.setEndereco(endereco);
+        usuario.setTelefone(telefone);
         ((Fornecedor) usuario).setTipoFornecedor(tipoFornecedor);
     }
 
-    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco){
-        ((Cliente) usuario).adicionarEndereco(endereco);
+    @Override
+    public void adicionarEnderecoDeEntrega(Usuario usuario, Endereco endereco) throws EnderecoExistenteException {
+        List<Endereco> enderecosDeEntrega = ((Cliente) usuario).getEnderecosentrega();
+        boolean enderecoJaExistente = false;
+
+        for (int i = 0; i < enderecosDeEntrega.size() && !enderecoJaExistente; i++){
+            if (enderecosDeEntrega.get(i).equals(endereco)){
+                enderecoJaExistente = true;
+            }
+        }
+
+        if(enderecoJaExistente){
+            throw new EnderecoExistenteException(endereco.getCep());
+        }
+        else{
+            ((Cliente) usuario).adicionarEndereco(endereco);
+        }
     }
 
-
+    @Override
     public void removerEnderecoDeEntrega(Usuario usuario, Endereco endereco){
         ((Cliente) usuario).removerEndereco(endereco);
     }
 
-    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) throws TipoUsuarioInvalidoException, UsuarioInexistenteException, UsuarioNuloException {
-        if (usuario != null) {
-            if (this.existeUsuario(usuario.getCpf())) {
-                if (usuario instanceof Cliente) {
-                    List<Endereco> enderecos = ((Cliente) usuario).getEnderecosentrega();
-                    return Collections.unmodifiableList(enderecos);
-                } else {
-                    throw new TipoUsuarioInvalidoException();
-                }
-            } else {
-                throw new UsuarioInexistenteException(usuario.getCpf());
+    @Override
+    public void atualizarEnderecoDeEntrega(Usuario usuario, Endereco endereco, int cep, String novaRua,
+                                           String novoBairo, String novaCidade, String novoEstado) throws EnderecoExistenteException {
+
+        Endereco endereco1 = new Endereco(cep, novaRua, novoBairo, novaCidade, novoEstado);
+        List<Endereco> enderecosDeEntrega = ((Cliente) usuario).getEnderecosentrega();
+        boolean enderecoJaExistente = false;
+
+        for (int i = 0; i < enderecosDeEntrega.size() && !enderecoJaExistente; i++){
+
+            //verifica se já existe algum enreço na lista de endereços com os mesmos atributos.
+            if (enderecosDeEntrega.get(i).equals(endereco1)){
+                enderecoJaExistente = true;
             }
-        } else {
-            throw new UsuarioNuloException();
         }
+
+        if(enderecoJaExistente){
+            throw new EnderecoExistenteException(endereco.getCep());
+        }
+        ((Cliente) usuario).editarEnderecoDeEntrega(endereco, cep, novaRua, novoBairo, novaCidade, novoEstado);
+    }
+
+    @Override
+    public List<Endereco> listarEnderecosDeEntrega(Usuario usuario) {
+        List<Endereco> enderecos = ((Cliente) usuario).getEnderecosentrega();
+        return Collections.unmodifiableList(enderecos);
     }
 
     @Override
     public List<Usuario> listarUsuarios(){
         return Collections.unmodifiableList(usuarios);
     }
+
     @Override
     public List<Cliente> listarClientes(){
         ArrayList<Cliente> listaDeClientes = new ArrayList<>();
@@ -116,6 +141,7 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
         }
         return Collections.unmodifiableList(listaDeClientes);
     }
+
     @Override
     public List<Funcionario> listarFuncionarios(){
         ArrayList<Funcionario> listaDeColaboradores = new ArrayList<>();
@@ -126,6 +152,7 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
         }
         return Collections.unmodifiableList(listaDeColaboradores);
     }
+
     @Override
     public List<Funcionario> listarAdms(){
         ArrayList<Funcionario> listaDeAdministradores = new ArrayList<>();
@@ -136,6 +163,7 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
         }
         return Collections.unmodifiableList(listaDeAdministradores);
     }
+
     @Override
     public List<Fornecedor> listarFornecedores(){
         ArrayList<Fornecedor> listaDeFornecedores = new ArrayList<>();
@@ -146,6 +174,7 @@ public class RepositorioUsuario implements IRepositorioUsuario, Serializable{
         }
         return Collections.unmodifiableList(listaDeFornecedores);
     }
+
     @Override
     public boolean existeUsuario(String cpf){
         boolean existe = false;
