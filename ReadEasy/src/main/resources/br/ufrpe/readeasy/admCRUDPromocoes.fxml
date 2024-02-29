@@ -161,12 +161,12 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="748.0" prefWidth="667.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+            <VBox prefHeight="679.0" prefWidth="457.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                <children>
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                      <children>
                         <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                        <Label prefHeight="27.0" prefWidth="252.0" text="Cadastro de Promoções" textFill="WHITE">
+                        <Label prefHeight="27.0" prefWidth="281.0" text="Cadastro de Promoções" textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
                            </font>
@@ -177,61 +177,58 @@
                         <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <VBox prefHeight="15.0" VBox.vgrow="ALWAYS" />
-                  <VBox prefHeight="30.0" VBox.vgrow="ALWAYS" />
                   <HBox>
                      <children>
-                        <VBox prefHeight="236.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
+                        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
+                              <Pane prefHeight="112.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
+                              <VBox prefHeight="23.0" prefWidth="544.0">
                                  <children>
-                                    <Pane prefHeight="112.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
-                                    <VBox prefHeight="23.0" prefWidth="544.0">
-                                       <children>
-                                          <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <styleClass>
-                                                <String fx:value="textFieldDesign" />
-                                                <String fx:value="textFieldF" />
-                                             </styleClass>
-                                          </TextField>
-                                          <TextField fx:id="tfPorcentagemDeDesconto" prefHeight="30.0" prefWidth="175.0" promptText="Porcentagem de desconto" stylesheets="@css/Style.css">
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                             <styleClass>
-                                                <String fx:value="textFieldDesign" />
-                                                <String fx:value="textFieldF" />
-                                             </styleClass>
-                                          </TextField>
-                                          <TextField fx:id="tfQuantidadeMinimaDeLivros" prefHeight="30.0" prefWidth="175.0" promptText="Quantidade mínima de livros" stylesheets="@css/Style.css">
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                             <styleClass>
-                                                <String fx:value="textFieldDesign" />
-                                                <String fx:value="textFieldF" />
-                                             </styleClass>
-                                          </TextField>
-                                          <DatePicker fx:id="dtpDataDeInicioDaPromocao" prefHeight="25.0" prefWidth="218.0" promptText="Data de início da promoção">
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                          </DatePicker>
-                                          <DatePicker fx:id="dtpDataDeExpiracaoDaPromocao" prefHeight="25.0" prefWidth="218.0" promptText="Data de expiração da promoção ">
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                          </DatePicker>
-                                       </children>
-                                    </VBox>
-                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="textFieldDesign" />
+                                          <String fx:value="textFieldF" />
+                                       </styleClass>
+                                    </TextField>
+                                    <TextField fx:id="tfPorcentagemDeDesconto" prefHeight="30.0" prefWidth="175.0" promptText="Porcentagem de desconto" stylesheets="@css/Style.css">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="textFieldDesign" />
+                                          <String fx:value="textFieldF" />
+                                       </styleClass>
+                                    </TextField>
+                                    <TextField fx:id="tfQuantidadeMinimaDeLivros" prefHeight="30.0" prefWidth="175.0" promptText="Quantidade mínima de livros" stylesheets="@css/Style.css">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="textFieldDesign" />
+                                          <String fx:value="textFieldF" />
+                                       </styleClass>
+                                    </TextField>
+                                    <DatePicker fx:id="dtpDataDeInicioDaPromocao" prefHeight="25.0" prefWidth="218.0" promptText="Data de início da promoção">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </DatePicker>
+                                    <DatePicker fx:id="dtpDataDeExpiracaoDaPromocao" prefHeight="25.0" prefWidth="218.0" promptText="Data de expiração da promoção ">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </DatePicker>
                                  </children>
-                              </HBox>
+                              </VBox>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
                            </children>
-                        </VBox>
+                           <HBox.margin>
+                              <Insets top="170.0" />
+                           </HBox.margin>
+                        </HBox>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -245,36 +242,53 @@
                               <Insets />
                            </HBox.margin>
                         </Pane>
-                        <Button fx:id="btnAdicionar" mnemonicParsing="false" onAction="#btnAdicionarPromocao" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS_SQUARE_ALT" size="20" wrappingWidth="20.0" />
-                           </graphic>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnDeletar" mnemonicParsing="false" onAction="#btnDeletarPromocao" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="MINUS_SQUARE_ALT" size="20" wrappingWidth="20.0" />
-                           </graphic>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#btnEditarPromocao" prefHeight="45.0" prefWidth="130.0" styleClass="btnEditar" stylesheets="@css/Style.css" text="Editar&#10;&#10;" textFill="WHITE">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="20" wrappingWidth="20.0" />
-                           </graphic>
-                        </Button>
+                        <VBox prefHeight="140.0" prefWidth="131.0">
+                           <children>
+                              <Pane layoutX="10.0" layoutY="110.0" prefHeight="10.0" prefWidth="200.0" />
+                              <Button fx:id="btnAdicionar" mnemonicParsing="false" onAction="#btnAdicionarPromocao" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="PLUS_SQUARE_ALT" size="20" wrappingWidth="20.0" />
+                                 </graphic>
+                              </Button>
+                              <Pane layoutX="10.0" layoutY="69.0" prefHeight="10.0" prefWidth="131.0" />
+                              <Button fx:id="btnDeletar" mnemonicParsing="false" onAction="#btnDeletarPromocao" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="MINUS_SQUARE_ALT" size="20" wrappingWidth="20.0" />
+                                 </graphic>
+                              </Button>
+                              <Pane prefHeight="10.0" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="140.0" prefWidth="38.0" />
+                        <VBox prefHeight="140.0" prefWidth="130.0">
+                           <children>
+                              <Pane layoutX="10.0" layoutY="110.0" prefHeight="10.0" prefWidth="200.0" />
+                              <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#btnEditarPromocao" prefHeight="45.0" prefWidth="130.0" styleClass="btnEditar" stylesheets="@css/Style.css" text="Editar&#10;&#10;" textFill="WHITE">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="20" wrappingWidth="20.0" />
+                                 </graphic>
+                              </Button>
+                              <Pane layoutX="10.0" layoutY="69.0" prefHeight="10.0" prefWidth="200.0" />
+                              <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#limparCampos" prefHeight="45.0" prefWidth="130.0" styleClass="btnLimpar" stylesheets="@css/Style.css" text="Limpar&#10;campos&#10;&#10;&#10;" textFill="WHITE">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="ERASER" size="20" wrappingWidth="30.0" />
+                                 </graphic>
+                              </Button>
+                              <Pane prefHeight="10.0" prefWidth="200.0" />
+                           </children>
+                        </VBox>
                         <Pane prefHeight="159.0" prefWidth="75.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
@@ -286,7 +300,7 @@
                   <Insets bottom="10.0" left="10.0" top="10.0" />
                </HBox.margin>
             </VBox>
-            <VBox prefHeight="748.0" prefWidth="446.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+            <VBox prefHeight="748.0" prefWidth="446.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -294,7 +308,7 @@
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                      <children>
                         <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                        <Label prefHeight="25.0" prefWidth="239.0" text="Promoções ativas" textFill="WHITE">
+                        <Label prefHeight="26.0" prefWidth="193.0" text="Promoções ativas" textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
                            </font>
@@ -305,7 +319,7 @@
                         <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <TableView fx:id="tbvPromocoesAtivas" prefHeight="708.0" prefWidth="446.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tbvPromocoesAtivas" onMouseClicked="#popularCamposDaPromocaoSelecionada" prefHeight="708.0" prefWidth="446.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="clnTitulo" prefWidth="75.0" text="Título" />
                       <TableColumn fx:id="clnPorcentagem" prefWidth="75.0" text="\%" />

@@ -7,8 +7,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -40,6 +38,18 @@ public class AdmCRUDPromocoesController {
     private Button btnRelatorios;
 
     @FXML
+    private Button btnAdicionar;
+
+    @FXML
+    private Button btnDeletar;
+
+    @FXML
+    private Button btnEditar;
+
+    @FXML
+    private Button btnLimpar;
+
+    @FXML
     private TextField tfTitulo;
 
     @FXML
@@ -54,14 +64,6 @@ public class AdmCRUDPromocoesController {
     @FXML
     private DatePicker dtpDataDeExpiracaoDaPromocao;
 
-    @FXML
-    private Button btnAdicionar;
-
-    @FXML
-    private Button btnDeletar;
-
-    @FXML
-    private Button btnEditar;
 
     @FXML
     private TableView<Promocao> tbvPromocoesAtivas;
@@ -80,8 +82,6 @@ public class AdmCRUDPromocoesController {
 
     @FXML
     private TableColumn<Promocao, LocalDate> clnDtFim;
-
-    private boolean editMode = false;
 
     //Métodos de troca de tela:
     @FXML
@@ -127,131 +127,14 @@ public class AdmCRUDPromocoesController {
     }
 
     //Outros métodos:
-
-    @FXML
-    void btnAdicionarPromocao() {
-
-        String titulo = tfTitulo.getText();
-        int porcentagemDeDesconto = Integer.parseInt(tfPorcentagemDeDesconto.getText());
-        int qtdMinimaDeLivros = Integer.parseInt(tfQuantidadeMinimaDeLivros.getText());;
-        LocalDate dataDeCriacao = dtpDataDeInicioDaPromocao.getValue();
-        LocalDate dataDeExpiracao = dtpDataDeExpiracaoDaPromocao.getValue();
-
-        boolean ativa = true;
-
-        Promocao promocao = new Promocao(titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,dataDeExpiracao, ativa);
-        try {
-            ServidorReadEasy.getInstance().inserirPromocao(promocao);
-
-            List<Promocao> promocoesAtivas = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
-
-            tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoesAtivas));
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Cadastro de Promocao");
-            alert.setHeaderText(null);
-            alert.setContentText("Promocao cadastrada com sucesso!");
-            alert.showAndWait();
-        } catch (PromocaoExistenteException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro no preenchimento de dados");
-            alert.setHeaderText(null);
-            alert.setContentText("Esta promoção já existe");
-            alert.showAndWait();
-        } catch (PromocaoNulaException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro no preenchimento de dados");
-            alert.setHeaderText(null);
-            alert.setContentText("Promoção nula.");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    void btnDeletarPromocao() {
-
-        Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
-
-        if (promocaoSelecionada != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmação de Exclusão");
-            alert.setHeaderText(null);
-            alert.setContentText("Tem certeza que deseja excluir a promoção selecionada?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-
-                tbvPromocoesAtivas.getItems().remove(promocaoSelecionada);
-
-                try {
-                    ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
-                } catch (PromocaoInexistenteException | PromocaoNulaException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aviso");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhuma promoção selecionada para edição.");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    void btnEditarPromocao() {
-
-        Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
-
-        if (promocaoSelecionada != null) {
-            if (!editMode) {
-                // Se não estiver no modo de edição, preencha os campos com os dados da promoção
-                tfTitulo.setText(promocaoSelecionada.getTitulo());
-                tfPorcentagemDeDesconto.setText(String.valueOf(promocaoSelecionada.getPorcentagemDeDesconto()));
-                tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocaoSelecionada.getQtdMinimaDeLivros()));
-                dtpDataDeInicioDaPromocao.setValue(promocaoSelecionada.getDataDeCriacao());
-                dtpDataDeExpiracaoDaPromocao.setValue(promocaoSelecionada.getDataDeExpiracao());
-
-                btnAdicionar.setDisable(true);
-                btnDeletar.setDisable(true);
-                editMode = true;  // Altera para o modo de edição
-            } else {
-                // Se estiver no modo de edição, capture os dados alterados e atualize a promoção
-                String novoTitulo = tfTitulo.getText();
-                int novaPorcentagem = Integer.parseInt(tfPorcentagemDeDesconto.getText());
-                int novaQuantidade = Integer.parseInt(tfQuantidadeMinimaDeLivros.getText());
-                LocalDate novaDataInicio = dtpDataDeInicioDaPromocao.getValue();
-                LocalDate novaDataFim = dtpDataDeExpiracaoDaPromocao.getValue();
-
-                try {
-                    ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
-                            novaQuantidade, novaDataInicio, novaDataFim, true);
-                } catch (PromocaoNulaException e) {
-                    System.out.println("Promoção nula");
-                } catch (PromocaoInexistenteException e) {
-                    System.out.println("Promoção inexistente");
-                }
-
-                // Volte ao estado inicial
-                btnAdicionar.setDisable(false);
-                btnDeletar.setDisable(false);
-                editMode = false;  // Sai do modo de edição
-
-                this.initialize();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aviso");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhuma promoção selecionada para edição.");
-            alert.showAndWait();
-        }
-    }
     @FXML
     public void initialize() {
+        construirTabela();
+        inicializarTbvPromocoesAtivas();
+    }
 
-        List<Promocao> promocoesAtivas = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
-
+    @FXML
+    public void construirTabela(){
         clnTitulo.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
             String titulo = promocao.getTitulo();
@@ -280,37 +163,196 @@ public class AdmCRUDPromocoesController {
             LocalDate dtFim = promocao.getDataDeExpiracao();
             return new SimpleObjectProperty<>(dtFim);
         });
+    }
 
-        tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoesAtivas));
+    @FXML
+    public void inicializarTbvPromocoesAtivas(){
+        List<Promocao> promocoes = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
+        tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoes));
+    }
 
-        tbvPromocoesAtivas.setRowFactory(tv -> {
-            TableRow<Promocao> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    Promocao promocaoSelecionada = row.getItem();
+    @FXML
+    void btnAdicionarPromocao() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Aviso");
+        String titulo = tfTitulo.getText();
+        String pct = (tfPorcentagemDeDesconto.getText());
+        String qntMin = tfQuantidadeMinimaDeLivros.getText();
+        LocalDate dataDeCriacao = dtpDataDeInicioDaPromocao.getValue();
+        LocalDate dataDeExpiracao = dtpDataDeExpiracaoDaPromocao.getValue();
+
+        if(pct.isEmpty() || qntMin.isEmpty()){
+            alert.setTitle("Erro!");
+            alert.setHeaderText("Campos não preenchidos.");
+            alert.setContentText("Preencha todos os campos para continuar.");
+            alert.showAndWait();
+        }
+        else{
+             boolean resultado1 = validarInputTf(pct);
+             boolean resultado2 = validarInputTf(qntMin);
+
+            if(resultado1 && resultado2){
+                int porcentagemDeDesconto = Integer.parseInt(pct);
+                int qtdMinimaDeLivros = Integer.parseInt(qntMin);
+
+                Promocao promocao = new Promocao(titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,dataDeExpiracao);
+
+                try {
+                    ServidorReadEasy.getInstance().inserirPromocao(promocao);
+
+                    tbvPromocoesAtivas.getItems().add(promocao);
+
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Cadastro de Promocao");
                     alert.setHeaderText(null);
-                    alert.setContentText("Selecione se você deseja Editar ou Deletar esta Promoção.");
+                    alert.setContentText("Promocao cadastrada com sucesso!");
                     alert.showAndWait();
+                    limparCampos();
 
-                    row.setOnMouseClicked(secondEvent -> {
-                        if (secondEvent.getClickCount() == 1) {
-                            if (secondEvent.getTarget() instanceof Button) {
-                                Button clickedButton = (Button) secondEvent.getTarget();
-                                if (clickedButton == btnDeletar) {
-                                    btnDeletarPromocao();
-                                } else if (clickedButton == btnEditar) {
-                                    btnEditarPromocao();
-                                }
-                            }
-                        }
-                    });
+                } catch (PromocaoExistenteException e) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("A promoção que você está tentando cadastrar já existe.");
+                    alert.setContentText("Cadastre uma promoção nova para continuar");
+                    alert.showAndWait();
+                }
+            }
+            else{
+                alert.setTitle("Erro!");
+                alert.setHeaderText("Campo de porcentagem ou quantidade minima" + '\n' + " preenchido incorretamente.");
+                alert.setContentText("Preencha ambos os campos apenas com números para continuar.");
+                alert.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    void btnDeletarPromocao() {
+        Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
+
+        if (promocaoSelecionada != null) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação de Exclusão");
+            alert.setHeaderText(null);
+            alert.setContentText("Tem certeza que deseja excluir a promoção selecionada?");
+
+            ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+            ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(simButton, naoButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    boolean excessaoLevantada = false;
+                    ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
+
+                    if (!excessaoLevantada){
+                        tbvPromocoesAtivas.getItems().remove(promocaoSelecionada);
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sucesso!");
+                        alert.setHeaderText("Promoção removida com sucesso!");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                        limparCampos();
+                    }
+                }
+                else {
+                    alert.close();
                 }
             });
-            return row;
-        });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Aviso");
+            alert.setHeaderText("Nenhuma promoção selecionada para a remoção.");
+            alert.setContentText("Selecione uma promoção na tabela ao lado para continuar.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    void btnEditarPromocao() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
+
+        if (promocaoSelecionada != null) {
+            String novoTitulo = tfTitulo.getText();
+            String pct = (tfPorcentagemDeDesconto.getText());
+            String qntMin = tfQuantidadeMinimaDeLivros.getText();
+            LocalDate novaDataInicio = dtpDataDeInicioDaPromocao.getValue();
+            LocalDate novaDataFim = dtpDataDeExpiracaoDaPromocao.getValue();
+
+            if(pct.isEmpty() || qntMin.isEmpty()){
+                alert.setTitle("Erro!");
+                alert.setHeaderText("Campos não preenchidos.");
+                alert.setContentText("Preencha todos os campos para continuar.");
+                alert.showAndWait();
+            }
+            else{
+                boolean resultado1 = validarInputTf(pct);
+                boolean resultado2 = validarInputTf(qntMin);
+
+                if(resultado1 && resultado2){
+                    int novaPorcentagem = Integer.parseInt(pct);
+                    int novaQuantidade = Integer.parseInt(qntMin);
+
+                    ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
+                                novaQuantidade, novaDataInicio, novaDataFim, true);
+
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sucesso.");
+                        alert.setHeaderText(null);
+                        alert.setContentText("promoção editada com sucesso!");
+                        alert.showAndWait();
+
+
+                    limparCampos();
+                    this.initialize();
+                }
+                else{
+                    alert.setTitle("Erro!");
+                    alert.setHeaderText("Campo de porcentagem ou quantidade minima" + '\n' + " preenchido incorretamente.");
+                    alert.setContentText("Preencha ambos os campos números para continuar.");
+                    alert.showAndWait();
+                }
+            }
+        }
+        else {
+            alert.setTitle("Aviso");
+            alert.setHeaderText("Nenhuma promoção selecionada para edição.");
+            alert.setContentText("Selecione uma promoção da tabela ao lado para continuar.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void limparCampos(){
+        tfTitulo.clear();
+        tfPorcentagemDeDesconto.clear();
+        tfQuantidadeMinimaDeLivros.clear();
+        dtpDataDeExpiracaoDaPromocao.setValue(null);
+        dtpDataDeInicioDaPromocao.setValue(null);
+    }
+
+    private boolean validarInputTf(String quantidadeDigitada){
+        boolean inputDigitadoCorretamente = true;
+
+        try {
+            int quantidade = Integer.parseInt(quantidadeDigitada);
+        } catch (NumberFormatException e) {
+            inputDigitadoCorretamente = false;
+        }
+
+        return inputDigitadoCorretamente;
+    }
+
+    @FXML
+    public void popularCamposDaPromocaoSelecionada(){
+        Promocao promocao = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
+
+        tfTitulo.setText(promocao.getTitulo());
+        tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocao.getQtdMinimaDeLivros()));
+        tfPorcentagemDeDesconto.setText(String.valueOf(promocao.getPorcentagemDeDesconto()));
+        dtpDataDeInicioDaPromocao.setValue(promocao.getDataDeCriacao());
+        dtpDataDeExpiracaoDaPromocao.setValue(promocao.getDataDeExpiracao());
     }
 
     @FXML

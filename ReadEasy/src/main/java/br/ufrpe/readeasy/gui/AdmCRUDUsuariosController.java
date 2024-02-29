@@ -13,10 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class AdmCRUDUsuariosController
-{
+public class AdmCRUDUsuariosController {
     @FXML
     private Button btnCadastrar;
 
@@ -114,59 +114,65 @@ public class AdmCRUDUsuariosController
     private ComboBox<String> cbTipo;
 
     @FXML
-    private ComboBox<TipoFornecedor> cbTipoFornecedor;
+    private ComboBox<String> cbTipoFornecedor;
+    List<TipoFornecedor> tipoFornecedor = new ArrayList<>();
 
     private ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
     private ObservableList<String> cargos = FXCollections.observableArrayList("Funcionário",
             "Administrador", "Fornecedor");
 
-        //Métodos de troca de tela:
-        @FXML
-        public void trocarTelaEstoqueAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
-        }
-
-        @FXML
-        public void trocarTelaHistoricoAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
-        }
-
-        @FXML
-        public void trocarTelaLivrosAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
-        }
-
-        @FXML
-        public void trocarTelaPerfilAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-        }
-
-        @FXML
-        public void trocarTelaPromocoesAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-        }
-
-        @FXML
-        public void trocarTelaRelatoriosAdm(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatórios");
-        }
-
-        @FXML
-        private void trocarTelaLogin(){
-            ScreenManager sm = ScreenManager.getInstance();
-            sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-        }
-
-    //Outros métodos:
+    //Métodos de troca de tela:
+    @FXML
+    public void trocarTelaEstoqueAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    }
 
     @FXML
-    public void onBtnCadastrarUsuariosclick(){
+    public void trocarTelaHistoricoAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
+    }
+
+    @FXML
+    public void trocarTelaLivrosAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
+    }
+
+    @FXML
+    public void trocarTelaPerfilAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
+    }
+
+    @FXML
+    public void trocarTelaPromocoesAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
+    }
+
+    @FXML
+    public void trocarTelaRelatoriosAdm() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatórios");
+    }
+
+    @FXML
+    private void trocarTelaLogin() {
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
+    @FXML
+    public void initialize() {
+        construirTabela();
+        carregarDados();
+    }
+
+    @FXML
+    public void onBtnCadastrarUsuariosclick() {
         boolean excecaoLevantada = false;
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -179,417 +185,203 @@ public class AdmCRUDUsuariosController
         String cidade = txtFieldCidade.getText();
         String estado = txtFieldEstado.getText();
         String senha = txtFieldSenha.getText();
-
         String cepString = txtFieldCEP.getText();
-
         LocalDate dataNascimento = dpDataNascimento.getValue();
 
-        if(validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf))
-        {
+        if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
+                || cidade.isEmpty() || estado.isEmpty() || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
             alert.setTitle("Erro");
-            alert.setHeaderText("Campos de telefone, CPF ou CEP contém letras ou caracteres especiais.");
-            alert.setContentText("Digite apenas números nos campos para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    alert.close();
-                }
-            });
-        }
-        else{
-            int cep = 0;
-            if(!cepString.isEmpty())
-            {
-                cep = Integer.parseInt(cepString);
-            }
-            Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-
-            String tipoUsuarioSelecionado = cbTipo.getValue();
-
-            if(tipoUsuarioSelecionado == null){
+            alert.setHeaderText("Campos não preenchidos.");
+            alert.setContentText("Certifique de preencher todos os campos para continuar.");
+            alert.showAndWait();
+        } else {
+            if (validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf)) {
                 alert.setTitle("Erro");
-                alert.setHeaderText("Tipo de usuário não selecionado.");
-                alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+                alert.setHeaderText("Campos de telefone, CPF ou CEP contém letras ou caracteres especiais.");
+                alert.setContentText("Digite apenas números nos campos para continuar.");
+                alert.showAndWait();
 
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
+            } else {
+                int cep = 0;
+                if (!cepString.isEmpty()) {
+                    cep = Integer.parseInt(cepString);
+                }
+                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
 
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                        alert.close();
+                String tipoUsuarioSelecionado = cbTipo.getValue();
+
+                if (tipoUsuarioSelecionado == null) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Tipo de usuário não selecionado.");
+                    alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+                    alert.showAndWait();
+                } else {
+                    try {
+                        Usuario usuario;
+
+                        //montagem do usuario:
+                        if (tipoUsuarioSelecionado.equals(cargos.get(1))) {
+                            usuario = new Funcionario(nome, cpf, dataNascimento, login, senha, endereco, telefone, true,
+                                    (Funcionario) SessaoUsuario.getUsuarioLogado());
+                        } else if (tipoUsuarioSelecionado.equals("Fornecedor")) {
+                            String nomeTipoFornecedor = cbTipoFornecedor.getValue();
+                            TipoFornecedor tipoFornecedor1 = procurarTipoFornecedorPeloNome(nomeTipoFornecedor);
+                            usuario = new Fornecedor(nome, cpf, dataNascimento, login, senha, endereco, telefone, tipoFornecedor1);
+                        } else {   //funcionário comum.
+                            usuario = new Funcionario(nome, cpf, dataNascimento, login, senha, endereco, telefone, false,
+                                    (Funcionario) SessaoUsuario.getUsuarioLogado());
+                        }
+                        servidorReadEasy.cadastrarUsuario(usuario);
+                    } catch (MenorDeIdadeException e) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Usuário menor de idade");
+                        alert.setContentText("Cadastre um usuário maior de idade para continuar.");
+                        alert.showAndWait();
+                    } catch (DataInvalidaException e) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Data Inválida!");
+                        alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
+                        alert.showAndWait();
+                    } catch (CampoVazioException e) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Campo de texto vazio!");
+                        alert.setContentText("Preencha todos os campos do cadastro.");
+                        alert.showAndWait();
+                    } catch (UsuarioExistenteException e) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Usuário existente!");
+                        alert.setContentText("Este usuário já está cadastrado no sistema.");
+                        alert.showAndWait();
                     }
-                });
+
+                    if (!excecaoLevantada) {
+                        onAtualizarTabelaclick();
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sucesso");
+                        alert.setHeaderText("Cadastro concluído!");
+                        alert.setContentText("Este usuário foi cadastrado no sistema");
+                        alert.showAndWait();
+                    }
+                }
             }
-            else{
+        }
+    }
+
+    @FXML
+    public void onBtnEditarUsuarioclick() {
+        boolean excecaoLevantada = false;
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        String nome = txtFieldNome.getText();
+        String cpf = txtFieldCPF.getText();
+        String login = txtFieldLogin.getText();
+        String telefone = txtFieldTelefone.getText();
+        String rua = txtFieldRua.getText();
+        String bairro = txtFieldBairro.getText();
+        String cidade = txtFieldCidade.getText();
+        String estado = txtFieldEstado.getText();
+        String senha = txtFieldSenha.getText();
+        String nomeTipoFornecedor = cbTipoFornecedor.getValue();
+        TipoFornecedor tipoFornecedor = procurarTipoFornecedorPeloNome(nomeTipoFornecedor); //retorna o tipo fornecedor selecionado pelo usuário
+        String cepString = txtFieldCEP.getText();
+        LocalDate dataNascimento = dpDataNascimento.getValue();
+
+        if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
+                || cidade.isEmpty() || estado.isEmpty() || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
+            alert.setTitle("Erro");
+            alert.setHeaderText("Campos não preenchidos.");
+            alert.setContentText("Certifique de preencher todos os campos para continuar.");
+            alert.showAndWait();
+        } else {
+            if (validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf)) {
+                excecaoLevantada = true;
+                alert.setTitle("Erro");
+                alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
+                alert.setContentText("Digite apenas números nos campos para continuar.");
+                alert.showAndWait();
+            } else {
                 try {
-                    Usuario usuario;
 
-                    //montagem do usuario:
-                    if(tipoUsuarioSelecionado.equals(cargos.get(1))){
-                        usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, true,
-                                (Funcionario) SessaoUsuario.getUsuarioLogado());
-                    }
-                    else if(tipoUsuarioSelecionado.equals("Fornecedor")){
-                        TipoFornecedor tipoFornecedor = cbTipoFornecedor.getValue();
-                        usuario = new Fornecedor(nome,cpf, dataNascimento,login, senha, endereco, telefone,tipoFornecedor);
-                    }
-                    else{   //funcionário comum.
-                        usuario = new Funcionario(nome,cpf, dataNascimento,login, senha, endereco, telefone, false,
-                                (Funcionario) SessaoUsuario.getUsuarioLogado());
-                    }
-                    servidorReadEasy.cadastrarUsuario(usuario);
-                }catch (TipoUsuarioInvalidoException e){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Tipo de usuário inválido");
-                    alert.setContentText("Selecione uma opção no tipo de usuário válido para continuar.");
+                    int cep = Integer.parseInt(cepString);
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
+                    Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+                    Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
 
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
+                    if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165")) {
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Edição inválida!");
+                        alert.setContentText("Não é possível editar o ADM Inicial");
+                        alert.show();
+                    }
+
+                    String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
+                    if (tipoUsuarioSelecionado == null) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Tipo de usuário não selecionado.");
+                        alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+                        alert.showAndWait();
+                    } else if (usuario instanceof Funcionario) {
+                        if (((Funcionario) usuario).isAdm()) {
+                            ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                    login, senha, endereco, telefone, false, ((Funcionario) usuario).getAdmResponsavel());
+                            limparCampos();
+                        } else {
+                            ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                    login, senha, endereco, telefone, true, ((Funcionario) usuario).getAdmResponsavel());
+                            limparCampos();
                         }
-                    });
-                }
-                catch (MenorDeIdadeException e){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Usuário menor de idade");
-                    alert.setContentText("Cadastre um usuário maior de idade para continuar.");
+                    } else if (usuario instanceof Fornecedor) {
+                        ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha,
+                                endereco, telefone, tipoFornecedor);
+                        limparCampos();
+                    }
 
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-                catch(DataInvalidaException e){
+                    if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                            usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                            || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1))) {
+                        excecaoLevantada = true;
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Edição inválida!");
+                        alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+                        alert.showAndWait();
+                    }
+                } catch (DataInvalidaException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Data Inválida!");
                     alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-                catch (CampoVazioException e ){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Campo de texto vazio!");
-                    alert.setContentText("Preencha todos os campos do cadastro.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-                catch (UsuarioExistenteException e){
+                    alert.showAndWait();
+                } catch (UsuarioExistenteException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Usuário existente!");
                     alert.setContentText("Este usuário já está cadastrado no sistema.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-                catch (UsuarioNuloException e){
+                    alert.showAndWait();
+                } catch (NumberFormatException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
-                    alert.setHeaderText("Todos os campos de texto vazio!");
-                    alert.setContentText("Preencha todos os campos do cadastro.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
+                    alert.setHeaderText("Campo de cep contém letras ou caracteres especiais.");
+                    alert.setContentText("Digite apenas números no campos para continuar.");
+                    alert.showAndWait();
                 }
-                if(!excecaoLevantada){
-                    onAtualizarTabelaclick();
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sucesso");
-                    alert.setHeaderText("Cadastro concluído!");
-                    alert.setContentText("Este usuário foi cadastrado no sistema");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
+            }
+            if (!excecaoLevantada) {
+                onAtualizarTabelaclick();
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText("Edição concluída!");
+                alert.setContentText("Edição de usuário realizada com êxito.");
+                alert.showAndWait();
             }
         }
-
     }
-
     @FXML
-    public void onBtnEditarUsuarioclick(ActionEvent event) throws TipoUsuarioInvalidoException, UsuarioExistenteException,
-        UsuarioInexistenteException, UsuarioNuloException, DataInvalidaException {
-    boolean excecaoLevantada = false;
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    String nome = txtFieldNome.getText();
-    String cpf = txtFieldCPF.getText();
-    String login = txtFieldLogin.getText();
-    String telefone = txtFieldTelefone.getText();
-    String rua = txtFieldRua.getText();
-    String bairro = txtFieldBairro.getText();
-    String cidade = txtFieldCidade.getText();
-    String estado = txtFieldEstado.getText();
-    String senha = txtFieldSenha.getText();
-    TipoFornecedor tipoFornecedor = cbTipoFornecedor.getValue();
-
-    String cepString = txtFieldCEP.getText();
-
-    LocalDate dataNascimento = dpDataNascimento.getValue();
-
-    if(validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf))
-    {
-        excecaoLevantada = true;
-        alert.setTitle("Erro");
-        alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
-        alert.setContentText("Digite apenas números nos campos para continuar.");
-
-        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(okButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                alert.close();
-            }
-        });
-    }
-    else{
-        try {
-
-            int cep = Integer.parseInt(cepString);
-
-                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-                Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
-
-                if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165"))
-                {
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Edição inválida!");
-                    alert.setContentText("Não é possível editar o ADM Inicial");
-                    alert.show();
-                    return;
-                }
-
-                String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
-                if(tipoUsuarioSelecionado == null){
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Tipo de usuário não selecionado.");
-                    alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-            else if (usuario instanceof Funcionario) {
-                if (((Funcionario) usuario).isAdm())
-                {
-                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                            cpf, dataNascimento, login, senha,
-                            endereco, telefone, false,
-                            ((Funcionario) usuario).getAdmResponsavel());
-                    limparCampos();
-                } else
-                {
-                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome,
-                            cpf, dataNascimento, login, senha,
-                            endereco, telefone, true,
-                            ((Funcionario) usuario).getAdmResponsavel());
-                    limparCampos();
-                }
-            }
-
-            else if (usuario instanceof Fornecedor)
-            {
-                ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome,
-                        cpf, dataNascimento, login, senha,
-                        endereco, telefone, tipoFornecedor);
-                limparCampos();
-            }
-
-                if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
-                        usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
-                        || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1)))
-                {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Edição inválida!");
-                    alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
-
-                    ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    alert.getButtonTypes().setAll(okButton);
-
-                    alert.showAndWait().ifPresent(buttonType -> {
-                        if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                            alert.close();
-                        }
-                    });
-                }
-            } catch (TipoUsuarioInvalidoException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Tipo de usuário inválido");
-                alert.setContentText("Selecione um tipo de usuário válido para continuar.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-
-            } catch (DataInvalidaException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Data Inválida!");
-                alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-
-            } catch (UsuarioNuloException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário Nulo!");
-                alert.setContentText("Preencha todos os campos de texto.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-
-            } catch (UsuarioInexistenteException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário não existe");
-                alert.setContentText("Este usuário não está cadastrado no sistema;");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-
-            } catch (UsuarioExistenteException e) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Usuário existente!");
-                alert.setContentText("Este usuário já está cadastrado no sistema.");
-
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-
-            } catch (NumberFormatException e)
-        {
-            excecaoLevantada = true;
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo de cep contém letras ou caracteres especiais.");
-            alert.setContentText("Digite apenas números no campos para continuar.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
-
-        } catch (CampoVazioException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-        if (!excecaoLevantada)
-        {
-            onAtualizarTabelaclick();
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setTitle("Sucesso");
-            alert.setHeaderText("Edição concluída!");
-            alert.setContentText("Edição de usuário realizada com êxito.");
-
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
-        }
-    }
-
-
-    @FXML
-    public void onSelecionarItemTVclick(ActionEvent event)
-    {
-        popularCamposDoUsuarioSelecionado();
-    }
-
-    @FXML
-    public void onDeletarUsuarioclick(ActionEvent event) throws UsuarioNuloException, UsuarioInexistenteException, CampoVazioException {
-        Alert alert = null;
+    public void onDeletarUsuarioclick() {
+        Alert alert;
         if (tvUsuarios.getSelectionModel().getSelectedItem() == ServidorReadEasy.getInstance().procurarUsuario("12384274165"))
         {
             alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -611,33 +403,8 @@ public class AdmCRUDUsuariosController
             Alert finalAlert = alert;
             alert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    try {
-                        servidorReadEasy.removerUsuario(tvUsuarios.getSelectionModel().getSelectedItem());
-                        onAtualizarTabelaclick();
-
-                    } catch (UsuarioNuloException e) {
-                        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                        alert1.setContentText(e.getMessage());
-                        alert1.setHeaderText(null);
-                        alert1.setHeaderText("Usuário nulo");
-                        try {
-                            throw new UsuarioNuloException();
-                        } catch (UsuarioNuloException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    } catch (UsuarioInexistenteException e) {
-                        Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                        alert2.setContentText(e.getMessage());
-                        alert2.setHeaderText(null);
-                        alert2.setHeaderText("Usuário nulo");
-
-                        try {
-                            throw new UsuarioInexistenteException((tvUsuarios.getSelectionModel().getSelectedItem()).getCpf());
-                        } catch (UsuarioInexistenteException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-
+                    servidorReadEasy.removerUsuario(tvUsuarios.getSelectionModel().getSelectedItem());
+                    onAtualizarTabelaclick();
                 } else {
                     finalAlert.close();
                 }
@@ -651,7 +418,6 @@ public class AdmCRUDUsuariosController
         tvUsuarios.getItems().clear();
         tvUsuarios.setItems(FXCollections.observableArrayList(listarFornecedorFuncionario()));
         limparCampos();
-
     }
 
     @FXML
@@ -717,11 +483,13 @@ public class AdmCRUDUsuariosController
             {
                 cbTipo.setValue(cargos.get(0));
             }
+            cbTipoFornecedor.setVisible(false);
         }
         if(usuario instanceof Fornecedor)
         {
             cbTipo.setValue(cargos.get(2));
-            cbTipoFornecedor.setValue(((Fornecedor) usuario).getTipoFornecedor());
+            cbTipoFornecedor.setVisible(true);
+            cbTipoFornecedor.setValue(((Fornecedor) usuario).getTipoFornecedor().getDescricaoEnum());
         }
     }
 
@@ -737,6 +505,8 @@ public class AdmCRUDUsuariosController
         txtFieldCidade.clear();
         txtFieldEstado.clear();
         txtFieldSenha.clear();
+        cbTipoFornecedor.setVisible(false);
+        cbTipo.setValue(null);
     }
 
     @FXML
@@ -851,55 +621,17 @@ public class AdmCRUDUsuariosController
     {
         tvUsuarios.setItems(FXCollections.observableArrayList(listarFornecedorFuncionario()));
         cbTipo.setItems(FXCollections.observableArrayList(cargos));
-        cbTipoFornecedor.setItems(FXCollections.observableArrayList(TipoFornecedor.values()));
-    }
 
-    @FXML
-    public void initialize()
-    {
-        construirTabela();
-        carregarDados();
+        if(tipoFornecedor.isEmpty()){
+            this.tipoFornecedor = Arrays.asList(TipoFornecedor.values());
+            List<String> nomesTipoFornecedor = new ArrayList<>();
 
-        tvUsuarios.setRowFactory(tv ->
-        {
-            TableRow<Usuario> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                popularCamposDoUsuarioSelecionado();
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    Usuario usuarioSelecionado = row.getItem();
+            for(TipoFornecedor tipoFornecedor1 : tipoFornecedor){
+                nomesTipoFornecedor.add(tipoFornecedor1.getDescricaoEnum());
+            }
+            cbTipoFornecedor.getItems().addAll(nomesTipoFornecedor);
+        }
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Aviso");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Selecione se você deseja Editar ou Deletar este usuário.");
-                    alert.showAndWait();
-
-                    row.setOnMouseClicked(secondEvent -> {
-                        if (secondEvent.getClickCount() == 1) {
-                            if (secondEvent.getTarget() instanceof Button) {
-                                Button clickedButton = (Button) secondEvent.getTarget();
-                                if (clickedButton == btnDeletar) {
-                                    try {
-                                        onDeletarUsuarioclick(new ActionEvent(clickedButton, btnDeletar));
-                                    } catch (UsuarioNuloException | UsuarioInexistenteException  | CampoVazioException e) {
-                                        e.printStackTrace();
-                                    }
-                                } else if (clickedButton == btnEditar) {
-                                    try {
-                                        onBtnEditarUsuarioclick(new ActionEvent(clickedButton, btnEditar));
-                                    } catch (TipoUsuarioInvalidoException | UsuarioInexistenteException |
-                                             UsuarioExistenteException | UsuarioNuloException | DataInvalidaException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-            return row;
-        });
     }
 
     public boolean validarInputTf(String input) {
@@ -907,6 +639,20 @@ public class AdmCRUDUsuariosController
             return false;
         }
         return !input.matches("[0-9]+");
+    }
+
+    private TipoFornecedor procurarTipoFornecedorPeloNome(String nomeTipoFornecedor){
+        boolean achou = false;
+        TipoFornecedor tipoFornecedorSelecionado = null;
+
+        for (int i = 0; i < tipoFornecedor.size() && !achou; i++){
+            if(tipoFornecedor.get(i).getDescricaoEnum().equals(nomeTipoFornecedor)){
+                achou = true;
+                tipoFornecedorSelecionado = tipoFornecedor.get(i);
+            }
+        }
+
+        return tipoFornecedorSelecionado;
     }
 
     @FXML
