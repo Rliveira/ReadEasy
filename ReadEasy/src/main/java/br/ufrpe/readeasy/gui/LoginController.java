@@ -32,10 +32,11 @@ public class LoginController {
     //Outros métodos:
     @FXML
     public void onBtnLoginclick()
-    {   boolean excecaoLevantada = false;
+    {
         List<Usuario> users = ServidorReadEasy.getInstance().listarUsuarios();
         String login = tfUsuario.getText();
         String senha = pfSenha.getText();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
 
         try
         {
@@ -57,8 +58,6 @@ public class LoginController {
             }
         } catch (CampoVazioException e)
         {
-            excecaoLevantada = true;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Existem campos a serem preenchidos!");
             alert.setContentText(e.getMessage());
 
@@ -73,8 +72,6 @@ public class LoginController {
         }
         catch (LoginInvalidoException e)
         {
-            excecaoLevantada = true;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
             alert.setHeaderText("Login inválido!");
             ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
@@ -91,17 +88,32 @@ public class LoginController {
 
     @FXML
     private void trocarTelaUsuario(Usuario usuario){
+        boolean telasAdmCarregadas = false;
+        boolean telasFuncionarioCarregadas = false;
+        boolean telasFornecedorCarregadas = false;
+        boolean telasClienteCarregadas = false;
+
         if(usuario instanceof Funcionario){
             Funcionario funcionario = (Funcionario) usuario;
             if (funcionario.isAdm()){
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
+
+                if(!telasAdmCarregadas){
+                    sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
+                    telasAdmCarregadas = true;
+                }
                 sm.inicializarTelas("adm");
                 sm.TrocarTela("admPerfil.fxml", "ReadEasy - Relatorios");
             }
             else{
                 ScreenManager sm = ScreenManager.getInstance();
                 SessaoUsuario.setUsuarioLogado(usuario);
+
+                if(!telasFuncionarioCarregadas){
+                    sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
+                    telasFuncionarioCarregadas = true;
+                }
                 sm.inicializarTelas("funcionário");
                 sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Estoque");
             }
@@ -109,13 +121,22 @@ public class LoginController {
         else if(usuario instanceof Fornecedor){
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
+
+            if(!telasFornecedorCarregadas){
+                sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
+                telasFornecedorCarregadas = true;
+            }
             sm.inicializarTelas("fornecedor");
             sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Estoque");
         }
         else{
             ScreenManager sm = ScreenManager.getInstance();
             SessaoUsuario.setUsuarioLogado(usuario);
-            sm.inicializarTelas("cliente");
+
+            if(!telasClienteCarregadas){
+                sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
+                telasClienteCarregadas = true;
+            }
             sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Catálogo");
         }
     }

@@ -1,10 +1,16 @@
 package br.ufrpe.readeasy.gui;
 
+import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.Fornecedor;
+import br.ufrpe.readeasy.beans.Funcionario;
+import br.ufrpe.readeasy.beans.Usuario;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static br.ufrpe.readeasy.gui.SessaoUsuario.usuarioLogado;
 
 public class ScreenManager {
     private static ScreenManager instance;
@@ -70,11 +76,6 @@ public class ScreenManager {
     private Scene loginScene;
     private LoginController loginController;
 
-    //CONSTRUTOR:
-    private ScreenManager(){
-        this.carregarTelas();
-    }
-
     public static ScreenManager getInstance(){
         if(instance == null){
             instance = new ScreenManager();
@@ -83,83 +84,93 @@ public class ScreenManager {
     }
 
     //MÉTODOS:
-    private void carregarTelas(){
+    public void carregarTelas(Usuario usuarioLogado){
         try {
-            FXMLLoader admTelaCRUDPromocoesPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDPromocoes.fxml"));
-            this.admCRUDPromocoesScene = new Scene(admTelaCRUDPromocoesPane.load());
-            this.admCRUDPromocoesController = admTelaCRUDPromocoesPane.getController();
+            if(usuarioLogado != null){
+                if(usuarioLogado instanceof Funcionario && ((Funcionario) usuarioLogado).isAdm()){
+                    FXMLLoader admTelaCRUDPromocoesPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDPromocoes.fxml"));
+                    this.admCRUDPromocoesScene = new Scene(admTelaCRUDPromocoesPane.load());
+                    this.admCRUDPromocoesController = admTelaCRUDPromocoesPane.getController();
 
-            FXMLLoader admTelaCRUDUsuariosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDUsuarios.fxml"));
-            this.admCRUDUsuariosScene = new Scene(admTelaCRUDUsuariosPane.load());
-            this.admCRUDUsuariosController = admTelaCRUDUsuariosPane.getController();
+                    FXMLLoader admTelaCRUDUsuariosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDUsuarios.fxml"));
+                    this.admCRUDUsuariosScene = new Scene(admTelaCRUDUsuariosPane.load());
+                    this.admCRUDUsuariosController = admTelaCRUDUsuariosPane.getController();
 
-            FXMLLoader admEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admEstoque.fxml"));
-            this.admEstoqueScene = new Scene(admEstoquePane.load());
-            this.admEstoqueController = admEstoquePane.getController();
+                    FXMLLoader admEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admEstoque.fxml"));
+                    this.admEstoqueScene = new Scene(admEstoquePane.load());
+                    this.admEstoqueController = admEstoquePane.getController();
 
-            FXMLLoader admHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admHistoricoComprasEVendas.fxml"));
-            this.admHistoricoComprasEvendasScene = new Scene(admHistoricoComprasEVendasPane.load());
-            this.admHistoricoComprasEVendasController = admHistoricoComprasEVendasPane.getController();
+                    FXMLLoader admHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admHistoricoComprasEVendas.fxml"));
+                    this.admHistoricoComprasEvendasScene = new Scene(admHistoricoComprasEVendasPane.load());
+                    this.admHistoricoComprasEVendasController = admHistoricoComprasEVendasPane.getController();
 
-            FXMLLoader admLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admLivros.fxml"));
-            this.admLivrosScene = new Scene(admLivrosPane.load());
-            this.admLivrosController = admLivrosPane.getController();
+                    FXMLLoader admLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admLivros.fxml"));
+                    this.admLivrosScene = new Scene(admLivrosPane.load());
+                    this.admLivrosController = admLivrosPane.getController();
 
-            FXMLLoader admPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admPerfil.fxml"));
-            this.admPerfilScene = new Scene(admPerfilPane.load());
-            this.admPerfilController = admPerfilPane.getController();
+                    FXMLLoader admPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admPerfil.fxml"));
+                    this.admPerfilScene = new Scene(admPerfilPane.load());
+                    this.admPerfilController = admPerfilPane.getController();
 
-            FXMLLoader admTelaRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admRelatorios.fxml"));
-            this.admRelatoriosScene = new Scene(admTelaRelatoriosPane.load());
-            this.admRelatoriosController = admTelaRelatoriosPane.getController();
+                    FXMLLoader admTelaRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admRelatorios.fxml"));
+                    this.admRelatoriosScene = new Scene(admTelaRelatoriosPane.load());
+                    this.admRelatoriosController = admTelaRelatoriosPane.getController();
+                }
+
+                else if (usuarioLogado instanceof Cliente){
+                    FXMLLoader clientecatalogoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteCatalogo.fxml"));
+                    this.clienteCatalogoScene = new Scene(clientecatalogoPane.load());
+                    this.clienteCatalogoController = clientecatalogoPane.getController();
+
+                    FXMLLoader clienteMinhasComprasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteMinhasCompras.fxml"));
+                    this.clienteMinhasComprasScene = new Scene(clienteMinhasComprasPane.load());
+                    this.clienteMinhasComprasController = clienteMinhasComprasPane.getController();
+
+                    FXMLLoader clientePerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clientePerfil.fxml"));
+                    this.clientePerfilScene= new Scene(clientePerfilPane.load());
+                    this.clientePerfilController = clientePerfilPane.getController();
+                }
+
+                else if(usuarioLogado instanceof Fornecedor){
+                    FXMLLoader fornecedorEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorEstoque.fxml"));
+                    this.fornecedorEstoqueScene = new Scene(fornecedorEstoquePane.load());
+                    this.fornecedorEstoqueController = fornecedorEstoquePane.getController();
+
+                    FXMLLoader fornecedorHistoricoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorHistorico.fxml"));
+                    this.fornecedorHistoricoScene = new Scene(fornecedorHistoricoPane.load());
+                    this.fornecedorHistoricoController = fornecedorHistoricoPane.getController();
+
+                    FXMLLoader fornecedorPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorPerfil.fxml"));
+                    this.fornecedorPerfilScene = new Scene(fornecedorPerfilPane.load());
+                    this.fornecedorPerfilController = fornecedorPerfilPane.getController();
+                }
+
+                else{
+                    FXMLLoader funcionarioCRUDLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioCRUDLivros.fxml"));
+                    this.funcionarioCRUDLivrosScene = new Scene(funcionarioCRUDLivrosPane.load());
+                    this.funcionarioCRUDLivrosController = funcionarioCRUDLivrosPane.getController();
+
+                    FXMLLoader funcionarioEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioEstoque.fxml"));
+                    this.funcionarioEstoqueScene = new Scene(funcionarioEstoquePane.load());
+                    this.funcionarioEstoqueController = funcionarioEstoquePane.getController();
+
+                    FXMLLoader funcionarioHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioHistoricoComprasEVendas.fxml"));
+                    this.funcionarioHistoricoComprasEVendasScene = new Scene(funcionarioHistoricoComprasEVendasPane.load());
+                    this.funcionarioHistoricoComprasEVendasController = funcionarioHistoricoComprasEVendasPane.getController();
+
+                    FXMLLoader funcionarioPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioPerfil.fxml"));
+                    this.funcionarioPefilScene = new Scene(funcionarioPerfilPane.load());
+                    this.funcionarioPerfilController = funcionarioPerfilPane.getController();
+
+                    FXMLLoader funcionarioRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioRelatorios.fxml"));
+                    this.funcionariosRelatoriosScene = new Scene(funcionarioRelatoriosPane.load());
+                    this.funcionariosRelatoriosController = funcionarioRelatoriosPane.getController();
+                }
+            }
 
             FXMLLoader clientecadastroPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteCadastro.fxml"));
             this.clienteCadastroScene = new Scene(clientecadastroPane.load());
             this.clienteCadastroController = clientecadastroPane.getController();
-
-            FXMLLoader clientecatalogoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteCatalogo.fxml"));
-            this.clienteCatalogoScene = new Scene(clientecatalogoPane.load());
-            this.clienteCatalogoController = clientecatalogoPane.getController();
-
-            FXMLLoader clienteMinhasComprasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteMinhasCompras.fxml"));
-            this.clienteMinhasComprasScene = new Scene(clienteMinhasComprasPane.load());
-            this.clienteMinhasComprasController = clienteMinhasComprasPane.getController();
-
-            FXMLLoader clientePerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clientePerfil.fxml"));
-            this.clientePerfilScene= new Scene(clientePerfilPane.load());
-            this.clientePerfilController = clientePerfilPane.getController();
-
-            FXMLLoader fornecedorEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorEstoque.fxml"));
-            this.fornecedorEstoqueScene = new Scene(fornecedorEstoquePane.load());
-            this.fornecedorEstoqueController = fornecedorEstoquePane.getController();
-
-            FXMLLoader fornecedorHistoricoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorHistorico.fxml"));
-            this.fornecedorHistoricoScene = new Scene(fornecedorHistoricoPane.load());
-            this.fornecedorHistoricoController = fornecedorHistoricoPane.getController();
-
-            FXMLLoader fornecedorPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorPerfil.fxml"));
-            this.fornecedorPerfilScene = new Scene(fornecedorPerfilPane.load());
-            this.fornecedorPerfilController = fornecedorPerfilPane.getController();
-
-            FXMLLoader funcionarioCRUDLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioCRUDLivros.fxml"));
-            this.funcionarioCRUDLivrosScene = new Scene(funcionarioCRUDLivrosPane.load());
-            this.funcionarioCRUDLivrosController = funcionarioCRUDLivrosPane.getController();
-
-            FXMLLoader funcionarioEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioEstoque.fxml"));
-            this.funcionarioEstoqueScene = new Scene(funcionarioEstoquePane.load());
-            this.funcionarioEstoqueController = funcionarioEstoquePane.getController();
-
-            FXMLLoader funcionarioHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioHistoricoComprasEVendas.fxml"));
-            this.funcionarioHistoricoComprasEVendasScene = new Scene(funcionarioHistoricoComprasEVendasPane.load());
-            this.funcionarioHistoricoComprasEVendasController = funcionarioHistoricoComprasEVendasPane.getController();
-
-            FXMLLoader funcionarioPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioPerfil.fxml"));
-            this.funcionarioPefilScene = new Scene(funcionarioPerfilPane.load());
-            this.funcionarioPerfilController = funcionarioPerfilPane.getController();
-
-            FXMLLoader funcionarioRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioRelatorios.fxml"));
-            this.funcionariosRelatoriosScene = new Scene(funcionarioRelatoriosPane.load());
-            this.funcionariosRelatoriosController = funcionarioRelatoriosPane.getController();
 
             FXMLLoader LoginPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/Login.fxml"));
             this.loginScene = new Scene(LoginPane.load());
@@ -232,7 +243,7 @@ public class ScreenManager {
                 break;
 
             case "fornecedorHistorico.fxml":
-                funcionarioHistoricoComprasEVendasController.initialize();
+                fornecedorHistoricoController.initialize();
                 stage.setScene(fornecedorHistoricoScene);
                 break;
 
