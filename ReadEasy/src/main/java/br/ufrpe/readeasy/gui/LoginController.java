@@ -22,6 +22,11 @@ public class LoginController {
     @FXML
     private Button btnLogin;
 
+    boolean telasAdmCarregadas = false;
+    boolean telasFuncionarioCarregadas = false;
+    boolean telasFornecedorCarregadas = false;
+    boolean telasClienteCarregadas = false;
+
     //métodos de troca de tela:
     @FXML
     public void trocarTelaCadastro(){
@@ -88,11 +93,6 @@ public class LoginController {
 
     @FXML
     private void trocarTelaUsuario(Usuario usuario){
-        boolean telasAdmCarregadas = false;
-        boolean telasFuncionarioCarregadas = false;
-        boolean telasFornecedorCarregadas = false;
-        boolean telasClienteCarregadas = false;
-
         if(usuario instanceof Funcionario){
             Funcionario funcionario = (Funcionario) usuario;
             if (funcionario.isAdm()){
