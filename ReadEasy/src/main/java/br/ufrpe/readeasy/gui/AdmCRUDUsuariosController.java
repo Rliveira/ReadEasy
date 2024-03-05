@@ -302,7 +302,17 @@ public class AdmCRUDUsuariosController {
                 alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
                 alert.setContentText("Digite apenas números nos campos para continuar.");
                 alert.showAndWait();
-            } else {
+            }
+            else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
+                    !validarQuantidadeDeCaracteres("telefone", telefone) ||
+                    !validarQuantidadeDeCaracteres("cepString", cepString)) {
+
+                alert.setTitle("Erro");
+                alert.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                alert.showAndWait();
+            }
+            else {
                 try {
 
                     int cep = Integer.parseInt(cepString);
@@ -634,11 +644,35 @@ public class AdmCRUDUsuariosController {
 
     }
 
-    public boolean validarInputTf(String input) {
-        if (input == null || input.isEmpty()) {
-            return false;
+    private boolean validarQuantidadeDeCaracteres(String tipoDeValidacao, String input){
+        boolean inputDoTamanhoCorreto = true;
+
+        switch (tipoDeValidacao.toLowerCase()){
+            case  "cpf", "telefone":
+                if(input.length() != 11){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
+
+            case "cep":
+                if(input.length() != 8){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
         }
-        return !input.matches("[0-9]+");
+        return inputDoTamanhoCorreto;
+    }
+
+    private boolean validarInputTf(String inputUsuario) {
+        boolean inputDigitadoCorretamente = true;
+
+        try {
+            long input = Long.parseLong(inputUsuario);
+        } catch (NumberFormatException e) {
+            inputDigitadoCorretamente = false;
+        }
+
+        return inputDigitadoCorretamente;
     }
 
     private TipoFornecedor procurarTipoFornecedorPeloNome(String nomeTipoFornecedor){
