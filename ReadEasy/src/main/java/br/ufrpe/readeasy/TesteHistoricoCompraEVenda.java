@@ -79,12 +79,12 @@ public class TesteHistoricoCompraEVenda {
             servidor.adicionarLivro(livro5);
             servidor.adicionarLivro(livro6);
 
-            servidor.aumentarQuantidadeEmEstoque(livro1, 10, LocalDate.of(2020, 1, 1));
-            servidor.aumentarQuantidadeEmEstoque(livro2, 19, LocalDate.of(2020, 2, 13));
-            servidor.aumentarQuantidadeEmEstoque(livro3, 20, LocalDate.of(2020, 3, 15));
-            servidor.aumentarQuantidadeEmEstoque(livro4, 5, LocalDate.of(2020, 4, 1));
-            servidor.aumentarQuantidadeEmEstoque(livro5, 15, LocalDate.of(2020, 5, 1));
-            servidor.aumentarQuantidadeEmEstoque(livro6, 3, LocalDate.of(2020, 6, 1));
+            servidor.aumentarQuantidadeEmEstoque(livro1, 10, LocalDate.of(2020, 1, 1), livro1.getPreco() * 10);
+            servidor.aumentarQuantidadeEmEstoque(livro2, 19, LocalDate.of(2020, 2, 13), livro2.getPreco() * 19);
+            servidor.aumentarQuantidadeEmEstoque(livro3, 20, LocalDate.of(2020, 3, 15), livro3.getPreco() * 20);
+            servidor.aumentarQuantidadeEmEstoque(livro4, 5, LocalDate.of(2020, 4, 1), livro4.getPreco() * 5);
+            servidor.aumentarQuantidadeEmEstoque(livro5, 15, LocalDate.of(2020, 5, 1), livro5.getPreco() * 15);
+            servidor.aumentarQuantidadeEmEstoque(livro6, 3, LocalDate.of(2020, 6, 1), livro6.getPreco() * 3);
 
             Endereco endereco = new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE");
             Endereco endereco1 = new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE");

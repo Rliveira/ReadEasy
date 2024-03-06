@@ -1,7 +1,6 @@
 package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ControladorUsuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 
@@ -92,7 +91,7 @@ public class InicializadorDeDados {
             servidorReadEasy.adicionarLivro(livro6);
             servidorReadEasy.adicionarLivro(livro7);
             servidorReadEasy.adicionarLivro(livro8);
-        } catch ( PrecoInvalidoException | LivroExistenteException e) {
+        } catch (ValorInvalidoException | LivroExistenteException e) {
             System.out.println(e.getMessage());
         }
 
