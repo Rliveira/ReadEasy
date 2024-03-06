@@ -371,7 +371,7 @@ public class FuncionarioCRUDLivrosController {
                 try {
                     servidorReadEasy.adicionarLivro(livro);
                     servidorReadEasy.adicionarGenero(livro, genero);
-                }  catch (PrecoInvalidoException e) {
+                }  catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Preço de livro inválido!");
@@ -510,7 +510,7 @@ public class FuncionarioCRUDLivrosController {
                     alert.showAndWait();
 
                 }
-                catch (PrecoInvalidoException e) {
+                catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");

@@ -3,7 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
-import br.ufrpe.readeasy.exceptions.QuantidadeInvalidaException;
+import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -307,8 +307,8 @@ public class ClienteCatalogoController {
                             Livro livro = livroVendido.getLivro();
                             try {
                                 ServidorReadEasy.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
-                            } catch (EstoqueInsuficienteException | QuantidadeInvalidaException e) {
-                                throw new RuntimeException(e);
+                            } catch (EstoqueInsuficienteException | ValorInvalidoException e) {
+                                System.out.println(e.getMessage());
                             }
                         }
                     }

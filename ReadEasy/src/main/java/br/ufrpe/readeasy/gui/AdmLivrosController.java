@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -378,7 +377,7 @@ public class AdmLivrosController {
                 try {
                     servidorReadEasy.adicionarLivro(livro);
                     servidorReadEasy.adicionarGenero(livro, genero);
-                }  catch (PrecoInvalidoException e) {
+                }  catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Preço de livro inválido!");
@@ -517,7 +516,7 @@ public class AdmLivrosController {
                     alert.showAndWait();
 
                 }
-                catch (PrecoInvalidoException e) {
+                catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
