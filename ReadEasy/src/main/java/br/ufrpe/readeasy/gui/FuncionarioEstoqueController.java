@@ -3,7 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
-import br.ufrpe.readeasy.exceptions.QuantidadeInvalidaException;
+import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -47,6 +47,8 @@ public class FuncionarioEstoqueController {
     private TextField tfPesquisar;
     @FXML
     private TextField tfQuantidade;
+    @FXML
+    private TextField tfValorTotalCompra;
 
     @FXML
     private TableView<Livro> tvEstoque;
@@ -146,32 +148,33 @@ public class FuncionarioEstoqueController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         boolean excecaoLevantada = false;
-        boolean resultado;
 
         String inputQuantidade = tfQuantidade.getText();
+        String inputValorPago = tfValorTotalCompra.getText();
         String livroSelecionado = cbLivros.getValue();
 
-        if(inputQuantidade.isEmpty() || livroSelecionado == null){
+        if(inputValorPago.isEmpty() || inputQuantidade.isEmpty() || livroSelecionado == null){
             alert.setTitle("Erro");
             alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
             alert.setContentText("Preencha-os corretemente para continuar.");
             alert.showAndWait();
         }
         else {
-            resultado = validarInputTfQuantidade(inputQuantidade);
-
-            if(resultado){
+            if(validarInputTf(inputQuantidade) && validarInputTf(inputValorPago)){
                 Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
                 int quantidade = Integer.parseInt(inputQuantidade);
+                double valorTotal = Double.parseDouble(inputValorPago);
 
                 try {
-                    servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now());
-                } catch (QuantidadeInvalidaException e) {
+                    servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
+                } catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
-                    alert.setHeaderText("Quantidade nula ou negativa digitada");
+                    alert.setHeaderText("O campo de quantidade ou valor total pago " +
+                            "possui valor nulo ou negativa digitada");
                     alert.setContentText("Digite uma quantidade positiva para continuar.");
                     alert.showAndWait();
+
                     limparCampos();
                 }
                 if(!excecaoLevantada){
@@ -204,7 +207,7 @@ public class FuncionarioEstoqueController {
             alert.showAndWait();
         }
         else{
-            resultado = validarInputTfQuantidade(inputQuantidade);
+            resultado = validarInputTf(inputQuantidade);
 
             if(resultado){
                 Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
@@ -212,7 +215,7 @@ public class FuncionarioEstoqueController {
 
                 try {
                     servidorReadEasy.diminuirQuantidadeEmEstoque(livro, quantidade);
-                } catch (QuantidadeInvalidaException e) {
+                } catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
                     alert.setHeaderText("Operação inválida!");
@@ -238,7 +241,7 @@ public class FuncionarioEstoqueController {
         }
     }
 
-    private boolean validarInputTfQuantidade(String quantidadeDigitada){
+    private boolean validarInputTf(String quantidadeDigitada){
         boolean qtdDigitadaCorretamente = true;
 
         try {
@@ -292,7 +295,7 @@ public class FuncionarioEstoqueController {
         String nomeLivro = cbLivros.getValue();
 
         if(nomeLivro != null){
-            Livro livroSelecionado = provurarLivroPeloNome(nomeLivro);
+            Livro livroSelecionado = procurarLivroPeloNome(nomeLivro);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(livroSelecionado.getCapaDoLivro());
             Image image = new Image(inputStream);
             ivCapaDoLivro.setImage(image);
@@ -305,7 +308,7 @@ public class FuncionarioEstoqueController {
         ivCapaDoLivro.setImage(null);
     }
 
-    private Livro provurarLivroPeloNome(String nomeLivro){
+    private Livro procurarLivroPeloNome(String nomeLivro){
         Livro livroSelecionado = null;
         boolean achou = false;
 

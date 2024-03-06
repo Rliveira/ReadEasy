@@ -178,7 +178,7 @@
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="20.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <Pane prefWidth="352.0" VBox.vgrow="ALWAYS" />
+                        <Pane prefHeight="0.0" prefWidth="352.0" VBox.vgrow="ALWAYS" />
                         <HBox prefHeight="175.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: Transparent;" HBox.hgrow="ALWAYS">
@@ -194,7 +194,7 @@
                               <Pane prefHeight="175.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <Pane layoutX="10.0" layoutY="72.0" prefHeight="30.0" prefWidth="512.0" />
+                        <Pane layoutX="10.0" layoutY="72.0" prefHeight="46.0" prefWidth="352.0" />
                         <HBox prefHeight="30.0" prefWidth="512.0">
                            <children>
                               <Pane prefHeight="15.0" prefWidth="15.0" HBox.hgrow="ALWAYS" />
@@ -211,13 +211,24 @@
                            </children>
                         </HBox>
                         <Pane layoutX="10.0" layoutY="527.0" prefHeight="30.0" prefWidth="284.0" />
-                        <HBox prefHeight="50.0" prefWidth="512.0">
+                        <VBox prefHeight="99.0" prefWidth="352.0">
                            <children>
-                              <Pane prefHeight="50.0" prefWidth="72.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                              <TextField fx:id="tfQuantidade" prefHeight="30.0" prefWidth="200.0" promptText="Quantidade" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
-                              <Pane layoutX="198.0" layoutY="10.0" prefHeight="50.0" prefWidth="71.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                              <HBox prefHeight="50.0" prefWidth="512.0">
+                                 <children>
+                                    <Pane prefHeight="50.0" prefWidth="72.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="tfQuantidade" prefHeight="30.0" prefWidth="230.0" promptText="Quantidade" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                    <Pane layoutX="198.0" layoutY="10.0" prefHeight="50.0" prefWidth="71.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="512.0">
+                                 <children>
+                                    <Pane prefHeight="50.0" prefWidth="72.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="tfValorTotalCompra" prefHeight="30.0" prefWidth="230.0" promptText="Valor total da compra" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                    <Pane layoutX="198.0" layoutY="10.0" prefHeight="50.0" prefWidth="71.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </VBox>
                         <Pane layoutX="10.0" layoutY="756.0" prefHeight="30.0" prefWidth="284.0" />
                         <HBox prefHeight="67.0" prefWidth="512.0">
                            <children>
