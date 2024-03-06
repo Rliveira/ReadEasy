@@ -1,9 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ControladorVenda;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -11,16 +9,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ClienteMinhasComprasController
 {
@@ -48,29 +43,47 @@ public class ClienteMinhasComprasController
     private DatePicker dpDataFim;
 
     @FXML
-    private TableView<CompraDTO> tvTabelaCompras;
+    private TableView<CompraClienteDTO> tvTabelaCompras;
 
     @FXML
-    private TableColumn<CompraDTO, String> colTitulo;
+    private TableColumn<CompraClienteDTO, String> colTitulo;
 
     @FXML
-    private TableColumn<CompraDTO, String> colAutor;
+    private TableColumn<CompraClienteDTO, String> colAutor;
 
     @FXML
-    private TableColumn<CompraDTO, Integer> colQTD;
+    private TableColumn<CompraClienteDTO, Integer> colQTD;
 
     @FXML
-    private TableColumn<CompraDTO, Double> colPreco;
+    private TableColumn<CompraClienteDTO, Double> colPreco;
 
     @FXML
-    private TableColumn<CompraDTO, LocalDate> colDataCompra;
+    private TableColumn<CompraClienteDTO, LocalDate> colDataCompra;
 
+    //Métodos de troca de tela:
+    @FXML
+    private void trocarTelaCatalogoCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
+    }
+
+    @FXML
+    private void trocarTelaPerfilCliente(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Perfil");
+    }
+
+    private void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    }
+
+    //Outros métodos:
     @FXML
     public void initialize()
     {
         carregarDadosTabela();
         construirTabela();
-
         dpDataFim.setValue(LocalDate.now());
     }
 
@@ -86,11 +99,11 @@ public class ClienteMinhasComprasController
 
         if (dataInicio != null && dataFim != null)
         {
-            ObservableList<CompraDTO> itensTabela = FXCollections.observableArrayList(ServidorReadEasy.getInstance().
+            ObservableList<CompraClienteDTO> itensTabela = FXCollections.observableArrayList(ServidorReadEasy.getInstance().
                     listarComprasDTO((Cliente) SessaoUsuario.getUsuarioLogado()));
-            ObservableList<CompraDTO> itensFiltrados = FXCollections.observableArrayList();
+            ObservableList<CompraClienteDTO> itensFiltrados = FXCollections.observableArrayList();
 
-            for (CompraDTO item : itensTabela) {
+            for (CompraClienteDTO item : itensTabela) {
                 LocalDate dataItem = item.getDataCompra().toLocalDate();
                 if (!dataItem.isBefore(dataInicio) && !dataItem.isAfter(dataFim)) {
                     itensFiltrados.add(item);
@@ -120,8 +133,8 @@ public class ClienteMinhasComprasController
         }
     }
 
-    public List<CompraDTO> obterComprasDoCliente(Cliente cliente){
-        List<CompraDTO> comprasDoCliente = new ArrayList<>();
+    public List<CompraClienteDTO> obterComprasDoCliente(Cliente cliente){
+        List<CompraClienteDTO> comprasDoCliente = new ArrayList<>();
 
 
         for (Venda venda : ServidorReadEasy.getInstance().historicoDeComprasDoCliente(cliente)) {
@@ -135,8 +148,8 @@ public class ClienteMinhasComprasController
                 double preco = livro.getPreco();
                 LocalDateTime dataCompra = venda.getDataEHora();
 
-                CompraDTO compraDTO = new CompraDTO(tituloLivro, autorLivro, quantidade, preco, dataCompra);
-                comprasDoCliente.add(compraDTO);
+                CompraClienteDTO compraClienteDTO = new CompraClienteDTO(tituloLivro, autorLivro, quantidade, preco, dataCompra);
+                comprasDoCliente.add(compraClienteDTO);
             }
         }
         return comprasDoCliente;
@@ -155,25 +168,6 @@ public class ClienteMinhasComprasController
         colDataCompra.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataCompra().toLocalDate()));
     }
 
-    //Métodos de troca de tela:
-    @FXML
-    private void trocarTelaCatalogoCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
-    }
-
-    @FXML
-    private void trocarTelaPerfilCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //outros métodos:
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
