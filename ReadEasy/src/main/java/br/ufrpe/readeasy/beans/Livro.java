@@ -2,10 +2,8 @@ package br.ufrpe.readeasy.beans;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 public class Livro implements Serializable {
@@ -19,7 +17,7 @@ public class Livro implements Serializable {
     private URL UrlLivro;
     private byte[] capaDoLivro;
     private int quantidade;
-    private Map<LocalDate, Integer> registroAtualizacaoEstoque;
+    private List<RegistroComprasLivraria> registroLivrariaRegistroCompras;
 
     //CONSTRUTOR:
     public Livro(String titulo, String autor, double preco, Fornecedor fornecedor, byte[] capaDoLivro, URL UrlLivro) {
@@ -30,7 +28,7 @@ public class Livro implements Serializable {
         this.generos = new ArrayList<>();
         this.fornecedor = fornecedor;
         this.quantidade = 0;
-        this.registroAtualizacaoEstoque = new HashMap<>();
+        this.registroLivrariaRegistroCompras = new ArrayList<>();
         this.capaDoLivro = capaDoLivro;
         this.UrlLivro = UrlLivro;
     }
@@ -52,15 +50,8 @@ public class Livro implements Serializable {
         setQuantidade(this.getQuantidade() - quantidade);
     }
 
-    public void atualizarRegistroDeEstoque(LocalDate dataAtualizacao, int qtd) {
-        Integer quantidade = qtd;
-
-        if (this.registroAtualizacaoEstoque.containsKey(dataAtualizacao)) {
-            Integer valorAtual = registroAtualizacaoEstoque.get(dataAtualizacao);
-            registroAtualizacaoEstoque.put(dataAtualizacao, valorAtual + quantidade);
-        } else {
-            registroAtualizacaoEstoque.put(dataAtualizacao, quantidade);
-        }
+    public void atualizarRegistroDeEstoque(RegistroComprasLivraria registroComprasLivraria) {
+        this.registroLivrariaRegistroCompras.add(registroComprasLivraria);
     }
 
     //GETS AND SETS:
@@ -112,8 +103,8 @@ public class Livro implements Serializable {
     public void setUrlLivro(URL urlLivro) {
         UrlLivro = urlLivro;
     }
-    public Map<LocalDate, Integer> getRegistroAtualizacaoEstoque() {
-        return registroAtualizacaoEstoque;
+    public List<RegistroComprasLivraria> getRegistroCompraFornecedor() {
+        return registroLivrariaRegistroCompras;
     }
 
     @Override
