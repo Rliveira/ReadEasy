@@ -1,5 +1,6 @@
 package br.ufrpe.readeasy.data;
 
+import br.ufrpe.readeasy.beans.CompraLivariaDTO;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
@@ -17,17 +18,17 @@ public interface IRepositorioLivro {
     void atualizarLivro(Livro livro, String titulo, String autor, double Preco, Fornecedor fornecedor, byte[] capaDoLivro, URL urlLivro) throws LivroExistenteException;
     void adicionarGenero (Livro livro, Genero genero) throws GeneroExistenteException;
     void removerGenero(Livro livro, Genero genero) throws GeneroNaoExistenteException, LivroSemGeneroException;
-    void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao);
+    void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao, Double ValorTotalPago);
     void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException
-            , QuantidadeInvalidaException;
+            , ValorInvalidoException;
     Livro buscarLivro(UUID id);
     List<Livro> listarTodosOsLivrosEmOrdemAlfabetica();
     List<Livro> listarLivrosPorAutor(String autor);
     List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException;
     List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor)  throws FornecedorNaoEncontradoException;
-    Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedo
-            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException;
-    List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
+    List<CompraLivariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor, LocalDate dataInicio
+            , LocalDate dataFim) throws FornecedorNaoEncontradoException;
+    List<CompraLivariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
     List<Livro> listarEOrdenarLivrosPorPreco();
     Map<Livro, Integer> listarQuantidadeDeEstoque();
     List<Livro> listarLivrosComEstoqueDisponivel();

@@ -4,7 +4,8 @@ import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.UsuarioExistenteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -198,14 +199,17 @@ public class AdmPerfilController {
                 alert.setTitle("Erro");
                 alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
                 alert.setContentText("Digite apenas números para continuar");
-                ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(buttonType);
+                alert.showAndWait();
 
-                alert.showAndWait().ifPresent(buttonType1 -> {
-                    if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
+            }
+            else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
+                    !validarQuantidadeDeCaracteres("telefone", telefone) ||
+                    !validarQuantidadeDeCaracteres("cepString", cepString)) {
+
+                alert.setTitle("Erro");
+                alert.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                alert.showAndWait();
             }
             else{
                 int cep = Integer.parseInt(cepString);
@@ -236,6 +240,37 @@ public class AdmPerfilController {
         }
     }
 
+    private boolean validarQuantidadeDeCaracteres(String tipoDeValidacao, String input){
+        boolean inputDoTamanhoCorreto = true;
+
+        switch (tipoDeValidacao.toLowerCase()){
+            case  "cpf", "telefone":
+                if(input.length() != 11){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
+
+            case "cep":
+                if(input.length() != 8){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
+        }
+        return inputDoTamanhoCorreto;
+    }
+
+    private boolean validarInputTf(String inputUsuario) {
+        boolean inputDigitadoCorretamente = true;
+
+        try {
+            long input = Long.parseLong(inputUsuario);
+        } catch (NumberFormatException e) {
+            inputDigitadoCorretamente = false;
+        }
+
+        return inputDigitadoCorretamente;
+    }
+
     @FXML
     public void btnSairDaConta(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -258,9 +293,6 @@ public class AdmPerfilController {
         });
     }
 
-    private boolean validarInputTf(String inputTf) {
-        return inputTf.matches("\\d+");
-    }
 
     //GETs and SETs:
     public Usuario getUsuarioLogado() {
