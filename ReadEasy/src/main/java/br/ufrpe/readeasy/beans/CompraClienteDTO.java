@@ -2,7 +2,7 @@ package br.ufrpe.readeasy.beans;
 
 import java.time.LocalDateTime;
 
-public class CompraDTO
+public class CompraClienteDTO
 {
     private String tituloLivro;
     private String autorLivro;
@@ -11,7 +11,7 @@ public class CompraDTO
     private LocalDateTime dataCompra;
 
     // Construtor
-    public CompraDTO(String tituloLivro, String autorLivro, int quantidade, double preco, LocalDateTime dataCompra) {
+    public CompraClienteDTO(String tituloLivro, String autorLivro, int quantidade, double preco, LocalDateTime dataCompra) {
         this.tituloLivro = tituloLivro;
         this.autorLivro = autorLivro;
         this.quantidade = quantidade;
