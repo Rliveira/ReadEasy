@@ -27,48 +27,40 @@ public class ClienteCatalogoController {
 
     @FXML
     private Button btnPerfil;
-
     @FXML
     private Button btnCatalogo;
-
     @FXML
     private Button btnHistorico;
-
     @FXML
     private Button btnSair;
+    @FXML
+    private Button btnPagar;
+    @FXML
+    private Button btnRemoverDoCarrinho;
+    @FXML
+    private Button btnCatalogoCompleto;
 
     @FXML
     private ScrollPane spCatalogoDaLivraria;
 
     @FXML
     private TableView<LivroVendido> tbCarrinho;
-
     @FXML
     private TableColumn<LivroVendido, String> clnLivro;
-
     @FXML
     private TableColumn<LivroVendido, Integer> clnQuantidade;
-
     @FXML
     private TableColumn<LivroVendido, String> clnPrecoUnitario;
 
     @FXML
     private ComboBox<String> cbAplicarPromocao;
-
     @FXML
     private ComboBox<String> cbEnderecoEntrega;
-
     @FXML
     private ComboBox<String> cbGenero;
 
     @FXML
     private Label lblPreco;
-
-    @FXML
-    private Button btnPagar;
-
-    @FXML
-    private Button btnRemoverDoCarrinho;
 
     @FXML
     private GridPane gpCatalogoLivraria;
@@ -522,6 +514,13 @@ public class ClienteCatalogoController {
     }
 
     @FXML
+    public void btnApresentarCatalogoCompleto(){
+        cbGenero.getSelectionModel().clearSelection();
+        tfPesquisar.clear();
+        remotarCatatalogo(cartoesLivroCatalogo);
+    }
+
+    @FXML
     public void calcularTotalLabel() {
         double total = 0;
 
@@ -544,6 +543,11 @@ public class ClienteCatalogoController {
         }
 
         lblPreco.setText(String.format("R$ %.2f", total));
+    }
+
+    public void mostrarlegendaBtnCatalogo() {
+        Tooltip tooltip = new Tooltip("Voltar ao catálogo completo");
+        Tooltip.install(btnCatalogoCompleto, tooltip);
     }
 
     public void btnSairDaConta(){
