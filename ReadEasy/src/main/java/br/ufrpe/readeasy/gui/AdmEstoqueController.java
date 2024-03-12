@@ -200,6 +200,7 @@ public class AdmEstoqueController {
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Quantidade de estoque do livro adicionado com êxito.");
                     alert.showAndWait();
+                    limparCampos();
                 }
             }
         }
@@ -251,6 +252,7 @@ public class AdmEstoqueController {
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Quantidade de estoque do livro adicionionado com êxito.");
                     alert.showAndWait();
+                    limparCampos();
                 }
             }
         }
@@ -319,6 +321,7 @@ public class AdmEstoqueController {
 
     private void limparCampos() {
         tfQuantidade.clear();
+        tfValorTotalCompra.clear();
         cbLivros.getSelectionModel().clearSelection();
         ivCapaDoLivro.setImage(null);
     }

@@ -174,7 +174,6 @@ public class FuncionarioEstoqueController {
                             "possui valor nulo ou negativa digitada");
                     alert.setContentText("Digite uma quantidade positiva para continuar.");
                     alert.showAndWait();
-
                     limparCampos();
                 }
                 if(!excecaoLevantada){
@@ -185,6 +184,8 @@ public class FuncionarioEstoqueController {
                     alert.setHeaderText("Sucesso!");
                     alert.setContentText("Quantidade de estoque do livro adicionado com êxito.");
                     alert.showAndWait();
+                    limparCampos();
+
                 }
             }
         }
@@ -304,6 +305,7 @@ public class FuncionarioEstoqueController {
 
     private void limparCampos() {
         tfQuantidade.clear();
+        tfValorTotalCompra.clear();
         cbLivros.getSelectionModel().clearSelection();
         ivCapaDoLivro.setImage(null);
     }
