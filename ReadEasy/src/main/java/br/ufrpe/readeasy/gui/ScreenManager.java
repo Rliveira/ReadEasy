@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static br.ufrpe.readeasy.gui.SessaoUsuario.usuarioLogado;
-
 public class ScreenManager {
     private static ScreenManager instance;
     private static Stage stage;
@@ -76,6 +74,10 @@ public class ScreenManager {
     private Scene loginScene;
     private LoginController loginController;
 
+    boolean precisaApresentarOAlertDadosAdm;
+    boolean precisaApresentarOAlertDadosFuncionario;
+
+
     public static ScreenManager getInstance(){
         if(instance == null){
             instance = new ScreenManager();
@@ -86,6 +88,9 @@ public class ScreenManager {
     //MÉTODOS:
     public void carregarTelas(Usuario usuarioLogado){
         try {
+            precisaApresentarOAlertDadosAdm = true;
+            precisaApresentarOAlertDadosFuncionario = true;
+
             if(usuarioLogado != null){
                 if(usuarioLogado instanceof Funcionario && ((Funcionario) usuarioLogado).isAdm()){
                     FXMLLoader admTelaCRUDPromocoesPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDPromocoes.fxml"));
@@ -216,6 +221,7 @@ public class ScreenManager {
                 break;
 
             case "admRelatorios.fxml":
+                admRelatoriosController.initialize();
                 stage.setScene(admRelatoriosScene);
                 break;
 
@@ -286,11 +292,9 @@ public class ScreenManager {
             case "adm":
                 AdmCRUDPromocoesController admCRUDPromocoesController = screenManager.getAdmCRUDPromocoesController();
                 AdmLivrosController admLivrosController = ScreenManager.getInstance().getAdmLivrosController();
-                AdmRelatoriosController admRelatoriosController = screenManager.getAdmRelatoriosController();
 
                 admCRUDPromocoesController.initialize();
                 admLivrosController.initialize();
-                admRelatoriosController.initialize();
                 break;
 
             case "funcionário":
@@ -454,5 +458,13 @@ public class ScreenManager {
     }
     public LoginController getLoginController() {
         return loginController;
+    }
+
+    public boolean isPrecisaApresentarOAlertDadosAdm() {
+        return precisaApresentarOAlertDadosAdm;
+    }
+
+    public boolean isPrecisaApresentarOAlertDadosFuncionario() {
+        return precisaApresentarOAlertDadosFuncionario;
     }
 }
