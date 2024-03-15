@@ -1,13 +1,11 @@
 package br.ufrpe.readeasy.data;
 
-
 import br.ufrpe.readeasy.beans.Promocao;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
@@ -65,17 +63,6 @@ public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
     }
 
     @Override
-    public boolean existePromocao(UUID id){
-        boolean existe = false;
-        for(Promocao promocao : promocoes){
-            if(promocao.getId().equals(id)) {
-                existe = true;
-            }
-        }
-        return existe;
-    }
-
-    @Override
     public Promocao buscarPromocao(UUID id){
         Promocao promocao1 = null;
         for(Promocao promocao : promocoes){
@@ -84,6 +71,20 @@ public class RepositorioPromocao implements IRepositorioPromocao, Serializable{
             }
         }
         return promocao1;
+    }
+
+    @Override
+    public boolean verificarPromocoesComTitulosIguais(Promocao promocao, String novoNome){
+        boolean temtituloIgual = false;
+
+        for (int i = 0; i < promocoes.size() && !temtituloIgual; i++){
+            if(promocoes.get(i).getTitulo().equals(novoNome)){
+                if(!promocoes.get(i).getId().equals(promocao.getId())){
+                    temtituloIgual = true;
+                }
+            }
+        }
+        return temtituloIgual;
     }
 
     private static RepositorioPromocao lerDoArquivo() {

@@ -13,7 +13,7 @@ public interface IRepositorioPromocao {
                           LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa);
     List<Promocao> listarTodasPromocoes();
     List<Promocao> listarTodasPromocoesAtivas();
-    boolean existePromocao(UUID id);
     Promocao buscarPromocao(UUID id);
     void salvarArquivo();
+    boolean verificarPromocoesComTitulosIguais(Promocao promocao, String novoNome);
 }

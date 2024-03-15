@@ -1,6 +1,6 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.beans.CompraLivariaDTO;
+import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
@@ -26,12 +26,15 @@ public interface IRepositorioLivro {
     List<Livro> listarLivrosPorAutor(String autor);
     List<Livro> listarLivrosPorGenero(Genero genero) throws GeneroNaoExistenteException;
     List<Livro> listarLivrosPorFornecedor(Fornecedor fornecedor)  throws FornecedorNaoEncontradoException;
-    List<CompraLivariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor, LocalDate dataInicio
+    List<CompraLivrariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor, LocalDate dataInicio
             , LocalDate dataFim) throws FornecedorNaoEncontradoException;
-    List<CompraLivariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
+    List<CompraLivrariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
     List<Livro> listarEOrdenarLivrosPorPreco();
     Map<Livro, Integer> listarQuantidadeDeEstoque();
     List<Livro> listarLivrosComEstoqueDisponivel();
+    List<CompraLivrariaDTO> ranquearFornecedoresMaisCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
+    Map<LocalDate, Integer> calcularQtdDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
+    Map<LocalDate, Double> calcularValorTotalPagoDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     Livro buscarLivroPorNome(String titulo);
     void salvarArquivo();
 }

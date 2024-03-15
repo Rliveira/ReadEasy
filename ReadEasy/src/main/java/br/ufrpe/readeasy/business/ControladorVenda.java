@@ -3,12 +3,16 @@ package br.ufrpe.readeasy.business;
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.data.IRepositorioVenda;
 import br.ufrpe.readeasy.data.RepositorioVenda;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
+import br.ufrpe.readeasy.exceptions.ListaDeLivrosVaziaException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ControladorVenda implements IControladorVenda
 {
@@ -82,23 +86,17 @@ public class ControladorVenda implements IControladorVenda
         return repoVenda.HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
     }
 
-
     @Override
-    public List<Venda> historicoDeComprasDoCliente(Cliente cliente)
-    {
-        List<Venda> historicoInterno= null;
-
-        if(cliente != null)
-        {
-            historicoInterno = repoVenda.historicoDeComprasDoUsuario(cliente);
+    public List<CompraClienteDTO> historicoDeComprasDoCliente(Cliente cliente, LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        if (dataInicio.isAfter(dataFim) || dataInicio.isAfter(LocalDate.now()) || dataFim.isAfter(LocalDate.now()) ) {
+            throw new DataInvalidaException("Data de início' ou 'Data de fim' inválida(s)");
         }
-
-        return historicoInterno;
+        return repoVenda.historicoDeComprasDoCliente(cliente, dataInicio, dataFim);
     }
 
     @Override
-    public List<CompraDTO> listarComprasDTO(Cliente cliente) {
-        List<CompraDTO> historicoCompras = new ArrayList<>();
+    public List<CompraClienteDTO> listarComprasDTO(Cliente cliente) {
+        List<CompraClienteDTO> historicoCompras = new ArrayList<>();
 
         // obtém o histórico de compras do cliente
         List<Venda> historicoVendas = repoVenda.historicoDeVendas();
@@ -107,9 +105,9 @@ public class ControladorVenda implements IControladorVenda
         for (Venda venda : historicoVendas) {
             for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
                 Livro livro = livroVendido.getLivro();
-                CompraDTO compraDTO = new CompraDTO(livro.getTitulo(), livro.getAutor(), livroVendido.getQuantidade(),
+                CompraClienteDTO compraClienteDTO = new CompraClienteDTO(livro.getTitulo(), livro.getAutor(), livroVendido.getQuantidade(),
                         livroVendido.getQuantidade(), venda.getDataEHora());
-                historicoCompras.add(compraDTO);
+                historicoCompras.add(compraClienteDTO);
             }
         }
 
@@ -117,8 +115,18 @@ public class ControladorVenda implements IControladorVenda
     }
 
     @Override
-    public List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim) {
-        List<VendaDTO> historicoCompras = new ArrayList<>();
+    public List<VendaLivrariaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException{
+        List<VendaLivrariaDTO> historicoCompras = new ArrayList<>();
+        if (dataInicio == null){
+            dataInicio = LocalDate.MIN;
+        }
+        if (dataFim == null) {
+            dataFim = LocalDate.now();
+        }
+
+        if (dataInicio.isAfter(dataFim) || dataInicio.isAfter(LocalDate.now()) || dataFim.isAfter(LocalDate.now()) ) {
+            throw new DataInvalidaException("Data de início' ou 'Data de fim' inválida(s)");
+        }
 
         // obtém o histórico de compras do cliente
         List<Venda> historicoVendas = repoVenda.HistoricoDeVendasPorPeriodo(dataInicio, dataFim);
@@ -127,24 +135,23 @@ public class ControladorVenda implements IControladorVenda
         for (Venda venda : historicoVendas) {
             for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
                 Livro livro = livroVendido.getLivro();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataVenda = venda.getDataEHora().toLocalDate();
-                VendaDTO vendaDTO = new VendaDTO(livro.getTitulo(), livro.getAutor(), livro.getFornecedor().getNome(),
+                VendaLivrariaDTO vendaLivrariaDTO = new VendaLivrariaDTO(livro.getTitulo(), livro.getAutor(), livro.getFornecedor().getNome(),
                         venda.getCliente().getNome(), livroVendido.getQuantidade(), dataVenda, livro.getPreco());
-                historicoCompras.add(vendaDTO);
+                historicoCompras.add(vendaLivrariaDTO);
             }
         }
         return historicoCompras;
     }
 
     @Override
-    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
-        return repoVenda.listarMelhoresClientesPorCompra();
+    public Map<String, Integer> ranquearClientesPorQuantidadeDeCompraEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
+        return repoVenda.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
     }
 
     @Override
-    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
-        return repoVenda.listarMelhoresClientesPorGasto();
+    public Map<String, Double> raquearClientesPorGastoEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
+        return repoVenda.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
     }
 
     @Override
@@ -155,11 +162,6 @@ public class ControladorVenda implements IControladorVenda
     @Override
     public int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
         return repoVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
-    }
-
-    @Override
-    public double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
-        return repoVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
 
     @Override

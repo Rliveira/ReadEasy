@@ -1,9 +1,6 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.beans.Cliente;
-import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 
 import java.io.*;
@@ -76,15 +73,6 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
     @Override
     public List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataDeInicio, LocalDate dataDeFim)
     {
-        if (dataDeInicio == null)
-        {
-            dataDeInicio = LocalDate.MIN;
-        }
-        if (dataDeFim == null)
-        {
-            dataDeFim = LocalDate.now();
-        }
-
         LocalDateTime dataInicio = dataDeInicio.atStartOfDay();
         LocalDateTime dataFim = dataDeFim.atTime(23,59,59,59);
 
@@ -102,27 +90,60 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
     }
 
     @Override
-    public ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente)
-    {
-        ArrayList<Venda> historicoCliente = new ArrayList<>();
+    public List<CompraClienteDTO> historicoDeComprasDoCliente(Cliente cliente, LocalDate dataInicio, LocalDate dataFim) {
+        List<Venda> historico = new ArrayList<>();
+        List<CompraClienteDTO> comprasCliente = new ArrayList<>();
 
-        for(Venda venda : vendas)
-        {
-            if(venda.getCliente().equals(cliente))
-            {
-                historicoCliente.add(venda);
+        for(Venda venda : vendas) {
+            LocalDate dataVenda = venda.getDataEHora().toLocalDate();
+            if(venda.getCliente().equals(cliente)) {
+                if (dataVenda.isEqual(dataInicio) || dataVenda.isEqual(dataFim) ||
+                        (dataVenda.isAfter(dataInicio) && dataVenda.isBefore(dataFim))) {
+                    historico.add(venda);
+                }
             }
         }
-        return historicoCliente;
+
+        for(Venda venda : historico){
+            //método abaixo calcula o valor do desconto por livro caso alguma promoção foi aplicada na venda
+            double descontoPorLivro = calcularValorDeDescontoPorLivro(venda);
+
+            for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
+                Livro livro = livroVendido.getLivro();
+                String tituloLivro = livro.getTitulo();
+                String autorLivro = livro.getAutor();
+                int quantidade = livroVendido.getQuantidade();
+                double preco = livro.getPreco() - descontoPorLivro;
+                LocalDateTime dataCompra = venda.getDataEHora();
+
+                CompraClienteDTO compraClienteDTO = new CompraClienteDTO(tituloLivro, autorLivro, quantidade, preco, dataCompra);
+                comprasCliente.add(compraClienteDTO);
+            }
+        }
+        // Ordenando a lista por data de forma decrescente (da data mais atual pra data mais antiga)
+        comprasCliente.sort(Comparator.comparing(CompraClienteDTO::getDataCompra).reversed());
+        return comprasCliente;
     }
 
     @Override
-    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException {
+    public Map<String, Integer> ranquearClientesPorQuantidadeDeCompraEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
         Map<String, Integer> clienteCompra = new HashMap<>();
 
         if (!vendas.isEmpty()) {
             for (Venda venda : vendas) {
-                clienteCompra.put(venda.getCliente().getLogin(), clienteCompra.getOrDefault(venda.getCliente().getNome(), 0) + 1);
+                LocalDate dataVenda = venda.getDataEHora().toLocalDate();
+
+                if (dataVenda.isEqual(dataInicio) || dataVenda.isEqual(dataFim) ||
+                        (dataVenda.isAfter(dataInicio) && dataVenda.isBefore(dataFim))) {
+                    String cliente = venda.getCliente().getLogin();
+
+                    if (clienteCompra.containsKey(cliente)) {
+                        clienteCompra.put(cliente, clienteCompra.get(cliente) + 1);
+                    } else {
+                        clienteCompra.put(cliente, 1);
+                    }
+                }
+
             }
 
             return clienteCompra.entrySet()
@@ -134,15 +155,19 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
         }
     }
 
-    @Override
-    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException {
+    public Map<String, Double> raquearClientesPorGastoEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
         Map<String, Double> clienteGasto = new HashMap<>();
 
         if (!vendas.isEmpty()) {
             for (Venda venda : vendas) {
-                String cliente = venda.getCliente().getLogin();
-                double totalGasto = clienteGasto.getOrDefault(cliente, 0.0) + venda.calcularTotal();
-                clienteGasto.put(cliente, totalGasto);
+                LocalDate dataVenda = venda.getDataEHora().toLocalDate();
+
+                if (dataVenda.isEqual(dataInicio) || dataVenda.isEqual(dataFim) ||
+                        (dataVenda.isAfter(dataInicio) && dataVenda.isBefore(dataFim))) {
+                    String cliente = venda.getCliente().getLogin();
+                    double totalGasto = clienteGasto.getOrDefault(cliente, 0.0) + venda.calcularTotal();
+                    clienteGasto.put(cliente, totalGasto);
+                }
             }
 
             return clienteGasto.entrySet()
@@ -182,20 +207,6 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
         }
 
         return totalLivrosVendidos;
-    }
-    @Override
-    public double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim) {
-        List<LivroVendido> livrosVendidosNoIntervalo = listarLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
-        double totalLucro = 0.0;
-
-        for (LivroVendido livroVendido : livrosVendidosNoIntervalo) {
-            int quantidade = livroVendido.getQuantidade();
-            double precoUnitario = livroVendido.getLivro().getPreco();
-            double lucroDaVenda = quantidade * precoUnitario;
-            totalLucro += lucroDaVenda;
-        }
-
-        return totalLucro;
     }
 
     private List<LivroVendido> listarLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
@@ -273,7 +284,6 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
 
         for (Venda venda : vendas) {
             LocalDateTime dataEHoraDaVenda = venda.getDataEHora().toLocalDate().atStartOfDay();
-
             if ((dataEHoraDaVenda.isEqual(dataEHoraInicio) || dataEHoraDaVenda.isEqual(dataEHoraFim) ||
                     (dataEHoraDaVenda.isAfter(dataEHoraInicio) && dataEHoraDaVenda.isBefore(dataEHoraFim)))) {
                 totalVendasPorData.put(dataEHoraDaVenda.toLocalDate(), totalVendasPorData.getOrDefault(dataEHoraDaVenda.toLocalDate(), 0) + 1);
@@ -303,6 +313,19 @@ public class RepositorioVenda implements IRepositorioVenda, Serializable
             }
         }
         return totalLucroPorData;
+    }
+
+    private double calcularValorDeDescontoPorLivro(Venda venda){
+        int quantidadeLivros = 0;
+
+        for(LivroVendido livroVendido : venda.getLivrosVendidos()){
+            quantidadeLivros += livroVendido.getQuantidade();
+        }
+        venda.calcularTotal();
+        double descontoVenda = venda.getDesconto();
+        double descontoPorLivro = descontoVenda/quantidadeLivros;
+
+        return descontoPorLivro;
     }
 
     private static RepositorioVenda lerDoArquivo() {

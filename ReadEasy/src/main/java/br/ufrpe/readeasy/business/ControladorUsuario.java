@@ -311,6 +311,7 @@ public class ControladorUsuario implements IControladorUsuario{
 
         if(!novaRua.isEmpty() && !novoBairo.isEmpty() && !novaCidade.isEmpty() && novoEstado != null){
             repUsuario.atualizarEnderecoDeEntrega(usuario, endereco, cep, novaRua, novoBairo, novaCidade, novoEstado);
+            repUsuario.salvarArquivo();
         }
         else{
             throw new CampoVazioException();

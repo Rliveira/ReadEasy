@@ -9,12 +9,13 @@ import java.util.UUID;
 
 public interface IControladorPromocao {
 
-    void inserirPromocao (Promocao promocao) throws PromocaoExistenteException;
+    void inserirPromocao (Promocao promocao) throws PromocaoExistenteException, ValorInvalidoException
+            , DataInvalidaException;
     void removerPromocao(Promocao promocao);
     void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros
-            , LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa);
+            , LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa) throws PromocaoExistenteException,
+            ValorInvalidoException, DataInvalidaException;
     List<Promocao> listarTodasPromocoes();
     List<Promocao> listarTodasPromocoesAtivas();
-    boolean existePromocao(UUID id);
     Promocao buscarPromocao(UUID id);
 }

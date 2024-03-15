@@ -1,8 +1,6 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.beans.Fornecedor;
-import br.ufrpe.readeasy.beans.Genero;
-import br.ufrpe.readeasy.beans.Livro;
+import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ComparadorDeLivro;
 import br.ufrpe.readeasy.exceptions.*;
 
@@ -10,7 +8,6 @@ import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
-
 
 public class RepositorioLivro implements IRepositorioLivro, Serializable {
     private static final long serialVersionUID = 10L;
@@ -34,7 +31,7 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
     @Override
     public void cadastrarLivro(Livro livro) throws LivroExistenteException {
         if (!this.livros.contains(livro)) {
-            if(!verificarLivrosComTitulosIguais(livro.getTitulo())){
+            if(!verificarLivrosComTitulosIguais(livro, livro.getTitulo())){
                 this.livros.add(livro);
             }
             else{
@@ -56,10 +53,10 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
         boolean achou = false;
 
         for (int i = 0; i < livros.size() && !achou; i++) {
-            if(verificarLivrosComTitulosIguais(titulo)){
+            if(verificarLivrosComTitulosIguais(livro, titulo)){
                 throw new LivroExistenteException();
             }
-            else if (livros.get(i).getId().equals(livro.getId()) && verificarLivrosComTitulosIguais(titulo)){
+            else if (livros.get(i).getId().equals(livro.getId()) && verificarLivrosComTitulosIguais(livro, titulo)){
                 throw new LivroExistenteException();
             }
             else if (livros.get(i).getTitulo().equals(livro.getTitulo()) && livros.get(i).getId().equals(livro.getId())){
@@ -120,23 +117,24 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
     }
 
     @Override
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao) {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao, Double ValorTotalPago) {
         if (livros.contains(livro)) {
             livro.aumentarQuantidade(quantidade);
-            livro.atualizarRegistroDeEstoque(dataDaAtualizacao, quantidade);
+            RegistroComprasLivraria registroCompras = new RegistroComprasLivraria(quantidade, ValorTotalPago, dataDaAtualizacao);
+            livro.atualizarRegistroDeEstoque(registroCompras);
         }
     }
 
     @Override
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException {
+            ValorInvalidoException {
         if (livros.contains(livro)) {
             if(livro.getQuantidade() != 0 ){
                 if(livro.getQuantidade() - quantidade >= 0){
                     livro.diminuirQuantidade(quantidade);
                 }
                 else{
-                    throw new QuantidadeInvalidaException();
+                    throw new ValorInvalidoException();
                 }
             }
             else{
@@ -227,47 +225,38 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
     }
 
     @Override
-    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+    public List<CompraLivrariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException {
-        if(dataInicio == null ){
-            dataInicio = LocalDate.MIN;
-        }
-        if(dataFim == null){
-            dataFim = LocalDate.now();
-        }
 
-        Map<Livro, Map<LocalDate, Integer>> lista = new HashMap<>();
-        boolean fornecedorEncontrado = false;
+        List<CompraLivrariaDTO> lista = new ArrayList<>();
+        List <Livro> livrosFornecedor = listarLivrosPorFornecedor(fornecedor);
 
-        for (Livro livro : livros) {
-            if (livro.getFornecedor().equals(fornecedor)) {
+        for (Livro livro : livrosFornecedor) {
+            List<RegistroComprasLivraria> registroDoEstoque = livro.getRegistroCompraFornecedor();
 
-                fornecedorEncontrado = true;
-                Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
-                Map<LocalDate, Integer> dadosNoIntervalo = new HashMap<>();
+            for (RegistroComprasLivraria registroCompras : registroDoEstoque) {
+                LocalDate dataAtualizacao = registroCompras.getDataDaCompra();
 
-                for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
-                    LocalDate dataAtualizacao = entry.getKey();
+                if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                        (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
 
-                    if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
-                            (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
-                        dadosNoIntervalo.put(dataAtualizacao, entry.getValue());
-                    }
-                }
-                if (!dadosNoIntervalo.isEmpty()) {
-                    lista.put(livro, dadosNoIntervalo);
+                    CompraLivrariaDTO compraLivrariaDTO = new CompraLivrariaDTO(livro.getTitulo(), livro.getAutor()
+                            , livro.getFornecedor().getNome(), registroCompras.getQuantidade()
+                            , registroCompras.getValorTotalPago(), registroCompras.getDataDaCompra());
+
+                    lista.add(compraLivrariaDTO);
                 }
             }
         }
-        if(!fornecedorEncontrado){
-            throw new FornecedorNaoEncontradoException();
-        }
+        //Ordenando na ordem decrescente (da data mais atual para a data mais antiga)
+        lista.sort(Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
+
         return lista;
     }
 
     @Override
-    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
-        List<Livro> lista = new ArrayList<>();
+    public List<CompraLivrariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+        List<CompraLivrariaDTO> lista = new ArrayList<>();
 
         if(dataInicio == null ){
             dataInicio = LocalDate.MIN;
@@ -277,22 +266,116 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
         }
 
         if (dataInicio.isAfter(dataFim)) {
-            throw new DataInvalidaException("'Data de início' ou 'Data de fim' inválida(s)");
+            throw new DataInvalidaException("Data de início' ou 'Data de fim' inválida(s)");
         }
 
         for (Livro livro : livros) {
-            Map<LocalDate, Integer> registroDoEstoque = livro.getRegistroAtualizacaoEstoque();
+            List<RegistroComprasLivraria> registroDoEstoque = livro.getRegistroCompraFornecedor();
 
-            for (Map.Entry<LocalDate, Integer> entry : registroDoEstoque.entrySet()) {
-                LocalDate dataAtualizacao = entry.getKey();
+            for (RegistroComprasLivraria registroCompras : registroDoEstoque) {
+                LocalDate dataAtualizacao = registroCompras.getDataDaCompra();
 
                 if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
                         (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
-                    lista.add(livro);
+
+                    CompraLivrariaDTO compraLivrariaDTO = new CompraLivrariaDTO(livro.getTitulo(), livro.getAutor()
+                            , livro.getFornecedor().getNome(), registroCompras.getQuantidade()
+                            , registroCompras.getValorTotalPago(), registroCompras.getDataDaCompra());
+
+                    lista.add(compraLivrariaDTO);
                 }
             }
         }
+        //Ordenando na ordem decrescente (da data mais atual para a data mais antiga)
+        lista.sort(Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
+
         return lista;
+    }
+
+    @Override
+    public List<CompraLivrariaDTO> ranquearFornecedoresMaisCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        List<CompraLivrariaDTO> lista = new ArrayList<>();
+
+        Map<String, Integer> quantidadeCompradaPorFornecedor = new HashMap<>();
+        Map<String, Double> valorTotalPagoPorFornecedor = new HashMap<>();
+
+        for (Livro livro : livros) {
+            List<RegistroComprasLivraria> registroDoEstoque = livro.getRegistroCompraFornecedor();
+
+            for (RegistroComprasLivraria registroCompras : registroDoEstoque) {
+                LocalDate dataAtualizacao = registroCompras.getDataDaCompra();
+
+                if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                        (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+
+                    String nomeFornecedor = livro.getFornecedor().getNome();
+                    if (quantidadeCompradaPorFornecedor.containsKey(nomeFornecedor)) {
+                        quantidadeCompradaPorFornecedor.put(nomeFornecedor, quantidadeCompradaPorFornecedor.get(nomeFornecedor) + registroCompras.getQuantidade());
+                        valorTotalPagoPorFornecedor.put(nomeFornecedor, valorTotalPagoPorFornecedor.get(nomeFornecedor) + registroCompras.getValorTotalPago());
+                    } else {
+                        quantidadeCompradaPorFornecedor.put(nomeFornecedor, registroCompras.getQuantidade());
+                        valorTotalPagoPorFornecedor.put(nomeFornecedor, registroCompras.getValorTotalPago());
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : quantidadeCompradaPorFornecedor.entrySet()) {
+            String fornecedor = entry.getKey();
+            Integer quantidade = entry.getValue();
+
+            //todos os valores null no construtor são dados que
+            //não são mostrados na tabela que chama esse método.
+            CompraLivrariaDTO compraLivraria = new CompraLivrariaDTO(null, null, fornecedor, quantidade,
+                    valorTotalPagoPorFornecedor.get(fornecedor), null);
+
+            lista.add(compraLivraria);
+        }
+        lista.sort(Comparator.comparing(CompraLivrariaDTO::getQuantidade).reversed());
+        return lista;
+    }
+
+
+    @Override
+    public Map<LocalDate, Integer> calcularQtdDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        Map<LocalDate, Integer> mapaQuantidades = new TreeMap<>();
+
+        for (Livro livro : livros) {
+            List<RegistroComprasLivraria> registroDoEstoque = livro.getRegistroCompraFornecedor();
+
+            for (RegistroComprasLivraria registroCompras : registroDoEstoque) {
+                LocalDate dataAtualizacao = registroCompras.getDataDaCompra();
+
+                if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                        (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+                    int quantidade = registroCompras.getQuantidade();
+                    mapaQuantidades.put(dataAtualizacao, mapaQuantidades.getOrDefault(dataAtualizacao, 0) + quantidade);
+                }
+            }
+        }
+
+        return mapaQuantidades;
+    }
+
+    @Override
+    public Map<LocalDate, Double> calcularValorTotalPagoDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        Map<LocalDate, Double> mapaValores = new TreeMap<>();
+
+        for (Livro livro : livros) {
+            List<RegistroComprasLivraria> registroDoEstoque = livro.getRegistroCompraFornecedor();
+
+            for (RegistroComprasLivraria registroCompras : registroDoEstoque) {
+                LocalDate dataAtualizacao = registroCompras.getDataDaCompra();
+
+                if ((!dataAtualizacao.isBefore(dataInicio) || dataAtualizacao.isEqual(dataInicio)) &&
+                        (!dataAtualizacao.isAfter(dataFim) || dataAtualizacao.isEqual(dataFim))) {
+                    double valorPago = registroCompras.getValorTotalPago();
+                    mapaValores.put(dataAtualizacao, mapaValores.getOrDefault(dataAtualizacao, 0.0) + valorPago);
+                }
+            }
+        }
+
+        return mapaValores;
     }
 
     @Override
@@ -304,12 +387,12 @@ public class RepositorioLivro implements IRepositorioLivro, Serializable {
         return lista;
     }
 
-    private boolean verificarLivrosComTitulosIguais(String novoNome){
+    private boolean verificarLivrosComTitulosIguais(Livro livro, String novoNome){
         boolean temtituloIgual = false;
 
         for (int i = 0; i < livros.size() && !temtituloIgual; i++){
             if(livros.get(i).getTitulo().equals(novoNome)){
-                if(!livros.get(i).getId().equals(novoNome)){
+                if(!livros.get(i).getId().equals(livro.getId())){
                     temtituloIgual = true;
                 }
             }

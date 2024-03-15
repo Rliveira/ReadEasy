@@ -1,8 +1,9 @@
 package br.ufrpe.readeasy.business;
 
-
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
+import br.ufrpe.readeasy.exceptions.ListaDeLivrosVaziaException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,16 +20,15 @@ public interface IControladorVenda
     List<Venda> historicoDeVendas() throws HistoricoVazioException;
     List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
     List<Venda> listarVendas();
-    List<Venda> historicoDeComprasDoCliente(Cliente cliente);
+    List<CompraClienteDTO> historicoDeComprasDoCliente(Cliente cliente, LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
 
-    List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim);
+    List<VendaLivrariaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException;
 
-    Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
-    Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
+    Map<String, Integer> ranquearClientesPorQuantidadeDeCompraEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException;
+    Map<String, Double> raquearClientesPorGastoEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException;
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
     int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
-    double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
-    List<CompraDTO> listarComprasDTO(Cliente cliente);
+    List<CompraClienteDTO> listarComprasDTO(Cliente cliente);
 
     int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 

@@ -1,16 +1,8 @@
 package br.ufrpe.readeasy.data;
 
-import br.ufrpe.readeasy.beans.Cliente;
-import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.beans.LivroVendido;
-import br.ufrpe.readeasy.beans.Venda;
-
-
+import br.ufrpe.readeasy.beans.*;
 import java.time.LocalDate;
-
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
-
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +22,15 @@ public interface IRepositorioVenda {
 
     List<Venda> HistoricoDeVendasPorPeriodo(LocalDate dataInicio, LocalDate dataFim);
 
-    ArrayList<Venda> historicoDeComprasDoUsuario(Cliente cliente);
+    List<CompraClienteDTO> historicoDeComprasDoCliente(Cliente cliente, LocalDate dataInicio, LocalDate dataFim);
 
-    Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException;
+    Map<String, Integer> ranquearClientesPorQuantidadeDeCompraEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException;
 
-    Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException;
+    Map<String, Double> raquearClientesPorGastoEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException;
 
     Map<Livro, Integer> ranquearLivrosMaisVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
     int calcularTotalLivrosVendidosEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
-
-    double calcularTotalLucroEntreDatas(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 
     int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim);
 

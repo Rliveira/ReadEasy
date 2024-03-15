@@ -1,5 +1,6 @@
 package br.ufrpe.readeasy.business;
 
+import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
@@ -34,9 +35,9 @@ public class ControladorLivro implements IControladorLivro {
 
     //MÉTODOS:
 
-    public void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException {
+    public void adicionarLivro(Livro livro) throws ValorInvalidoException, LivroExistenteException {
         if(livro.getPreco() < 0){
-            throw new PrecoInvalidoException();
+            throw new ValorInvalidoException();
         }
 
         repLivro.cadastrarLivro(livro);
@@ -51,13 +52,13 @@ public class ControladorLivro implements IControladorLivro {
 
     @Override
     public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor, byte[] capaDoLivro, URL urlLivro)
-            throws PrecoInvalidoException, LivroExistenteException {
+            throws ValorInvalidoException, LivroExistenteException {
         if(preco >= 0){
             repLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, capaDoLivro, urlLivro);
             repLivro.salvarArquivo();
         }
         else{
-            throw new PrecoInvalidoException();
+            throw new ValorInvalidoException();
         }
     }
 
@@ -74,30 +75,29 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao)
-            throws QuantidadeInvalidaException {
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataDaAtualizacao, double valorTotalPago)
+            throws ValorInvalidoException {
 
-        if(quantidade > 0){
-            repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao);
+        if(quantidade > 0 && valorTotalPago > 0){
+            repLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataDaAtualizacao, valorTotalPago);
             repLivro.salvarArquivo();
         }
         else{
-            throw new QuantidadeInvalidaException();
+            throw new ValorInvalidoException();
         }
-
 
     }
 
     @Override
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException {
+            ValorInvalidoException {
 
         if(quantidade > 0){
             repLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
             repLivro.salvarArquivo();
         }
         else{
-            throw new QuantidadeInvalidaException();
+            throw new ValorInvalidoException();
         }
     }
 
@@ -137,7 +137,7 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
+    public List<CompraLivrariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
             , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException {
 
         if (dataInicio == null){
@@ -148,7 +148,6 @@ public class ControladorLivro implements IControladorLivro {
             dataFim = LocalDate.now();
         }
 
-        LocalDate dataAtual = LocalDate.now();
         if (dataInicio.isAfter(dataFim)){
             throw new DataInvalidaException("Datas inválidas. Certifique-se de que a data de início não seja posterior"
                     +  " à data de fim e que ambas não sejam datas posteriores ou iguais à data atual.");
@@ -168,17 +167,27 @@ public class ControladorLivro implements IControladorLivro {
     }
 
     @Override
-    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+    public List<CompraLivrariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
         return repLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
     }
 
-    @Override
-    public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
-        return repLivro.listarTodosOsLivrosEmOrdemAlfabetica();
-    }
     @Override
     public List<Livro> listarLivrosComEstoqueDisponivel() {
         return repLivro.listarLivrosComEstoqueDisponivel();
     }
 
+    @Override
+    public List<CompraLivrariaDTO> ranquearFornecedoresMaisCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return repLivro.ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
+    }
+
+    @Override
+    public Map<LocalDate, Integer> calcularQtdDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return repLivro.calcularQtdDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
+    }
+
+    @Override
+    public Map<LocalDate, Double> calcularValorTotalPagoDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return repLivro.calcularValorTotalPagoDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
+    }
 }
