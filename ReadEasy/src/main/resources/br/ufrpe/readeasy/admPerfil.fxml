@@ -182,211 +182,204 @@
                   </HBox>
                   <VBox prefHeight="213.0" prefWidth="958.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="1109.0" VBox.vgrow="ALWAYS">
+                        <HBox prefHeight="192.0" prefWidth="418.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox prefHeight="192.0" prefWidth="418.0" HBox.hgrow="ALWAYS">
+                              <Pane prefHeight="250.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
+                              <VBox prefHeight="258.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Pane prefHeight="250.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
-                                    <VBox prefHeight="258.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label text="Nome:">
-                                             <VBox.margin>
-                                                <Insets top="25.0" />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="35.0" text="CPF:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="178.0" text="Data de nascimento:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="198.0" text="Nome de Usuário">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="258.0" text="Telefone:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </VBox>
-                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="227.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label fx:id="lblNome" text="(Nome)">
-                                             <VBox.margin>
-                                                <Insets top="25.0" />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <Label fx:id="lblCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblData" layoutX="10.0" layoutY="178.0" text="(Data de nascimento)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets right="25.0" />
-                                       </HBox.margin>
-                                    </VBox>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0">
-                                       <HBox.margin>
-                                          <Insets right="25.0" />
-                                       </HBox.margin>
-                                    </Separator>
-                                    <VBox layoutX="544.0" layoutY="10.0" prefHeight="250.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label text="CEP:">
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="35.0" text="Rua:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="178.0" text="Bairro:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="198.0" text="Cidade:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label layoutX="10.0" layoutY="218.0" text="Estado:">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets left="50.0" top="25.0" />
-                                       </HBox.margin>
-                                    </VBox>
-                                    <VBox layoutX="588.0" layoutY="10.0" prefHeight="227.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label fx:id="lblCep" text="(CEP)">
-                                             <VBox.margin>
-                                                <Insets top="25.0" />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <Label fx:id="lblRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <Label fx:id="lblEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
-                                             <font>
-                                                <Font name="Tahoma" size="16.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </VBox>
-                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="219.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
+                                    <Label text="Nome:">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="35.0" text="CPF:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="178.0" text="Data de nascimento:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="198.0" text="Nome de Usuário">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="258.0" text="Telefone:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
                                  </children>
-                              </HBox>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox layoutX="10.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lblNome" text="(Nome)">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblData" layoutX="10.0" layoutY="178.0" text="(Data de nascimento)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <Separator orientation="VERTICAL" prefHeight="200.0">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" right="25.0" top="10.0" />
+                                 </HBox.margin>
+                              </Separator>
+                              <VBox layoutX="544.0" layoutY="10.0" prefHeight="250.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="CEP:">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="35.0" text="Rua:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="178.0" text="Bairro:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="198.0" text="Cidade:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="218.0" text="Estado:">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="15.0" top="25.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox layoutX="588.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lblCep" text="(CEP)">
+                                       <VBox.margin>
+                                          <Insets top="25.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="lblEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
+                                       <font>
+                                          <Font name="Tahoma" size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </VBox>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="219.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
                            </children>
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
                         </HBox>
                      </children>
                      <VBox.margin>
@@ -490,7 +483,10 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </VBox>
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0">
+                           <HBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </HBox.margin></Separator>
                         <VBox prefHeight="303.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
                            <children>
                               <TextField fx:id="txtFCep" prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
