@@ -146,7 +146,7 @@
                   </HBox>
                   <HBox prefHeight="701.0" prefWidth="570.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <BarChart fx:id="bcRankingLivros" alternativeColumnFillVisible="true" prefHeight="487.0" prefWidth="430.0" HBox.hgrow="ALWAYS">
+                        <BarChart fx:id="bcRankingLivros" alternativeColumnFillVisible="true" legendVisible="false" onMouseEntered="#apresentarLegendasNoGrafico" prefHeight="487.0" prefWidth="430.0" HBox.hgrow="ALWAYS">
                           <xAxis>
                             <CategoryAxis fx:id="catXLivros" side="BOTTOM" />
                           </xAxis>
@@ -156,22 +156,65 @@
                         </BarChart>
                         <VBox prefHeight="288.0" prefWidth="130.0">
                            <children>
-                              <Pane prefHeight="33.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
-                              <ComboBox fx:id="cbPeriodo" onAction="#inicializarCbPeriodo" prefHeight="35.0" prefWidth="126.0" promptText="Período" styleClass="table-view" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="cbMesOuAno" layoutX="10.0" layoutY="105.0" prefHeight="35.0" prefWidth="126.0" promptText="Mês / Ano" styleClass="table-view" stylesheets="@css/Style.css">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </ComboBox>
-                              <Pane prefHeight="61.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
+                              <Pane prefHeight="50.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
+                              <VBox prefHeight="70.0" prefWidth="130.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+                                 <children>
+                                    <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Pane prefHeight="51.0" prefWidth="175.0" />
+                                          <Label prefHeight="19.0" prefWidth="193.0" text="Período" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="16.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets top="8.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Pane layoutX="44.0" layoutY="10.0" prefHeight="51.0" prefWidth="175.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
+                                       <VBox.margin>
+                                          <Insets top="3.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <ComboBox fx:id="cbPeriodo1" onAction="#inicializarCbMesOuAno" prefHeight="33.0" prefWidth="132.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Pane layoutX="10.0" layoutY="282.0" prefHeight="30.0" prefWidth="130.0" />
+                              <VBox prefHeight="70.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+                                 <children>
+                                    <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Pane prefHeight="51.0" prefWidth="175.0" />
+                                          <Label prefHeight="19.0" prefWidth="218.0" text="Mes / Ano" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="16.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets top="8.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Pane layoutX="44.0" layoutY="10.0" prefHeight="51.0" prefWidth="175.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
+                                       <VBox.margin>
+                                          <Insets top="3.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <ComboBox fx:id="cbMesOuAno1" prefHeight="33.0" prefWidth="144.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Pane prefHeight="30.0" prefWidth="130.0" />
                               <HBox prefHeight="45.0" prefWidth="161.0">
                                  <children>
                                     <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                                    <Button fx:id="btnPesquisar" mnemonicParsing="false" onAction="#btnPesquisarRankingLivros" prefHeight="45.0" prefWidth="113.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                    <Button fx:id="btnPesquisar1" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="45.0" prefWidth="130.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
                                        <graphic>
                                           <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
                                        </graphic>
@@ -179,10 +222,10 @@
                                     <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="82.0" prefWidth="161.0" VBox.vgrow="ALWAYS" />
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="213.0" prefWidth="130.0" VBox.vgrow="ALWAYS" />
                            </children>
                            <HBox.margin>
-                              <Insets right="10.0" top="10.0" />
+                              <Insets right="10.0" />
                            </HBox.margin>
                         </VBox>
                      </children>
@@ -211,12 +254,12 @@
                   <HBox prefHeight="45.0" prefWidth="461.0">
                      <children>
                         <Pane prefHeight="100.0" prefWidth="103.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefHeight="46.0" prefWidth="335.0" HBox.hgrow="ALWAYS">
+                        <VBox prefHeight="46.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Pane prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
-                              <Label text="Usuários que mais realizam compras">
+                              <Label prefHeight="20.0" prefWidth="297.0" text="Usuários que mais realizam compras">
                                  <font>
-                                    <Font name="Tahoma Bold" size="15.0" />
+                                    <Font name="Tahoma Bold" size="16.0" />
                                  </font>
                               </Label>
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
@@ -243,12 +286,12 @@
                   <HBox layoutX="10.0" layoutY="83.0" prefHeight="45.0" prefWidth="461.0">
                      <children>
                         <Pane prefHeight="45.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
-                        <VBox prefHeight="46.0" prefWidth="161.0" HBox.hgrow="ALWAYS">
+                        <VBox prefHeight="46.0" prefWidth="185.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Pane prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
                               <Label text="Usuários que gastam mais" textAlignment="CENTER">
                                  <font>
-                                    <Font name="Tahoma Bold" size="15.0" />
+                                    <Font name="Tahoma Bold" size="16.0" />
                                  </font>
                               </Label>
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="103.0" VBox.vgrow="ALWAYS" />
@@ -272,6 +315,79 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" />
                      </VBox.margin>
                   </TableView>
+                  <HBox prefHeight="69.0" prefWidth="379.0">
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="80.0" />
+                        <VBox prefHeight="70.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+                           <children>
+                              <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Pane prefHeight="51.0" prefWidth="175.0" />
+                                    <Label prefHeight="19.0" prefWidth="203.0" text="Período" textFill="WHITE">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="8.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Pane layoutX="44.0" layoutY="10.0" prefHeight="51.0" prefWidth="175.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <ComboBox fx:id="cbPeriodo2" onAction="#inicializarCbMesOuAno" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="68.0" prefWidth="170.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" stylesheets="@css/Style.css">
+                           <children>
+                              <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Pane prefHeight="51.0" prefWidth="175.0" />
+                                    <Label prefHeight="19.0" prefWidth="234.0" text="Mês / Ano" textFill="WHITE">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets top="8.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Pane layoutX="44.0" layoutY="10.0" prefHeight="51.0" prefWidth="175.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
+                                 <VBox.margin>
+                                    <Insets top="3.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <ComboBox fx:id="cbMesOuAno2" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <Pane prefHeight="90.0" prefWidth="80.0" />
+                        <Button fx:id="btnPesquisar2" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="46.0" prefWidth="169.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Pane layoutX="322.0" layoutY="10.0" prefHeight="200.0" prefWidth="80.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets bottom="10.0" right="10.0" top="10.0" />
