@@ -4,15 +4,14 @@ import br.ufrpe.readeasy.beans.Promocao;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 public class AdmCRUDPromocoesController {
 
@@ -78,10 +77,10 @@ public class AdmCRUDPromocoesController {
     private TableColumn<Promocao, Integer> clnQtdMin;
 
     @FXML
-    private TableColumn<Promocao, LocalDate> clnDtInicio;
+    private TableColumn<Promocao, String> clnDtInicio;
 
     @FXML
-    private TableColumn<Promocao, LocalDate> clnDtFim;
+    private TableColumn<Promocao, String> clnDtFim;
 
     //Métodos de troca de tela:
     @FXML
@@ -155,18 +154,23 @@ public class AdmCRUDPromocoesController {
         clnDtInicio.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
             LocalDate dtInicio = promocao.getDataDeCriacao();
-            return new SimpleObjectProperty<>(dtInicio);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dtInicio.format(formatter);
+            return new SimpleStringProperty(dataFormatada);
         });
 
         clnDtFim.setCellValueFactory(cellData -> {
             Promocao promocao = cellData.getValue();
             LocalDate dtFim = promocao.getDataDeExpiracao();
-            return new SimpleObjectProperty<>(dtFim);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dtFim.format(formatter);
+            return new SimpleStringProperty(dataFormatada);
         });
     }
 
     @FXML
     public void inicializarTbvPromocoesAtivas(){
+        tbvPromocoesAtivas.getItems().clear();
         List<Promocao> promocoes = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
         tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoes));
     }
@@ -214,6 +218,19 @@ public class AdmCRUDPromocoesController {
                     alert.setHeaderText("A promoção que você está tentando cadastrar já existe.");
                     alert.setContentText("Cadastre uma promoção nova para continuar");
                     alert.showAndWait();
+                } catch (ValorInvalidoException e) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Valor de porcentagem de desconto inválido.");
+                    alert.setContentText("Certifique de preencher o campo com um valor entre 1 e 100");
+                    alert.showAndWait();
+                    limparCampos();
+                } catch (DataInvalidaException e) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Data inválida de desconto inválido.");
+                    alert.setContentText("Certifique de preencher a data de criação e expiração" +
+                            " da promoção com datas válidas.");
+                    alert.showAndWait();
+                    limparCampos();
                 }
             }
             else{
@@ -294,18 +311,37 @@ public class AdmCRUDPromocoesController {
                     int novaPorcentagem = Integer.parseInt(pct);
                     int novaQuantidade = Integer.parseInt(qntMin);
 
-                    ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
-                                novaQuantidade, novaDataInicio, novaDataFim, true);
-
+                    try {
+                        ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
+                                    novaQuantidade, novaDataInicio, novaDataFim, true);
                         alert.setAlertType(Alert.AlertType.INFORMATION);
                         alert.setTitle("Sucesso.");
                         alert.setHeaderText(null);
                         alert.setContentText("promoção editada com sucesso!");
                         alert.showAndWait();
 
+                        limparCampos();
+                        inicializarTbvPromocoesAtivas();
 
-                    limparCampos();
-                    this.initialize();
+                    }  catch (PromocaoExistenteException e) {
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("A promoção que você está tentando cadastrar já existe.");
+                        alert.setContentText("Cadastre uma promoção nova para continuar");
+                        alert.showAndWait();
+                    } catch (ValorInvalidoException e) {
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Valor de porcentagem de desconto inválido.");
+                        alert.setContentText("Certifique de preencher o campo com um valor entre 1 e 100");
+                        alert.showAndWait();
+                        limparCampos();
+                    } catch (DataInvalidaException e) {
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Data inválida de desconto inválido.");
+                        alert.setContentText("Certifique de preencher a data de criação e expiração" +
+                                " da promoção com datas válidas.");
+                        alert.showAndWait();
+                        limparCampos();
+                    }
                 }
                 else{
                     alert.setTitle("Erro!");
@@ -332,11 +368,11 @@ public class AdmCRUDPromocoesController {
         dtpDataDeInicioDaPromocao.setValue(null);
     }
 
-    private boolean validarInputTf(String quantidadeDigitada){
+    private boolean validarInputTf(String valorDigitado){
         boolean inputDigitadoCorretamente = true;
 
         try {
-            int quantidade = Integer.parseInt(quantidadeDigitada);
+            int valor = Integer.parseInt(valorDigitado);
         } catch (NumberFormatException e) {
             inputDigitadoCorretamente = false;
         }
