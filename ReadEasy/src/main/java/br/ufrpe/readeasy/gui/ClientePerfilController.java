@@ -111,15 +111,6 @@ public class ClientePerfilController {
     private TableColumn<Endereco, String> clnEstado;
 
     private Usuario usuarioLogado;
-    public Usuario getUsuarioLogado() {
-        return usuarioLogado;
-    }
-    public void setUsuarioLogado(Usuario usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
-    }
-    private boolean validarInputTf(String inputTf) {
-        return inputTf.matches("\\d+");
-    }
 
     //Métodos de troca de tela:
     @FXML
@@ -162,7 +153,6 @@ public class ClientePerfilController {
             lblDataDeNascimento.setText(usuarioLogado.getDataNascimento().format(formatter));
             lblLogin.setText(usuarioLogado.getLogin());
             lblTelefone.setText(usuarioLogado.getTelefone());
-
         }
     }
 
@@ -200,7 +190,7 @@ public class ClientePerfilController {
         });
 
         if(enderecosCliente != null && !enderecosCliente.isEmpty()){
-            tbvEnderecosCadastrados.setItems(FXCollections.observableArrayList(enderecosCliente).sorted());
+            tbvEnderecosCadastrados.setItems(FXCollections.observableArrayList(enderecosCliente));
         }
     }
 
@@ -222,44 +212,46 @@ public class ClientePerfilController {
             alert.showAndWait();
         }
         else{
-            if (!validarInputTf(telefone) || !validarInputTf(cpf)) {
+            if (validarInputTf(telefone) || validarInputTf(cpf)) {
+                if(validarQuantidadeDeCaracteres("telefone", telefone) &&
+                        validarQuantidadeDeCaracteres("cep", cpf)){
+
+                    Endereco enderecoSelecionado = tbvEnderecosCadastrados.getItems().get(0);
+                    Cliente cliente = (Cliente) this.usuarioLogado;
+                    try {
+                        ServidorReadEasy.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
+                                login, senha, enderecoSelecionado, telefone);
+
+                        this.atualizarLabels();
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Atualização de perfil");
+                        alert.setContentText("Perfil atualizado com sucesso!");
+                        alert.showAndWait();
+
+                    }catch (UsuarioExistenteException e){
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Tipo de usuário inválido");
+                        alert.setContentText(e.getMessage());
+                        alert.showAndWait();
+                    }catch (DataInvalidaException e){
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Data inválida.");
+                        alert.setContentText(e.getMessage());
+                        alert.showAndWait();
+                    }
+                }
+                else{
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Campos de telefone ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                    alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                    alert.showAndWait();
+                }
+            }
+            else{
                 alert.setTitle("Erro");
                 alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
                 alert.setContentText("Digite apenas números para continuar");
-                ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(buttonType);
-
-                alert.showAndWait().ifPresent(buttonType1 -> {
-                    if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
-            }
-            else{
-                Endereco enderecoSelecionado = tbvEnderecosCadastrados.getItems().get(0);
-                Cliente cliente = (Cliente) this.usuarioLogado;
-
-                try {
-                    ServidorReadEasy.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
-                            login, senha, enderecoSelecionado, telefone);
-                    this.atualizarLabels();
-
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Atualização de perfil");
-                    alert.setContentText("Perfil atualizado com sucesso!");
-                    alert.showAndWait();
-
-                }catch ( UsuarioExistenteException e){
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Tipo de usuário inválido");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                }catch (DataInvalidaException e){
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Data inválida.");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                }
+                alert.showAndWait();
             }
         }
     }
@@ -274,31 +266,41 @@ public class ClientePerfilController {
         String cidade = tfCidade.getText();
         String estado = tfEstado.getText();
 
-        if(!stringCep.isEmpty() && !rua.isEmpty() && !bairro.isEmpty() && !cidade.isEmpty() && estado.isEmpty()){
-            if(!validarInputCEP(stringCep) ){
+        if(!stringCep.isEmpty() && !rua.isEmpty() && !bairro.isEmpty() && !cidade.isEmpty() && !estado.isEmpty()){
+            if(validarInputTf(stringCep)){
+                if(validarQuantidadeDeCaracteres("cep", stringCep)){
+                    int cep = Integer.parseInt(stringCep);
+                    Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+
+                    try {
+                        ServidorReadEasy.getInstance().adicionarEnderecoDeEntrega(getUsuarioLogado(), endereco);
+                        tbvEnderecosCadastrados.getItems().add(endereco);
+
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Cadastro de Endereço");
+                        alert.setHeaderText("Endereço cadastrado com sucesso!");
+                        alert.setContentText(null);
+                        alert.showAndWait();
+                        limparCampos();
+                    } catch (EnderecoExistenteException e) {
+                        alert.setTitle("Erro.");
+                        alert.setHeaderText("Endereço já cadastrado.");
+                        alert.setContentText("Cadastre um endereço novo para continuar.");
+                        alert.showAndWait();
+                    }
+                }
+                else{
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Campos de CEP apresenta uma quantidade de dígitos fora do padrão.");
+                    alert.setContentText("Certifique de digitar os 8 dígitos para CEP para continuar.");
+                    alert.showAndWait();
+                }
+            }
+            else{
                 alert.setTitle("Erro.");
                 alert.setHeaderText("Campo de CEP preenchido incorretamente.");
                 alert.setContentText("Preencha o campo de cep apenas com números para continuar.");
-                alert.showAndWait();            }
-            else{
-                int cep = Integer.parseInt(stringCep);
-                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-
-                try {
-                    ServidorReadEasy.getInstance().adicionarEnderecoDeEntrega(getUsuarioLogado(), endereco);
-                    tbvEnderecosCadastrados.getItems().add(endereco);
-
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Cadastro de Endereço");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Endereço cadastrado com sucesso!");
-                    alert.showAndWait();
-                } catch (EnderecoExistenteException e) {
-                    alert.setTitle("Erro.");
-                    alert.setHeaderText("Endereço já cadastrado.");
-                    alert.setContentText("Cadastre um endereço novo para continuar.");
-                    alert.showAndWait();
-                }
+                alert.showAndWait();
             }
         }
         else{
@@ -316,18 +318,22 @@ public class ClientePerfilController {
         if (enderecoSelecionado != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmação de Exclusão");
-            alert.setHeaderText(null);
-            alert.setContentText("Tem certeza que deseja excluir o endereço selecionado?");
+            alert.setHeaderText("Tem certeza que deseja excluir o endereço selecionado?");
 
             ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
             ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
             alert.getButtonTypes().setAll(simButton, naoButton);
 
-
             alert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                     ServidorReadEasy.getInstance().removerEnderecoDeEntrega(usuarioLogado, enderecoSelecionado);
                     tbvEnderecosCadastrados.getItems().remove(enderecoSelecionado);
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sucesso");
+                    alert.setHeaderText("Endereço removido com êxito.");
+                    alert.setContentText(null);
+                    alert.showAndWait();
+                    limparCampos();
                 }
                 else {
                     alert.close();
@@ -345,6 +351,7 @@ public class ClientePerfilController {
 
     @FXML
     void btnEditarEndereco(){
+        boolean excessaoLevantada = false;
         Alert alert = new Alert(Alert.AlertType.ERROR);
         Endereco enderecoSelecionado = tbvEnderecosCadastrados.getSelectionModel().getSelectedItem();
 
@@ -355,38 +362,52 @@ public class ClientePerfilController {
             String novaCidade = tfCidade.getText();
             String novoEstado = tfEstado.getText();
 
-            if(stringCep.isEmpty() || novaRua.isEmpty() || novoBairro.isEmpty() || novaCidade.isEmpty() || novoEstado.isEmpty()){
+            //Necessário verificar o cep para garantir as próximas validações referente a ele.
+            if(stringCep.isEmpty()){
                 alert.setTitle("Erro");
                 alert.setHeaderText("Campo não preenchido.");
                 alert.setContentText("Preencha todos os campos corretamente para continuar.");
                 alert.showAndWait();
             }
             else{
-                if(validarInputCEP(stringCep)){
-                    int novoCEP = Integer.parseInt(stringCep);
-
-                    try {
-                        ServidorReadEasy.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, novoCEP,
+                if(validarInputTf(stringCep)){
+                    if(validarQuantidadeDeCaracteres("Cep", stringCep)){
+                        int cep = Integer.parseInt(stringCep);
+                        try {
+                            ServidorReadEasy.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, cep,
                                     novaRua, novoBairro, novaCidade, novoEstado);
-                    } catch (EnderecoExistenteException e) {
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Operação inválida!");
-                        alert.setContentText("Você tentou editar pra um outro endereco" +
-                                " já cadastrado na sua lista de endereços");
-                        alert.showAndWait();
-                    } catch (CampoVazioException e) {
-                        throw new RuntimeException(e);
+                        } catch (EnderecoExistenteException e) {
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Operação inválida!");
+                            alert.setContentText("Você tentou editar pra um outro endereco" +
+                                    " já cadastrado na sua lista de endereços");
+                            alert.showAndWait();
+                        } catch (CampoVazioException e) {
+                            excessaoLevantada = true;
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Campo não preenchido.");
+                            alert.setContentText("Preencha todos os campos corretamente para continuar.");
+                            alert.showAndWait();
+                        }
+                        if(!excessaoLevantada){
+                            List<Endereco> enderecos = ServidorReadEasy.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
+                            tbvEnderecosCadastrados.getItems().clear();
+                            tbvEnderecosCadastrados.setItems(FXCollections.observableList(enderecos));
+
+                            alert.setAlertType(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Sucesso");
+                            alert.setHeaderText("Endereço editado com sucesso.");
+                            alert.setContentText(null);
+                            alert.showAndWait();
+                            limparCampos();
+                        }
                     }
-
-                    List<Endereco> enderecos = ServidorReadEasy.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
-                    tbvEnderecosCadastrados.getItems().clear();
-                    tbvEnderecosCadastrados.setItems(FXCollections.observableList(enderecos));
-
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sucesso");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Endereço editado com sucesso.");
-                    alert.showAndWait();
+                    else{
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Campos de CEP apresenta uma quantidade de dígitos fora do padrão.");
+                        alert.setContentText("Certifique de digitar os 8 dígitos para CEP para continuar.");
+                        alert.showAndWait();
+                    }
                 }
                 else{
                     alert.setTitle("Erro");
@@ -416,8 +437,35 @@ public class ClientePerfilController {
         }
     }
 
-    private boolean validarInputCEP(String cep) {
-        return cep.matches("\\d+");
+    private boolean validarQuantidadeDeCaracteres(String tipoDeValidacao, String input){
+        boolean inputDoTamanhoCorreto = true;
+
+        switch (tipoDeValidacao.toLowerCase()){
+            case  "cpf", "telefone":
+                if(input.length() != 11){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
+
+            case "cep":
+                if(input.length() != 8){
+                    inputDoTamanhoCorreto = false;
+                }
+                break;
+        }
+        return inputDoTamanhoCorreto;
+    }
+
+    private boolean validarInputTf(String inputUsuario) {
+        boolean inputDigitadoCorretamente = true;
+
+        try {
+            long input = Long.parseLong(inputUsuario);
+        } catch (NumberFormatException e) {
+            inputDigitadoCorretamente = false;
+        }
+
+        return inputDigitadoCorretamente;
     }
 
     public void limparCampos(){
@@ -447,5 +495,13 @@ public class ClientePerfilController {
                 alert.close();
             }
         });
+    }
+
+    //GETs AND SETs:
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
     }
 }
