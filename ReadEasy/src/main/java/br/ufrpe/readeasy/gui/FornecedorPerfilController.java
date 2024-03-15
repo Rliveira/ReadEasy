@@ -1,14 +1,9 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.beans.Fornecedor;
-import br.ufrpe.readeasy.beans.Funcionario;
-import br.ufrpe.readeasy.beans.Usuario;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.time.LocalDate;
 
 public class FornecedorPerfilController
 {

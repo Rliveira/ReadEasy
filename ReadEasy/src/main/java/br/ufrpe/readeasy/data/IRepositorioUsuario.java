@@ -2,7 +2,6 @@ package br.ufrpe.readeasy.data;
 
 import br.ufrpe.readeasy.beans.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrpe.readeasy.exceptions.*;

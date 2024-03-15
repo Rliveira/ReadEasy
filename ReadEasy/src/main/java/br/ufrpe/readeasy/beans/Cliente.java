@@ -1,11 +1,8 @@
 package br.ufrpe.readeasy.beans;
 
-import br.ufrpe.readeasy.data.RepositorioUsuario;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Cliente extends Usuario implements Serializable {
     private static final long serialVersionUID = 6L;

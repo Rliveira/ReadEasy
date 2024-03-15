@@ -1,6 +1,5 @@
 package br.ufrpe.readeasy;
 
-import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.gui.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

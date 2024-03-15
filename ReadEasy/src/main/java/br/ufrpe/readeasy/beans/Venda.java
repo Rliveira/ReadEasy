@@ -1,19 +1,8 @@
 package br.ufrpe.readeasy.beans;
-import br.ufrpe.readeasy.business.ControladorVenda;
-import br.ufrpe.readeasy.business.IControladorVenda;
-import br.ufrpe.readeasy.data.IRepositorioUsuario;
-import br.ufrpe.readeasy.data.IRepositorioVenda;
-import br.ufrpe.readeasy.data.RepositorioUsuario;
-import br.ufrpe.readeasy.data.RepositorioVenda;
-import br.ufrpe.readeasy.exceptions.*;
-import javafx.beans.value.ObservableValue;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Venda implements Serializable {
@@ -23,6 +12,7 @@ public class Venda implements Serializable {
     private LocalDateTime dataEHora;
     private Endereco enderecoEntrega;
     private Promocao promocaoAplicada;
+    private double desconto;
 
     //CONSTRUTOR:
     public Venda(Cliente cliente, LocalDateTime dataEHora, Endereco enderecoEntrega, Promocao promocaoAplicada) {
@@ -47,6 +37,7 @@ public class Venda implements Serializable {
         }
         double desconto = total * ((double) porcentagemDeDesconto /100);
         total = total - desconto;
+        setDesconto(desconto);
 
         return total;
     }
@@ -137,40 +128,21 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        return "Venda{" +
+                "livrosVendidos=" + livrosVendidos +
+                ", cliente=" + cliente +
+                ", dataEHora=" + dataEHora +
+                ", enderecoEntrega=" + enderecoEntrega +
+                ", promocaoAplicada=" + promocaoAplicada +
+                ", desconto=" + desconto +
+                '}';
+    }
 
-        sb.append("\n+----------------------+--------------------------------+----------------------" +
-                "+----------------------+----------------------+----------------------+\n");
-        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Livro", "Autor", "Fornecedor"
-                , "Preço por Unidade", "Quantidade", "Preço Total"));
-        sb.append("|----------------------|--------------------------------|----------------------" +
-                "|----------------------|----------------------|----------------------|\n");
+    public double getDesconto() {
+        return desconto;
+    }
 
-        double precoTotalVenda = 0.0;
-        for (LivroVendido livro : livrosVendidos) {
-            double precoTotalLivro = livro.calcularTotal();
-            precoTotalVenda += precoTotalLivro;
-
-            sb.append(String.format("| %-20s | %-30s | %-20s | %-20.2f | %-20d | %-20.2f |\n",
-                    livro.getLivro().getTitulo(), livro.getLivro().getAutor(), livro.getLivro().getFornecedor()
-                            .getNome(), livro.getLivro().getPreco(), livro.getQuantidade(), precoTotalLivro));
-        }
-
-        sb.append("|----------------------|--------------------------------|----------------------" +
-                "|----------------------|----------------------|----------------------|\n");
-        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Cliente"
-                , cliente.getNome(), "CPF: " + cliente.getCpf(), "", "", ""));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        String dataHoraFormatada = dataEHora.format(formatter);
-
-        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20s |\n", "Data e Hora", dataEHora, "", ""
-                , "", ""));
-        sb.append(String.format("| %-20s | %-30s | %-20s | %-20s | %-20s | %-20.2f |\n", "Total Venda", "", "", "", ""
-                , precoTotalVenda));
-        sb.append("+----------------------+--------------------------------+----------------------" +
-                "+----------------------+----------------------+----------------------+\n");
-
-        return sb.toString();
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
     }
 }
