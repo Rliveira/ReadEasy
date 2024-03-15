@@ -93,6 +93,7 @@ public class FuncionarioEstoqueController {
 
     //Outros métodos:
     public void initialize(){
+        ivCapaDoLivro.setImage(null);
         inicializarComboBoxLivro();
         construirTabela();
         inicializarTabela();

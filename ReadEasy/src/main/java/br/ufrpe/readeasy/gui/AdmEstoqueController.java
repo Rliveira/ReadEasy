@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,7 @@ public class AdmEstoqueController {
 
     //Outros métodos:
     public void initialize(){
+        ivCapaDoLivro.setImage(null);
         inicializarComboBoxLivro();
         construirTabela();
         inicializarTabela();
