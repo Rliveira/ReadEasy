@@ -113,7 +113,7 @@ public class ServidorReadEasy {
         return controladorUsuario.existeUsuario(cpf);
     }
 
-    public void adicionarLivro(Livro livro) throws PrecoInvalidoException, LivroExistenteException {
+    public void adicionarLivro(Livro livro) throws ValorInvalidoException, LivroExistenteException {
         controladorLivro.adicionarLivro(livro);
     }
 
@@ -122,7 +122,7 @@ public class ServidorReadEasy {
     }
 
     public void atualizarLivro(Livro livro, String titulo, String autor, double preco, Fornecedor fornecedor,
-                               byte[] capaDoLivro, URL urlLivro) throws PrecoInvalidoException, LivroExistenteException {
+                               byte[] capaDoLivro, URL urlLivro) throws ValorInvalidoException, LivroExistenteException {
         controladorLivro.atualizarLivro(livro, titulo, autor, preco, fornecedor, capaDoLivro, urlLivro);
     }
 
@@ -134,12 +134,13 @@ public class ServidorReadEasy {
         controladorLivro.removerGenero(livro, genero);
     }
 
-    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataVendaFornecedor ) throws QuantidadeInvalidaException {
-        controladorLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataVendaFornecedor);
+    public void aumentarQuantidadeEmEstoque(Livro livro, int quantidade, LocalDate dataVendaFornecedor
+            , Double valorTotalPago) throws ValorInvalidoException {
+        controladorLivro.aumentarQuantidadeEmEstoque(livro, quantidade, dataVendaFornecedor, valorTotalPago);
     }
 
     public void diminuirQuantidadeEmEstoque(Livro livro, int quantidade) throws EstoqueInsuficienteException,
-            QuantidadeInvalidaException {
+            ValorInvalidoException {
         controladorLivro.diminuirQuantidadeEmEstoque(livro, quantidade);
     }
 
@@ -201,13 +202,12 @@ public class ServidorReadEasy {
         return controladorVenda.listarVendas();
     }
 
-    public List<Venda> historicoDeComprasDoCliente(Cliente cliente)
-    {
-         return controladorVenda.historicoDeComprasDoCliente(cliente);
+    public List<CompraClienteDTO> historicoDeComprasDoCliente(Cliente cliente, LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+         return controladorVenda.historicoDeComprasDoCliente(cliente, dataInicio, dataFim);
     }
 
 
-    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException {
+    public void inserirPromocao(Promocao promocao) throws PromocaoExistenteException, ValorInvalidoException, DataInvalidaException {
         controladorPromocao.inserirPromocao(promocao);
     }
 
@@ -215,9 +215,10 @@ public class ServidorReadEasy {
         controladorPromocao.removerPromocao(promocao);
     }
 
-    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros,
-                          LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa)
-             {
+    public void atualizarPromocao(Promocao promocao, String titulo, int porcentagemDeDesconto, int qtdMinimaDeLivros
+            , LocalDate dataDeCriacao, LocalDate dataDeExpiracao, boolean ativa) throws PromocaoExistenteException
+            , ValorInvalidoException, DataInvalidaException {
+
         controladorPromocao.atualizarPromocao(promocao, titulo, porcentagemDeDesconto, qtdMinimaDeLivros,
                 dataDeCriacao, dataDeExpiracao, ativa);
     }
@@ -226,31 +227,26 @@ public class ServidorReadEasy {
     public List<Promocao> listarTodasPromocoes() {
         return controladorPromocao.listarTodasPromocoes();
     }
+
     public List<Promocao> listarTodasPromocoesAtivas(){
         return controladorPromocao.listarTodasPromocoesAtivas();
-    }
-
-    public boolean existePromocao(UUID id) {
-        return controladorPromocao.existePromocao(id);
     }
 
     public Promocao buscarPromocao(UUID id) {
         return controladorPromocao.buscarPromocao(id);
     }
 
-    public List<Livro> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
+    public List<CompraLivrariaDTO> historicoLivrosCompradosLivraria(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
         return controladorLivro.historicoLivrosCompradosLivraria(dataInicio, dataFim);
     }
-    public Map<String, Integer> listarMelhoresClientesPorCompra() throws HistoricoVazioException
-    {
-        Map<String, Integer> listaInterna = controladorVenda.listarMelhoresClientesPorCompra();
-        return listaInterna;
+
+    public Map<String, Integer> ranquearClientesPorQuantidadeDeCompraEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
+        return controladorVenda.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
     }
 
-    public Map<String, Double> listarMelhoresClientesPorGasto() throws HistoricoVazioException
-    {
-        Map<String, Double> listaInterna = controladorVenda.listarMelhoresClientesPorGasto();
-        return listaInterna;
+
+    public Map<String, Double> raquearClientesPorGastoEntreDatas(LocalDate dataInicio, LocalDate dataFim) throws HistoricoVazioException {
+        return controladorVenda.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
     }
 
 
@@ -266,33 +262,23 @@ public class ServidorReadEasy {
         return controladorVenda.calcularTotalLivrosVendidosEntreDatas(dataEHoraInicio, dataEHoraFim);
     }
 
-    public double calcularTotalLucroEntreDatas (LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim)
-    {
-        return controladorVenda.calcularTotalLucroEntreDatas(dataEHoraInicio, dataEHoraFim);
-    }
-
-    public Map<Livro, Map<LocalDate, Integer>> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor
-            , LocalDate dataInicio, LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException
-    {
-        return controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor,
-                dataInicio, dataFim);
-
+    public List<CompraLivrariaDTO> ListarHistoricoDeVendasFornecedor(Fornecedor fornecedor, LocalDate dataInicio
+            , LocalDate dataFim) throws FornecedorNaoEncontradoException, DataInvalidaException {
+        return controladorLivro.ListarHistoricoDeVendasFornecedor(fornecedor, dataInicio, dataFim);
     }
 
     public Livro buscarLivroPorNome(String titulo) {
         return controladorLivro.buscarLivroPorNome(titulo);
     }
 
-    public List<Livro> listarTodosOsLivrosEmOrdemAlfabetica() {
-        return controladorLivro.listarTodosOsLivrosEmOrdemAlfabetica();
-    }
-
-    public List<CompraDTO> listarComprasDTO(Cliente cliente)
+    public List<CompraClienteDTO> listarComprasDTO(Cliente cliente)
     {
         return controladorVenda.listarComprasDTO(cliente);
     }
 
-    public List<VendaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim){return controladorVenda.listarVendasLivrariaDTO(dataInicio, dataFim);}
+    public List<VendaLivrariaDTO> listarVendasLivrariaDTO(LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException{
+        return controladorVenda.listarVendasLivrariaDTO(dataInicio, dataFim);
+    }
 
     public int calcularTotalDeVendasDiarias(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
         return controladorVenda.calcularTotalDeVendasDiarias(dataEHoraInicio, dataEHoraFim);
@@ -308,6 +294,18 @@ public class ServidorReadEasy {
 
     public Map<LocalDate, Double> listarLucroPorData(LocalDateTime dataEHoraInicio, LocalDateTime dataEHoraFim){
         return controladorVenda.listarLucroPorData(dataEHoraInicio, dataEHoraFim);
+    }
+    
+    public List<CompraLivrariaDTO> ranquearFornecedoresMaisCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return controladorLivro.ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
+    }
+    
+    public Map<LocalDate, Integer> calcularQtdDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return controladorLivro.calcularQtdDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
+    }
+    
+    public Map<LocalDate, Double> calcularValorTotalPagoDeLivrosCompradosPorPeriodo(LocalDate dataInicio, LocalDate dataFim){
+        return controladorLivro.calcularValorTotalPagoDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
     }
 
 }
