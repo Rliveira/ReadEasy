@@ -2,10 +2,10 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.*;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.application.Application;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +14,7 @@ import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ClienteMinhasComprasController
@@ -52,13 +52,13 @@ public class ClienteMinhasComprasController
     private TableColumn<CompraClienteDTO, String> colAutor;
 
     @FXML
-    private TableColumn<CompraClienteDTO, Integer> colQTD;
+    private TableColumn<CompraClienteDTO, Integer> colQtd;
 
     @FXML
-    private TableColumn<CompraClienteDTO, Double> colPreco;
+    private TableColumn<CompraClienteDTO, String> colPreco;
 
     @FXML
-    private TableColumn<CompraClienteDTO, LocalDate> colDataCompra;
+    private TableColumn<CompraClienteDTO, String> colDataCompra;
 
     //Métodos de troca de tela:
     @FXML
@@ -87,85 +87,75 @@ public class ClienteMinhasComprasController
         dpDataFim.setValue(LocalDate.now());
     }
 
-    public void onPesquisarClick()
-    {
-        filtrarPorIntervaloDeTempo();
+    private void carregarDadosTabela() {
+        if(SessaoUsuario.getUsuarioLogado() instanceof Cliente) {
+            LocalDate datainicial = LocalDate.of(2020, 1, 1);
+            LocalDate dataAtual = LocalDate.now();
+            List<CompraClienteDTO> comprasCliente;
+            try {
+                comprasCliente = ServidorReadEasy.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), datainicial, dataAtual);
+            } catch (DataInvalidaException e) {
+                throw new RuntimeException(e);
+            }
+            tvTabelaCompras.setItems(FXCollections.observableArrayList(comprasCliente));
+        }
     }
 
-    public void filtrarPorIntervaloDeTempo()
-    {
+    private void construirTabela(){
+        colTitulo.setCellValueFactory(cellData -> {
+            String titulo = cellData.getValue().getTituloLivro();
+            return new SimpleStringProperty(titulo);
+        });
+
+        colAutor.setCellValueFactory(cellData -> {
+            String autor = cellData.getValue().getAutorLivro();
+            return new SimpleStringProperty(autor);
+        });
+
+        colQtd.setCellValueFactory(cellData -> {
+            int quantidade = cellData.getValue().getQuantidade();
+            return new SimpleIntegerProperty(quantidade).asObject();
+        });
+
+        colDataCompra.setCellValueFactory(cellData -> {
+            LocalDate dataDaCompra = cellData.getValue().getDataCompra().toLocalDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dataDaCompra.format(formatter);
+            return new SimpleStringProperty(dataFormatada);
+        });
+
+        colPreco.setCellValueFactory(cellData -> {
+            double preco = cellData.getValue().getPreco();
+            String precoLivro = String.format("%.2f", preco);
+            return new SimpleStringProperty(precoLivro);
+        });
+    }
+
+    public void btnFiltrarPorIntervaloDeTempo(){
         LocalDate dataInicio = dpDataInicio.getValue();
         LocalDate dataFim = dpDataFim.getValue();
 
-        if (dataInicio != null && dataFim != null)
-        {
-            ObservableList<CompraClienteDTO> itensTabela = FXCollections.observableArrayList(ServidorReadEasy.getInstance().
-                    listarComprasDTO((Cliente) SessaoUsuario.getUsuarioLogado()));
-            ObservableList<CompraClienteDTO> itensFiltrados = FXCollections.observableArrayList();
-
-            for (CompraClienteDTO item : itensTabela) {
-                LocalDate dataItem = item.getDataCompra().toLocalDate();
-                if (!dataItem.isBefore(dataInicio) && !dataItem.isAfter(dataFim)) {
-                    itensFiltrados.add(item);
-                }
-            }
-            if(!dpDataInicio.getValue().isBefore(dataFim) && !dpDataFim.getValue().isAfter(dataInicio)){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
+        if (dataInicio != null && dataFim != null) {
+            try {
+                List<CompraClienteDTO> historicoCompras = ServidorReadEasy.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), dataInicio, dataFim);
+                tvTabelaCompras.getItems().clear();
+                tvTabelaCompras.getItems().addAll(FXCollections.observableArrayList(historicoCompras));
+            }catch (DataInvalidaException e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro");
-                alert.setHeaderText(null);
-                alert.setContentText("Selecione uma data com um intervalo válido");
+                alert.setHeaderText("Datas inválidas");
+                alert.setContentText("Certifique de que a data inicio seja anterior a data fim" +
+                        " e que ambas sejam iguais ou anteriores a data atual.");
                 alert.showAndWait();
             }
-            tvTabelaCompras.setItems(itensFiltrados);
-        } else
-        {
-            tvTabelaCompras.setItems(FXCollections.observableArrayList());
         }
-    }
-
-    public void carregarDadosTabela()
-    {
-        SessaoUsuario.getInstance();
-        if(SessaoUsuario.getUsuarioLogado() instanceof Cliente)
-        {
-            tvTabelaCompras.setItems(FXCollections.observableArrayList(obterComprasDoCliente((Cliente)SessaoUsuario.
-                    getUsuarioLogado())));
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data de inicio ou data de fim não selecionada.");
+            alert.setContentText("Certifique de selecinar ambas as datas para realizar a pesquisa");
+            alert.showAndWait();
         }
-    }
-
-    public List<CompraClienteDTO> obterComprasDoCliente(Cliente cliente){
-        List<CompraClienteDTO> comprasDoCliente = new ArrayList<>();
-
-
-        for (Venda venda : ServidorReadEasy.getInstance().historicoDeComprasDoCliente(cliente)) {
-
-            for (LivroVendido livroVendido : venda.getLivrosVendidos()) {
-
-                Livro livro = livroVendido.getLivro();
-                String tituloLivro = livro.getTitulo();
-                String autorLivro = livro.getAutor();
-                int quantidade = livroVendido.getQuantidade();
-                double preco = livro.getPreco();
-                LocalDateTime dataCompra = venda.getDataEHora();
-
-                CompraClienteDTO compraClienteDTO = new CompraClienteDTO(tituloLivro, autorLivro, quantidade, preco, dataCompra);
-                comprasDoCliente.add(compraClienteDTO);
-            }
-        }
-        return comprasDoCliente;
-    }
-
-    public void construirTabela()
-    {
-        colTitulo.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTituloLivro()));
-
-        colAutor.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAutorLivro()));
-
-        colQTD.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidade()).asObject());
-
-        colPreco.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getPreco()).asObject());
-
-        colDataCompra.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataCompra().toLocalDate()));
     }
 
     public void btnSairDaConta(){
