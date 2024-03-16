@@ -1,22 +1,22 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ControladorVenda;
+import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
+import br.ufrpe.readeasy.beans.Fornecedor;
+import br.ufrpe.readeasy.beans.Usuario;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class FornecedorHistoricoController {
 
@@ -37,15 +37,19 @@ public class FornecedorHistoricoController {
     private DatePicker dtpkDataFim;
 
     @FXML
-    private TableView<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> tableHistorico;
+    private TableView<CompraLivrariaDTO> tableHistorico;
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate> clnDataVenda;
+    private TableColumn<CompraLivrariaDTO, String> clnDataCompra;
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnQuantidade;
+    private TableColumn<CompraLivrariaDTO, Integer> clnQuantidade;
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnTitulo;
+    private TableColumn<CompraLivrariaDTO, String> clnTitulo;
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnAutor;
+    private TableColumn<CompraLivrariaDTO, String> clnAutor;
+    @FXML
+    private TableColumn<CompraLivrariaDTO, String> clnValorTotal;
+    @FXML
+    private TableColumn<CompraLivrariaDTO, String> clnValorPorLivro;
 
     private Usuario usuarioLogado;
 
@@ -69,62 +73,80 @@ public class FornecedorHistoricoController {
     }
 
     //Outros métodos:
-
-    public void initialize() {
-        this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-        this.onBtnPesquisarClick();
+    public void initialize(){
+        construirTableHistoricoCompras();
+        inicializarTableHistoricoCompras();
+        dtpkDataFim.setValue(LocalDate.now());
     }
 
-    private Map<Livro, List<Map.Entry<LocalDate, Integer>>> getVendas
-            (Fornecedor fornecedor, LocalDate dataInicio, LocalDate dataFim) throws DataInvalidaException {
-        Map<Livro, List<Map.Entry<LocalDate, Integer>>> listaCompras = new HashMap<>();
-        for (Livro livro : ServidorReadEasy.getInstance()
-                .ListarHistoricoDeVendasFornecedor(fornecedor, dataInicio, dataFim).keySet()) {
-            listaCompras.put(livro, new ArrayList<>(livro.getRegistroAtualizacaoEstoque().entrySet()));
-        }
-        return listaCompras;
+    private void construirTableHistoricoCompras(){
+        clnTitulo.setCellValueFactory(cellData -> {
+            String titulo = cellData.getValue().getTituloLivro();
+            return new SimpleStringProperty(titulo);
+        });
+
+        clnAutor.setCellValueFactory(cellData -> {
+            String autor = cellData.getValue().getAutor();
+            return new SimpleStringProperty(autor);
+        });
+
+        clnDataCompra.setCellValueFactory(cellData -> {
+            LocalDate dataDaCompra = cellData.getValue().getDataDaCompra();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dataDaCompra.format(formatter);
+            return new SimpleStringProperty(dataFormatada);
+        });
+
+        clnQuantidade.setCellValueFactory(cellData -> {
+            int quantidade = cellData.getValue().getQuantidade();
+            return new SimpleIntegerProperty(quantidade).asObject();
+        });
+
+        clnValorPorLivro.setCellValueFactory(cellData -> {
+            double preco = cellData.getValue().getValorTotalPago();
+            int quantidade = cellData.getValue().getQuantidade();
+            double valor = preco / quantidade;
+            String valorPorLivro = String.format("%.2f", valor);
+            return new SimpleStringProperty(valorPorLivro);
+        });
+
+        clnValorTotal.setCellValueFactory(cellData -> {
+            double valor = cellData.getValue().getValorTotalPago();
+            String valorTotalPago = String.format("%.2f", valor);
+            return new SimpleStringProperty(valorTotalPago);
+        });
     }
 
-    public void onBtnPesquisarClick() {
-        if (SessaoUsuario.getUsuarioLogado() instanceof Fornecedor){
-            try {
-                Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = getVendas((Fornecedor) SessaoUsuario.getUsuarioLogado(), dtpkDataInicio.getValue(), dtpkDataFim.getValue());
+    public void inicializarTableHistoricoCompras(){
+        List<CompraLivrariaDTO> historicoCompras = new ArrayList<>();
+        try {
+            historicoCompras = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(null, null);
 
-                List<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> todasAsEntradas = new ArrayList<>();
-                for (Map.Entry<Livro, List<Map.Entry<LocalDate, Integer>>> livroListEntry : livroDataMap.entrySet()) {
-                    for (Map.Entry<LocalDate, Integer> dataEntry : livroListEntry.getValue()) {
-                        todasAsEntradas.add(Map.entry(livroListEntry.getKey(), dataEntry));
-                    }
-                }
-
-                Comparator<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> comparadorPorData = Comparator
-                        .comparing((Map.Entry<Livro, Map.Entry<LocalDate, Integer>> entry) -> entry.getValue().getKey())
-                        .reversed();
-
-                todasAsEntradas.sort(comparadorPorData);
-                ObservableList<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> items = FXCollections.observableArrayList(todasAsEntradas);
-
-                clnTitulo.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getTitulo()));
-                clnAutor.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getAutor()));
-                clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getValue().getKey()));
-                clnQuantidade.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getValue().getValue()).asObject());
-
-                tableHistorico.setItems(items);
-
-            } catch (DataInvalidaException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Data inválida");
-                alert.setContentText("Confira se a data de início não é posterior à data de fim e que ambas não são posteriores à data atual.");
-                alert.showAndWait();
-            } catch (FornecedorNaoEncontradoException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Fornecedor não encontrado");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-            }
+            // Ordena as vendas por data (data atual pra data mais antiga)
+            Collections.sort(historicoCompras, Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
+        } catch (DataInvalidaException e) {
+            System.out.println(e.getMessage()); //Essa exceção não irá ocorrer aqui.
         }
+
+        tableHistorico.setItems(FXCollections.observableArrayList(historicoCompras));
+    }
+
+    @FXML
+    protected void onBtnPesquisarClick() {
+        LocalDate dataInicio = dtpkDataInicio.getValue();
+        LocalDate dataFim = dtpkDataFim.getValue();
+
+        List<CompraLivrariaDTO> comprasLivraria = null;
+        try {
+            comprasLivraria = ServidorReadEasy.getInstance().ListarHistoricoDeVendasFornecedor((Fornecedor) getUsuarioLogado(), dataInicio, dataFim);
+        } catch (DataInvalidaException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data inválida");
+            alert.setContentText("Confira se a data de início não é posterior à data de fim e que ambas não são posteriores à data atual.");
+            alert.showAndWait();
+        }
+        tableHistorico.setItems(FXCollections.observableArrayList(comprasLivraria));
     }
 
         @FXML

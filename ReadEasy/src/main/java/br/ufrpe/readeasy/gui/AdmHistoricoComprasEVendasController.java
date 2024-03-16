@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ControladorVenda;
+import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
+import br.ufrpe.readeasy.beans.VendaLivrariaDTO;
 import br.ufrpe.readeasy.business.ServidorReadEasy;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,16 +9,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class AdmHistoricoComprasEVendasController {
 
@@ -53,49 +52,61 @@ public class AdmHistoricoComprasEVendasController {
     private Button btnUsuarios;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnAutorCompras;
+    private TableView<VendaLivrariaDTO> tableHistoricoVendas;
 
     @FXML
-    private TableColumn<VendaDTO, String> clnAutorVendas;
+    private TableColumn<VendaLivrariaDTO, String> clnTituloVendas;
 
     @FXML
-    private TableColumn<VendaDTO, String> clnClienteVendas;
+    private TableColumn<VendaLivrariaDTO, String> clnAutorVenda;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, LocalDate> clnDataCompra;
+    private TableColumn<VendaLivrariaDTO, String> clnClienteVenda;
 
     @FXML
-    private TableColumn<VendaDTO, LocalDate> clnDataVenda;
+    private TableColumn<VendaLivrariaDTO, String> clnDataVenda;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnFornecedorCompras;
+    private TableColumn<VendaLivrariaDTO, String> clnFornecedorVenda;
 
     @FXML
-    private TableColumn<VendaDTO, String> clnFornecedorVendas;
+    private TableColumn<VendaLivrariaDTO, Double> clnPrecoVenda;
 
     @FXML
-    private TableColumn<VendaDTO, Double> clnPrecoVendas;
+    private TableColumn<VendaLivrariaDTO, Integer> clnQuantidadeVenda;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, Integer> clnQuantidadeCompras;
+    private TableView<CompraLivrariaDTO> tableHistoricoCompras;
 
     @FXML
-    private TableColumn<VendaDTO, Integer> clnQuantidadeVendas;
+    private TableColumn<CompraLivrariaDTO, String> clnTituloCompras;
 
     @FXML
-    private TableColumn<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>, String> clnTituloCompras;
+    private TableColumn<CompraLivrariaDTO, String> clnAutorCompras;
 
     @FXML
-    private TableColumn<VendaDTO, String> clnTituloVendas;
+    private TableColumn<CompraLivrariaDTO, String> clnFornecedorCompras;
+
+    @FXML
+    private TableColumn<CompraLivrariaDTO, String> clnDataCompra;
+
+    @FXML
+    private TableColumn<CompraLivrariaDTO, Integer> clnQuantidadeCompras;
+
+    @FXML
+    private TableColumn<CompraLivrariaDTO, String> clnValorTotal;
+
+    @FXML
+    private TableColumn<CompraLivrariaDTO, String> clnValorPorLivro;
+
+    @FXML
+    private DatePicker dtpkDataInicioCompras;
 
     @FXML
     private DatePicker dtpkDataFimCompras;
 
     @FXML
     private DatePicker dtpkDataFimVendas;
-
-    @FXML
-    private DatePicker dtpkDataInicioCompras;
 
     @FXML
     private DatePicker dtpkDataInicioVendas;
@@ -105,12 +116,6 @@ public class AdmHistoricoComprasEVendasController {
 
     @FXML
     private Tab tabVendas;
-
-    @FXML
-    private TableView<VendaDTO> tableHistoricoVendas;
-
-    @FXML
-    private TableView<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> tableHistoricoCompras;
 
     //Métodos de troca de tela:
     @FXML
@@ -155,39 +160,76 @@ public class AdmHistoricoComprasEVendasController {
         sm.TrocarTela("Login.fxml", "ReadEasy - Login");
     }
 
+    //Outros métodos:
+    public void initialize() {
+        this.construirTableHistoricoVendas();
+        this.inicializarTableHistoricoVendas();
+        this.construirTableHistoricoCompras();
+        this.inicializarTableHistoricoCompras();
+        dtpkDataFimCompras.setValue(LocalDate.now());
+    }
 
-    protected ObservableList<VendaDTO> ListaVendas(LocalDate dataInicio, LocalDate dataFim) {
+    @FXML
+    private void construirTableHistoricoVendas(){
+        clnTituloVendas.setCellValueFactory(cellData -> {
+            String titulo = cellData.getValue().getTitulo();
+            return new SimpleStringProperty(titulo);
+        });
 
-        List<VendaDTO> vendas = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(dataInicio, dataFim);
-        ObservableList<VendaDTO> listaVendas = FXCollections.observableArrayList();
-        listaVendas.addAll(vendas);
-        return listaVendas;
+        clnAutorVenda.setCellValueFactory(cellData -> {
+            String autor = cellData.getValue().getAutor();
+            return new SimpleStringProperty(autor);
+        });
+
+        clnFornecedorVenda.setCellValueFactory(cellData -> {
+            String fornecedor = cellData.getValue().getNomeFornecedor();
+            return new SimpleStringProperty(fornecedor);
+        });
+
+        clnClienteVenda.setCellValueFactory(cellData -> {
+            String nomeCliente = cellData.getValue().getNomeCliente();
+            return new SimpleStringProperty(nomeCliente);
+        });
+
+        clnDataVenda.setCellValueFactory(cellData -> {
+            LocalDate dataVenda = cellData.getValue().getDataVenda();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dataVenda.format(formatter);
+            return new SimpleObjectProperty<>(dataFormatada);
+        });
+
+        clnQuantidadeVenda.setCellValueFactory(cellData -> {
+            int quantidade = cellData.getValue().getQuantidade();
+            return new SimpleIntegerProperty(quantidade).asObject();
+        });
+
+        clnPrecoVenda.setCellValueFactory(cellData -> {
+            double preco = cellData.getValue().getPreco();
+            return new SimpleDoubleProperty(preco).asObject();
+        });
+    }
+
+    public void inicializarTableHistoricoVendas() {
+        List<VendaLivrariaDTO> vendas = null;
+        try {
+            vendas = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(null, null);
+
+            // Ordena as vendas por data (data atual pra data mais antiga)
+            Collections.sort(vendas, Comparator.comparing(VendaLivrariaDTO::getDataVenda).reversed());
+        } catch (DataInvalidaException e) {
+            System.out.println(e.getMessage()); // Essa exceção não irá ocorrer aqui.
+        }
+        tableHistoricoVendas.setItems(FXCollections.observableArrayList(vendas));
     }
 
     @FXML
     protected void onBtnPesquisarVendasClick() {
+        LocalDate dataInicio = dtpkDataInicioVendas.getValue();
+        LocalDate dataFim = dtpkDataFimVendas.getValue();
 
-        ObservableList<VendaDTO> listaVendas = ListaVendas(dtpkDataInicioVendas.getValue(), dtpkDataFimVendas.getValue());
-        clnTituloVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTitulo()));
-        clnAutorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAutor()));
-        clnFornecedorVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNomeFornecedor()));
-        clnClienteVendas.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNomeCliente()));
-        clnDataVenda.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getDataVenda()));
-        clnQuantidadeVendas.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getQuantidade()).asObject());
-        clnPrecoVendas.setCellValueFactory(param -> new SimpleDoubleProperty((int) param.getValue().getPreco()).asObject());
-        tableHistoricoVendas.setItems(listaVendas);
-
-    }
-
-    protected Map<Livro, List<Map.Entry<LocalDate, Integer>>> ListaCompras(LocalDate dataInicio, LocalDate dataFim) {
-
-
-
-        Map<Livro, List<Map.Entry<LocalDate, Integer>>> listaCompras = new HashMap<>();
+        List<VendaLivrariaDTO> vendasLivraria = null;
         try {
-            for (Livro livro : ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(dataInicio, dataFim)) {
-                listaCompras.put(livro, new ArrayList<>(livro.getRegistroAtualizacaoEstoque().entrySet()));
-            }
+            vendasLivraria = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(dataInicio, dataFim);
         } catch (DataInvalidaException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -195,36 +237,83 @@ public class AdmHistoricoComprasEVendasController {
             alert.setContentText("Confira se a data de início não é posterior à data de fim e que ambas não são posteriores à data atual.");
             alert.showAndWait();
         }
-        return listaCompras;
+        tableHistoricoVendas.setItems(FXCollections.observableArrayList(vendasLivraria));
     }
+
+    private void construirTableHistoricoCompras(){
+        clnTituloCompras.setCellValueFactory(cellData -> {
+            String titulo = cellData.getValue().getTituloLivro();
+            return new SimpleStringProperty(titulo);
+        });
+
+        clnAutorCompras.setCellValueFactory(cellData -> {
+            String autor = cellData.getValue().getAutor();
+            return new SimpleStringProperty(autor);
+        });
+
+        clnFornecedorCompras.setCellValueFactory(cellData -> {
+            String fornecedor = cellData.getValue().getNomeFornecedor();
+            return new SimpleStringProperty(fornecedor);
+        });
+
+        clnDataCompra.setCellValueFactory(cellData -> {
+            LocalDate dataDaCompra = cellData.getValue().getDataDaCompra();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = dataDaCompra.format(formatter);
+            return new SimpleStringProperty(dataFormatada);
+        });
+
+        clnQuantidadeCompras.setCellValueFactory(cellData -> {
+            int quantidade = cellData.getValue().getQuantidade();
+            return new SimpleIntegerProperty(quantidade).asObject();
+        });
+
+        clnValorPorLivro.setCellValueFactory(cellData -> {
+            double preco = cellData.getValue().getValorTotalPago();
+            int quantidade = cellData.getValue().getQuantidade();
+            double valor = preco / quantidade;
+            String valorPorLivro = String.format("%.2f", valor);
+            return new SimpleStringProperty(valorPorLivro);
+        });
+
+        clnValorTotal.setCellValueFactory(cellData -> {
+            double valor = cellData.getValue().getValorTotalPago();
+            String valorTotalPago = String.format("%.2f", valor);
+            return new SimpleStringProperty(valorTotalPago);
+        });
+    }
+
+    public void inicializarTableHistoricoCompras() {
+        List<CompraLivrariaDTO> historicoCompras = new ArrayList<>();
+        try {
+            historicoCompras = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(null, null);
+
+            // Ordena as vendas por data (data atual pra data mais antiga)
+            Collections.sort(historicoCompras, Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
+        } catch (DataInvalidaException e) {
+            System.out.println(e.getMessage()); // Essa exceção não irá ocorrer aqui.
+        }
+
+        tableHistoricoCompras.setItems(FXCollections.observableArrayList(historicoCompras));
+    }
+
 
     @FXML
     protected void onBtnPesquisarComprasClick() {
+        LocalDate dataInicio = dtpkDataInicioCompras.getValue();
+        LocalDate dataFim = dtpkDataFimCompras.getValue();
 
-        Map<Livro, List<Map.Entry<LocalDate, Integer>>> livroDataMap = ListaCompras(dtpkDataInicioCompras.getValue(), dtpkDataFimCompras.getValue());
-
-        List<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> todasAsEntradas = new ArrayList<>();
-        for (Map.Entry<Livro, List<Map.Entry<LocalDate, Integer>>> livroListEntry : livroDataMap.entrySet()) {
-            for (Map.Entry<LocalDate, Integer> dataEntry : livroListEntry.getValue()) {
-                todasAsEntradas.add(Map.entry(livroListEntry.getKey(), dataEntry));
-            }
+        List<CompraLivrariaDTO> comprasLivraria = null;
+        try {
+            comprasLivraria = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(dataInicio, dataFim);
+        } catch (DataInvalidaException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Data inválida");
+            alert.setContentText("Confira se a data de início não é posterior à data de fim e que ambas não são posteriores à data atual.");
+            alert.showAndWait();
         }
-
-        Comparator<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> comparadorPorData = Comparator
-                .comparing((Map.Entry<Livro, Map.Entry<LocalDate, Integer>> entry) -> entry.getValue().getKey())
-                .reversed();
-
-        todasAsEntradas.sort(comparadorPorData);
-        ObservableList<Map.Entry<Livro, Map.Entry<LocalDate, Integer>>> items = FXCollections.observableArrayList(todasAsEntradas);
-
-        clnTituloCompras.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getTitulo()));
-        clnAutorCompras.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getAutor()));
-        clnFornecedorCompras.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().getFornecedor().getNome()));
-        clnDataCompra.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getValue().getKey()));
-        clnQuantidadeCompras.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getValue().getValue()).asObject());
-
-        tableHistoricoCompras.setItems(items);
-
+        tableHistoricoCompras.setItems(FXCollections.observableArrayList(comprasLivraria));
     }
 
     @FXML
@@ -246,10 +335,5 @@ public class AdmHistoricoComprasEVendasController {
                 alert.close();
             }
         });
-    }
-
-    public void initialize() {
-        this.onBtnPesquisarComprasClick();
-        this.onBtnPesquisarVendasClick();
     }
 }

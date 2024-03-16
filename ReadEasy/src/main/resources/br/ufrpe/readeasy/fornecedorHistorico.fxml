@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorHistoricoController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorHistoricoController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
@@ -151,10 +151,12 @@
                   </VBox>
                   <TableView id="table" fx:id="tableHistorico" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css">
                      <columns>
-                        <TableColumn id="colTitulo" fx:id="clnTitulo" prefWidth="250.4000244140625" text="Título" />
+                        <TableColumn id="colTitulo" fx:id="clnTitulo" prefWidth="250.4000244140625" text="Livro" />
                         <TableColumn id="colAuto" fx:id="clnAutor" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Autor" />
                         <TableColumn id="colQuantidade" fx:id="clnQuantidade" minWidth="0.0" prefWidth="153.60009765625" text="Quantidade" />
-                        <TableColumn id="colData" fx:id="clnDataVenda" prefWidth="153.60009765625" text="Data de Venda" />
+                        <TableColumn id="colData" fx:id="clnDataCompra" prefWidth="153.60009765625" text="Data de Venda" />
+                        <TableColumn fx:id="clnValorPorLivro" prefWidth="153.60009765625" text="Valor por livro" />
+                        <TableColumn fx:id="clnValorTotal" prefWidth="153.60009765625" text="Valor total" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

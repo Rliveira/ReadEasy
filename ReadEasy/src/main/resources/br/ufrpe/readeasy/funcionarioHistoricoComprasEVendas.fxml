@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioHistoricoComprasEVendasController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FuncionarioHistoricoComprasEVendasController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" BorderPane.alignment="CENTER">
          <children>
@@ -137,15 +137,15 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-              <tabs>
-                <Tab text="Vendas">
+            <TabPane prefHeight="200.0" prefWidth="200.0" stylesheets="@css/Style.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+               <tabs>
+                  <Tab text="Vendas">
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #cccccc;">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow">
+                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                                        <children>
                                           <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                           <Label text="Histórico de Vendas" textFill="WHITE">
@@ -161,46 +161,47 @@
                                     </HBox>
                                     <VBox prefHeight="103.0" prefWidth="1146.0">
                                        <children>
-                                          <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
+                                          <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
                                           <HBox prefHeight="40.0" prefWidth="1146.0">
                                              <children>
-                                                <Pane prefHeight="38.0" prefWidth="150.0" style="-fx-background-color: transparent;" />
-                                                <Label prefHeight="23.0" prefWidth="167.0" text="Pesquisa por Data:">
+                                                <Pane prefHeight="38.0" prefWidth="180.0" style="-fx-background-color: transparent;" />
+                                                <Label prefHeight="23.0" prefWidth="180.0" stylesheets="@css/Style.css" text="Pesquisa por Data:">
                                                    <font>
                                                       <Font name="Times New Roman" size="18.0" />
                                                    </font>
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" top="5.0" />
+                                                   </HBox.margin>
                                                 </Label>
                                                 <Pane prefHeight="38.0" prefWidth="42.0" style="-fx-background-color: transparent;" />
-                                                <DatePicker fx:id="dtpDataDeInicioVendas" prefHeight="6.0" prefWidth="175.0" promptText="Data de Início" styleClass="textFieldDesign" />
-                                                <Pane prefHeight="38.0" prefWidth="81.0" style="-fx-background-color: transparent;" />
-                                                <DatePicker fx:id="dtpDataDeFimVendas" prefHeight="27.0" prefWidth="175.0" promptText="Data de Fim" styleClass="textFieldDesign" />
-                                                <Pane prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: transparent;" />
-                                                <Button fx:id="btnPesquisarVendas" mnemonicParsing="false" onAction="#btnPesquisarVendasPorData" prefHeight="33.0" prefWidth="159.0" styleClass="btnPesquisar" text="Pesquisar" textFill="WHITE">
+                                                <DatePicker fx:id="dtpkDataInicioVendas" prefHeight="6.0" prefWidth="175.0" promptText="Data de Início" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                                <Pane prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: transparent;" />
+                                                <DatePicker fx:id="dtpkDataFimVendas" prefHeight="27.0" prefWidth="175.0" promptText="Data de Fim" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                                <Pane prefHeight="40.0" prefWidth="125.0" style="-fx-background-color: transparent;" />
+                                                <Button fx:id="btnPesquisarVendas" mnemonicParsing="false" onAction="#onBtnPesquisarVendasClick" prefHeight="33.0" prefWidth="164.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar" textFill="WHITE">
                                                    <graphic>
                                                       <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" />
                                                    </graphic>
                                                    <HBox.margin>
-                                                      <Insets bottom="15.0" />
+                                                      <Insets />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Pane prefHeight="200.0" prefWidth="150.0" />
+                                                <Pane prefHeight="200.0" prefWidth="200.0" />
                                              </children>
                                           </HBox>
+                                          <Pane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" />
                                        </children>
                                     </VBox>
-                                    <TableView fx:id="tvVendas" prefHeight="670.0" prefWidth="620.0">
+                                    <TableView fx:id="tableHistoricoVendas" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css">
                                        <columns>
-                                          <TableColumn fx:id="clnTituloVendas" prefWidth="250.4000244140625" text="Título" />
+                                          <TableColumn fx:id="clnTituloVendas" prefWidth="250.4000244140625" text="Livro" />
                                           <TableColumn fx:id="clnAutorVendas" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Autor" />
                                           <TableColumn fx:id="clnFornecedorVendas" minWidth="0.0" prefWidth="153.60009765625" text="Fornecedor" />
-                                          <TableColumn fx:id="clnQuantidadeVendas" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Quantidade" />
-                                          <TableColumn fx:id="clnPrecoVendas" minWidth="0.0" prefWidth="153.60009765625" text="Preço" />
+                                          <TableColumn fx:id="clnQuantidadeVendas" minWidth="8.800048828125" prefWidth="117.2000732421875" text="Quantidade" />
+                                          <TableColumn fx:id="clnPrecoVendas" minWidth="0.0" prefWidth="123.60009765625" text="Preço" />
                                           <TableColumn fx:id="clnClienteVendas" minWidth="0.0" prefWidth="153.60009765625" text="Cliente" />
-                                          <TableColumn fx:id="clnDataDeVendas" prefWidth="153.60009765625" text="Data de Venda" />
+                                          <TableColumn fx:id="clnDataVenda" prefWidth="153.60009765625" text="Data de Venda" />
                                        </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
                                        <styleClass>
                                           <String fx:value="table-view" />
                                           <String fx:value="table-column" />
@@ -208,6 +209,9 @@
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
                                     </TableView>
                                  </children>
                                  <VBox.margin>
@@ -217,14 +221,14 @@
                            </children>
                         </VBox>
                      </content>
-                </Tab>
-                <Tab text="Compras">
+                  </Tab>
+                  <Tab text="Compras">
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #cccccc;">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow">
+                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                                        <children>
                                           <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                           <Label text="Histórico de Compras" textFill="WHITE">
@@ -240,44 +244,47 @@
                                     </HBox>
                                     <VBox prefHeight="103.0" prefWidth="1146.0">
                                        <children>
-                                          <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
+                                          <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" VBox.vgrow="ALWAYS" />
                                           <HBox prefHeight="40.0" prefWidth="1146.0">
                                              <children>
-                                                <Pane prefHeight="38.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
-                                                <Label prefHeight="23.0" prefWidth="167.0" text="Pesquisa por Data:">
+                                                <Pane prefHeight="38.0" prefWidth="180.0" style="-fx-background-color: transparent;" />
+                                                <Label prefHeight="23.0" prefWidth="180.0" stylesheets="@css/Style.css" text="Pesquisa por Data:">
                                                    <font>
                                                       <Font name="Times New Roman" size="18.0" />
                                                    </font>
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" top="5.0" />
+                                                   </HBox.margin>
                                                 </Label>
                                                 <Pane prefHeight="38.0" prefWidth="42.0" style="-fx-background-color: transparent;" />
-                                                <DatePicker fx:id="dtpDataDeInicioCompras" prefHeight="6.0" prefWidth="175.0" promptText="Data de Início" styleClass="textFieldDesign" />
-                                                <Pane prefHeight="38.0" prefWidth="81.0" style="-fx-background-color: transparent;" />
-                                                <DatePicker fx:id="dtpDataDeFimCompras" prefHeight="27.0" prefWidth="175.0" promptText="Data de Fim" styleClass="textFieldDesign" />
-                                                <Pane prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: transparent;" />
-                                                <Button fx:id="btnPesquisarCompras" mnemonicParsing="false" onAction="#btnPesquisarComprasPorData" prefHeight="33.0" prefWidth="162.0" styleClass="btnPesquisar" text="Pesquisar" textFill="WHITE">
+                                                <DatePicker fx:id="dtpkDataInicioCompras" prefHeight="30.0" prefWidth="175.0" promptText="Data de Início" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                                <Pane prefHeight="38.0" prefWidth="80.0" style="-fx-background-color: transparent;" />
+                                                <DatePicker fx:id="dtpkDataFimCompras" prefHeight="30.0" prefWidth="175.0" promptText="Data de Fim" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                                                <Pane prefHeight="40.0" prefWidth="125.0" style="-fx-background-color: transparent;" />
+                                                <Button fx:id="btnPesquisarCompras" mnemonicParsing="false" onAction="#onBtnPesquisarComprasClick" prefHeight="33.0" prefWidth="161.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar" textFill="WHITE">
                                                    <graphic>
                                                       <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" />
                                                    </graphic>
                                                    <HBox.margin>
-                                                      <Insets bottom="15.0" />
+                                                      <Insets />
                                                    </HBox.margin>
                                                 </Button>
-                                                <Pane prefHeight="200.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
+                                                <Pane prefHeight="200.0" prefWidth="200.0" />
                                              </children>
                                           </HBox>
+                                          <Pane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="900.0" />
                                        </children>
                                     </VBox>
-                                    <TableView fx:id="tvCompras" prefHeight="670.0" prefWidth="620.0">
+                                    <TableView fx:id="tableHistoricoCompras" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css">
                                        <columns>
-                                          <TableColumn fx:id="clnTituloCompras" prefWidth="250.4000244140625" text="Título" />
+                                          <TableColumn fx:id="clnTituloCompras" prefWidth="250.4000244140625" text="Livro" />
                                           <TableColumn fx:id="clnAutorCompras" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Autor" />
                                           <TableColumn fx:id="clnFornecedorCompras" minWidth="0.0" prefWidth="153.60009765625" text="Fornecedor" />
                                           <TableColumn fx:id="clnQuantidadeCompras" minWidth="8.800048828125" prefWidth="167.2000732421875" text="Quantidade" />
-                                          <TableColumn fx:id="clnDataDeCompras" prefWidth="153.60009765625" text="Data de Compras" />
+                                          <TableColumn fx:id="clnDataCompra" prefWidth="153.60009765625" text="Data de Compra" />
+                                          <TableColumn fx:id="clnValorPorLivro" prefWidth="153.60009765625" text="Valor por livro" />
+                                          <TableColumn fx:id="clnValorTotal" prefWidth="153.60009765625" text="Valor total" />
                                        </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
                                        <styleClass>
                                           <String fx:value="table-view" />
                                           <String fx:value="table-column" />
@@ -285,6 +292,9 @@
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
                                     </TableView>
                                  </children>
                                  <VBox.margin>
@@ -294,8 +304,8 @@
                            </children>
                         </VBox>
                      </content>
-                </Tab>
-              </tabs>
+                  </Tab>
+               </tabs>
             </TabPane>
          </children>
       </VBox>
