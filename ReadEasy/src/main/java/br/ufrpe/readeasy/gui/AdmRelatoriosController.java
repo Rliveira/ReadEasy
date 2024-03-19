@@ -238,9 +238,9 @@ public class AdmRelatoriosController {
         cbCategoria1.getItems().addAll("Quantidade de livros", "N° de vendas", "Faturamento");
         cbCategoria2.getItems().addAll("Quantidade de livros", "Despesa total com fornecedores");
 
-        cbPeriodo1.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores");
+        cbPeriodo1.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores", "Comparar com anos anteriores");
         cbPeriodo2.getItems().addAll("Mensal" , "Ano atual");
-        cbPeriodo3.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores");
+        cbPeriodo3.getItems().addAll("Mensal" , "Ano atual", "Anos anteriores", "Comparar com anos anteriores");
         cbPeriodo4.getItems().addAll("Mensal" , "Ano atual");
         cbPeriodo5.getItems().addAll("Mensal" , "Ano atual");
 
@@ -282,7 +282,7 @@ public class AdmRelatoriosController {
             }
         }
 
-        else if (periodoSelecionado.equals("Ano atual")) {
+        else if (periodoSelecionado.equals("Ano atual") || periodoSelecionado.equals("Comparar com anos anteriores")) {
             cbMesOuAno.setDisable(true);
             cbMesOuAno.getItems().clear();
             vbMes.setVisible(false);
@@ -759,26 +759,38 @@ public class AdmRelatoriosController {
                         }
                         setPeriodoDeAnalise("Anos anteriores");
                         break;
+                    case "Comparar com anos anteriores":
+                        if(botaoClicado.equals(btnPesquisar1)){
+                            pesquisarDadosCompararComAnosAnteriores(categoriaSelecionada,  "Venda");
+                            setCategoriaDePesquisaVenda(categoriaSelecionada);
+                        }
+                        else{
+                            pesquisarDadosCompararComAnosAnteriores(categoriaSelecionada,  "Compra");
+                            setCategoriaDePesquisaVenda(categoriaSelecionada);
+                        }
+                        setPeriodoDeAnalise("Comparar com anos anteriores");
                 }
 
                 if(botaoClicado.equals(btnPesquisar1)){
                     inicializarBcDadosVenda();
                     //Verifica se os Values do map só são 0
                     if(categoriaSelecionada.equals("Faturamento")){
-                       verificarValoresMap(getDadosVendaPorData2());
+                        verificarValoresMap(getDadosVendaPorData2());
                     }
                     else{
                         verificarValoresMap(getDadosVendaPorData1());
                     }
                 }
                 else{
-                    if(categoriaSelecionada.equals("Faturamento")){
+                    if(categoriaSelecionada.equals("Despesa total com fornecedores")){
                         verificarValoresMap(getDadosCompraPorData2());
+                        setCategoriaDePesquisaCompra("Despesa total com fornecedores");
                     }
                     else{
                         verificarValoresMap(getDadosCompraPorData1());
+                        setCategoriaDePesquisaCompra("Quantidade de livros");
                     }
-                   inicializarAcDadosCompra();
+                    inicializarAcDadosCompra();
                 }
 
                 if (isPrecisaApresentarOAlert()){
@@ -889,6 +901,16 @@ public class AdmRelatoriosController {
         }
     }
 
+    private void pesquisarDadosCompararComAnosAnteriores(String categoriaSelecionada, String tipoDadoPesquisado){
+        LocalDate dataAtual = LocalDate.now();
+
+        LocalDate dataInicio = LocalDate.of(2020, 1, 1);
+        LocalDate dataFim = LocalDate.of(dataAtual.getYear(), dataAtual.getMonth(), dataAtual.getDayOfMonth());
+        LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
+
+        pesquisarCategoria(categoriaSelecionada, dataInicio.atStartOfDay(), dataEHoraFim, tipoDadoPesquisado);
+    }
+
     private void configurarExibicaoDosDados(XYChart.Series<String, Number> series, Map<LocalDate, ? extends Number> dados) {
         switch (getPeriodoDeAnalise()) {
             case "Mensal":
@@ -914,9 +936,23 @@ public class AdmRelatoriosController {
                 }
 
                 for (Map.Entry<Integer, Double> entry : dadosMensais.entrySet()) {
-                    // Formatar o rótulo para exibir apenas o número do mês
+                    // Formatando o rótulo para exibir apenas o número do mês
                     String chaveFormatada = String.valueOf(entry.getKey());
                     series.getData().add(new XYChart.Data<>(chaveFormatada, entry.getValue().intValue())); // Converte para Integer
+                }
+                break;
+            case "Comparar com anos anteriores":
+                Map<Integer, Double> totalPorAno = new HashMap<>();
+
+                for (Map.Entry<LocalDate, ? extends Number> entry : dados.entrySet()) {
+                    int ano = entry.getKey().getYear();
+                    double valor = entry.getValue() != null ? entry.getValue().doubleValue() : 0.0;
+
+                    totalPorAno.put(ano, totalPorAno.getOrDefault(ano, 0.0) + valor);
+                }
+
+                for (Map.Entry<Integer, Double> entry : totalPorAno.entrySet()) {
+                    series.getData().add(new XYChart.Data<>(String.valueOf(entry.getKey()), entry.getValue().intValue()));
                 }
                 break;
         }
