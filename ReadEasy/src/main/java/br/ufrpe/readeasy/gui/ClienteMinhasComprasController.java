@@ -89,8 +89,8 @@ public class ClienteMinhasComprasController
 
     private void carregarDadosTabela() {
         if(SessaoUsuario.getUsuarioLogado() instanceof Cliente) {
-            LocalDate datainicial = LocalDate.of(2020, 1, 1);
             LocalDate dataAtual = LocalDate.now();
+            LocalDate datainicial = LocalDate.of(dataAtual.getYear(), 1, 1);
             List<CompraClienteDTO> comprasCliente;
             try {
                 comprasCliente = ServidorReadEasy.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), datainicial, dataAtual);
