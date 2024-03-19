@@ -263,21 +263,24 @@ public class FuncionarioCRUDLivrosController {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         String tituloLivro = cbLivros.getValue();
         Livro livro = servidorReadEasy.buscarLivroPorNome(tituloLivro);
-        lvGenerosDoLivro.setItems(FXCollections.observableArrayList(livro.getGeneros()));
-        lvGenerosDoLivro.setCellFactory(param -> new ListCell<Genero>() {
-            @Override
-            protected void updateItem(Genero genero, boolean empty) {
-                super.updateItem(genero, empty);
+        if(livro != null){
+            lvGenerosDoLivro.setItems(FXCollections.observableArrayList(livro.getGeneros()));
+            lvGenerosDoLivro.setCellFactory(param -> new ListCell<Genero>() {
+                @Override
+                protected void updateItem(Genero genero, boolean empty) {
+                    super.updateItem(genero, empty);
 
-                if (empty || genero == null) {
-                    setText(null);
-                } else {
-                    setText(genero.getDescricaoEnum());
+                    if (empty || genero == null) {
+                        setText(null);
+                    } else {
+                        setText(genero.getDescricaoEnum());
+                    }
                 }
-            }
-        });
+            });
 
-        lvGenerosDoLivro.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            lvGenerosDoLivro.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        }
     }
 
     @FXML
