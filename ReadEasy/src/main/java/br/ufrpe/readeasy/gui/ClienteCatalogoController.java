@@ -17,10 +17,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class ClienteCatalogoController {
@@ -119,7 +116,10 @@ public class ClienteCatalogoController {
 
     public void inicializarCatalogoDeLivros() {
         listaDeLivrosDoCatalogo.clear();
-        listaDeLivrosDoCatalogo.addAll(ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel());
+        List<Livro> livrosDisponiveis = ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel();
+        livrosDisponiveis.sort(Comparator.comparing(Livro::getTitulo));
+        listaDeLivrosDoCatalogo.addAll(livrosDisponiveis);
+
         int coluna = 0;
         int linha = 1;
 
