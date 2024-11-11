@@ -137,6 +137,8 @@ public class LoginController {
                 sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
                 telasClienteCarregadas = true;
             }
+
+            sm.inicializarTelas("cliente");
             sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Catálogo");
         }
     }

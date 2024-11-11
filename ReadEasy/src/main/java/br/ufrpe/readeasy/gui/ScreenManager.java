@@ -236,7 +236,6 @@ public class ScreenManager {
 
             case "clienteCatalogo.fxml":
                 stage.setScene(clienteCatalogoScene);
-                clienteCatalogoController.initialize();
                 break;
 
             case "clientePerfil.fxml":
@@ -308,6 +307,11 @@ public class ScreenManager {
 
                 fornecedorEstoqueController.initialize();
                 fornecedorHistoricoController.initialize();
+                break;
+            case "cliente":
+                ClienteCatalogoController clienteCatalogoController = screenManager.getClienteCatalogoController();
+
+                clienteCatalogoController.initialize();
                 break;
         }
     }
