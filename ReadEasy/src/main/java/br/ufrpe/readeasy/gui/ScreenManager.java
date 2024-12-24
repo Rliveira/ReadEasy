@@ -42,7 +42,7 @@ public class ScreenManager {
     private ClienteCatalogoController clienteCatalogoController;
 
     private Scene clienteMinhasComprasScene;
-    private ClienteMinhasComprasController clienteMinhasComprasController;
+    private ClienteHistoricoComprasController clienteHistoricoComprasController;
 
     private Scene clientePerfilScene;
     private ClientePerfilController clientePerfilController;
@@ -127,9 +127,9 @@ public class ScreenManager {
                     this.clienteCatalogoScene = new Scene(clientecatalogoPane.load());
                     this.clienteCatalogoController = clientecatalogoPane.getController();
 
-                    FXMLLoader clienteMinhasComprasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteMinhasCompras.fxml"));
+                    FXMLLoader clienteMinhasComprasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteHistoricoCompras.fxml"));
                     this.clienteMinhasComprasScene = new Scene(clienteMinhasComprasPane.load());
-                    this.clienteMinhasComprasController = clienteMinhasComprasPane.getController();
+                    this.clienteHistoricoComprasController = clienteMinhasComprasPane.getController();
 
                     FXMLLoader clientePerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clientePerfil.fxml"));
                     this.clientePerfilScene= new Scene(clientePerfilPane.load());
@@ -229,8 +229,8 @@ public class ScreenManager {
                 stage.setScene(clienteCadastroScene);
                 break;
 
-            case "clienteMinhasCompras.fxml":
-                clienteMinhasComprasController.initialize();
+            case "clienteHistoricoCompras.fxml":
+                clienteHistoricoComprasController.initialize();
                 stage.setScene(clienteMinhasComprasScene);
                 break;
 
@@ -390,8 +390,8 @@ public class ScreenManager {
     public Scene getClienteMinhasComprasScene() {
         return clienteMinhasComprasScene;
     }
-    public ClienteMinhasComprasController getClienteMinhasComprasController() {
-        return clienteMinhasComprasController;
+    public ClienteHistoricoComprasController getClienteMinhasComprasController() {
+        return clienteHistoricoComprasController;
     }
 
     public Scene getClientePerfilScene() {
