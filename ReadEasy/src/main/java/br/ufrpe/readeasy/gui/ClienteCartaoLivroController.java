@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
 
-public class CartaoLivroController {
+public class ClienteCartaoLivroController {
     private Livro livro;
 
     @FXML
@@ -29,11 +29,11 @@ public class CartaoLivroController {
     public void setInformacoesDoLivro(Livro livro){
         this.livro = livro;
         lblnomedolivro.setText(livro.getTitulo());
-        lblPreco.setText("R$" + livro.getPreco());
         ByteArrayInputStream inputStream = new ByteArrayInputStream(livro.getCapaDoLivro());
         Image image = new Image(inputStream);
         imgvLivro.setImage(image);
         inicializarSpinner();
+        lblPreco.setText("R$" + livro.getPreco());
     }
 
     @FXML

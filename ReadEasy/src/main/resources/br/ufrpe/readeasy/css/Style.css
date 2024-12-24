@@ -26,16 +26,6 @@
         -fx-background-radius: 10px
 }
 
-.btnPesquisar{
-    -fx-background-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
-    -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-    -fx-font-family: "Times New Roman";
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-}
-
 .btnBarraLateral{
     -fx-background-color: transparent;
     -fx-text-fill: #ffffff;
@@ -74,6 +64,33 @@
     -fx-background-radius: 8px;
 }
 
+.btnPesquisar{
+    -fx-background-color: linear-gradient(to bottom left, #137DC5, #5EC9C5);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.btnAtualizar{
+    -fx-background-color: linear-gradient(to bottom left, #7F58AF, #4A90E2);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
+.btnCopiarDadosPessoais{
+    -fx-background-color: linear-gradient(to bottom left, #FF9800, #FFC107);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
 .btnDeletar{
     -fx-background-color:  linear-gradient(to bottom left, #4a1418,#8c2c32);
     -fx-text-fill: #FFFFFF;
@@ -92,12 +109,90 @@
     -fx-background-radius: 8px;
 }
 
+.btnFinalizarCompra{
+    -fx-background-color:  linear-gradient(to bottom left, #2E7D32, #34A853, #8BC34A);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+}
+
 .corDeFundo{
     -fx-background-color:  linear-gradient(to bottom right, #335577, #338899, #33aabb);
 }
 
+.combo-box {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 15px;
+    -fx-text-fill: #333;
+}
+
+.combo-box:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: linear-gradient(to bottom right, #33aabb, #338899, #335577);
+}
+
+.combo-box .arrow {
+    -fx-background-color: #338899;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.combo-box-popup {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #333;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: linear-gradient(to bottom right, #33aabb, #338899, #335577);
+    -fx-text-fill: #ffffff;
+}
+.datePickerDesign {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom right, #4A90E2, #357ABD);
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-text-family:  "Times New Roman";
+    -fx-text-size:  14px;
+    -fx-transition: translateY 0.3s;
+}
+
+.datePickerDesign .arrow-button {
+    -fx-background-color: linear-gradient(to bottom right, #4A90E2, #357ABD);
+}
+
+.datePickerDesign .arrow-button .arrow {
+    -fx-background-color: #ffffff;
+}
+
+.datePickerF:focused {
+    -fx-border-color: #1493DF;
+}
+
 .labelCadastre-seH: hover {
     -fx-text-fill: #008dd8;
+}
+
+.listViewDesign{
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 18px;
 }
 
 .shadow{
@@ -130,6 +225,7 @@
     -fx-border-width:2px;
     -fx-border-radius:8px;
 }
+
 .table-view .table-column{
     -fx-alignment: CENTER;
 }
@@ -151,11 +247,25 @@
     -fx-font-size: 15px;
 }
 
-.listViewDesign{
+/* Estilo básico do TabPane */
+.tab-pane {
     -fx-background-color: #f0f0f0;
-    -fx-border-color: linear-gradient(to bottom right, #335577, #338899, #33aabb);
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: #e6e6e6;
+    -fx-border-color: transparent transparent #338899 transparent;
+    -fx-border-radius: 8px 8px 0 0;
     -fx-font-family: "Times New Roman";
-    -fx-font-size: 18px;
+    -fx-font-size: 15px;
+    -fx-text-fill: black;
+}
+
+.tab:selected {
+    -fx-text-fill: #fff; /* Texto branco */
+    -fx-border-color: transparent transparent #33aabb transparent; /* Linha inferior destacada */
 }
