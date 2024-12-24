@@ -5,7 +5,6 @@ module com.example.readeasy {
         requires org.controlsfx.controls;
             requires com.dlsc.formsfx;
                     requires org.kordamp.bootstrapfx.core;
-    requires fontawesomefx;
 
     opens br.ufrpe.readeasy to javafx.fxml;
     opens br.ufrpe.readeasy.gui to javafx.fxml;
