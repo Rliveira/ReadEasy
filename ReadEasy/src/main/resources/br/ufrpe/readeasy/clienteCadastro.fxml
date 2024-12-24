@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.ClienteCadastroController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.ClienteCadastroController">
    <children>
       <VBox prefHeight="660.0" prefWidth="175.0" styleClass="corDeFundo" stylesheets="@css/Style.css" HBox.hgrow="NEVER">
          <children>
@@ -26,10 +16,7 @@
             <HBox prefHeight="45.0" prefWidth="175.0" VBox.vgrow="NEVER">
                <children>
                   <Pane prefHeight="45.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnVoltar" mnemonicParsing="false" onAction="#trocarTelaLogin" prefHeight="45.0" prefWidth="102.0" stylesheets="@css/Style.css" text="Voltar" textFill="WHITE" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="ARROW_CIRCLE_O_LEFT" size="25" />
-                     </graphic>
+                  <Button fx:id="btnVoltar" mnemonicParsing="false" onAction="#trocarTelaLogin" prefHeight="44.0" prefWidth="114.0" stylesheets="@css/Style.css" text="Voltar" textFill="WHITE" HBox.hgrow="ALWAYS">
                      <styleClass>
                         <String fx:value="btnVoltar" />
                         <String fx:value="btnBarraLateralH" />
@@ -38,6 +25,13 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icons/icons-retornar.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                   <Pane layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
                </children>
@@ -188,7 +182,7 @@
                            </VBox.margin>
                         </TextField>
                         <Pane layoutX="10.0" layoutY="233.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <DatePicker fx:id="dtpkDataNascimento" prefHeight="30.0" prefWidth="309.0" promptText="Data de nascimento" styleClass="textFieldDesign" stylesheets="@css/Style.css" />
+                        <DatePicker fx:id="dtpkDataNascimento" prefHeight="30.0" prefWidth="309.0" promptText="Data de nascimento" styleClass="datePickerDesign" stylesheets="@css/Style.css" />
                      </children>
                   </VBox>
                   <HBox prefHeight="100.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
@@ -277,6 +271,13 @@
                         <String fx:value="btnLogin" />
                         <String fx:value="btnLoginP" />
                      </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icons/icons-add-usuario.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                   <Pane layoutX="200.0" layoutY="10.0" prefHeight="100.0" prefWidth="125.0" />
                </children>

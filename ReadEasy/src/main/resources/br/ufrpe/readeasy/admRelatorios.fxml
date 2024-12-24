@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -30,9 +30,6 @@
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USER" size="25" wrappingWidth="30.0" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralP" />
@@ -41,14 +38,18 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-perfil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivrosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -57,14 +58,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-Livro.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="ARCHIVE" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -73,14 +78,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-estoque.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#trocarTelaUsuariosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="GROUP" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -90,14 +99,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-usuarios.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnPromocoes" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" onAction="#trocarTelaPromocoesAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="TICKET" size="25" wrappingWidth="30.0" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralP" />
@@ -106,14 +119,18 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-promocao.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="HISTORY" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -123,14 +140,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-histórico.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnRelatorios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="AREA_CHART" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -139,15 +160,19 @@
                   <String fx:value="btnBarraLateralP" />
                   <String fx:value="btnBarraLateralH" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-relatorios.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <VBox prefHeight="196.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
             <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="25" text="" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralH" />
@@ -156,6 +181,13 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children></VBox>
    </left>
@@ -168,13 +200,21 @@
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <HBox prefHeight="774.0" prefWidth="1146.0" VBox.vgrow="ALWAYS">
+                              <HBox prefHeight="774.0" prefWidth="1146.0" style="-fx-background-color: #cccccc;" VBox.vgrow="ALWAYS">
                                  <children>
                                     <VBox prefHeight="748.0" prefWidth="706.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                                        <children>
                                           <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                                              <children>
                                                 <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" top="15.0" />
+                                                   </HBox.margin>
+                                                   <image>
+                                                      <Image url="@images/icons/icons-relatorio-vendas.png" />
+                                                   </image>
+                                                </ImageView>
                                                 <Label prefHeight="26.0" prefWidth="313.0" text="Relatório Financeiro de vendas" textFill="WHITE">
                                                    <font>
                                                       <Font name="Tahoma Bold" size="20.0" />
@@ -207,24 +247,20 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <HBox layoutX="10.0" layoutY="10.0" prefHeight="74.0" prefWidth="228.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                                         <children>
-                                                            <FontAwesomeIcon glyphName="BOOK" size="50">
-                                                               <HBox.margin>
-                                                                  <Insets left="15.0" />
-                                                               </HBox.margin>
-                                                            </FontAwesomeIcon>
-                                                         </children>
+                                                      <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                                                          <VBox.margin>
-                                                            <Insets top="20.0" />
+                                                            <Insets left="15.0" top="20.0" />
                                                          </VBox.margin>
-                                                      </HBox>
+                                                         <image>
+                                                            <Image url="@images/icons/icons-livros(preto).png" />
+                                                         </image>
+                                                      </ImageView>
                                                       <Label prefHeight="23.0" prefWidth="247.0" text="Livros vendidos hoje">
                                                          <font>
                                                             <Font name="Tahoma" size="18.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" />
+                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                    </children>
@@ -251,24 +287,20 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <HBox layoutX="10.0" layoutY="10.0" prefHeight="74.0" prefWidth="228.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                                         <children>
-                                                            <FontAwesomeIcon glyphName="MONEY" size="50">
-                                                               <HBox.margin>
-                                                                  <Insets left="15.0" />
-                                                               </HBox.margin>
-                                                            </FontAwesomeIcon>
-                                                         </children>
+                                                      <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                                                          <VBox.margin>
-                                                            <Insets top="20.0" />
+                                                            <Insets left="15.0" top="20.0" />
                                                          </VBox.margin>
-                                                      </HBox>
+                                                         <image>
+                                                            <Image url="@images/icons/icons-dinheiro.png" />
+                                                         </image>
+                                                      </ImageView>
                                                       <Label prefHeight="23.0" prefWidth="191.0" text="Faturamento diário">
                                                          <font>
                                                             <Font name="Tahoma" size="18.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" />
+                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                    </children>
@@ -295,24 +327,20 @@
                                                             </Label>
                                                          </children>
                                                       </HBox>
-                                                      <HBox layoutX="10.0" layoutY="10.0" prefHeight="74.0" prefWidth="228.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                                         <children>
-                                                            <FontAwesomeIcon glyphName="SHOPPING_CART" size="50">
-                                                               <HBox.margin>
-                                                                  <Insets left="15.0" />
-                                                               </HBox.margin>
-                                                            </FontAwesomeIcon>
-                                                         </children>
+                                                      <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                                                          <VBox.margin>
-                                                            <Insets top="20.0" />
+                                                            <Insets left="25.0" top="20.0" />
                                                          </VBox.margin>
-                                                      </HBox>
+                                                         <image>
+                                                            <Image url="@images/icons/icons-carrinho-compras.png" />
+                                                         </image>
+                                                      </ImageView>
                                                       <Label prefHeight="23.0" prefWidth="211.0" text="Compras realizadas hoje">
                                                          <font>
                                                             <Font name="Tahoma" size="18.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" />
+                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                    </children>
@@ -362,7 +390,7 @@
                                                             </HBox>
                                                             <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
                                                                <children>
-                                                                  <ComboBox fx:id="cbCategoria1" prefHeight="25.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbCategoria1" prefHeight="25.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                                <VBox.margin>
                                                                   <Insets top="3.0" />
@@ -375,7 +403,7 @@
                                                       </VBox>
                                                       <VBox layoutX="10.0" layoutY="24.0" prefHeight="75.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                                          <children>
-                                                            <HBox prefHeight="25.0" prefWidth="165.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD); -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
+                                                            <HBox prefHeight="25.0" prefWidth="165.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD); -fx-background-radius: 8px 8px 0px 0px;" styleClass="combo-box" VBox.vgrow="ALWAYS">
                                                                <children>
                                                                   <Pane prefHeight="51.0" prefWidth="175.0" />
                                                                   <Label prefHeight="19.0" prefWidth="277.0" text="Periodo de análise" textFill="WHITE">
@@ -394,7 +422,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbPeriodo1" onAction="#inicializarCbMesOuAno1Estendido" prefHeight="25.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbPeriodo1" onAction="#inicializarCbMesOuAno1Estendido" prefHeight="25.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -423,7 +451,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbMesOuAno1" onAction="#inicializarCbMes" prefHeight="25.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbMesOuAno1" onAction="#inicializarCbMes" prefHeight="25.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -452,7 +480,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbMes" prefHeight="25.0" prefWidth="185.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbMes" prefHeight="25.0" prefWidth="185.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -463,9 +491,13 @@
                                                       <HBox prefHeight="44.0" prefWidth="175.0" VBox.vgrow="ALWAYS">
                                                          <children>
                                                             <Pane prefHeight="36.0" prefWidth="32.0" HBox.hgrow="ALWAYS" />
-                                                            <Button fx:id="btnPesquisar1" mnemonicParsing="false" onAction="#btnPesquisarDados" prefHeight="40.0" prefWidth="115.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                                            <Button fx:id="btnPesquisar1" mnemonicParsing="false" onAction="#btnPesquisarDados" prefHeight="40.0" prefWidth="115.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                                                <graphic>
-                                                                  <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                                                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                                                     </image>
+                                                                  </ImageView>
                                                                </graphic>
                                                             </Button>
                                                             <Pane layoutX="10.0" layoutY="10.0" prefHeight="24.0" prefWidth="34.0" HBox.hgrow="ALWAYS" />
@@ -494,7 +526,7 @@
                 </Tab>
                   <Tab text="Compras">
                      <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #cccccc;">
                            <children>
                               <HBox prefHeight="774.0" prefWidth="1146.0" VBox.vgrow="ALWAYS">
                                  <children>
@@ -503,6 +535,14 @@
                                           <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                                              <children>
                                                 <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-relatorio-vendas.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" top="15.0" />
+                                                   </HBox.margin>
+                                                </ImageView>
                                                 <Label prefHeight="26.0" prefWidth="325.0" text="Relatório Financeiro de compras" textFill="WHITE">
                                                    <font>
                                                       <Font name="Tahoma Bold" size="20.0" />
@@ -552,7 +592,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbPeriodo2" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbPeriodo2" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -579,7 +619,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbMesOuAno2" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbMesOuAno2" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -588,9 +628,13 @@
                                                       <HBox prefHeight="79.0" prefWidth="156.0">
                                                          <children>
                                                             <Pane layoutX="58.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
-                                                            <Button fx:id="btnPesquisar2" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="35.0" prefWidth="281.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                                            <Button fx:id="btnPesquisar2" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="35.0" prefWidth="281.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                                                <graphic>
-                                                                  <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                                                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                                                     </image>
+                                                                  </ImageView>
                                                                </graphic>
                                                             </Button>
                                                             <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -611,7 +655,7 @@
                                                 <Insets bottom="5.0" left="10.0" right="8.0" top="8.0" />
                                              </VBox.margin>
                                              <children>
-                                                <AreaChart fx:id="acDadosCompra" legendVisible="false" onMouseEntered="#apresentarLegendasNoGraficoCompras" prefHeight="360.0" prefWidth="791.0" HBox.hgrow="ALWAYS">
+                                                <AreaChart fx:id="acDadosCompra" legendVisible="false" onMouseEntered="#apresentarLegendasNoGraficoCompras" prefHeight="360.0" prefWidth="791.0" title="Dados mensais e anuais das compras da livraria" HBox.hgrow="ALWAYS">
                                                   <xAxis>
                                                     <CategoryAxis fx:id="catX2" side="BOTTOM" />
                                                   </xAxis>
@@ -642,7 +686,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbCategoria2" prefHeight="33.0" prefWidth="211.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbCategoria2" prefHeight="33.0" prefWidth="211.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -671,7 +715,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbPeriodo3" onAction="#inicializarCbMesOuAno2Estendido" prefHeight="33.0" prefWidth="216.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbPeriodo3" onAction="#inicializarCbMesOuAno2Estendido" prefHeight="33.0" prefWidth="216.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -700,7 +744,7 @@
                                                                   <Insets top="3.0" />
                                                                </VBox.margin>
                                                                <children>
-                                                                  <ComboBox fx:id="cbMesOuAno3" onAction="#inicializarCbMes" prefHeight="33.0" prefWidth="202.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                                  <ComboBox fx:id="cbMesOuAno3" onAction="#inicializarCbMes" prefHeight="33.0" prefWidth="202.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                                </children>
                                                             </HBox>
                                                          </children>
@@ -724,14 +768,7 @@
                                                                   <Pane layoutX="44.0" layoutY="10.0" prefHeight="51.0" prefWidth="175.0" />
                                                                </children>
                                                             </HBox>
-                                                            <HBox layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="175.0">
-                                                               <VBox.margin>
-                                                                  <Insets top="3.0" />
-                                                               </VBox.margin>
-                                                               <children>
-                                                                  <ComboBox fx:id="cbMes2" prefHeight="28.0" prefWidth="185.0" styleClass="table-view" stylesheets="@css/Style.css" />
-                                                               </children>
-                                                            </HBox>
+                                                            <ComboBox fx:id="cbMes2" prefHeight="28.0" prefWidth="185.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                          </children>
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
@@ -740,9 +777,13 @@
                                                       <HBox prefHeight="43.0" prefWidth="178.0">
                                                          <children>
                                                             <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                                                            <Button fx:id="btnPesquisar3" mnemonicParsing="false" onAction="#btnPesquisarDados" prefHeight="45.0" prefWidth="115.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                                            <Button fx:id="btnPesquisar3" mnemonicParsing="false" onAction="#btnPesquisarDados" prefHeight="45.0" prefWidth="115.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                                                <graphic>
-                                                                  <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                                                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                                                     </image>
+                                                                  </ImageView>
                                                                </graphic>
                                                             </Button>
                                                             <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
@@ -776,14 +817,22 @@
                   </Tab>
                 <Tab text="Rankings">
                      <content>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #cccccc;">
                            <children>
                               <VBox prefHeight="719.0" prefWidth="614.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                                  <children>
                                     <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                                        <children>
                                           <Pane prefHeight="62.0" prefWidth="77.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                          <Label fx:id="lblRankingLivros" prefHeight="26.0" prefWidth="283.0" text="Ranking de livros" textFill="WHITE">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/icons/icons-ranking.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets right="5.0" top="15.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label fx:id="lblRankingLivros" prefHeight="26.0" prefWidth="480.0" text="Ranking de livros mais vendidos " textFill="WHITE">
                                              <font>
                                                 <Font name="Tahoma Bold" size="20.0" />
                                              </font>
@@ -828,7 +877,7 @@
                                                             <Insets top="3.0" />
                                                          </VBox.margin>
                                                          <children>
-                                                            <ComboBox fx:id="cbPeriodo4" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="33.0" prefWidth="132.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                            <ComboBox fx:id="cbPeriodo4" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="33.0" prefWidth="132.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -855,7 +904,7 @@
                                                             <Insets top="3.0" />
                                                          </VBox.margin>
                                                          <children>
-                                                            <ComboBox fx:id="cbMesOuAno4" prefHeight="33.0" prefWidth="144.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                            <ComboBox fx:id="cbMesOuAno4" prefHeight="33.0" prefWidth="144.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -864,9 +913,13 @@
                                                 <HBox prefHeight="45.0" prefWidth="161.0">
                                                    <children>
                                                       <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                                                      <Button fx:id="btnPesquisar4" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="45.0" prefWidth="130.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                                      <Button fx:id="btnPesquisar4" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="45.0" prefWidth="130.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                                          <graphic>
-                                                            <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                                            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                                               </image>
+                                                            </ImageView>
                                                          </graphic>
                                                       </Button>
                                                       <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
@@ -890,7 +943,15 @@
                                     <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                                        <children>
                                           <Pane prefHeight="62.0" prefWidth="77.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                          <Label prefHeight="26.0" prefWidth="203.0" text="Ranking de Clientes" textFill="WHITE">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/icons/icons-ranking.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets right="5.0" top="15.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <Label prefHeight="26.0" prefWidth="210.0" text="Ranking de Clientes" textFill="WHITE">
                                              <font>
                                                 <Font name="Tahoma Bold" size="20.0" />
                                              </font>
@@ -959,7 +1020,7 @@
                                     </VBox>
                                     <HBox prefHeight="130.0" prefWidth="379.0">
                                        <children>
-                                          <Pane prefHeight="200.0" prefWidth="80.0" />
+                                          <Pane prefHeight="200.0" prefWidth="70.0" />
                                           <VBox prefHeight="70.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                              <children>
                                                 <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
@@ -981,7 +1042,7 @@
                                                       <Insets top="3.0" />
                                                    </VBox.margin>
                                                    <children>
-                                                      <ComboBox fx:id="cbPeriodo5" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                      <ComboBox fx:id="cbPeriodo5" onAction="#inicializarCbMesOuAnoSimplificado" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -1007,7 +1068,7 @@
                                                       <Insets top="3.0" />
                                                    </VBox.margin>
                                                    <children>
-                                                      <ComboBox fx:id="cbMesOuAno5" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                                      <ComboBox fx:id="cbMesOuAno5" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -1015,16 +1076,20 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </VBox>
-                                          <Pane prefHeight="90.0" prefWidth="80.0" />
-                                          <Button fx:id="btnPesquisar5" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="46.0" prefWidth="169.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
-                                             <graphic>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
-                                             </graphic>
+                                          <Pane prefHeight="69.0" prefWidth="71.0" />
+                                          <Button fx:id="btnPesquisar5" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="46.0" prefWidth="169.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                              <HBox.margin>
                                                 <Insets top="10.0" />
                                              </HBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
                                           </Button>
-                                          <Pane layoutX="322.0" layoutY="10.0" prefHeight="200.0" prefWidth="80.0" />
+                                          <Pane layoutX="322.0" layoutY="10.0" prefHeight="200.0" prefWidth="70.0" />
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="20.0" />

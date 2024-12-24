@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -30,9 +30,6 @@
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USER" size="25" wrappingWidth="30.0" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralP" />
@@ -41,14 +38,18 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-perfil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivroFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -57,14 +58,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-Livro.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="ARCHIVE" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -73,14 +78,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-estoque.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoFuncionario" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="HISTORY" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -89,14 +98,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-histórico.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnRelatorios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="AREA_CHART" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -105,15 +118,19 @@
                   <String fx:value="btnBarraLateralP" />
                   <String fx:value="btnBarraLateralH" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-relatorios.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <VBox prefHeight="279.0" prefWidth="221.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
             <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="25" text="" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralH" />
@@ -122,6 +139,13 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children></VBox>
    </left>
@@ -133,7 +157,15 @@
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                      <children>
                         <Pane prefHeight="62.0" prefWidth="77.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="lblRanking" prefHeight="30.0" prefWidth="210.0" text="Ranking de livros" textFill="WHITE">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icons/icons-ranking.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="5.0" top="15.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label fx:id="lblRanking" prefHeight="26.0" prefWidth="469.0" text="Ranking de livros mais vendidos " textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
                            </font>
@@ -178,7 +210,7 @@
                                           <Insets top="3.0" />
                                        </VBox.margin>
                                        <children>
-                                          <ComboBox fx:id="cbPeriodo1" onAction="#inicializarCbMesOuAno" prefHeight="33.0" prefWidth="132.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                          <ComboBox fx:id="cbPeriodo1" onAction="#inicializarCbMesOuAno" prefHeight="33.0" prefWidth="132.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -205,7 +237,7 @@
                                           <Insets top="3.0" />
                                        </VBox.margin>
                                        <children>
-                                          <ComboBox fx:id="cbMesOuAno1" prefHeight="33.0" prefWidth="144.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                          <ComboBox fx:id="cbMesOuAno1" prefHeight="33.0" prefWidth="144.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -214,9 +246,13 @@
                               <HBox prefHeight="45.0" prefWidth="161.0">
                                  <children>
                                     <Pane prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
-                                    <Button fx:id="btnPesquisar1" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="45.0" prefWidth="130.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
+                                    <Button fx:id="btnPesquisar1" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="45.0" prefWidth="130.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                                        <graphic>
-                                          <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
+                                          <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                             </image>
+                                          </ImageView>
                                        </graphic>
                                     </Button>
                                     <Pane layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="35.0" HBox.hgrow="ALWAYS" />
@@ -240,6 +276,14 @@
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                      <children>
                         <Pane prefHeight="62.0" prefWidth="77.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/icons/icons-ranking.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="5.0" top="15.0" />
+                           </HBox.margin>
+                        </ImageView>
                         <Label prefHeight="30.0" prefWidth="248.0" text="Ranking de usuários" textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
@@ -317,7 +361,7 @@
                   </TableView>
                   <HBox prefHeight="69.0" prefWidth="379.0">
                      <children>
-                        <Pane prefHeight="200.0" prefWidth="80.0" />
+                        <Pane prefHeight="200.0" prefWidth="70.0" />
                         <VBox prefHeight="70.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                            <children>
                               <HBox prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #1560BD);; -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
@@ -339,7 +383,7 @@
                                     <Insets top="3.0" />
                                  </VBox.margin>
                                  <children>
-                                    <ComboBox fx:id="cbPeriodo2" onAction="#inicializarCbMesOuAno" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                    <ComboBox fx:id="cbPeriodo2" onAction="#inicializarCbMesOuAno" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                  </children>
                               </HBox>
                            </children>
@@ -365,7 +409,7 @@
                                     <Insets top="3.0" />
                                  </VBox.margin>
                                  <children>
-                                    <ComboBox fx:id="cbMesOuAno2" prefHeight="35.0" prefWidth="175.0" styleClass="table-view" stylesheets="@css/Style.css" />
+                                    <ComboBox fx:id="cbMesOuAno2" prefHeight="35.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css" />
                                  </children>
                               </HBox>
                            </children>
@@ -373,16 +417,20 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                         </VBox>
-                        <Pane prefHeight="90.0" prefWidth="80.0" />
-                        <Button fx:id="btnPesquisar2" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="46.0" prefWidth="169.0" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Pesquisar">
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" size="15" />
-                           </graphic>
+                        <Pane prefHeight="90.0" prefWidth="70.0" />
+                        <Button fx:id="btnPesquisar2" mnemonicParsing="false" onAction="#btnPesquisarRanking" prefHeight="46.0" prefWidth="169.0" styleClass="btnPesquisar" stylesheets="@css/Style.css" text="Pesquisar">
                            <HBox.margin>
                               <Insets top="10.0" />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/icons/icons-pesquisar-branco.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <Pane layoutX="322.0" layoutY="10.0" prefHeight="200.0" prefWidth="80.0" />
+                        <Pane layoutX="322.0" layoutY="10.0" prefHeight="200.0" prefWidth="70.0" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="20.0" />
