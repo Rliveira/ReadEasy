@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmCRUDUsuariosController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmCRUDUsuariosController">
    <left>
       <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="46.0" prefWidth="183.0" stylesheets="@css/Style.css" text="ReadEasy" textFill="WHITE">
+            <Label prefHeight="46.0" prefWidth="183.0" text="ReadEasy" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="36.0" />
                </font>
@@ -29,9 +40,6 @@
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USER" size="25" wrappingWidth="30.0" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralP" />
@@ -40,14 +48,18 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-perfil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivrosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -56,14 +68,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-Livro.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="ARCHIVE" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -72,14 +88,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-estoque.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnUsuarios" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="GROUP" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -88,14 +108,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-usuarios.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnPromoções" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" onAction="#trocarTelaPromocoesAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="TICKET" size="25" wrappingWidth="30.0" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralP" />
@@ -104,14 +128,18 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-promocao.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="HISTORY" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -120,14 +148,18 @@
                   <String fx:value="btnBarraLateralH" />
                   <String fx:value="btnBarraLateralP" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-histórico.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="24.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="AREA_CHART" size="25" wrappingWidth="30.0" />
-               </graphic>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -136,15 +168,19 @@
                   <String fx:value="btnBarraLateralP" />
                   <String fx:value="btnBarraLateralH" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-relatorios.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <VBox prefHeight="202.0" prefWidth="221.0" VBox.vgrow="ALWAYS" />
             <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="25" text="" />
-               </graphic>
                <styleClass>
                   <String fx:value="btnBarraLateral" />
                   <String fx:value="btnBarraLateralH" />
@@ -153,6 +189,13 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </VBox>
@@ -168,6 +211,14 @@
                   <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-radius: 8px 8px 0px 0px; -fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB);">
                      <children>
                         <Pane prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="5.0" top="10.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@images/icons/icons-gereciamento-de-usuario.png" />
+                           </image>
+                        </ImageView>
                         <Label prefHeight="27.0" prefWidth="285.0" text="Gerenciamento de Usuários" textAlignment="JUSTIFY" textFill="WHITE">
                            <font>
                               <Font name="Tahoma Bold" size="20.0" />
@@ -186,15 +237,22 @@
                               <HBox prefHeight="39.0" prefWidth="1104.0">
                                  <children>
                                     <Pane prefHeight="200.0" prefWidth="50.0" HBox.hgrow="NEVER" />
-                                    <FontAwesomeIcon fill="#898989" glyphName="SEARCH" size="20">
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <HBox.margin>
-                                          <Insets right="5.0" top="7.0" />
+                                          <Insets right="5.0" top="3.0" />
                                        </HBox.margin>
-                                    </FontAwesomeIcon>
-                                    <TextField fx:id="txtFieldPesquisar" onKeyTyped="#onPesquisarTyped" prefWidth="400.0" promptText="Pesquisar" styleClass="textFieldDesign" stylesheets="@css/Style.css">
+                                       <image>
+                                          <Image url="@images/icons/icons-pesquisar-cinza.png" />
+                                       </image>
+                                    </ImageView>
+                                    <TextField fx:id="txtFieldPesquisar" onKeyTyped="#onPesquisarTyped" prefWidth="400.0" promptText="Pesquisar" stylesheets="@css/Style.css">
                                        <HBox.margin>
                                           <Insets bottom="10.0" />
                                        </HBox.margin>
+                                       <styleClass>
+                                          <String fx:value="textFieldDesign" />
+                                          <String fx:value="textFieldF" />
+                                       </styleClass>
                                     </TextField>
                                  </children>
                                  <VBox.margin>
@@ -225,7 +283,7 @@
                         </VBox>
                         <HBox prefHeight="358.0" prefWidth="1125.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox prefHeight="248.0" prefWidth="310.0" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="248.0" prefWidth="310.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <TextField fx:id="txtFieldNome" prefHeight="30.0" prefWidth="280.0" promptText="Nome" stylesheets="@css/Style.css">
                                        <font>
@@ -289,8 +347,6 @@
                                           <String fx:value="textFieldF" />
                                        </styleClass>
                                     </TextField>
-                                    <Pane layoutX="10.0" layoutY="238.0" prefHeight="30.0" prefWidth="200.0" />
-                                    <DatePicker fx:id="dpDataNascimento" prefHeight="39.0" prefWidth="334.0" promptText="Data de nascimento" styleClass="table-view" stylesheets="@css/Style.css" />
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" top="10.0" />
@@ -300,7 +356,7 @@
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></Separator>
-                              <VBox prefHeight="248.0" prefWidth="310.0" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <VBox prefHeight="248.0" prefWidth="310.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <TextField fx:id="txtFieldCEP" prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
                                        <font>
@@ -360,12 +416,6 @@
                                           <String fx:value="textFieldF" />
                                        </styleClass>
                                     </TextField>
-                                    <Pane layoutX="10.0" layoutY="294.0" prefHeight="31.0" prefWidth="260.0" VBox.vgrow="ALWAYS" />
-                                    <HBox prefHeight="51.0" prefWidth="262.0">
-                                       <children>
-                                          <ComboBox fx:id="cbTipo" onAction="#onSelecionarTipoUsuarioclick" prefHeight="30.0" prefWidth="262.0" promptText="Tipo do usuário" styleClass="table-view" stylesheets="@css/Style.css" visibleRowCount="0" />
-                                       </children>
-                                    </HBox>
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="10.0" right="10.0" top="10.0" />
@@ -373,27 +423,40 @@
                               </VBox>
                               <Separator orientation="VERTICAL" prefHeight="301.0" prefWidth="0.0">
                                  <HBox.margin>
-                                    <Insets />
+                                    <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
                               </Separator>
                               <VBox prefHeight="269.0" prefWidth="260.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                                    <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                                    <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                                    <ComboBox fx:id="cbTipoFornecedor" onAction="#cbEscolherTipoFornecedor" prefHeight="30.0" prefWidth="442.0" promptText="Tipo de Fornecedor" styleClass="table-view" stylesheets="@css/Style.css" visible="false" />
-                                    <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                    <Pane layoutX="10.0" layoutY="40.0" prefHeight="34.0" prefWidth="212.0" />
+                                    <ComboBox fx:id="cbTipo" onAction="#onSelecionarTipoUsuarioclick" prefHeight="30.0" prefWidth="234.0" promptText="Tipo do usuário" />
+                                    <Pane prefHeight="34.0" prefWidth="212.0" VBox.vgrow="ALWAYS" />
+                                    <DatePicker fx:id="dpDataNascimento" prefHeight="39.0" prefWidth="334.0" promptText="Data de nascimento" styleClass="datePickerDesign" stylesheets="@css/Style.css" />
+                                    <Pane prefHeight="34.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                    <ComboBox fx:id="cbTipoFornecedor" onAction="#cbEscolherTipoFornecedor" prefHeight="35.0" prefWidth="212.0" promptText="Tipo de Fornecedor" styleClass="combo-box" stylesheets="@css/Style.css" visible="false" />
+                                    <Pane layoutX="10.0" layoutY="136.0" prefHeight="35.0" prefWidth="200.0" />
                                  </children>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </HBox.margin>
                               </VBox>
-                              <Separator orientation="VERTICAL" prefHeight="269.0" prefWidth="0.0" visible="false" />
+                              <Separator orientation="VERTICAL" prefHeight="200.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </Separator>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <VBox prefHeight="269.0" prefWidth="285.0" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                                    <VBox prefHeight="269.0" prefWidth="285.0" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Pane prefHeight="15.0" prefWidth="150.0" VBox.vgrow="ALWAYS" />
                                           <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarUsuariosclick" prefHeight="50.0" prefWidth="150.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Cadastar">
                                              <graphic>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="PLUS_SQUARE_ALT" size="20" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-add-usuario.png" />
+                                                   </image>
+                                                </ImageView>
                                              </graphic>
                                           </Button>
                                           <Pane prefHeight="15.0" prefWidth="150.0" VBox.vgrow="ALWAYS" />
@@ -401,12 +464,16 @@
                                              <font>
                                                 <Font name="Times New Roman Bold" size="14.0" />
                                              </font>
-                                             <graphic>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="MINUS_SQUARE_ALT" size="20" wrappingWidth="20.0" />
-                                             </graphic>
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-remover-usuario.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
                                           </Button>
                                           <Pane prefHeight="15.0" prefWidth="150.0" VBox.vgrow="ALWAYS" />
                                           <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onBtnEditarUsuarioclick" prefHeight="53.0" prefWidth="150.0" styleClass="btnEditar" stylesheets="@css/Style.css" text="Editar&#10;&#10;" textFill="WHITE">
@@ -414,7 +481,11 @@
                                                 <Font name="Times New Roman Bold" size="14.0" />
                                              </font>
                                              <graphic>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="EDIT" size="20" wrappingWidth="20.0" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-editar-usuario.png" />
+                                                   </image>
+                                                </ImageView>
                                              </graphic>
                                           </Button>
                                           <Pane prefHeight="15.0" prefWidth="150.0" VBox.vgrow="ALWAYS">
@@ -427,7 +498,11 @@
                                                 <Font name="Times New Roman Bold" size="14.0" />
                                              </font>
                                              <graphic>
-                                                <FontAwesomeIcon fill="WHITE" glyphName="ERASER" size="20" wrappingWidth="30.0" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-limpar.png" />
+                                                   </image>
+                                                </ImageView>
                                              </graphic>
                                           </Button>
                                           <Pane layoutX="10.0" layoutY="216.0" prefHeight="15.0" prefWidth="150.0" />
