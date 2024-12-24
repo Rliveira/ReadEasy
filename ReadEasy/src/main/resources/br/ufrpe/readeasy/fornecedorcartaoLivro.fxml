@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorCartaoLivroController">
+   <children>
+      <HBox prefHeight="52.0" prefWidth="275.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #00469B); -fx-background-radius: 8px 8px 0px 0px;">
+         <children>
+            <Label fx:id="lblnomedolivro" prefHeight="22.0" prefWidth="252.0" text="Nome do livro" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="224.0" prefWidth="275.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <ImageView fx:id="imgvLivro" fitHeight="228.0" fitWidth="200.0" onMouseEntered="#selecionarLivroNaTabelaEstoque" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+               <HBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </HBox.margin>
+            </ImageView>
+            <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
