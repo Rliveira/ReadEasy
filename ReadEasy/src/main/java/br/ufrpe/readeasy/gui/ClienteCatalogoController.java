@@ -72,13 +72,13 @@ public class ClienteCatalogoController {
     private List<Livro> listaDeLivrosDoCatalogo = new ArrayList<>();
     private List<LivroVendido> carrinho = new ArrayList<>();
     private List<VBox> cartoesLivroCatalogo = new ArrayList<>();
-    private List<CartaoLivroController> controladores = new ArrayList<>();
+    private List<ClienteCartaoLivroController> controladoresCartaoLivro = new ArrayList<>();
 
     //Métodos de troca de tela:
     @FXML
     private void trocarTelaHistoricoCliente(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteMinhasCompras.fxml", "ReadEasy - Histórico");
+        sm.TrocarTela("clienteHistoricoCompras.fxml", "ReadEasy - Histórico");
     }
 
     @FXML
@@ -125,19 +125,19 @@ public class ClienteCatalogoController {
 
         gpCatalogoLivraria.getChildren().clear();
         cartoesLivroCatalogo.clear();
-        controladores.clear();
+        controladoresCartaoLivro.clear();
 
         try {
             for (int i = 0; i < listaDeLivrosDoCatalogo.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/cartaoLivro.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/ClientecartaoLivro.fxml"));
                 VBox cartaoLivro = fxmlLoader.load();
 
-                CartaoLivroController cardController = fxmlLoader.getController();
+                ClienteCartaoLivroController cardController = fxmlLoader.getController();
                 cardController.setInformacoesDoLivro(listaDeLivrosDoCatalogo.get(i));
 
                 this.cartoesLivroCatalogo.add(cartaoLivro);
-                this.controladores.add(cardController);
+                this.controladoresCartaoLivro.add(cardController);
 
                 if (coluna == 2) {
                     coluna = 0;
@@ -159,14 +159,14 @@ public class ClienteCatalogoController {
         String termoPesquisa = tfPesquisar.getText().toLowerCase();
 
         if (termoPesquisa.trim().isEmpty()) {
-           remotarCatatalogo(cartoesLivroCatalogo);
+           montarCatatalogo(cartoesLivroCatalogo);
         }
         else {
             List<VBox> cartoesFiltrados = new ArrayList<>();
 
             for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
-                CartaoLivroController cartaoLivroController = controladores.get(i);
-                Livro livro = cartaoLivroController.getLivro();
+                ClienteCartaoLivroController clienteCartaoLivroController = controladoresCartaoLivro.get(i);
+                Livro livro = clienteCartaoLivroController.getLivro();
 
                 if (livro != null) {
                     boolean correspondeAoFiltro = livro.getTitulo().toLowerCase().contains(termoPesquisa) ||
@@ -179,7 +179,7 @@ public class ClienteCatalogoController {
                 }
             }
 
-            remotarCatatalogo(cartoesFiltrados);
+            montarCatatalogo(cartoesFiltrados);
         }
     }
 
@@ -192,8 +192,8 @@ public class ClienteCatalogoController {
             List<VBox> cartoesFiltrados = new ArrayList<>();
 
             for (int i = 0; i < cartoesLivroCatalogo.size(); i++) {
-                CartaoLivroController cartaoLivroController = controladores.get(i);
-                Livro livro = cartaoLivroController.getLivro();
+                ClienteCartaoLivroController clienteCartaoLivroController = controladoresCartaoLivro.get(i);
+                Livro livro = clienteCartaoLivroController.getLivro();
 
                 if (livro != null) {
                     List<Genero> generosDoLivro = livro.getGeneros();
@@ -211,11 +211,11 @@ public class ClienteCatalogoController {
                 }
             }
 
-            remotarCatatalogo(cartoesFiltrados);
+            montarCatatalogo(cartoesFiltrados);
         }
     }
 
-    private void remotarCatatalogo(List<VBox> cartoesFiltrados){
+    private void montarCatatalogo(List<VBox> cartoesFiltrados){
         gpCatalogoLivraria.getChildren().clear();
         int coluna = 0;
         int linha = 1;
@@ -251,6 +251,7 @@ public class ClienteCatalogoController {
     @FXML
     void btnFinalizarACompra() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
         if (!tbCarrinho.getItems().isEmpty()){
             if(cbEnderecoEntrega.getValue() != null){
@@ -264,6 +265,7 @@ public class ClienteCatalogoController {
 
                 alert.showAndWait().ifPresent(buttonType -> {
                     if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+
                         Cliente cliente = (Cliente) usuarioLogado;
                         Endereco enderecoDeEntrega = procurarEnderecoPelaRua(cbEnderecoEntrega.getValue());
                         String nomePromocao = cbAplicarPromocao.getValue();
@@ -277,19 +279,11 @@ public class ClienteCatalogoController {
                         }
                         ServidorReadEasy.getInstance().inserirVenda(venda);
 
-                        alert.setAlertType(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Sucesso!");
-                        alert.setHeaderText("Compra realizada com sucesso!");
-                        alert.setContentText(null);
-
-                        ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-                        alert.getButtonTypes().setAll(okButton);
-
-                        alert.showAndWait().ifPresent(buttonType1 -> {
-                            if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                                alert.close();
-                            }
-                        });
+                        alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                        alertErro.setTitle("Sucesso!");
+                        alertErro.setHeaderText("Compra realizada com sucesso!");
+                        alertErro.setContentText(null);
+                        alertErro.showAndWait();
 
                         tbCarrinho.getItems().clear();
                         lblPreco.setText("0.00");
@@ -310,35 +304,17 @@ public class ClienteCatalogoController {
                 });
             }
             else{
-                alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Campo de endereço não selecionado");
-                alert.setContentText("Selecione o endereço de entrega");
-
-                ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
-
-                alert.showAndWait().ifPresent(buttonType1 -> {
-                    if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
-                    }
-                });
+                alertErro.setTitle("Erro!");
+                alertErro.setHeaderText("Campo de endereço não selecionado");
+                alertErro.setContentText("Selecione o endereço de entrega");
+                alertErro.showAndWait();
             }
         }
         else{
-            alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Nenhum livro adicionado ao carrinho.");
-            alert.setContentText("Adicione um livro no carrinho para realizar a compra.");
-
-            ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
-
-            alert.showAndWait().ifPresent(buttonType1 -> {
-                if (buttonType1.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
-                }
-            });
+            alertErro.setTitle("Erro!");
+            alertErro.setHeaderText("Nenhum livro adicionado ao carrinho.");
+            alertErro.setContentText("Adicione um livro no carrinho para realizar a compra.");
+            alertErro.showAndWait();
         }
     }
 
@@ -491,19 +467,29 @@ public class ClienteCatalogoController {
         LivroVendido livroSelecionado = tbCarrinho.getSelectionModel().getSelectedItem();
 
         if(livroSelecionado != null){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmação de Exclusão");
-            alert.setHeaderText(null);
-            alert.setContentText("Tem certeza que deseja excluir o livro selecionado?");
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                //Atualiza a tabela
-                tbCarrinho.getItems().remove(livroSelecionado);
-                carrinho.remove(livroSelecionado);
-                inicializarCbPromocoes();
-                calcularTotalLabel();
-            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação");
+            alert.setHeaderText("Deseja realmente remover o livro do carrinho?");
+            alert.setContentText("Escolha uma opção.");
+
+            ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+            ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(simButton, naoButton);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
+
+                    tbCarrinho.getItems().remove(livroSelecionado);
+                    carrinho.remove(livroSelecionado);
+                    inicializarCbPromocoes();
+                    calcularTotalLabel();
+                }
+                else {
+                    alert.close();
+                }
+            });
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aviso");
@@ -517,7 +503,7 @@ public class ClienteCatalogoController {
     public void btnApresentarCatalogoCompleto(){
         cbGenero.getSelectionModel().clearSelection();
         tfPesquisar.clear();
-        remotarCatatalogo(cartoesLivroCatalogo);
+        montarCatatalogo(cartoesLivroCatalogo);
     }
 
     @FXML

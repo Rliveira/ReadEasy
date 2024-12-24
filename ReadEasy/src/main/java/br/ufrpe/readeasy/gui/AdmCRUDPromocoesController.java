@@ -259,16 +259,19 @@ public class AdmCRUDPromocoesController {
 
             alert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                    alert.close();
                     boolean excessaoLevantada = false;
                     ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
 
                     if (!excessaoLevantada){
                         tbvPromocoesAtivas.getItems().remove(promocaoSelecionada);
-                        alert.setAlertType(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Sucesso!");
-                        alert.setHeaderText("Promoção removida com sucesso!");
-                        alert.setContentText(null);
-                        alert.showAndWait();
+
+                        Alert alertInformacao = new Alert(Alert.AlertType.INFORMATION);
+                        alertInformacao.setAlertType(Alert.AlertType.INFORMATION);
+                        alertInformacao.setTitle("Sucesso!");
+                        alertInformacao.setHeaderText("Promoção removida com sucesso!");
+                        alertInformacao.setContentText(null);
+                        alertInformacao.showAndWait();
                         limparCampos();
                     }
                 }
@@ -287,76 +290,94 @@ public class AdmCRUDPromocoesController {
 
     @FXML
     void btnEditarPromocao() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente editar a promoção?");
+        alert.setContentText("Escolha uma opção.");
 
-        if (promocaoSelecionada != null) {
-            String novoTitulo = tfTitulo.getText();
-            String pct = (tfPorcentagemDeDesconto.getText());
-            String qntMin = tfQuantidadeMinimaDeLivros.getText();
-            LocalDate novaDataInicio = dtpDataDeInicioDaPromocao.getValue();
-            LocalDate novaDataFim = dtpDataDeExpiracaoDaPromocao.getValue();
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-            if(pct.isEmpty() || qntMin.isEmpty()){
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Campos não preenchidos.");
-                alert.setContentText("Preencha todos os campos para continuar.");
-                alert.showAndWait();
-            }
-            else{
-                boolean resultado1 = validarInputTf(pct);
-                boolean resultado2 = validarInputTf(qntMin);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                if(resultado1 && resultado2){
-                    int novaPorcentagem = Integer.parseInt(pct);
-                    int novaQuantidade = Integer.parseInt(qntMin);
+                Promocao promocaoSelecionada = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
 
-                    try {
-                        ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
-                                    novaQuantidade, novaDataInicio, novaDataFim, true);
-                        alert.setAlertType(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Sucesso.");
-                        alert.setHeaderText(null);
-                        alert.setContentText("promoção editada com sucesso!");
-                        alert.showAndWait();
+                if (promocaoSelecionada != null) {
+                    String novoTitulo = tfTitulo.getText();
+                    String pct = (tfPorcentagemDeDesconto.getText());
+                    String qntMin = tfQuantidadeMinimaDeLivros.getText();
+                    LocalDate novaDataInicio = dtpDataDeInicioDaPromocao.getValue();
+                    LocalDate novaDataFim = dtpDataDeExpiracaoDaPromocao.getValue();
 
-                        limparCampos();
-                        inicializarTbvPromocoesAtivas();
+                    if(pct.isEmpty() || qntMin.isEmpty()){
+                        alertErro.setTitle("Erro!");
+                        alertErro.setHeaderText("Campos não preenchidos.");
+                        alertErro.setContentText("Preencha todos os campos para continuar.");
+                        alertErro.showAndWait();
+                    }
+                    else{
+                        boolean resultado1 = validarInputTf(pct);
+                        boolean resultado2 = validarInputTf(qntMin);
 
-                    }  catch (PromocaoExistenteException e) {
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("A promoção que você está tentando cadastrar já existe.");
-                        alert.setContentText("Cadastre uma promoção nova para continuar");
-                        alert.showAndWait();
-                    } catch (ValorInvalidoException e) {
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Valor de porcentagem de desconto inválido.");
-                        alert.setContentText("Certifique de preencher o campo com um valor entre 1 e 100");
-                        alert.showAndWait();
-                        limparCampos();
-                    } catch (DataInvalidaException e) {
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Data inválida de desconto inválido.");
-                        alert.setContentText("Certifique de preencher a data de criação e expiração" +
-                                " da promoção com datas válidas.");
-                        alert.showAndWait();
-                        limparCampos();
+                        if(resultado1 && resultado2){
+                            int novaPorcentagem = Integer.parseInt(pct);
+                            int novaQuantidade = Integer.parseInt(qntMin);
+
+                            try {
+                                ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
+                                        novaQuantidade, novaDataInicio, novaDataFim, true);
+                                alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                                alertErro.setTitle("Sucesso.");
+                                alertErro.setHeaderText(null);
+                                alertErro.setContentText("promoção editada com sucesso!");
+                                alertErro.showAndWait();
+
+                                limparCampos();
+                                inicializarTbvPromocoesAtivas();
+
+                            }  catch (PromocaoExistenteException e) {
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("A promoção que você está tentando cadastrar já existe.");
+                                alertErro.setContentText("Cadastre uma promoção nova para continuar");
+                                alertErro.showAndWait();
+                            } catch (ValorInvalidoException e) {
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("Valor de porcentagem de desconto inválido.");
+                                alertErro.setContentText("Certifique de preencher o campo com um valor entre 1 e 100");
+                                alertErro.showAndWait();
+                                limparCampos();
+                            } catch (DataInvalidaException e) {
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("Data inválida de desconto inválido.");
+                                alertErro.setContentText("Certifique de preencher a data de criação e expiração" +
+                                        " da promoção com datas válidas.");
+                                alertErro.showAndWait();
+                                limparCampos();
+                            }
+                        }
+                        else{
+                            alertErro.setTitle("Erro!");
+                            alertErro.setHeaderText("Campo de porcentagem ou quantidade minima" + '\n' + " preenchido incorretamente.");
+                            alertErro.setContentText("Preencha ambos os campos números para continuar.");
+                            alertErro.showAndWait();
+                        }
                     }
                 }
-                else{
-                    alert.setTitle("Erro!");
-                    alert.setHeaderText("Campo de porcentagem ou quantidade minima" + '\n' + " preenchido incorretamente.");
-                    alert.setContentText("Preencha ambos os campos números para continuar.");
-                    alert.showAndWait();
+                else {
+                    alertErro.setTitle("Aviso");
+                    alertErro.setHeaderText("Nenhuma promoção selecionada para edição.");
+                    alertErro.setContentText("Selecione uma promoção da tabela ao lado para continuar.");
+                    alertErro.showAndWait();
                 }
             }
-        }
-        else {
-            alert.setTitle("Aviso");
-            alert.setHeaderText("Nenhuma promoção selecionada para edição.");
-            alert.setContentText("Selecione uma promoção da tabela ao lado para continuar.");
-            alert.showAndWait();
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     @FXML

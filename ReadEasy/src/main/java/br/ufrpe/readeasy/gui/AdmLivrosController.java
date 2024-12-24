@@ -80,7 +80,6 @@ public class AdmLivrosController {
     @FXML
     private ComboBox<String> cbGenero;
 
-
     @FXML
     private TableView<Livro> tvCatalogoLivros;
     @FXML
@@ -100,8 +99,8 @@ public class AdmLivrosController {
     private List<Fornecedor> fornecedores;
     List<Genero> generos;
     private boolean atualizarComboBoxLivros = false;
+    private boolean atualizarComboBoxGenero = false;
     private Livro livroSelecionado;
-
     //Métodos de troca de tela:
     public void trocarTelaEstoqueAdm(){
         ScreenManager sm = ScreenManager.getInstance();
@@ -200,7 +199,22 @@ public class AdmLivrosController {
         if(cbLivros.getItems().isEmpty() || atualizarComboBoxLivros){
             lvGenerosDoLivro.getItems().clear();
             inicializarCbLivro();
-            setAtualizarComboBoxLivros(false);
+            atualizarComboBoxLivros = false;
+        }
+    }
+
+    @FXML
+    public void atualizarCbGenero(){
+        if(cbLivros != null ){
+            String nomelivro =  cbLivros.getValue();
+            String nomeLivro2 = tfTitulo.getText();
+
+            if(atualizarComboBoxGenero && !nomeLivro2.isEmpty() && nomelivro.equals(nomeLivro2)){
+                Livro livro = ServidorReadEasy.getInstance().buscarLivroPorNome(nomelivro);
+                Genero genero = livro.getGeneros().get(0);
+                cbGenero.setValue(genero.getDescricaoEnum());
+                atualizarComboBoxGenero = false;
+            }
         }
     }
 
@@ -405,7 +419,7 @@ public class AdmLivrosController {
                     alert.showAndWait();
 
                     limparCampos();
-                    setAtualizarComboBoxLivros(true);
+                    atualizarComboBoxLivros = true;
                 }
             }
         }
@@ -420,240 +434,302 @@ public class AdmLivrosController {
 
     @FXML
     public void btnremoverLivro(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        boolean excecaoLevantada = false;
 
-        Livro livroSelecionado = getLivroSelecionado();
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente remover o livro?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(livroSelecionado != null){
-            servidorReadEasy.removerLivro(livroSelecionado);
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-            if(!excecaoLevantada){
-                tvCatalogoLivros.getItems().remove(livroSelecionado);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setTitle("Mensagem");
-                alert.setHeaderText("Sucesso!");
-                alert.setContentText("Livro removido com êxito.");
-                alert.showAndWait();
+                boolean excecaoLevantada = false;
+                Livro livroSelecionado = getLivroSelecionado();
 
-                limparCampos();
-                setAtualizarComboBoxLivros(true);
-            }
-        }
-        else{
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Operação Inválida!");
-            alert.setContentText("Selecione uma linha da tabela que contenha os dados de um livro.");
+                if(livroSelecionado != null){
+                    servidorReadEasy.removerLivro(livroSelecionado);
 
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            alert.getButtonTypes().setAll(okButton);
+                    if(!excecaoLevantada){
+                        tvCatalogoLivros.getItems().remove(livroSelecionado);
 
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                    alert.close();
+                        alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                        alertErro.setTitle("Mensagem");
+                        alertErro.setHeaderText("Sucesso!");
+                        alertErro.setContentText("Livro removido com êxito.");
+                        alertErro.showAndWait();
+
+                        limparCampos();
+                        atualizarComboBoxLivros = true;
+                    }
                 }
-            });
-        }
+                else{
+                    alertErro.setTitle("Erro!");
+                    alertErro.setHeaderText("Operação Inválida!");
+                    alertErro.setContentText("Selecione uma linha da tabela que contenha os dados de um livro.");
+                    alertErro.showAndWait();
+                }
+            }
+            else {
+                alert.close();
+            }
+        });
+
     }
 
     @FXML
     public void btnEditarLivro(){
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        URL urlLivro;
-        boolean excecaoLevantada = false;
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        String titulo = tfTitulo.getText();
-        String autor = tfAutor.getText();
-        String textoPreco = tfPreco.getText();
-        String nomeFornecedor = cbFornecedor.getValue();
-        Fornecedor fornecedor = procurarFornecedorPeloNome(nomeFornecedor);
-        String urlString = tfURLCapaDoLivro.getText();
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente editar o livro?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(validarInputTfPreco(textoPreco)){
-            if(titulo.isBlank() || autor.isBlank() || fornecedor == null || urlString.isBlank()){
-                alert.setTitle("Erro");
-                alert.setHeaderText("Operação inválida!");
-                alert.setContentText("Algum(s) campo(s) estão vazio(s), Preencha todos os campos corretemente para continuar");
-                alert.showAndWait();
-            }
-            else{
-                InputStream inputStream;
-                try {
-                    urlLivro = new URL(urlString);
-                    inputStream = urlLivro.openStream();
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                // Ler os bytes da imagem em um array de bytes
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
+                URL urlLivro;
+                boolean excecaoLevantada = false;
 
-                while (true) {
-                    try {
-                        if ((bytesRead = inputStream.read(buffer)) == -1) break;
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                String titulo = tfTitulo.getText();
+                String autor = tfAutor.getText();
+                String textoPreco = tfPreco.getText();
+                String nomeFornecedor = cbFornecedor.getValue();
+                Fornecedor fornecedor = procurarFornecedorPeloNome(nomeFornecedor);
+                String urlString = tfURLCapaDoLivro.getText();
+
+                if(validarInputTfPreco(textoPreco)){
+                    if(titulo.isBlank() || autor.isBlank() || fornecedor == null || urlString.isBlank()){
+                        alertErro.setTitle("Erro");
+                        alertErro.setHeaderText("Operação inválida!");
+                        alertErro.setContentText("Algum(s) campo(s) estão vazio(s), Preencha todos os campos corretemente para continuar");
+                        alertErro.showAndWait();
                     }
-                    outputStream.write(buffer, 0, bytesRead);
+                    else{
+                        InputStream inputStream;
+                        try {
+                            urlLivro = new URL(urlString);
+                            inputStream = urlLivro.openStream();
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        // Ler os bytes da imagem em um array de bytes
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+
+                        while (true) {
+                            try {
+                                if ((bytesRead = inputStream.read(buffer)) == -1) break;
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+
+                        // Armazenar os bytes da imagem em um array
+                        byte[] imageBytes = outputStream.toByteArray();
+
+                        textoPreco = textoPreco.replace(',', '.');
+                        double preco = Double.parseDouble(textoPreco);
+
+                        try {
+                            servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, imageBytes, urlLivro);
+                        }  catch (LivroExistenteException e) {
+                            excecaoLevantada = true;
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Operação inválida!");
+                            alertErro.setContentText("você tentou editar um livro pra um nome de um livro já existente no catálogo.");
+                            alertErro.showAndWait();
+
+                        }
+                        catch (ValorInvalidoException e) {
+                            excecaoLevantada = true;
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Operação inválida!");
+                            alertErro.setContentText("Você digitou um preço negativo, digite um valor maior ou igual a 0 para continuar");
+                            alertErro.showAndWait();
+                        }
+                        if (!excecaoLevantada){
+                            tvCatalogoLivros.getItems().clear();
+                            inicializarTabela();
+
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Mensagem");
+                            alertErro.setHeaderText("Sucesso!");
+                            alertErro.setContentText("Livro editado com êxito.");
+                            alertErro.showAndWait();
+
+                            limparCampos();
+                            atualizarComboBoxLivros = true;
+                        }
+                    }
                 }
-
-                // Armazenar os bytes da imagem em um array
-                byte[] imageBytes = outputStream.toByteArray();
-
-                textoPreco = textoPreco.replace(',', '.');
-                double preco = Double.parseDouble(textoPreco);
-
-                try {
-                    servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, imageBytes, urlLivro);
-                }  catch (LivroExistenteException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Operação inválida!");
-                    alert.setContentText("você tentou editar um livro pra um nome de um livro já existente no catálogo.");
-                    alert.showAndWait();
-
-                }
-                catch (ValorInvalidoException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Operação inválida!");
-                    alert.setContentText("Você digitou um preço negativo, digite um valor maior ou igual a 0 para continuar");
-                    alert.showAndWait();
-                }
-                if (!excecaoLevantada){
-                    tvCatalogoLivros.getItems().clear();
-                    inicializarTabela();
-
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensagem");
-                    alert.setHeaderText("Sucesso!");
-                    alert.setContentText("Livro editado com êxito.");
-                    alert.showAndWait();
-
-                    limparCampos();
-                    setAtualizarComboBoxLivros(true);
+                else {
+                    alertErro.setTitle("Erro!");
+                    alertErro.setHeaderText("Operação inválida!");
+                    alertErro.setContentText("Selecione um item da tabela ao lado e preencha o campo de preço com um número");
+                    alertErro.showAndWait();
                 }
             }
-        }
-        else {
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Operação inválida!");
-            alert.setContentText("Selecione um item da tabela ao lado e preencha o campo de preço com um número");
-            alert.showAndWait();
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     @FXML
     public void btnAdicionarGenero(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
 
-        Genero generoSelecionado = lvTodosOsGeneros.getSelectionModel().getSelectedItem();
-        String tituloLivro = cbLivros.getValue();
-        Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente adicionar o gênero?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(livroSelecionado != null){
-            if (generoSelecionado != null) {
-                boolean exceptionLevantada = false;
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                try {
-                    servidorReadEasy.adicionarGenero(livroSelecionado, generoSelecionado);
-                } catch (GeneroExistenteException e) {
-                    exceptionLevantada = true;
-                    alert.setTitle("Erro!");
-                    alert.setHeaderText("Você selecionou um gênero já existente no livro.");
-                    alert.setContentText("Selecione um gênero novo no livro para continuar.");
-                    alert.showAndWait();
-                }
-                if(!exceptionLevantada){
-                    lvGenerosDoLivro.getItems().add(generoSelecionado);
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensagem");
-                    alert.setHeaderText("Sucesso!");
-                    alert.setContentText("Gênero adicionado com êxito");
-                    alert.showAndWait();
-                }
-            }
-            else{
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Você não selecionou nenhum gênero para adicionar");
-                alert.setContentText("Selecione algum gênero para continuar.");
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                alert.getButtonTypes().setAll(okButton);
+                Genero generoSelecionado = lvTodosOsGeneros.getSelectionModel().getSelectedItem();
+                String tituloLivro = cbLivros.getValue();
+                Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
 
-                alert.showAndWait().ifPresent(buttonType -> {
-                    if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                        alert.close();
+                if(livroSelecionado != null){
+                    if (generoSelecionado != null) {
+                        boolean exceptionLevantada = false;
+
+                        try {
+                            servidorReadEasy.adicionarGenero(livroSelecionado, generoSelecionado);
+                        } catch (GeneroExistenteException e) {
+                            exceptionLevantada = true;
+                            alertErro.setTitle("Erro!");
+                            alertErro.setHeaderText("Você selecionou um gênero já existente no livro.");
+                            alertErro.setContentText("Selecione um gênero novo no livro para continuar.");
+                            alertErro.showAndWait();
+                        }
+                        if(!exceptionLevantada){
+                            lvGenerosDoLivro.getItems().add(generoSelecionado);
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Mensagem");
+                            alertErro.setHeaderText("Sucesso!");
+                            alertErro.setContentText("Gênero adicionado com êxito");
+                            alertErro.showAndWait();
+                        }
                     }
-                });
+                    else{
+                        alertErro.setTitle("Erro!");
+                        alertErro.setHeaderText("Você não selecionou nenhum gênero para adicionar");
+                        alertErro.setContentText("Selecione algum gênero para continuar.");
+                        alertErro.showAndWait();
+                    }
+                }
+                else{
+                    alertErro.setTitle("Erro!");
+                    alertErro.setHeaderText("Você não selecionou nenhum Livro!");
+                    alertErro.setContentText("Selecione algum livro para continuar.");
+                    alertErro.showAndWait();
+                }
             }
-        }
-        else{
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Você não selecionou nenhum Livro!");
-            alert.setContentText("Selecione algum livro para continuar.");
-            alert.showAndWait();
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     @FXML
     public void btnRemoverGenero(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
 
-        Genero generoSelecionado = lvGenerosDoLivro.getSelectionModel().getSelectedItem();
-        String tituloLivro = cbLivros.getValue();
-        Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente remover o gênero?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(livroSelecionado != null){
-            if (generoSelecionado != null) {
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                boolean exceptionLevantada = false;
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                try {
-                    servidorReadEasy.removerGenero(livroSelecionado, generoSelecionado);
-                } catch (GeneroNaoExistenteException e) {
-                    exceptionLevantada = true;
-                    alert.setTitle("Erro!");
-                    alert.setHeaderText("Você não selecionou um gênero já existente no livro.");
-                    alert.setContentText("Selecione um gênero novo no livro para continuar.");
-                    alert.showAndWait();
-                } catch (LivroSemGeneroException e){
-                    exceptionLevantada = true;
-                    alert.setTitle("Erro!");
-                    alert.setHeaderText("Remoção de gênero inválida");
-                    alert.setContentText("O Livro deve conter ao menos 1 gênero.");
-                    alert.showAndWait();
+                Genero generoSelecionado = lvGenerosDoLivro.getSelectionModel().getSelectedItem();
+                String tituloLivro = cbLivros.getValue();
+                Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+
+                if(generoSelecionado != null && generoSelecionado.equals(livroSelecionado.getGeneros().get(0))){
+                    atualizarComboBoxGenero = true;
                 }
-                if(!exceptionLevantada){
-                    lvGenerosDoLivro.getItems().remove(generoSelecionado);
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensagem");
-                    alert.setHeaderText("Sucesso");
-                    alert.setContentText("Gênero removido com êxito");
-                    alert.showAndWait();
+
+                if(livroSelecionado != null){
+                    if (generoSelecionado != null) {
+
+                        boolean exceptionLevantada = false;
+
+                        try {
+                            servidorReadEasy.removerGenero(livroSelecionado, generoSelecionado);
+                        } catch (GeneroNaoExistenteException e) {
+                            exceptionLevantada = true;
+                            alertErro.setTitle("Erro!");
+                            alertErro.setHeaderText("Você não selecionou um gênero já existente no livro.");
+                            alertErro.setContentText("Selecione um gênero novo no livro para continuar.");
+                            alertErro.showAndWait();
+                        } catch (LivroSemGeneroException e){
+                            exceptionLevantada = true;
+                            alertErro.setTitle("Erro!");
+                            alertErro.setHeaderText("Remoção de gênero inválida");
+                            alertErro.setContentText("O Livro deve conter ao menos 1 gênero.");
+                            alertErro.showAndWait();
+                        }
+                        if(!exceptionLevantada){
+                            lvGenerosDoLivro.getItems().remove(generoSelecionado);
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Mensagem");
+                            alertErro.setHeaderText("Sucesso");
+                            alertErro.setContentText("Gênero removido com êxito");
+                            alertErro.showAndWait();
+                        }
+                    }
+                    else{
+                        alertErro.setTitle("Erro!");
+                        alertErro.setHeaderText("Você não selecionou nenhum gênero para remover");
+                        alertErro.setContentText("Selecione algum gênero para continuar.");
+                        alertErro.showAndWait();
+                    }
+                }
+                else{
+                    alertErro.setTitle("Erro!");
+                    alertErro.setHeaderText("Você não selecionou nenhum Livro!");
+                    alertErro.setContentText("Selecione algum livro para continuar.");
+                    alertErro.showAndWait();
                 }
             }
-            else{
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Você não selecionou nenhum gênero para remover");
-                alert.setContentText("Selecione algum gênero para continuar.");
-                alert.showAndWait();
+            else {
+                alert.close();
             }
-        }
-        else{
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Você não selecionou nenhum Livro!");
-            alert.setContentText("Selecione algum livro para continuar.");
-            alert.showAndWait();
-        }
+        });
     }
 
     @FXML
@@ -786,6 +862,7 @@ public class AdmLivrosController {
             }
         });
     }
+
     //gets and Sets:
     public List<Fornecedor> getFornecedores() {
         return fornecedores;
@@ -802,9 +879,7 @@ public class AdmLivrosController {
         this.generos = generos;
     }
 
-    public void setAtualizarComboBoxLivros(boolean atualizarComboBoxLivros) {
-        this.atualizarComboBoxLivros = atualizarComboBoxLivros;
-    }
+
 
     public Livro getLivroSelecionado() {
         return livroSelecionado;

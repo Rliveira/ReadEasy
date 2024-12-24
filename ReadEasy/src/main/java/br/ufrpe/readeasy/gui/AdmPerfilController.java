@@ -173,71 +173,120 @@ public class AdmPerfilController {
 
     @FXML
     protected void onBtnEditarPerfilClick() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        String nome = txtFNome.getText();
-        String cpf = txtFCpf.getText();
-        String usuario = txtFusuario.getText();
-        String senha = txtFSenha.getText();
-        String rua = txtFRua.getText();
-        String bairro = txtFBairro.getText();
-        String cidade = txtFCidade.getText();
-        String estado = txtFEstado.getText();
-        String cepString = txtFCep.getText();
-        String telefone = txtFTelefone.getText();
-        LocalDate dataNascimento = dtPckData.getValue();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente editar o perfil?");
+        alert.setContentText("Escolha uma opção.");
 
-        if (nome.isEmpty() || cpf.isEmpty() || usuario.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
-                || cidade.isEmpty() || estado == null || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campos não preenchidos.");
-            alert.setContentText("Certifique de preencher todos os campos para continuar.");
-            alert.showAndWait();
-        }
-        else{
-            if (!validarInputTf(cepString) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
-                alert.setContentText("Digite apenas números para continuar");
-                alert.showAndWait();
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-            }
-            else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
-                    !validarQuantidadeDeCaracteres("telefone", telefone) ||
-                    !validarQuantidadeDeCaracteres("cepString", cepString)) {
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
-                alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
-                alert.showAndWait();
-            }
-            else{
-                int cep = Integer.parseInt(cepString);
-                Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-                try {
-                    Funcionario funcionario = (Funcionario) this.usuarioLogado;
-                    ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
-                            usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
-                    this.atualizarLabels();
+                String nome = txtFNome.getText();
+                String cpf = txtFCpf.getText();
+                String usuario = txtFusuario.getText();
+                String senha = txtFSenha.getText();
+                String rua = txtFRua.getText();
+                String bairro = txtFBairro.getText();
+                String cidade = txtFCidade.getText();
+                String estado = txtFEstado.getText();
+                String cepString = txtFCep.getText();
+                String telefone = txtFTelefone.getText();
+                LocalDate dataNascimento = dtPckData.getValue();
 
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Atualização de perfil");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Perfil atualizado com sucesso!");
-                    alert.showAndWait();
-                } catch (UsuarioExistenteException e) {
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Usuário já existente");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                } catch (DataInvalidaException e) {
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Data inválida");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
+                if (nome.isEmpty() || cpf.isEmpty() || usuario.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
+                        || cidade.isEmpty() || estado == null || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
+                    alertErro.setTitle("Erro");
+                    alertErro.setHeaderText("Campos não preenchidos.");
+                    alertErro.setContentText("Certifique de preencher todos os campos para continuar.");
+                    alertErro.showAndWait();
+                }
+                else{
+                    if (!validarInputTf(cepString) || !validarInputTf(telefone) || !validarInputTf(cpf)) {
+                        alertErro.setTitle("Erro");
+                        alertErro.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
+                        alertErro.setContentText("Digite apenas números para continuar");
+                        alertErro.showAndWait();
+
+                    }
+                    else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
+                            !validarQuantidadeDeCaracteres("telefone", telefone) ||
+                            !validarQuantidadeDeCaracteres("cepString", cepString)) {
+
+                        alertErro.setTitle("Erro");
+                        alertErro.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                        alertErro.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                        alertErro.showAndWait();
+                    }
+                    else{
+                        int cep = Integer.parseInt(cepString);
+                        Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+                        try {
+                            Funcionario funcionario = (Funcionario) this.usuarioLogado;
+                            ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
+                                    usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
+                            this.atualizarLabels();
+
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Atualização de perfil");
+                            alertErro.setHeaderText(null);
+                            alertErro.setContentText("Perfil atualizado com sucesso!");
+                            alertErro.showAndWait();
+                            limparCampos();
+                        } catch (UsuarioExistenteException e) {
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Usuário já existente");
+                            alertErro.setContentText(e.getMessage());
+                            alertErro.showAndWait();
+                        } catch (DataInvalidaException e) {
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Data inválida");
+                            alertErro.setContentText(e.getMessage());
+                            alertErro.showAndWait();
+                        }
+                    }
                 }
             }
-        }
+            else {
+                alert.close();
+            }
+        });
+    }
+
+    @FXML
+    public void copiarDadosPessoais(){
+        txtFNome.setText(usuarioLogado.getNome());
+        txtFCpf.setText(usuarioLogado.getCpf());
+        txtFusuario.setText(usuarioLogado.getLogin());
+        txtFSenha.setText(usuarioLogado.getSenha());
+        txtFTelefone.setText(usuarioLogado.getTelefone());
+        dtPckData.setValue(usuarioLogado.getDataNascimento());
+        txtFCep.setText(String.valueOf(usuarioLogado.getEndereco().getCep()));
+        txtFBairro.setText(usuarioLogado.getEndereco().getBairro());
+        txtFRua.setText(usuarioLogado.getEndereco().getRua());
+        txtFCidade.setText(usuarioLogado.getEndereco().getCidade());
+        txtFEstado.setText(usuarioLogado.getEndereco().getEstado());
+    }
+
+    @FXML
+    public void limparCampos(){
+        txtFNome.clear();
+        txtFCpf.clear();
+        txtFusuario.clear();
+        txtFSenha.clear();
+        txtFTelefone.clear();
+        dtPckData.setValue(null);
+        txtFCep.clear();
+        txtFBairro.clear();
+        txtFRua.clear();
+        txtFCidade.clear();
+        txtFEstado.clear();
     }
 
     private boolean validarQuantidadeDeCaracteres(String tipoDeValidacao, String input){

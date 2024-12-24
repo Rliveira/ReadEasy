@@ -162,102 +162,143 @@ public class AdmEstoqueController {
 
     @FXML
     public void btnAdicionarEstoqueDoLivro(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        boolean excecaoLevantada = false;
 
-        String inputQuantidade = tfQuantidade.getText();
-        String inputValorPago = tfValorTotalCompra.getText();
-        String livroSelecionado = cbLivros.getValue();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente adicionar estoque ao livro?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(inputValorPago.isEmpty() || inputQuantidade.isEmpty() || livroSelecionado == null){
-            alert.setTitle("Erro");
-            alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
-            alert.setContentText("Preencha-os corretemente para continuar.");
-            alert.showAndWait();
-        }
-        else {
-            if(validarInputTf(inputQuantidade) && validarInputTf(inputValorPago)){
-                Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
-                int quantidade = Integer.parseInt(inputQuantidade);
-                double valorTotal = Double.parseDouble(inputValorPago);
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                try {
-                    servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
-                } catch (ValorInvalidoException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("O campo de quantidade ou valor total pago " +
-                                        "possui valor nulo ou negativa digitada");
-                    alert.setContentText("Digite uma quantidade positiva para continuar.");
-                    alert.showAndWait();
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
+                alert.close();
 
-                    limparCampos();
+
+                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                boolean excecaoLevantada = false;
+
+                String inputQuantidade = tfQuantidade.getText();
+                String inputValorPago = tfValorTotalCompra.getText();
+                String livroSelecionado = cbLivros.getValue();
+
+                if(inputValorPago.isEmpty() || inputQuantidade.isEmpty() || livroSelecionado == null){
+                    alertErro.setTitle("Erro");
+                    alertErro.setHeaderText("Algum campo ou alguns campos estão vazios.");
+                    alertErro.setContentText("Preencha-os corretemente para continuar.");
+                    alertErro.showAndWait();
                 }
-                if(!excecaoLevantada){
-                    tvEstoque.getItems().clear();
-                    inicializarTabela();
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensagem");
-                    alert.setHeaderText("Sucesso!");
-                    alert.setContentText("Quantidade de estoque do livro adicionado com êxito.");
-                    alert.showAndWait();
-                    limparCampos();
+                else {
+                    if(validarInputTf(inputQuantidade) && validarInputTf(inputValorPago)){
+                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        int quantidade = Integer.parseInt(inputQuantidade);
+                        double valorTotal = Double.parseDouble(inputValorPago);
+
+                        try {
+                            servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
+                        } catch (ValorInvalidoException e) {
+                            excecaoLevantada = true;
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("O campo de quantidade ou valor total pago " +
+                                    "possui valor nulo ou negativa digitada");
+                            alertErro.setContentText("Digite uma quantidade positiva para continuar.");
+                            alertErro.showAndWait();
+
+                            limparCampos();
+                        }
+                        if(!excecaoLevantada){
+                            tvEstoque.getItems().clear();
+                            inicializarTabela();
+
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Mensagem");
+                            alertErro.setHeaderText("Sucesso!");
+                            alertErro.setContentText("Quantidade de estoque do livro adicionado com êxito.");
+                            alertErro.showAndWait();
+                            limparCampos();
+                        }
+                    }
                 }
             }
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     @FXML
     public void btnReduzirEstoqueDoLivro(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        boolean excecaoLevantada = false;
-        boolean resultado;
 
-        String inputQuantidade = tfQuantidade.getText();
-        String livroSelecionado = cbLivros.getValue();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente reduzir o estoque do livro?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(inputQuantidade.isEmpty() || livroSelecionado == null){
-            alert.setTitle("Erro");
-            alert.setHeaderText("Algum campo ou alguns campos estão vazios.");
-            alert.setContentText("Preencha-os corretemente para continuar.");
-            alert.showAndWait();
-        }
-        else{
-            resultado = validarInputTf(inputQuantidade);
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-            if(resultado){
-                Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
-                int quantidade = Integer.parseInt(inputQuantidade);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                try {
-                    servidorReadEasy.diminuirQuantidadeEmEstoque(livro, quantidade);
-                } catch (ValorInvalidoException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Operação inválida!");
-                    alert.setContentText("A quantidade digitada a ser removida é maior do que a quantidade em estoque.");
-                    alert.showAndWait();
-                } catch (EstoqueInsuficienteException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Operação inválida!");
-                    alert.setContentText("A quantidade em estoque é 0.");
-                    alert.showAndWait();
+                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                boolean excecaoLevantada = false;
+                boolean resultado;
+
+                String inputQuantidade = tfQuantidade.getText();
+                String livroSelecionado = cbLivros.getValue();
+
+                if(inputQuantidade.isEmpty() || livroSelecionado == null){
+                    alertErro.setTitle("Erro");
+                    alertErro.setHeaderText("Algum campo ou alguns campos estão vazios.");
+                    alertErro.setContentText("Preencha-os corretemente para continuar.");
+                    alertErro.showAndWait();
                 }
-                if(!excecaoLevantada){
-                    tvEstoque.getItems().clear();
-                    inicializarTabela();
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mensagem");
-                    alert.setHeaderText("Sucesso!");
-                    alert.setContentText("Quantidade de estoque do livro adicionionado com êxito.");
-                    alert.showAndWait();
-                    limparCampos();
+                else{
+                    resultado = validarInputTf(inputQuantidade);
+
+                    if(resultado){
+                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        int quantidade = Integer.parseInt(inputQuantidade);
+
+                        try {
+                            servidorReadEasy.diminuirQuantidadeEmEstoque(livro, quantidade);
+                        } catch (ValorInvalidoException e) {
+                            excecaoLevantada = true;
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Operação inválida!");
+                            alertErro.setContentText("A quantidade digitada a ser removida é maior do que a quantidade em estoque.");
+                            alertErro.showAndWait();
+                        } catch (EstoqueInsuficienteException e) {
+                            excecaoLevantada = true;
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Operação inválida!");
+                            alertErro.setContentText("A quantidade em estoque é 0.");
+                            alertErro.showAndWait();
+                        }
+                        if(!excecaoLevantada){
+                            tvEstoque.getItems().clear();
+                            inicializarTabela();
+                            alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                            alertErro.setTitle("Mensagem");
+                            alertErro.setHeaderText("Sucesso!");
+                            alertErro.setContentText("Quantidade de estoque do livro adicionionado com êxito.");
+                            alertErro.showAndWait();
+                            limparCampos();
+                        }
+                    }
                 }
             }
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     private boolean validarInputTf(String quantidadeDigitada){

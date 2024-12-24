@@ -52,7 +52,7 @@ public class FornecedorHistoricoController {
     private TableColumn<CompraLivrariaDTO, String> clnValorPorLivro;
 
     private Usuario usuarioLogado;
-
+    private Fornecedor fornecedor;
     //Métodos de troca de tela:
     @FXML
     public void trocarTelaPerfilFornecedor(){
@@ -120,7 +120,12 @@ public class FornecedorHistoricoController {
     public void inicializarTableHistoricoCompras(){
         List<CompraLivrariaDTO> historicoCompras = new ArrayList<>();
         try {
-            historicoCompras = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(null, null);
+            usuarioLogado = SessaoUsuario.getUsuarioLogado();
+            if(usuarioLogado instanceof Fornecedor){
+                fornecedor = (Fornecedor) usuarioLogado;
+            }
+
+            historicoCompras = ServidorReadEasy.getInstance().ListarHistoricoDeVendasFornecedor(fornecedor, null, null);
 
             // Ordena as vendas por data (data atual pra data mais antiga)
             Collections.sort(historicoCompras, Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());

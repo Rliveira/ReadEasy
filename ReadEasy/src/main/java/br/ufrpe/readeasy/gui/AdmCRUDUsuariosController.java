@@ -273,121 +273,141 @@ public class AdmCRUDUsuariosController {
 
     @FXML
     public void onBtnEditarUsuarioclick() {
-        boolean excecaoLevantada = false;
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        String nome = txtFieldNome.getText();
-        String cpf = txtFieldCPF.getText();
-        String login = txtFieldLogin.getText();
-        String telefone = txtFieldTelefone.getText();
-        String rua = txtFieldRua.getText();
-        String bairro = txtFieldBairro.getText();
-        String cidade = txtFieldCidade.getText();
-        String estado = txtFieldEstado.getText();
-        String senha = txtFieldSenha.getText();
-        String nomeTipoFornecedor = cbTipoFornecedor.getValue();
-        TipoFornecedor tipoFornecedor = procurarTipoFornecedorPeloNome(nomeTipoFornecedor); //retorna o tipo fornecedor selecionado pelo usuário
-        String cepString = txtFieldCEP.getText();
-        LocalDate dataNascimento = dpDataNascimento.getValue();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente editar usuário?");
+        alert.setContentText("Escolha uma opção.");
 
-        if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
-                || cidade.isEmpty() || estado.isEmpty() || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campos não preenchidos.");
-            alert.setContentText("Certifique de preencher todos os campos para continuar.");
-            alert.showAndWait();
-        } else {
-            if (validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf)) {
-                excecaoLevantada = true;
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
-                alert.setContentText("Digite apenas números nos campos para continuar.");
-                alert.showAndWait();
-            }
-            else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
-                    !validarQuantidadeDeCaracteres("telefone", telefone) ||
-                    !validarQuantidadeDeCaracteres("cepString", cepString)) {
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
-                alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
-                alert.showAndWait();
-            }
-            else {
-                try {
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                trocarTelaLogin();
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.close();
 
-                    int cep = Integer.parseInt(cepString);
+                boolean excecaoLevantada = false;
 
-                    Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
-                    Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
+                String nome = txtFieldNome.getText();
+                String cpf = txtFieldCPF.getText();
+                String login = txtFieldLogin.getText();
+                String telefone = txtFieldTelefone.getText();
+                String rua = txtFieldRua.getText();
+                String bairro = txtFieldBairro.getText();
+                String cidade = txtFieldCidade.getText();
+                String estado = txtFieldEstado.getText();
+                String senha = txtFieldSenha.getText();
+                String nomeTipoFornecedor = cbTipoFornecedor.getValue();
+                TipoFornecedor tipoFornecedor = procurarTipoFornecedorPeloNome(nomeTipoFornecedor); //retorna o tipo fornecedor selecionado pelo usuário
+                String cepString = txtFieldCEP.getText();
+                LocalDate dataNascimento = dpDataNascimento.getValue();
 
-                    if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165")) {
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Edição inválida!");
-                        alert.setContentText("Não é possível editar o ADM Inicial");
-                        alert.show();
-                    }
-
-                    String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
-                    if (tipoUsuarioSelecionado == null) {
+                if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || telefone.isEmpty() || rua.isEmpty() || bairro.isEmpty()
+                        || cidade.isEmpty() || estado.isEmpty() || senha.isEmpty() || cepString.isEmpty() || dataNascimento == null) {
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Campos não preenchidos.");
+                    alert.setContentText("Certifique de preencher todos os campos para continuar.");
+                    alert.showAndWait();
+                } else {
+                    if (validarInputTf(cepString) || validarInputTf(telefone) || validarInputTf(cpf)) {
                         excecaoLevantada = true;
                         alert.setTitle("Erro");
-                        alert.setHeaderText("Tipo de usuário não selecionado.");
-                        alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+                        alert.setHeaderText("Campos de telefone, cpf ou cep contém letras ou caracteres especiais.");
+                        alert.setContentText("Digite apenas números nos campos para continuar.");
                         alert.showAndWait();
-                    } else if (usuario instanceof Funcionario) {
-                        if (((Funcionario) usuario).isAdm()) {
-                            ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
-                                    login, senha, endereco, telefone, false, ((Funcionario) usuario).getAdmResponsavel());
-                            limparCampos();
-                        } else {
-                            ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
-                                    login, senha, endereco, telefone, true, ((Funcionario) usuario).getAdmResponsavel());
-                            limparCampos();
+                    }
+                    else if (!validarQuantidadeDeCaracteres("cpf", cpf) ||
+                            !validarQuantidadeDeCaracteres("telefone", telefone) ||
+                            !validarQuantidadeDeCaracteres("cepString", cepString)) {
+
+                        alert.setTitle("Erro");
+                        alert.setHeaderText("Campos de telefone, CEP ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                        alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                        alert.showAndWait();
+                    }
+                    else {
+                        try {
+
+                            int cep = Integer.parseInt(cepString);
+
+                            Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
+                            Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
+
+                            if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165")) {
+                                alert.setTitle("Erro");
+                                alert.setHeaderText("Edição inválida!");
+                                alert.setContentText("Não é possível editar o ADM Inicial");
+                                alert.show();
+                            }
+
+                            String tipoUsuarioSelecionado = cbTipo.getSelectionModel().getSelectedItem();
+                            if (tipoUsuarioSelecionado == null) {
+                                excecaoLevantada = true;
+                                alert.setTitle("Erro");
+                                alert.setHeaderText("Tipo de usuário não selecionado.");
+                                alert.setContentText("Selecione uma opção no tipo de usuário para continuar.");
+                                alert.showAndWait();
+                            } else if (usuario instanceof Funcionario) {
+                                if (((Funcionario) usuario).isAdm()) {
+                                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                            login, senha, endereco, telefone, false, ((Funcionario) usuario).getAdmResponsavel());
+                                    limparCampos();
+                                } else {
+                                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                            login, senha, endereco, telefone, true, ((Funcionario) usuario).getAdmResponsavel());
+                                    limparCampos();
+                                }
+                            } else if (usuario instanceof Fornecedor) {
+                                ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha,
+                                        endereco, telefone, tipoFornecedor);
+                                limparCampos();
+                            }
+
+                            if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
+                                    usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
+                                    || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1))) {
+                                excecaoLevantada = true;
+                                alert.setTitle("Erro");
+                                alert.setHeaderText("Edição inválida!");
+                                alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+                                alert.showAndWait();
+                            }
+                        } catch (DataInvalidaException e) {
+                            excecaoLevantada = true;
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Data Inválida!");
+                            alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
+                            alert.showAndWait();
+                        } catch (UsuarioExistenteException e) {
+                            excecaoLevantada = true;
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Usuário existente!");
+                            alert.setContentText("Este usuário já está cadastrado no sistema.");
+                            alert.showAndWait();
+                        } catch (NumberFormatException e) {
+                            excecaoLevantada = true;
+                            alert.setTitle("Erro");
+                            alert.setHeaderText("Campo de cep contém letras ou caracteres especiais.");
+                            alert.setContentText("Digite apenas números no campos para continuar.");
+                            alert.showAndWait();
                         }
-                    } else if (usuario instanceof Fornecedor) {
-                        ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha,
-                                endereco, telefone, tipoFornecedor);
-                        limparCampos();
                     }
-
-                    if (usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(0)) ||
-                            usuario instanceof Funcionario && tipoUsuarioSelecionado.equals(cargos.get(2))
-                            || usuario instanceof Fornecedor && tipoUsuarioSelecionado.equals(cargos.get(1))) {
-                        excecaoLevantada = true;
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Edição inválida!");
-                        alert.setContentText("Não é possível fazer conversão entre fornecedor e funcionário.");
+                    if (!excecaoLevantada) {
+                        onAtualizarTabelaclick();
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Sucesso");
+                        alert.setHeaderText("Edição concluída!");
+                        alert.setContentText("Edição de usuário realizada com êxito.");
                         alert.showAndWait();
                     }
-                } catch (DataInvalidaException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Data Inválida!");
-                    alert.setContentText("A data de nascimento selecionada é posterior a data atual.");
-                    alert.showAndWait();
-                } catch (UsuarioExistenteException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Usuário existente!");
-                    alert.setContentText("Este usuário já está cadastrado no sistema.");
-                    alert.showAndWait();
-                } catch (NumberFormatException e) {
-                    excecaoLevantada = true;
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Campo de cep contém letras ou caracteres especiais.");
-                    alert.setContentText("Digite apenas números no campos para continuar.");
-                    alert.showAndWait();
                 }
             }
-            if (!excecaoLevantada) {
-                onAtualizarTabelaclick();
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setTitle("Sucesso");
-                alert.setHeaderText("Edição concluída!");
-                alert.setContentText("Edição de usuário realizada com êxito.");
-                alert.showAndWait();
+            else {
+                alert.close();
             }
-        }
+        });
     }
     @FXML
     public void onDeletarUsuarioclick() {

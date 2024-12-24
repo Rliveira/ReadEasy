@@ -122,7 +122,7 @@ public class ClientePerfilController {
     @FXML
     private void trocarTelaHistoricoCliente(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteMinhasCompras.fxml", "ReadEasy - Histórico");
+        sm.TrocarTela("clienteHistoricoCompras.fxml", "ReadEasy - Histórico");
     }
 
     @FXML
@@ -196,64 +196,83 @@ public class ClientePerfilController {
 
     @FXML
     void btnAtualizarPerfil() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        String nome = tfEditarPerfilNome.getText();
-        String cpf = tfEditarPerfilCPF.getText();
-        String login = tfEditarPerfilLogin.getText();
-        String senha = tfEditarPerfilSenha.getText();
-        String telefone = tfEditarPerfilTelefone.getText();
-        LocalDate dataNascimento = dtpEditarPerfilDataDeNascimento.getValue();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente atualizar o perfil?");
+        alert.setContentText("Escolha uma opção.");
 
-        if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || senha.isEmpty() || dataNascimento == null){
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campos não preenchidos.");
-            alert.setContentText("Preencha todos os campos corretamente para continuar.");
-            alert.showAndWait();
-        }
-        else{
-            if (validarInputTf(telefone) || validarInputTf(cpf)) {
-                if(validarQuantidadeDeCaracteres("telefone", telefone) &&
-                        validarQuantidadeDeCaracteres("cep", cpf)){
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-                    Endereco enderecoSelecionado = tbvEnderecosCadastrados.getItems().get(0);
-                    Cliente cliente = (Cliente) this.usuarioLogado;
-                    try {
-                        ServidorReadEasy.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
-                                login, senha, enderecoSelecionado, telefone);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                alert.close();
+                Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                        this.atualizarLabels();
-                        alert.setAlertType(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Atualização de perfil");
-                        alert.setContentText("Perfil atualizado com sucesso!");
-                        alert.showAndWait();
+                String nome = tfEditarPerfilNome.getText();
+                String cpf = tfEditarPerfilCPF.getText();
+                String login = tfEditarPerfilLogin.getText();
+                String senha = tfEditarPerfilSenha.getText();
+                String telefone = tfEditarPerfilTelefone.getText();
+                LocalDate dataNascimento = dtpEditarPerfilDataDeNascimento.getValue();
 
-                    }catch (UsuarioExistenteException e){
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Tipo de usuário inválido");
-                        alert.setContentText(e.getMessage());
-                        alert.showAndWait();
-                    }catch (DataInvalidaException e){
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Data inválida.");
-                        alert.setContentText(e.getMessage());
-                        alert.showAndWait();
-                    }
+                if (nome.isEmpty() || cpf.isEmpty() || login.isEmpty() || senha.isEmpty() || dataNascimento == null){
+                    alertErro.setTitle("Erro");
+                    alertErro.setHeaderText("Campos não preenchidos.");
+                    alertErro.setContentText("Preencha todos os campos corretamente para continuar.");
+                    alertErro.showAndWait();
                 }
                 else{
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Campos de telefone ou CPF apresentam uma quantidade de dígitos fora do padrão.");
-                    alert.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
-                    alert.showAndWait();
+                    if (validarInputTf(telefone) || validarInputTf(cpf)) {
+                        if(validarQuantidadeDeCaracteres("telefone", telefone) &&
+                                validarQuantidadeDeCaracteres("cep", cpf)){
+
+                            Endereco enderecoSelecionado = tbvEnderecosCadastrados.getItems().get(0);
+                            Cliente cliente = (Cliente) this.usuarioLogado;
+                            try {
+                                ServidorReadEasy.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
+                                        login, senha, enderecoSelecionado, telefone);
+
+                                this.atualizarLabels();
+                                alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                                alertErro.setTitle("Atualização de perfil");
+                                alertErro.setContentText("Perfil atualizado com sucesso!");
+                                alertErro.showAndWait();
+                                limparCamposPessoais();
+
+                            }catch (UsuarioExistenteException e){
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("Tipo de usuário inválido");
+                                alertErro.setContentText(e.getMessage());
+                                alertErro.showAndWait();
+                            }catch (DataInvalidaException e){
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("Data inválida.");
+                                alertErro.setContentText(e.getMessage());
+                                alertErro.showAndWait();
+                            }
+                        }
+                        else{
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Campos de telefone ou CPF apresentam uma quantidade de dígitos fora do padrão.");
+                            alertErro.setContentText("Certifique de digitar 11 dígitos para CPF e 8 dígitos para CEP para continuar.");
+                            alertErro.showAndWait();
+                        }
+                    }
+                    else{
+                        alertErro.setTitle("Erro");
+                        alertErro.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
+                        alertErro.setContentText("Digite apenas números para continuar");
+                        alertErro.showAndWait();
+                    }
                 }
             }
-            else{
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campo de telefone, CEP ou CPF apresenta letras ou caracteres especiais");
-                alert.setContentText("Digite apenas números para continuar");
-                alert.showAndWait();
+            else {
+                alert.close();
             }
-        }
+        });
     }
 
     @FXML
@@ -314,6 +333,7 @@ public class ClientePerfilController {
     @FXML
     void btnRemoverEndereco(){
         Endereco enderecoSelecionado = tbvEnderecosCadastrados.getSelectionModel().getSelectedItem();
+        Alert alertAviso = new Alert(Alert.AlertType.WARNING);
 
         if (enderecoSelecionado != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -328,11 +348,12 @@ public class ClientePerfilController {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                     ServidorReadEasy.getInstance().removerEnderecoDeEntrega(usuarioLogado, enderecoSelecionado);
                     tbvEnderecosCadastrados.getItems().remove(enderecoSelecionado);
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sucesso");
-                    alert.setHeaderText("Endereço removido com êxito.");
-                    alert.setContentText(null);
-                    alert.showAndWait();
+
+                    alertAviso.setAlertType(Alert.AlertType.INFORMATION);
+                    alertAviso.setTitle("Sucesso");
+                    alertAviso.setHeaderText("Endereço removido com êxito.");
+                    alertAviso.setContentText(null);
+                    alertAviso.showAndWait();
                     limparCampos();
                 }
                 else {
@@ -340,88 +361,102 @@ public class ClientePerfilController {
                 }
             });
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aviso");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhum endereço selecionado para remoção.");
-            alert.showAndWait();
-
+            alertAviso.setTitle("Aviso");
+            alertAviso.setHeaderText(null);
+            alertAviso.setContentText("Nenhum endereço selecionado para remoção.");
+            alertAviso.showAndWait();
         }
     }
 
     @FXML
     void btnEditarEndereco(){
-        boolean excessaoLevantada = false;
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        Endereco enderecoSelecionado = tbvEnderecosCadastrados.getSelectionModel().getSelectedItem();
+        Alert alertErro = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente editar o endereço?");
+        alert.setContentText("Escolha uma opção.");
 
-        if(enderecoSelecionado != null) {
-            String stringCep = tfCEP.getText();
-            String novaRua = tfRua.getText();
-            String novoBairro = tfBairro.getText();
-            String novaCidade = tfCidade.getText();
-            String novoEstado = tfEstado.getText();
+        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
+        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(simButton, naoButton);
 
-            //Necessário verificar o cep para garantir as próximas validações referente a ele.
-            if(stringCep.isEmpty()){
-                alert.setTitle("Erro");
-                alert.setHeaderText("Campo não preenchido.");
-                alert.setContentText("Preencha todos os campos corretamente para continuar.");
-                alert.showAndWait();
-            }
-            else{
-                if(validarInputTf(stringCep)){
-                    if(validarQuantidadeDeCaracteres("Cep", stringCep)){
-                        int cep = Integer.parseInt(stringCep);
-                        try {
-                            ServidorReadEasy.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, cep,
-                                    novaRua, novoBairro, novaCidade, novoEstado);
-                        } catch (EnderecoExistenteException e) {
-                            alert.setTitle("Erro");
-                            alert.setHeaderText("Operação inválida!");
-                            alert.setContentText("Você tentou editar pra um outro endereco" +
-                                    " já cadastrado na sua lista de endereços");
-                            alert.showAndWait();
-                        } catch (CampoVazioException e) {
-                            excessaoLevantada = true;
-                            alert.setTitle("Erro");
-                            alert.setHeaderText("Campo não preenchido.");
-                            alert.setContentText("Preencha todos os campos corretamente para continuar.");
-                            alert.showAndWait();
-                        }
-                        if(!excessaoLevantada){
-                            List<Endereco> enderecos = ServidorReadEasy.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
-                            tbvEnderecosCadastrados.getItems().clear();
-                            tbvEnderecosCadastrados.setItems(FXCollections.observableList(enderecos));
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+                boolean excessaoLevantada = false;
+                Endereco enderecoSelecionado = tbvEnderecosCadastrados.getSelectionModel().getSelectedItem();
 
-                            alert.setAlertType(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Sucesso");
-                            alert.setHeaderText("Endereço editado com sucesso.");
-                            alert.setContentText(null);
-                            alert.showAndWait();
-                            limparCampos();
-                        }
+                if(enderecoSelecionado != null) {
+                    String stringCep = tfCEP.getText();
+                    String novaRua = tfRua.getText();
+                    String novoBairro = tfBairro.getText();
+                    String novaCidade = tfCidade.getText();
+                    String novoEstado = tfEstado.getText();
+
+                    //Necessário verificar o cep para garantir as próximas validações referente a ele.
+                    if(stringCep.isEmpty()){
+                        alertErro.setTitle("Erro");
+                        alertErro.setHeaderText("Campo não preenchido.");
+                        alertErro.setContentText("Preencha todos os campos corretamente para continuar.");
+                        alertErro.showAndWait();
                     }
                     else{
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Campos de CEP apresenta uma quantidade de dígitos fora do padrão.");
-                        alert.setContentText("Certifique de digitar os 8 dígitos para CEP para continuar.");
-                        alert.showAndWait();
+                        if(validarInputTf(stringCep)){
+                            if(validarQuantidadeDeCaracteres("Cep", stringCep)){
+                                int cep = Integer.parseInt(stringCep);
+                                try {
+                                    ServidorReadEasy.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, cep,
+                                            novaRua, novoBairro, novaCidade, novoEstado);
+                                } catch (EnderecoExistenteException e) {
+                                    alertErro.setTitle("Erro");
+                                    alertErro.setHeaderText("Operação inválida!");
+                                    alertErro.setContentText("Você tentou editar pra um outro endereco" +
+                                            " já cadastrado na sua lista de endereços");
+                                    alertErro.showAndWait();
+                                } catch (CampoVazioException e) {
+                                    excessaoLevantada = true;
+                                    alertErro.setTitle("Erro");
+                                    alertErro.setHeaderText("Campo não preenchido.");
+                                    alertErro.setContentText("Preencha todos os campos corretamente para continuar.");
+                                    alertErro.showAndWait();
+                                }
+                                if(!excessaoLevantada){
+                                    List<Endereco> enderecos = ServidorReadEasy.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
+                                    tbvEnderecosCadastrados.getItems().clear();
+                                    tbvEnderecosCadastrados.setItems(FXCollections.observableList(enderecos));
+
+                                    alertErro.setAlertType(Alert.AlertType.INFORMATION);
+                                    alertErro.setTitle("Sucesso");
+                                    alertErro.setHeaderText("Endereço editado com sucesso.");
+                                    alertErro.setContentText(null);
+                                    alertErro.showAndWait();
+                                    limparCampos();
+                                }
+                            }
+                            else{
+                                alertErro.setTitle("Erro");
+                                alertErro.setHeaderText("Campos de CEP apresenta uma quantidade de dígitos fora do padrão.");
+                                alertErro.setContentText("Certifique de digitar os 8 dígitos para CEP para continuar.");
+                                alertErro.showAndWait();
+                            }
+                        }
+                        else{
+                            alertErro.setTitle("Erro");
+                            alertErro.setHeaderText("Campo de cep Preenchido incorretamente.");
+                            alertErro.setContentText("Preencha o campo de Cep apenas com números para continuar.");
+                            alertErro.showAndWait();
+                        }
                     }
-                }
-                else{
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Campo de cep Preenchido incorretamente.");
-                    alert.setContentText("Preencha o campo de Cep apenas com números para continuar.");
-                    alert.showAndWait();
+                }else{
+                    alertErro.setTitle("Erro");
+                    alertErro.setHeaderText("Nenhum endereço selecionado para edição.");
+                    alertErro.setContentText("Selecione um endereco da tabela para continuar.");
+                    alertErro.showAndWait();
                 }
             }
-        }else{
-            alert.setTitle("Aviso");
-            alert.setHeaderText("Nenhum endereço selecionado para edição.");
-            alert.setContentText("Selecione um endereco da tabela para continuar.");
-            alert.showAndWait();
-        }
+            else {
+                alert.close();
+            }
+        });
     }
 
     @FXML
@@ -435,6 +470,16 @@ public class ClientePerfilController {
             tfCidade.setText(enderecoSelecionado.getCidade());
             tfEstado.setText(enderecoSelecionado.getEstado());
         }
+    }
+
+    @FXML
+    public void popularDadosPessoais(){
+        tfEditarPerfilNome.setText(usuarioLogado.getNome());
+        tfEditarPerfilLogin.setText(usuarioLogado.getLogin());
+        tfEditarPerfilTelefone.setText(usuarioLogado.getTelefone());
+        tfEditarPerfilSenha.setText(usuarioLogado.getSenha());
+        tfEditarPerfilCPF.setText(usuarioLogado.getCpf());
+        dtpEditarPerfilDataDeNascimento.setValue(usuarioLogado.getDataNascimento());
     }
 
     private boolean validarQuantidadeDeCaracteres(String tipoDeValidacao, String input){
@@ -474,6 +519,15 @@ public class ClientePerfilController {
         tfCidade.clear();
         tfRua.clear();
         tfEstado.clear();
+    }
+
+    public void limparCamposPessoais(){
+        tfEditarPerfilNome.clear();
+        tfEditarPerfilLogin.clear();
+        tfEditarPerfilTelefone.clear();
+        tfEditarPerfilSenha.clear();
+        tfEditarPerfilCPF.clear();
+        dtpEditarPerfilDataDeNascimento.setValue(null);
     }
 
     public void btnSairDaConta(){
