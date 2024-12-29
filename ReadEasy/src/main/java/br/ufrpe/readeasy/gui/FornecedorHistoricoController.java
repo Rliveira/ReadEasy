@@ -3,7 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -53,30 +53,29 @@ public class FornecedorHistoricoController {
 
     private Usuario usuarioLogado;
     private Fornecedor fornecedor;
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaPerfilFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Perfil");
+    private boolean ignorarInitialize;
+    private static FornecedorHistoricoController instance;
+
+    //construtor:
+    public FornecedorHistoricoController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaEstoqueFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorEstoque.fxml", "ReadEasy - Estoque");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     public void initialize(){
-        construirTableHistoricoCompras();
-        inicializarTableHistoricoCompras();
-        dtpkDataFim.setValue(LocalDate.now());
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getFornecedorHistoricoController() == null){
+            screenManager.setFornecedorHistoricoController(instance);
+        }
+        if(!ignorarInitialize){
+            construirTableHistoricoCompras();
+            inicializarTableHistoricoCompras();
+            dtpkDataFim.setValue(LocalDate.now());
+        }
     }
 
     private void construirTableHistoricoCompras(){
@@ -125,7 +124,7 @@ public class FornecedorHistoricoController {
                 fornecedor = (Fornecedor) usuarioLogado;
             }
 
-            historicoCompras = ServidorReadEasy.getInstance().ListarHistoricoDeVendasFornecedor(fornecedor, null, null);
+            historicoCompras = Fachada.getInstance().ListarHistoricoDeVendasFornecedor(fornecedor, null, null);
 
             // Ordena as vendas por data (data atual pra data mais antiga)
             Collections.sort(historicoCompras, Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
@@ -143,7 +142,7 @@ public class FornecedorHistoricoController {
 
         List<CompraLivrariaDTO> comprasLivraria = null;
         try {
-            comprasLivraria = ServidorReadEasy.getInstance().ListarHistoricoDeVendasFornecedor((Fornecedor) getUsuarioLogado(), dataInicio, dataFim);
+            comprasLivraria = Fachada.getInstance().ListarHistoricoDeVendasFornecedor((Fornecedor) getUsuarioLogado(), dataInicio, dataFim);
         } catch (DataInvalidaException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -154,32 +153,23 @@ public class FornecedorHistoricoController {
         tableHistorico.setItems(FXCollections.observableArrayList(comprasLivraria));
     }
 
-        @FXML
-    public void SairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
+    }
+
+    public void setBtnEstoque(Button btnEstoque) {
+        this.btnEstoque = btnEstoque;
+    }
+
+    public static void setInstance(FornecedorHistoricoController instance) {
+        FornecedorHistoricoController.instance = instance;
     }
 }

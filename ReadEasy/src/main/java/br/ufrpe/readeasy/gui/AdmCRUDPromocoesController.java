@@ -1,8 +1,10 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Promocao;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.business.Fachada;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.PromocaoExistenteException;
+import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -82,54 +84,29 @@ public class AdmCRUDPromocoesController {
     @FXML
     private TableColumn<Promocao, String> clnDtFim;
 
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaEstoqueAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    private static AdmCRUDPromocoesController instance;
+    private boolean ignorarInitialize;
+
+    //Construtor:
+    public AdmCRUDPromocoesController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaUsuariosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
-    }
-
-    @FXML
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaLivrosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
-    }
-
-    @FXML
-    public void trocarTelaPerfilAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     @FXML
     public void initialize() {
-        construirTabela();
-        inicializarTbvPromocoesAtivas();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmCRUDPromocoesController() == null){
+            screenManager.setAdmCRUDPromocoesController(instance);
+        }
+        if(!ignorarInitialize){
+            construirTabela();
+            inicializarTbvPromocoesAtivas();
+        }
     }
 
     @FXML
@@ -171,7 +148,7 @@ public class AdmCRUDPromocoesController {
     @FXML
     public void inicializarTbvPromocoesAtivas(){
         tbvPromocoesAtivas.getItems().clear();
-        List<Promocao> promocoes = ServidorReadEasy.getInstance().listarTodasPromocoesAtivas();
+        List<Promocao> promocoes = Fachada.getInstance().listarTodasPromocoesAtivas();
         tbvPromocoesAtivas.setItems(FXCollections.observableArrayList(promocoes));
     }
 
@@ -202,7 +179,7 @@ public class AdmCRUDPromocoesController {
                 Promocao promocao = new Promocao(titulo, porcentagemDeDesconto, qtdMinimaDeLivros, dataDeCriacao,dataDeExpiracao);
 
                 try {
-                    ServidorReadEasy.getInstance().inserirPromocao(promocao);
+                    Fachada.getInstance().inserirPromocao(promocao);
 
                     tbvPromocoesAtivas.getItems().add(promocao);
 
@@ -261,7 +238,7 @@ public class AdmCRUDPromocoesController {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
                     alert.close();
                     boolean excessaoLevantada = false;
-                    ServidorReadEasy.getInstance().removerPromocao(promocaoSelecionada);
+                    Fachada.getInstance().removerPromocao(promocaoSelecionada);
 
                     if (!excessaoLevantada){
                         tbvPromocoesAtivas.getItems().remove(promocaoSelecionada);
@@ -328,7 +305,7 @@ public class AdmCRUDPromocoesController {
                             int novaQuantidade = Integer.parseInt(qntMin);
 
                             try {
-                                ServidorReadEasy.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
+                                Fachada.getInstance().atualizarPromocao(promocaoSelecionada, novoTitulo, novaPorcentagem,
                                         novaQuantidade, novaDataInicio, novaDataFim, true);
                                 alertErro.setAlertType(Alert.AlertType.INFORMATION);
                                 alertErro.setTitle("Sucesso.");
@@ -405,31 +382,21 @@ public class AdmCRUDPromocoesController {
     public void popularCamposDaPromocaoSelecionada(){
         Promocao promocao = tbvPromocoesAtivas.getSelectionModel().getSelectedItem();
 
-        tfTitulo.setText(promocao.getTitulo());
-        tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocao.getQtdMinimaDeLivros()));
-        tfPorcentagemDeDesconto.setText(String.valueOf(promocao.getPorcentagemDeDesconto()));
-        dtpDataDeInicioDaPromocao.setValue(promocao.getDataDeCriacao());
-        dtpDataDeExpiracaoDaPromocao.setValue(promocao.getDataDeExpiracao());
+        if(promocao != null){
+            tfTitulo.setText(promocao.getTitulo());
+            tfQuantidadeMinimaDeLivros.setText(String.valueOf(promocao.getQtdMinimaDeLivros()));
+            tfPorcentagemDeDesconto.setText(String.valueOf(promocao.getPorcentagemDeDesconto()));
+            dtpDataDeInicioDaPromocao.setValue(promocao.getDataDeCriacao());
+            dtpDataDeExpiracaoDaPromocao.setValue(promocao.getDataDeExpiracao());
+        }
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
+    //gets and sets:
+    public static AdmCRUDPromocoesController getInstance() {
+        return instance;
+    }
 
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

@@ -3,7 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Endereco;
 import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import br.ufrpe.readeasy.exceptions.UsuarioExistenteException;
 import javafx.fxml.FXML;
@@ -105,54 +105,26 @@ public class AdmPerfilController {
     private TextField txtFEstado;
 
     private Usuario usuarioLogado; // Usuário que está logado no momento
+    private static AdmPerfilController instance;
+    private boolean ingnorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaEstoqueAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
-    }
-    @FXML
-
-    public void trocarTelaLivrosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
+    public AdmPerfilController() {
+        if(instance == null){
+            instance = this;
+            ingnorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaPromocoesAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatoórios");
-    }
-
-    @FXML
-    public void trocarTelaUsuariosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
     public void initialize() {
-        this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-        this.atualizarLabels();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmPerfilController() == null){
+            screenManager.setAdmPerfilController(instance);
+        }
+        if(!ingnorarInitialize){
+            this.setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
+            this.atualizarLabels();
+        }
     }
 
     private void atualizarLabels() {
@@ -229,7 +201,7 @@ public class AdmPerfilController {
                         Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
                         try {
                             Funcionario funcionario = (Funcionario) this.usuarioLogado;
-                            ServidorReadEasy.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
+                            Fachada.getInstance().atualizarFuncionario(funcionario, nome, cpf, dataNascimento,
                                     usuario, senha, endereco, telefone, true, funcionario.getAdmResponsavel());
                             this.atualizarLabels();
 
@@ -320,29 +292,6 @@ public class AdmPerfilController {
         return inputDigitadoCorretamente;
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
-
     //GETs and SETs:
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
@@ -350,5 +299,13 @@ public class AdmPerfilController {
 
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    public static AdmPerfilController getInstance() {
+        return instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ingnorarInitialize = ignorarInitialize;
     }
 }

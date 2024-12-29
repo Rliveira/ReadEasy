@@ -1,9 +1,8 @@
 package br.ufrpe.readeasy;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.*;
-import br.ufrpe.readeasy.gui.SessaoUsuario;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 public class InicializadorDeDados {
     public static void main() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         String data = "2001-08-23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataNasc = LocalDate.parse(data, formatter);
@@ -195,47 +194,47 @@ public class InicializadorDeDados {
         Livro livro30 = new Livro("Vinland Saga, Vol 1", "Makoto Yukimuraa", 30, lucasf, bytes30, url30);
 
         try {
-            servidorReadEasy.adicionarLivro(livro1);
-            servidorReadEasy.adicionarLivro(livro2);
-            servidorReadEasy.adicionarLivro(livro3);
-            servidorReadEasy.adicionarLivro(livro4);
-            servidorReadEasy.adicionarLivro(livro5);
-            servidorReadEasy.adicionarLivro(livro6);
-            servidorReadEasy.adicionarLivro(livro7);
-            servidorReadEasy.adicionarLivro(livro8);
-            servidorReadEasy.adicionarLivro(livro9);
-            servidorReadEasy.adicionarLivro(livro10);
-            servidorReadEasy.adicionarLivro(livro11);
-            servidorReadEasy.adicionarLivro(livro12);
-            servidorReadEasy.adicionarLivro(livro13);
-            servidorReadEasy.adicionarLivro(livro14);
-            servidorReadEasy.adicionarLivro(livro15);
-            servidorReadEasy.adicionarLivro(livro16);
-            servidorReadEasy.adicionarLivro(livro17);
-            servidorReadEasy.adicionarLivro(livro18);
-            servidorReadEasy.adicionarLivro(livro19);
-            servidorReadEasy.adicionarLivro(livro20);
-            servidorReadEasy.adicionarLivro(livro21);
-            servidorReadEasy.adicionarLivro(livro22);
-            servidorReadEasy.adicionarLivro(livro23);
-            servidorReadEasy.adicionarLivro(livro24);
-            servidorReadEasy.adicionarLivro(livro25);
-            servidorReadEasy.adicionarLivro(livro26);
-            servidorReadEasy.adicionarLivro(livro27);
-            servidorReadEasy.adicionarLivro(livro28);
-            servidorReadEasy.adicionarLivro(livro29);
-            servidorReadEasy.adicionarLivro(livro30);
+            fachada.adicionarLivro(livro1);
+            fachada.adicionarLivro(livro2);
+            fachada.adicionarLivro(livro3);
+            fachada.adicionarLivro(livro4);
+            fachada.adicionarLivro(livro5);
+            fachada.adicionarLivro(livro6);
+            fachada.adicionarLivro(livro7);
+            fachada.adicionarLivro(livro8);
+            fachada.adicionarLivro(livro9);
+            fachada.adicionarLivro(livro10);
+            fachada.adicionarLivro(livro11);
+            fachada.adicionarLivro(livro12);
+            fachada.adicionarLivro(livro13);
+            fachada.adicionarLivro(livro14);
+            fachada.adicionarLivro(livro15);
+            fachada.adicionarLivro(livro16);
+            fachada.adicionarLivro(livro17);
+            fachada.adicionarLivro(livro18);
+            fachada.adicionarLivro(livro19);
+            fachada.adicionarLivro(livro20);
+            fachada.adicionarLivro(livro21);
+            fachada.adicionarLivro(livro22);
+            fachada.adicionarLivro(livro23);
+            fachada.adicionarLivro(livro24);
+            fachada.adicionarLivro(livro25);
+            fachada.adicionarLivro(livro26);
+            fachada.adicionarLivro(livro27);
+            fachada.adicionarLivro(livro28);
+            fachada.adicionarLivro(livro29);
+            fachada.adicionarLivro(livro30);
         } catch (ValorInvalidoException | LivroExistenteException e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            servidorReadEasy.cadastrarUsuario(jaoF);
-            servidorReadEasy.cadastrarUsuario(luluF);
-            servidorReadEasy.cadastrarUsuario(ronyF);
-            servidorReadEasy.cadastrarUsuario(marif);
-            servidorReadEasy.cadastrarUsuario(lucasf);
-            servidorReadEasy.cadastrarUsuario(funcionario2);
+            fachada.cadastrarUsuario(jaoF);
+            fachada.cadastrarUsuario(luluF);
+            fachada.cadastrarUsuario(ronyF);
+            fachada.cadastrarUsuario(marif);
+            fachada.cadastrarUsuario(lucasf);
+            fachada.cadastrarUsuario(funcionario2);
 
         } catch (MenorDeIdadeException | DataInvalidaException | CampoVazioException | UsuarioExistenteException e) {
             System.out.println(e.getMessage());
@@ -264,158 +263,158 @@ public class InicializadorDeDados {
         Genero religioso = Genero.RELIGIOSO;
 
         try {
-            servidorReadEasy.adicionarGenero(livro1, romance);
-            servidorReadEasy.adicionarGenero(livro1, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro1, comedia);
-            servidorReadEasy.adicionarGenero(livro1, criticaSocial);
+            fachada.adicionarGenero(livro1, romance);
+            fachada.adicionarGenero(livro1, literaturaClassica);
+            fachada.adicionarGenero(livro1, comedia);
+            fachada.adicionarGenero(livro1, criticaSocial);
 
-            servidorReadEasy.adicionarGenero(livro2, fantasia);
-            servidorReadEasy.adicionarGenero(livro2, aventura);
-            servidorReadEasy.adicionarGenero(livro2, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro2, ficcao);
+            fachada.adicionarGenero(livro2, fantasia);
+            fachada.adicionarGenero(livro2, aventura);
+            fachada.adicionarGenero(livro2, infantoJuvenil);
+            fachada.adicionarGenero(livro2, ficcao);
 
-            servidorReadEasy.adicionarGenero(livro3, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro3, fantasia);
-            servidorReadEasy.adicionarGenero(livro3, aventura);
+            fachada.adicionarGenero(livro3, infantoJuvenil);
+            fachada.adicionarGenero(livro3, fantasia);
+            fachada.adicionarGenero(livro3, aventura);
 
-            servidorReadEasy.adicionarGenero(livro4, acao);
-            servidorReadEasy.adicionarGenero(livro4, fantasia);
-            servidorReadEasy.adicionarGenero(livro4, sobrenatural);
-            servidorReadEasy.adicionarGenero(livro4, aventura);
-            servidorReadEasy.adicionarGenero(livro4, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro4, acao);
+            fachada.adicionarGenero(livro4, fantasia);
+            fachada.adicionarGenero(livro4, sobrenatural);
+            fachada.adicionarGenero(livro4, aventura);
+            fachada.adicionarGenero(livro4, historiaEmQuadrinhos);
 
-            servidorReadEasy.adicionarGenero(livro5, fantasia);
-            servidorReadEasy.adicionarGenero(livro5, acao);
-            servidorReadEasy.adicionarGenero(livro5, aventura);
-            servidorReadEasy.adicionarGenero(livro5, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro5, fantasia);
+            fachada.adicionarGenero(livro5, acao);
+            fachada.adicionarGenero(livro5, aventura);
+            fachada.adicionarGenero(livro5, historiaEmQuadrinhos);
 
-            servidorReadEasy.adicionarGenero(livro6, fantasia);
-            servidorReadEasy.adicionarGenero(livro6, acao);
-            servidorReadEasy.adicionarGenero(livro6, aventura);
-            servidorReadEasy.adicionarGenero(livro6, sobrenatural);
-            servidorReadEasy.adicionarGenero(livro6, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro6, fantasia);
+            fachada.adicionarGenero(livro6, acao);
+            fachada.adicionarGenero(livro6, aventura);
+            fachada.adicionarGenero(livro6, sobrenatural);
+            fachada.adicionarGenero(livro6, historiaEmQuadrinhos);
 
-            servidorReadEasy.adicionarGenero(livro7, romance);
-            servidorReadEasy.adicionarGenero(livro7, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro7, drama);
+            fachada.adicionarGenero(livro7, romance);
+            fachada.adicionarGenero(livro7, literaturaClassica);
+            fachada.adicionarGenero(livro7, drama);
 
-            servidorReadEasy.adicionarGenero(livro8, romance);
-            servidorReadEasy.adicionarGenero(livro8, epico);
-            servidorReadEasy.adicionarGenero(livro8, historico);
-            servidorReadEasy.adicionarGenero(livro8, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro8, drama);
+            fachada.adicionarGenero(livro8, romance);
+            fachada.adicionarGenero(livro8, epico);
+            fachada.adicionarGenero(livro8, historico);
+            fachada.adicionarGenero(livro8, literaturaClassica);
+            fachada.adicionarGenero(livro8, drama);
 
-            servidorReadEasy.adicionarGenero(livro9, aventura);
-            servidorReadEasy.adicionarGenero(livro9, suspense);
-            servidorReadEasy.adicionarGenero(livro9, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro9, fantasia);
+            fachada.adicionarGenero(livro9, aventura);
+            fachada.adicionarGenero(livro9, suspense);
+            fachada.adicionarGenero(livro9, infantoJuvenil);
+            fachada.adicionarGenero(livro9, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro10, aventura);
-            servidorReadEasy.adicionarGenero(livro10, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro10, fantasia);
+            fachada.adicionarGenero(livro10, aventura);
+            fachada.adicionarGenero(livro10, infantoJuvenil);
+            fachada.adicionarGenero(livro10, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro11, aventura);
-            servidorReadEasy.adicionarGenero(livro11, suspense);
-            servidorReadEasy.adicionarGenero(livro11, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro11, fantasia);
+            fachada.adicionarGenero(livro11, aventura);
+            fachada.adicionarGenero(livro11, suspense);
+            fachada.adicionarGenero(livro11, infantoJuvenil);
+            fachada.adicionarGenero(livro11, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro12, aventura);
-            servidorReadEasy.adicionarGenero(livro12, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro12, fantasia);
+            fachada.adicionarGenero(livro12, aventura);
+            fachada.adicionarGenero(livro12, infantoJuvenil);
+            fachada.adicionarGenero(livro12, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro13, aventura);
-            servidorReadEasy.adicionarGenero(livro13, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro13, fantasia);
+            fachada.adicionarGenero(livro13, aventura);
+            fachada.adicionarGenero(livro13, infantoJuvenil);
+            fachada.adicionarGenero(livro13, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro14, poesia);
-            servidorReadEasy.adicionarGenero(livro14, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro14, fantasia);
+            fachada.adicionarGenero(livro14, poesia);
+            fachada.adicionarGenero(livro14, infantoJuvenil);
+            fachada.adicionarGenero(livro14, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro15, drama);
-            servidorReadEasy.adicionarGenero(livro15, romance);
-            servidorReadEasy.adicionarGenero(livro15, historico);
-            servidorReadEasy.adicionarGenero(livro15, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro15, criticaSocial);
+            fachada.adicionarGenero(livro15, drama);
+            fachada.adicionarGenero(livro15, romance);
+            fachada.adicionarGenero(livro15, historico);
+            fachada.adicionarGenero(livro15, literaturaClassica);
+            fachada.adicionarGenero(livro15, criticaSocial);
 
-            servidorReadEasy.adicionarGenero(livro16, criticaSocial);
-            servidorReadEasy.adicionarGenero(livro16, ficcao);
+            fachada.adicionarGenero(livro16, criticaSocial);
+            fachada.adicionarGenero(livro16, ficcao);
 
-            servidorReadEasy.adicionarGenero(livro17, drama);
-            servidorReadEasy.adicionarGenero(livro17, romance);
-            servidorReadEasy.adicionarGenero(livro17, criticaSocial);
+            fachada.adicionarGenero(livro17, drama);
+            fachada.adicionarGenero(livro17, romance);
+            fachada.adicionarGenero(livro17, criticaSocial);
 
-            servidorReadEasy.adicionarGenero(livro18, aventura);
-            servidorReadEasy.adicionarGenero(livro18, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro18, fantasia);
+            fachada.adicionarGenero(livro18, aventura);
+            fachada.adicionarGenero(livro18, infantoJuvenil);
+            fachada.adicionarGenero(livro18, fantasia);
 
-            servidorReadEasy.adicionarGenero(livro19, aventura);
-            servidorReadEasy.adicionarGenero(livro19, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro19, fantasia);
-            servidorReadEasy.adicionarGenero(livro19, ficcao);
-            servidorReadEasy.adicionarGenero(livro19, epico);
+            fachada.adicionarGenero(livro19, aventura);
+            fachada.adicionarGenero(livro19, infantoJuvenil);
+            fachada.adicionarGenero(livro19, fantasia);
+            fachada.adicionarGenero(livro19, ficcao);
+            fachada.adicionarGenero(livro19, epico);
 
-            servidorReadEasy.adicionarGenero(livro20, romance);
-            servidorReadEasy.adicionarGenero(livro20, drama);
-            servidorReadEasy.adicionarGenero(livro20, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro20, criticaSocial);
+            fachada.adicionarGenero(livro20, romance);
+            fachada.adicionarGenero(livro20, drama);
+            fachada.adicionarGenero(livro20, literaturaClassica);
+            fachada.adicionarGenero(livro20, criticaSocial);
 
-            servidorReadEasy.adicionarGenero(livro21, romance);
-            servidorReadEasy.adicionarGenero(livro21, literaturaClassica);
+            fachada.adicionarGenero(livro21, romance);
+            fachada.adicionarGenero(livro21, literaturaClassica);
 
-            servidorReadEasy.adicionarGenero(livro22, romance);
-            servidorReadEasy.adicionarGenero(livro22, drama);
-            servidorReadEasy.adicionarGenero(livro22, literaturaClassica);
+            fachada.adicionarGenero(livro22, romance);
+            fachada.adicionarGenero(livro22, drama);
+            fachada.adicionarGenero(livro22, literaturaClassica);
 
-            servidorReadEasy.adicionarGenero(livro23, literaturaClassica);
-            servidorReadEasy.adicionarGenero(livro23, poesia);
-            servidorReadEasy.adicionarGenero(livro23, epico);
-            servidorReadEasy.adicionarGenero(livro23, religioso);
-            servidorReadEasy.adicionarGenero(livro23, drama);
+            fachada.adicionarGenero(livro23, literaturaClassica);
+            fachada.adicionarGenero(livro23, poesia);
+            fachada.adicionarGenero(livro23, epico);
+            fachada.adicionarGenero(livro23, religioso);
+            fachada.adicionarGenero(livro23, drama);
 
-            servidorReadEasy.adicionarGenero(livro24, aventura);
-            servidorReadEasy.adicionarGenero(livro24, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro24, fantasia);
-            servidorReadEasy.adicionarGenero(livro24, acao);
-            servidorReadEasy.adicionarGenero(livro24, historiaEmQuadrinhos);
-            servidorReadEasy.adicionarGenero(livro24, drama);
-            servidorReadEasy.adicionarGenero(livro24, comedia);
+            fachada.adicionarGenero(livro24, aventura);
+            fachada.adicionarGenero(livro24, infantoJuvenil);
+            fachada.adicionarGenero(livro24, fantasia);
+            fachada.adicionarGenero(livro24, acao);
+            fachada.adicionarGenero(livro24, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro24, drama);
+            fachada.adicionarGenero(livro24, comedia);
 
-            servidorReadEasy.adicionarGenero(livro25, aventura);
-            servidorReadEasy.adicionarGenero(livro25, infantoJuvenil);
-            servidorReadEasy.adicionarGenero(livro25, fantasia);
-            servidorReadEasy.adicionarGenero(livro25, acao);
-            servidorReadEasy.adicionarGenero(livro25, historiaEmQuadrinhos);
-            servidorReadEasy.adicionarGenero(livro25, comedia);
+            fachada.adicionarGenero(livro25, aventura);
+            fachada.adicionarGenero(livro25, infantoJuvenil);
+            fachada.adicionarGenero(livro25, fantasia);
+            fachada.adicionarGenero(livro25, acao);
+            fachada.adicionarGenero(livro25, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro25, comedia);
 
-            servidorReadEasy.adicionarGenero(livro26, aventura);
-            servidorReadEasy.adicionarGenero(livro26, fantasia);
-            servidorReadEasy.adicionarGenero(livro26, drama);
-            servidorReadEasy.adicionarGenero(livro26, historiaEmQuadrinhos);
-            servidorReadEasy.adicionarGenero(livro26, comedia);
+            fachada.adicionarGenero(livro26, aventura);
+            fachada.adicionarGenero(livro26, fantasia);
+            fachada.adicionarGenero(livro26, drama);
+            fachada.adicionarGenero(livro26, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro26, comedia);
 
-            servidorReadEasy.adicionarGenero(livro27, aventura);
-            servidorReadEasy.adicionarGenero(livro27, acao);
-            servidorReadEasy.adicionarGenero(livro27, ficcao);
-            servidorReadEasy.adicionarGenero(livro27, drama);
-            servidorReadEasy.adicionarGenero(livro27, historiaEmQuadrinhos);
-            servidorReadEasy.adicionarGenero(livro27, comedia);
+            fachada.adicionarGenero(livro27, aventura);
+            fachada.adicionarGenero(livro27, acao);
+            fachada.adicionarGenero(livro27, ficcao);
+            fachada.adicionarGenero(livro27, drama);
+            fachada.adicionarGenero(livro27, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro27, comedia);
 
-            servidorReadEasy.adicionarGenero(livro28, drama);
-            servidorReadEasy.adicionarGenero(livro28, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro28, drama);
+            fachada.adicionarGenero(livro28, historiaEmQuadrinhos);
 
-            servidorReadEasy.adicionarGenero(livro29, aventura);
-            servidorReadEasy.adicionarGenero(livro29, acao);
-            servidorReadEasy.adicionarGenero(livro29, fantasia);
-            servidorReadEasy.adicionarGenero(livro29, drama);
-            servidorReadEasy.adicionarGenero(livro29, historiaEmQuadrinhos);
-            servidorReadEasy.adicionarGenero(livro29, sobrenatural);
-            servidorReadEasy.adicionarGenero(livro29, terror);
+            fachada.adicionarGenero(livro29, aventura);
+            fachada.adicionarGenero(livro29, acao);
+            fachada.adicionarGenero(livro29, fantasia);
+            fachada.adicionarGenero(livro29, drama);
+            fachada.adicionarGenero(livro29, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro29, sobrenatural);
+            fachada.adicionarGenero(livro29, terror);
 
-            servidorReadEasy.adicionarGenero(livro30, aventura);
-            servidorReadEasy.adicionarGenero(livro30, acao);
-            servidorReadEasy.adicionarGenero(livro30, historico);
-            servidorReadEasy.adicionarGenero(livro30, drama);
-            servidorReadEasy.adicionarGenero(livro30, historiaEmQuadrinhos);
+            fachada.adicionarGenero(livro30, aventura);
+            fachada.adicionarGenero(livro30, acao);
+            fachada.adicionarGenero(livro30, historico);
+            fachada.adicionarGenero(livro30, drama);
+            fachada.adicionarGenero(livro30, historiaEmQuadrinhos);
 
         } catch (GeneroExistenteException e) {
             throw new RuntimeException(e);
@@ -445,11 +444,11 @@ public class InicializadorDeDados {
         cliente5.adicionarEndereco(end1);
 
         try {
-            servidorReadEasy.cadastrarUsuario(cliente1);
-            servidorReadEasy.cadastrarUsuario(cliente2);
-            servidorReadEasy.cadastrarUsuario(cliente3);
-            servidorReadEasy.cadastrarUsuario(cliente4);
-            servidorReadEasy.cadastrarUsuario(cliente5);
+            fachada.cadastrarUsuario(cliente1);
+            fachada.cadastrarUsuario(cliente2);
+            fachada.cadastrarUsuario(cliente3);
+            fachada.cadastrarUsuario(cliente4);
+            fachada.cadastrarUsuario(cliente5);
 
         } catch (UsuarioExistenteException | CampoVazioException | MenorDeIdadeException | DataInvalidaException e) {
             throw new RuntimeException(e);
@@ -585,103 +584,103 @@ public class InicializadorDeDados {
 
 
         try {
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro1, 30, dataCompra1, 420.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro1, 10, dataCompra16, 140.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro1, 15, dataCompra10, 210.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro1, 15, dataCompra46, 210.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro1, 50, dataCompra39, 700.0);
+            fachada.aumentarQuantidadeEmEstoque(livro1, 30, dataCompra1, 420.0);
+            fachada.aumentarQuantidadeEmEstoque(livro1, 10, dataCompra16, 140.0);
+            fachada.aumentarQuantidadeEmEstoque(livro1, 15, dataCompra10, 210.0);
+            fachada.aumentarQuantidadeEmEstoque(livro1, 15, dataCompra46, 210.0);
+            fachada.aumentarQuantidadeEmEstoque(livro1, 50, dataCompra39, 700.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro2, 15, dataCompra2, 210.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro2, 20, dataCompra35, 280.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro2, 30, dataCompra32, 420.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro2, 20, dataCompra49, 280.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro2, 10, dataCompra50, 140.0);
+            fachada.aumentarQuantidadeEmEstoque(livro2, 15, dataCompra2, 210.0);
+            fachada.aumentarQuantidadeEmEstoque(livro2, 20, dataCompra35, 280.0);
+            fachada.aumentarQuantidadeEmEstoque(livro2, 30, dataCompra32, 420.0);
+            fachada.aumentarQuantidadeEmEstoque(livro2, 20, dataCompra49, 280.0);
+            fachada.aumentarQuantidadeEmEstoque(livro2, 10, dataCompra50, 140.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro3, 25, dataCompra3, 1475.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro3, 20, dataCompra31, 1180.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro3, 25, dataCompra34, 1475.0);
+            fachada.aumentarQuantidadeEmEstoque(livro3, 25, dataCompra3, 1475.0);
+            fachada.aumentarQuantidadeEmEstoque(livro3, 20, dataCompra31, 1180.0);
+            fachada.aumentarQuantidadeEmEstoque(livro3, 25, dataCompra34, 1475.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro4, 171, dataCompra4, 4800.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro4, 20, dataCompra18, 560.0);
+            fachada.aumentarQuantidadeEmEstoque(livro4, 171, dataCompra4, 4800.0);
+            fachada.aumentarQuantidadeEmEstoque(livro4, 20, dataCompra18, 560.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro5, 20, dataCompra5, 490.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro5, 20, dataCompra31, 490.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro5, 30, dataCompra43, 735.0);
+            fachada.aumentarQuantidadeEmEstoque(livro5, 20, dataCompra5, 490.0);
+            fachada.aumentarQuantidadeEmEstoque(livro5, 20, dataCompra31, 490.0);
+            fachada.aumentarQuantidadeEmEstoque(livro5, 30, dataCompra43, 735.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro6, 80, dataCompra6, 1725.0);
+            fachada.aumentarQuantidadeEmEstoque(livro6, 80, dataCompra6, 1725.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro7, 60, dataCompra7, 2100.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro7, 15, dataCompra48, 525.0);
+            fachada.aumentarQuantidadeEmEstoque(livro7, 60, dataCompra7, 2100.0);
+            fachada.aumentarQuantidadeEmEstoque(livro7, 15, dataCompra48, 525.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro8, 26, dataCompra47, 1185.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro8, 40, dataCompra47, 1820.0);
+            fachada.aumentarQuantidadeEmEstoque(livro8, 26, dataCompra47, 1185.0);
+            fachada.aumentarQuantidadeEmEstoque(livro8, 40, dataCompra47, 1820.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro9, 40, dataCompra9, 710.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro9, 40, dataCompra49, 710.0);
+            fachada.aumentarQuantidadeEmEstoque(livro9, 40, dataCompra9, 710.0);
+            fachada.aumentarQuantidadeEmEstoque(livro9, 40, dataCompra49, 710.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro10, 60, dataCompra10, 1680.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro10, 15, dataCompra20, 420.0);
+            fachada.aumentarQuantidadeEmEstoque(livro10, 60, dataCompra10, 1680.0);
+            fachada.aumentarQuantidadeEmEstoque(livro10, 15, dataCompra20, 420.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro11, 62, dataCompra11, 1520.0);
+            fachada.aumentarQuantidadeEmEstoque(livro11, 62, dataCompra11, 1520.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro12, 20, dataCompra12, 700.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro12, 10, dataCompra12, 350.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro12, 5, dataCompra12, 175.0);
+            fachada.aumentarQuantidadeEmEstoque(livro12, 20, dataCompra12, 700.0);
+            fachada.aumentarQuantidadeEmEstoque(livro12, 10, dataCompra12, 350.0);
+            fachada.aumentarQuantidadeEmEstoque(livro12, 5, dataCompra12, 175.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro13, 50, dataCompra13, 1575.0);
+            fachada.aumentarQuantidadeEmEstoque(livro13, 50, dataCompra13, 1575.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro14, 10, dataCompra14, 140.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro14, 30, dataCompra11, 420.0);
+            fachada.aumentarQuantidadeEmEstoque(livro14, 10, dataCompra14, 140.0);
+            fachada.aumentarQuantidadeEmEstoque(livro14, 30, dataCompra11, 420.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro15, 19, dataCompra15, 335.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro15, 11, dataCompra15, 195.0);
+            fachada.aumentarQuantidadeEmEstoque(livro15, 19, dataCompra15, 335.0);
+            fachada.aumentarQuantidadeEmEstoque(livro15, 11, dataCompra15, 195.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro16, 20, dataCompra16, 420.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro16, 17, dataCompra49, 360.0);
+            fachada.aumentarQuantidadeEmEstoque(livro16, 20, dataCompra16, 420.0);
+            fachada.aumentarQuantidadeEmEstoque(livro16, 17, dataCompra49, 360.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro17, 30, dataCompra17, 630.0);
+            fachada.aumentarQuantidadeEmEstoque(livro17, 30, dataCompra17, 630.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra18, 385.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra8, 385.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra46, 385.0);
+            fachada.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra18, 385.0);
+            fachada.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra8, 385.0);
+            fachada.aumentarQuantidadeEmEstoque(livro18, 15, dataCompra46, 385.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro19, 50, dataCompra19, 2950.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro19, 20, dataCompra47, 1180.0);
+            fachada.aumentarQuantidadeEmEstoque(livro19, 50, dataCompra19, 2950.0);
+            fachada.aumentarQuantidadeEmEstoque(livro19, 20, dataCompra47, 1180.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro20, 33, dataCompra20, 810.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro20, 10, dataCompra40, 245.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro20, 15, dataCompra44, 370.0);
+            fachada.aumentarQuantidadeEmEstoque(livro20, 33, dataCompra20, 810.0);
+            fachada.aumentarQuantidadeEmEstoque(livro20, 10, dataCompra40, 245.0);
+            fachada.aumentarQuantidadeEmEstoque(livro20, 15, dataCompra44, 370.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro21, 26, dataCompra21, 730.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro21, 20, dataCompra21, 560.0);
+            fachada.aumentarQuantidadeEmEstoque(livro21, 26, dataCompra21, 730.0);
+            fachada.aumentarQuantidadeEmEstoque(livro21, 20, dataCompra21, 560.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro22, 30, dataCompra22, 1050.0);
+            fachada.aumentarQuantidadeEmEstoque(livro22, 30, dataCompra22, 1050.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro23, 30, dataCompra23, 840.0);
+            fachada.aumentarQuantidadeEmEstoque(livro23, 30, dataCompra23, 840.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra24, 280.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra33, 280.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra41, 280.0);
+            fachada.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra24, 280.0);
+            fachada.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra33, 280.0);
+            fachada.aumentarQuantidadeEmEstoque(livro24, 10, dataCompra41, 280.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro25, 50, dataCompra25, 1225.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro25, 10, dataCompra38, 1225.0);
+            fachada.aumentarQuantidadeEmEstoque(livro25, 50, dataCompra25, 1225.0);
+            fachada.aumentarQuantidadeEmEstoque(livro25, 10, dataCompra38, 1225.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro26, 10, dataCompra26, 240.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro26, 5, dataCompra36, 120.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro26, 15, dataCompra37, 360.0);
+            fachada.aumentarQuantidadeEmEstoque(livro26, 10, dataCompra26, 240.0);
+            fachada.aumentarQuantidadeEmEstoque(livro26, 5, dataCompra36, 120.0);
+            fachada.aumentarQuantidadeEmEstoque(livro26, 15, dataCompra37, 360.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro27, 20, dataCompra27, 490.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro27, 10, dataCompra42, 245.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro27, 5, dataCompra1, 125.0);
+            fachada.aumentarQuantidadeEmEstoque(livro27, 20, dataCompra27, 490.0);
+            fachada.aumentarQuantidadeEmEstoque(livro27, 10, dataCompra42, 245.0);
+            fachada.aumentarQuantidadeEmEstoque(livro27, 5, dataCompra1, 125.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro28, 30, dataCompra28, 840.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro28, 8, dataCompra46, 240.0);
+            fachada.aumentarQuantidadeEmEstoque(livro28, 30, dataCompra28, 840.0);
+            fachada.aumentarQuantidadeEmEstoque(livro28, 8, dataCompra46, 240.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro29, 30, dataCompra29, 840.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro29, 10, dataCompra45, 245.0);
+            fachada.aumentarQuantidadeEmEstoque(livro29, 30, dataCompra29, 840.0);
+            fachada.aumentarQuantidadeEmEstoque(livro29, 10, dataCompra45, 245.0);
 
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro30, 35, dataCompra30, 965.0);
-            servidorReadEasy.aumentarQuantidadeEmEstoque(livro30, 20, dataCompra18, 490.0);
+            fachada.aumentarQuantidadeEmEstoque(livro30, 35, dataCompra30, 965.0);
+            fachada.aumentarQuantidadeEmEstoque(livro30, 20, dataCompra18, 490.0);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -1197,142 +1196,142 @@ public class InicializadorDeDados {
         venda100.adicionarLivro(livro11, 1);
         venda100.adicionarLivro(livro6, 2);
 
-        servidorReadEasy.inserirVenda(venda1);
-        servidorReadEasy.inserirVenda(venda2);
-        servidorReadEasy.inserirVenda(venda3);
-        servidorReadEasy.inserirVenda(venda4);
-        servidorReadEasy.inserirVenda(venda5);
-        servidorReadEasy.inserirVenda(venda6);
-        servidorReadEasy.inserirVenda(venda7);
-        servidorReadEasy.inserirVenda(venda8);
-        servidorReadEasy.inserirVenda(venda9);
-        servidorReadEasy.inserirVenda(venda10);
-        servidorReadEasy.inserirVenda(venda11);
-        servidorReadEasy.inserirVenda(venda12);
-        servidorReadEasy.inserirVenda(venda13);
-        servidorReadEasy.inserirVenda(venda14);
-        servidorReadEasy.inserirVenda(venda15);
-        servidorReadEasy.inserirVenda(venda16);
-        servidorReadEasy.inserirVenda(venda17);
-        servidorReadEasy.inserirVenda(venda18);
-        servidorReadEasy.inserirVenda(venda19);
-        servidorReadEasy.inserirVenda(venda20);
-        servidorReadEasy.inserirVenda(venda21);
-        servidorReadEasy.inserirVenda(venda22);
-        servidorReadEasy.inserirVenda(venda23);
-        servidorReadEasy.inserirVenda(venda24);
-        servidorReadEasy.inserirVenda(venda25);
-        servidorReadEasy.inserirVenda(venda26);
-        servidorReadEasy.inserirVenda(venda27);
-        servidorReadEasy.inserirVenda(venda28);
-        servidorReadEasy.inserirVenda(venda29);
-        servidorReadEasy.inserirVenda(venda30);
-        servidorReadEasy.inserirVenda(venda31);
-        servidorReadEasy.inserirVenda(venda32);
-        servidorReadEasy.inserirVenda(venda33);
-        servidorReadEasy.inserirVenda(venda34);
-        servidorReadEasy.inserirVenda(venda35);
-        servidorReadEasy.inserirVenda(venda36);
-        servidorReadEasy.inserirVenda(venda37);
-        servidorReadEasy.inserirVenda(venda38);
-        servidorReadEasy.inserirVenda(venda39);
-        servidorReadEasy.inserirVenda(venda40);
-        servidorReadEasy.inserirVenda(venda41);
-        servidorReadEasy.inserirVenda(venda42);
-        servidorReadEasy.inserirVenda(venda43);
-        servidorReadEasy.inserirVenda(venda44);
-        servidorReadEasy.inserirVenda(venda45);
-        servidorReadEasy.inserirVenda(venda46);
-        servidorReadEasy.inserirVenda(venda47);
-        servidorReadEasy.inserirVenda(venda48);
-        servidorReadEasy.inserirVenda(venda49);
-        servidorReadEasy.inserirVenda(venda50);
-        servidorReadEasy.inserirVenda(venda54);
-        servidorReadEasy.inserirVenda(venda55);
-        servidorReadEasy.inserirVenda(venda56);
-        servidorReadEasy.inserirVenda(venda57);
-        servidorReadEasy.inserirVenda(venda58);
-        servidorReadEasy.inserirVenda(venda59);
-        servidorReadEasy.inserirVenda(venda60);
-        servidorReadEasy.inserirVenda(venda61);
-        servidorReadEasy.inserirVenda(venda62);
-        servidorReadEasy.inserirVenda(venda63);
-        servidorReadEasy.inserirVenda(venda64);
-        servidorReadEasy.inserirVenda(venda65);
-        servidorReadEasy.inserirVenda(venda66);
-        servidorReadEasy.inserirVenda(venda67);
-        servidorReadEasy.inserirVenda(venda68);
-        servidorReadEasy.inserirVenda(venda69);
-        servidorReadEasy.inserirVenda(venda70);
-        servidorReadEasy.inserirVenda(venda71);
-        servidorReadEasy.inserirVenda(venda72);
-        servidorReadEasy.inserirVenda(venda73);
-        servidorReadEasy.inserirVenda(venda74);
-        servidorReadEasy.inserirVenda(venda75);
-        servidorReadEasy.inserirVenda(venda76);
-        servidorReadEasy.inserirVenda(venda77);
-        servidorReadEasy.inserirVenda(venda78);
-        servidorReadEasy.inserirVenda(venda79);
-        servidorReadEasy.inserirVenda(venda80);
-        servidorReadEasy.inserirVenda(venda81);
-        servidorReadEasy.inserirVenda(venda82);
-        servidorReadEasy.inserirVenda(venda83);
-        servidorReadEasy.inserirVenda(venda84);
-        servidorReadEasy.inserirVenda(venda85);
-        servidorReadEasy.inserirVenda(venda86);
-        servidorReadEasy.inserirVenda(venda87);
-        servidorReadEasy.inserirVenda(venda88);
-        servidorReadEasy.inserirVenda(venda89);
-        servidorReadEasy.inserirVenda(venda90);
-        servidorReadEasy.inserirVenda(venda91);
-        servidorReadEasy.inserirVenda(venda92);
-        servidorReadEasy.inserirVenda(venda93);
-        servidorReadEasy.inserirVenda(venda94);
-        servidorReadEasy.inserirVenda(venda95);
-        servidorReadEasy.inserirVenda(venda96);
-        servidorReadEasy.inserirVenda(venda97);
-        servidorReadEasy.inserirVenda(venda98);
-        servidorReadEasy.inserirVenda(venda99);
-        servidorReadEasy.inserirVenda(venda100);
+        fachada.inserirVenda(venda1);
+        fachada.inserirVenda(venda2);
+        fachada.inserirVenda(venda3);
+        fachada.inserirVenda(venda4);
+        fachada.inserirVenda(venda5);
+        fachada.inserirVenda(venda6);
+        fachada.inserirVenda(venda7);
+        fachada.inserirVenda(venda8);
+        fachada.inserirVenda(venda9);
+        fachada.inserirVenda(venda10);
+        fachada.inserirVenda(venda11);
+        fachada.inserirVenda(venda12);
+        fachada.inserirVenda(venda13);
+        fachada.inserirVenda(venda14);
+        fachada.inserirVenda(venda15);
+        fachada.inserirVenda(venda16);
+        fachada.inserirVenda(venda17);
+        fachada.inserirVenda(venda18);
+        fachada.inserirVenda(venda19);
+        fachada.inserirVenda(venda20);
+        fachada.inserirVenda(venda21);
+        fachada.inserirVenda(venda22);
+        fachada.inserirVenda(venda23);
+        fachada.inserirVenda(venda24);
+        fachada.inserirVenda(venda25);
+        fachada.inserirVenda(venda26);
+        fachada.inserirVenda(venda27);
+        fachada.inserirVenda(venda28);
+        fachada.inserirVenda(venda29);
+        fachada.inserirVenda(venda30);
+        fachada.inserirVenda(venda31);
+        fachada.inserirVenda(venda32);
+        fachada.inserirVenda(venda33);
+        fachada.inserirVenda(venda34);
+        fachada.inserirVenda(venda35);
+        fachada.inserirVenda(venda36);
+        fachada.inserirVenda(venda37);
+        fachada.inserirVenda(venda38);
+        fachada.inserirVenda(venda39);
+        fachada.inserirVenda(venda40);
+        fachada.inserirVenda(venda41);
+        fachada.inserirVenda(venda42);
+        fachada.inserirVenda(venda43);
+        fachada.inserirVenda(venda44);
+        fachada.inserirVenda(venda45);
+        fachada.inserirVenda(venda46);
+        fachada.inserirVenda(venda47);
+        fachada.inserirVenda(venda48);
+        fachada.inserirVenda(venda49);
+        fachada.inserirVenda(venda50);
+        fachada.inserirVenda(venda54);
+        fachada.inserirVenda(venda55);
+        fachada.inserirVenda(venda56);
+        fachada.inserirVenda(venda57);
+        fachada.inserirVenda(venda58);
+        fachada.inserirVenda(venda59);
+        fachada.inserirVenda(venda60);
+        fachada.inserirVenda(venda61);
+        fachada.inserirVenda(venda62);
+        fachada.inserirVenda(venda63);
+        fachada.inserirVenda(venda64);
+        fachada.inserirVenda(venda65);
+        fachada.inserirVenda(venda66);
+        fachada.inserirVenda(venda67);
+        fachada.inserirVenda(venda68);
+        fachada.inserirVenda(venda69);
+        fachada.inserirVenda(venda70);
+        fachada.inserirVenda(venda71);
+        fachada.inserirVenda(venda72);
+        fachada.inserirVenda(venda73);
+        fachada.inserirVenda(venda74);
+        fachada.inserirVenda(venda75);
+        fachada.inserirVenda(venda76);
+        fachada.inserirVenda(venda77);
+        fachada.inserirVenda(venda78);
+        fachada.inserirVenda(venda79);
+        fachada.inserirVenda(venda80);
+        fachada.inserirVenda(venda81);
+        fachada.inserirVenda(venda82);
+        fachada.inserirVenda(venda83);
+        fachada.inserirVenda(venda84);
+        fachada.inserirVenda(venda85);
+        fachada.inserirVenda(venda86);
+        fachada.inserirVenda(venda87);
+        fachada.inserirVenda(venda88);
+        fachada.inserirVenda(venda89);
+        fachada.inserirVenda(venda90);
+        fachada.inserirVenda(venda91);
+        fachada.inserirVenda(venda92);
+        fachada.inserirVenda(venda93);
+        fachada.inserirVenda(venda94);
+        fachada.inserirVenda(venda95);
+        fachada.inserirVenda(venda96);
+        fachada.inserirVenda(venda97);
+        fachada.inserirVenda(venda98);
+        fachada.inserirVenda(venda99);
+        fachada.inserirVenda(venda100);
 
         try {
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro1, 70);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro2, 47);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro3, 31);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro4, 82);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro5, 34);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro6, 39);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro7, 29);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro8, 16);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro9, 33);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro10, 31);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro11, 12);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro12, 29);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro13, 17);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro15, 10);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro16, 7);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro17, 8);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro18, 27);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro19, 32);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro20, 28);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro21, 14);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro22, 7);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro23, 6);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro24, 5);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro25, 8);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro26, 7);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro27, 8);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro28, 13);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro29, 9);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro30, 20);
+            fachada.diminuirQuantidadeEmEstoque(livro1, 70);
+            fachada.diminuirQuantidadeEmEstoque(livro2, 47);
+            fachada.diminuirQuantidadeEmEstoque(livro3, 31);
+            fachada.diminuirQuantidadeEmEstoque(livro4, 82);
+            fachada.diminuirQuantidadeEmEstoque(livro5, 34);
+            fachada.diminuirQuantidadeEmEstoque(livro6, 39);
+            fachada.diminuirQuantidadeEmEstoque(livro7, 29);
+            fachada.diminuirQuantidadeEmEstoque(livro8, 16);
+            fachada.diminuirQuantidadeEmEstoque(livro9, 33);
+            fachada.diminuirQuantidadeEmEstoque(livro10, 31);
+            fachada.diminuirQuantidadeEmEstoque(livro11, 12);
+            fachada.diminuirQuantidadeEmEstoque(livro12, 29);
+            fachada.diminuirQuantidadeEmEstoque(livro13, 17);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro15, 10);
+            fachada.diminuirQuantidadeEmEstoque(livro16, 7);
+            fachada.diminuirQuantidadeEmEstoque(livro17, 8);
+            fachada.diminuirQuantidadeEmEstoque(livro18, 27);
+            fachada.diminuirQuantidadeEmEstoque(livro19, 32);
+            fachada.diminuirQuantidadeEmEstoque(livro20, 28);
+            fachada.diminuirQuantidadeEmEstoque(livro21, 14);
+            fachada.diminuirQuantidadeEmEstoque(livro22, 7);
+            fachada.diminuirQuantidadeEmEstoque(livro23, 6);
+            fachada.diminuirQuantidadeEmEstoque(livro24, 5);
+            fachada.diminuirQuantidadeEmEstoque(livro25, 8);
+            fachada.diminuirQuantidadeEmEstoque(livro26, 7);
+            fachada.diminuirQuantidadeEmEstoque(livro27, 8);
+            fachada.diminuirQuantidadeEmEstoque(livro28, 13);
+            fachada.diminuirQuantidadeEmEstoque(livro29, 9);
+            fachada.diminuirQuantidadeEmEstoque(livro30, 20);
 
             //TODO FAZER O RESTO
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
+            fachada.diminuirQuantidadeEmEstoque(livro14, 15);
         } catch (EstoqueInsuficienteException | ValorInvalidoException e) {
             System.out.println(e.getMessage());        }
 
@@ -1341,9 +1340,9 @@ public class InicializadorDeDados {
         Promocao promocao3 = new Promocao("Livros 20", 20, 15, LocalDate.now(), LocalDate.now().plusDays(30));
 
         try {
-            servidorReadEasy.inserirPromocao(promocao1);
-            servidorReadEasy.inserirPromocao(promocao2);
-            servidorReadEasy.inserirPromocao(promocao3);
+            fachada.inserirPromocao(promocao1);
+            fachada.inserirPromocao(promocao2);
+            fachada.inserirPromocao(promocao3);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -1,16 +1,19 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.business.Fachada;
+import br.ufrpe.readeasy.exceptions.CampoVazioException;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.MenorDeIdadeException;
+import br.ufrpe.readeasy.exceptions.UsuarioExistenteException;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,58 +120,32 @@ public class AdmCRUDUsuariosController {
     private ComboBox<String> cbTipoFornecedor;
     List<TipoFornecedor> tipoFornecedor = new ArrayList<>();
 
-    private ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+    private Fachada fachada = Fachada.getInstance();
     private ObservableList<String> cargos = FXCollections.observableArrayList("Funcionário",
             "Administrador", "Fornecedor");
+    private static AdmCRUDUsuariosController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaEstoqueAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    //Construtor:
+    public AdmCRUDUsuariosController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaHistoricoAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    @FXML
-    public void trocarTelaLivrosAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
-    }
-
-    @FXML
-    public void trocarTelaPerfilAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaPromocoesAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosAdm() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatórios");
-    }
-
-    @FXML
-    private void trocarTelaLogin() {
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     @FXML
     public void initialize() {
-        construirTabela();
-        carregarDados();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmCRUDUsuariosController() == null){
+            screenManager.setAdmCRUDUsuariosController(instance);
+        }
+        if (!ignorarInitialize) {
+            construirTabela();
+            carregarDados();
+        }
     }
 
     @FXML
@@ -231,7 +208,7 @@ public class AdmCRUDUsuariosController {
                             usuario = new Funcionario(nome, cpf, dataNascimento, login, senha, endereco, telefone, false,
                                     (Funcionario) SessaoUsuario.getUsuarioLogado());
                         }
-                        servidorReadEasy.cadastrarUsuario(usuario);
+                        fachada.cadastrarUsuario(usuario);
                     } catch (MenorDeIdadeException e) {
                         excecaoLevantada = true;
                         alert.setTitle("Erro");
@@ -284,7 +261,6 @@ public class AdmCRUDUsuariosController {
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
                 alert.setAlertType(Alert.AlertType.ERROR);
                 alert.close();
 
@@ -335,7 +311,7 @@ public class AdmCRUDUsuariosController {
                             Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
                             Usuario usuario = tvUsuarios.getSelectionModel().getSelectedItem();
 
-                            if (usuario == ServidorReadEasy.getInstance().procurarUsuario("12384274165")) {
+                            if (usuario == Fachada.getInstance().procurarUsuario("12384274165")) {
                                 alert.setTitle("Erro");
                                 alert.setHeaderText("Edição inválida!");
                                 alert.setContentText("Não é possível editar o ADM Inicial");
@@ -351,16 +327,16 @@ public class AdmCRUDUsuariosController {
                                 alert.showAndWait();
                             } else if (usuario instanceof Funcionario) {
                                 if (((Funcionario) usuario).isAdm()) {
-                                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                    Fachada.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
                                             login, senha, endereco, telefone, false, ((Funcionario) usuario).getAdmResponsavel());
                                     limparCampos();
                                 } else {
-                                    ServidorReadEasy.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
+                                    Fachada.getInstance().atualizarFuncionario(usuario, nome, cpf, dataNascimento,
                                             login, senha, endereco, telefone, true, ((Funcionario) usuario).getAdmResponsavel());
                                     limparCampos();
                                 }
                             } else if (usuario instanceof Fornecedor) {
-                                ServidorReadEasy.getInstance().atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha,
+                                Fachada.getInstance().atualizarFornecedor(usuario, nome, cpf, dataNascimento, login, senha,
                                         endereco, telefone, tipoFornecedor);
                                 limparCampos();
                             }
@@ -412,7 +388,7 @@ public class AdmCRUDUsuariosController {
     @FXML
     public void onDeletarUsuarioclick() {
         Alert alert;
-        if (tvUsuarios.getSelectionModel().getSelectedItem() == ServidorReadEasy.getInstance().procurarUsuario("12384274165"))
+        if (tvUsuarios.getSelectionModel().getSelectedItem() == Fachada.getInstance().procurarUsuario("12384274165"))
         {
             alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Ação proibida");
@@ -433,7 +409,7 @@ public class AdmCRUDUsuariosController {
             Alert finalAlert = alert;
             alert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    servidorReadEasy.removerUsuario(tvUsuarios.getSelectionModel().getSelectedItem());
+                    fachada.removerUsuario(tvUsuarios.getSelectionModel().getSelectedItem());
                     onAtualizarTabelaclick();
                 } else {
                     finalAlert.close();
@@ -570,9 +546,9 @@ public class AdmCRUDUsuariosController {
     public List<Usuario> listarFornecedorFuncionario()
     {
         List<Usuario> fornecedorFuncionario = new ArrayList<>();
-        fornecedorFuncionario.addAll(ServidorReadEasy.getInstance().listarAdms());
-        fornecedorFuncionario.addAll(ServidorReadEasy.getInstance().listarFornecedores());
-        fornecedorFuncionario.addAll(ServidorReadEasy.getInstance().listarFuncionarios());
+        fornecedorFuncionario.addAll(Fachada.getInstance().listarAdms());
+        fornecedorFuncionario.addAll(Fachada.getInstance().listarFornecedores());
+        fornecedorFuncionario.addAll(Fachada.getInstance().listarFuncionarios());
         return fornecedorFuncionario;
     }
 
@@ -709,26 +685,12 @@ public class AdmCRUDUsuariosController {
         return tipoFornecedorSelecionado;
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
+    //gets and sets:
+    public static AdmCRUDUsuariosController getInstance() {
+        return instance;
+    }
 
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES)
-            {
-                SessaoUsuario.logOut();
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

@@ -2,10 +2,13 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Cliente;
 import br.ufrpe.readeasy.beans.Endereco;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
 
@@ -40,14 +43,16 @@ public class ClienteCadastroController{
     @FXML
     private TextField txtfEstado;
 
-    //métodos de troca de tela:
-    @FXML
-    public void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+    private static ClienteCadastroController instance;
+
+    //Construtor:
+    public ClienteCadastroController() {
+        if(instance == null){
+            instance = this;
+        }
     }
 
-    //Outros métodos:
+    //Métodos:
     @FXML
     protected void onBtnCadastrarClick(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -85,17 +90,15 @@ public class ClienteCadastroController{
                 Cliente cliente = new Cliente(nome, cpf, dataNascimento, usuario, senha, endereco, telefone);
 
                 try {
-                    ServidorReadEasy.getInstance().cadastrarUsuario(cliente);
+                    Fachada.getInstance().cadastrarUsuario(cliente);
                     alert.setAlertType(Alert.AlertType.INFORMATION);
                     alert.setTitle("Cadastro de Cliente");
                     alert.setHeaderText(null);
                     alert.setContentText("Cliente cadastrado com sucesso!");
                     alert.showAndWait();
 
-                    ServidorReadEasy.getInstance().adicionarEnderecoDeEntrega(cliente, endereco);
-
-                    ScreenManager sm = ScreenManager.getInstance();
-                    sm.TrocarTela("Login.fxml", "ReadEasy - Login");
+                    Fachada.getInstance().adicionarEnderecoDeEntrega(cliente, endereco);
+                    trocarTelaLogin();
 
                 } catch (MenorDeIdadeException e) {
                     alert.setTitle("Erro no preenchimento de dados");
@@ -159,5 +162,16 @@ public class ClienteCadastroController{
         }
 
         return inputDigitadoCorretamente;
+    }
+
+    @FXML
+    public void trocarTelaLogin(){
+        ScreenManager sm = ScreenManager.getInstance();
+        sm.trocartelasPrincipais("login.fxml", "ReadEasy - Login");
+    }
+
+    //gets and sets:
+    public static ClienteCadastroController getInstance() {
+        return instance;
     }
 }

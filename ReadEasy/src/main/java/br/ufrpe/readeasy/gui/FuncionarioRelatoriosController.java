@@ -1,12 +1,10 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -78,49 +76,35 @@ public class FuncionarioRelatoriosController {
     private Label lblRanking;
     private Map<Livro, Integer> rankingLivros;
     boolean precisaApresentarOAlertDados;
+    private static FuncionarioRelatoriosController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-
-    @FXML
-    public void trocarTelaLivroFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
+    //construtor:
+    public FuncionarioRelatoriosController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaHistoricoFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaEstoqueFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioEstoque.fxml", "ReadEasy - Estoque");
-    }
-
-    @FXML
-    public void trocarTelaPerfilFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
-
+    //métodos:
     @FXML
     public void initialize(){
-        setPrecisaApresentarOAlertDados(ScreenManager.getInstance().isPrecisaApresentarOAlertDadosFuncionario());
-        limparComboBox();
-        inicializarCbCategoriaEPeriodo();
-        inicializarTvUsuariosQueMaisGastam();
-        inicializarTvUsuariosQueMaisCompram();
-        inicializarBcRankingComDadosDoMesAtual();
-        lblRanking.setText("Ranking de livros de " + LocalDate.now());
+        ScreenManager screenManager =  ScreenManager.getInstance();
+
+        if(screenManager.getFuncionariosRelatoriosController() == null){
+            screenManager.setFuncionariosRelatoriosController(instance);
+        }
+
+        if(!ignorarInitialize){
+            setPrecisaApresentarOAlertDados(ScreenManager.getInstance().isPrecisaApresentarOAlertDadosFuncionario());
+            limparComboBox();
+            inicializarCbCategoriaEPeriodo();
+            inicializarTvUsuariosQueMaisGastam();
+            inicializarTvUsuariosQueMaisCompram();
+            inicializarBcRankingComDadosDoMesAtual();
+            lblRanking.setText("Ranking de livros de " + LocalDate.now());
+        }
     }
 
     @FXML
@@ -179,7 +163,7 @@ public class FuncionarioRelatoriosController {
 
     @FXML
     private void inicializarTvUsuariosQueMaisCompram() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         Map<String, Integer> clientesPorCompra;
 
         Month mesAtual = LocalDate.now().getMonth();
@@ -187,7 +171,7 @@ public class FuncionarioRelatoriosController {
         LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
 
         try {
-            clientesPorCompra = servidorReadEasy.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
+            clientesPorCompra = fachada.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             throw new RuntimeException(e);
         }
@@ -213,7 +197,7 @@ public class FuncionarioRelatoriosController {
 
     @FXML
     private void inicializarTvUsuariosQueMaisGastam() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         Map<String, Double> clientesPorGasto;
 
         Month mesAtual = LocalDate.now().getMonth();
@@ -221,7 +205,7 @@ public class FuncionarioRelatoriosController {
         LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
 
         try {
-            clientesPorGasto = servidorReadEasy.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
+            clientesPorGasto = fachada.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             throw new RuntimeException(e);
         }
@@ -254,8 +238,8 @@ public class FuncionarioRelatoriosController {
         LocalDate dataFim = LocalDate.now();
         LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
 
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
+        Fachada fachada = Fachada.getInstance();
+        Map<Livro, Integer> rankingLivros = fachada.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
 
         inicializarBcRankingDeLivros(rankingLivros);
     }
@@ -361,7 +345,7 @@ public class FuncionarioRelatoriosController {
     }
 
     private void pesquisarRankingLivro(LocalDate dataInicio, LocalDateTime dataEHoraFim){
-        Map<Livro, Integer> rankingLivros = ServidorReadEasy.getInstance().ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
+        Map<Livro, Integer> rankingLivros = Fachada.getInstance().ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
         setRankingLivros(rankingLivros);
         inicializarBcRankingDeLivros(rankingLivros);
         if(!rankingLivros.isEmpty()){
@@ -376,8 +360,8 @@ public class FuncionarioRelatoriosController {
         Map<String, Integer> clientesQueMaisCompram = new HashMap<>();
         Map<String, Double> clientesQueMaisGastam = new HashMap<>();
         try {
-            clientesQueMaisCompram = ServidorReadEasy.getInstance().ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
-            clientesQueMaisGastam = ServidorReadEasy.getInstance().raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
+            clientesQueMaisCompram = Fachada.getInstance().ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
+            clientesQueMaisGastam = Fachada.getInstance().raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             System.out.println(e.getMessage());
         }
@@ -494,26 +478,6 @@ public class FuncionarioRelatoriosController {
         return mes;
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
     private void apresentarAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Atenção!");
@@ -539,5 +503,17 @@ public class FuncionarioRelatoriosController {
 
     public void setRankingLivros(Map<Livro, Integer> rankingLivros) {
         this.rankingLivros = rankingLivros;
+    }
+
+    public void setBtnPerfil(Button btnPerfil) {
+        this.btnPerfil = btnPerfil;
+    }
+
+    public static void setInstance(FuncionarioRelatoriosController instance) {
+        FuncionarioRelatoriosController.instance = instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

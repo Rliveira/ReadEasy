@@ -1,7 +1,8 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.CompraClienteDTO;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -57,31 +58,31 @@ public class ClienteHistoricoComprasController
     @FXML
     private TableColumn<CompraClienteDTO, String> colDataCompra;
 
-    //Métodos de troca de tela:
-    @FXML
-    private void trocarTelaCatalogoCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
+    private static ClienteHistoricoComprasController instance;
+    private boolean ignorarInitialize;
+
+    //construtor:
+    public ClienteHistoricoComprasController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    private void trocarTelaPerfilCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     @FXML
     public void initialize()
     {
-        carregarDadosTabela();
-        construirTabela();
-        dpDataFim.setValue(LocalDate.now());
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getClienteMinhasComprasController() == null){
+            screenManager.setClienteHistoricoComprasController(instance);
+        }
+        if(!ignorarInitialize){
+            carregarDadosTabela();
+            construirTabela();
+            dpDataFim.setValue(LocalDate.now());
+        }
     }
 
     private void carregarDadosTabela() {
@@ -90,7 +91,7 @@ public class ClienteHistoricoComprasController
             LocalDate datainicial = LocalDate.of(dataAtual.getYear(), 1, 1);
             List<CompraClienteDTO> comprasCliente;
             try {
-                comprasCliente = ServidorReadEasy.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), datainicial, dataAtual);
+                comprasCliente = Fachada.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), datainicial, dataAtual);
             } catch (DataInvalidaException e) {
                 throw new RuntimeException(e);
             }
@@ -134,7 +135,7 @@ public class ClienteHistoricoComprasController
 
         if (dataInicio != null && dataFim != null) {
             try {
-                List<CompraClienteDTO> historicoCompras = ServidorReadEasy.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), dataInicio, dataFim);
+                List<CompraClienteDTO> historicoCompras = Fachada.getInstance().historicoDeComprasDoCliente((Cliente) SessaoUsuario.getUsuarioLogado(), dataInicio, dataFim);
                 tvTabelaCompras.getItems().clear();
                 tvTabelaCompras.getItems().addAll(FXCollections.observableArrayList(historicoCompras));
             }catch (DataInvalidaException e){
@@ -155,25 +156,12 @@ public class ClienteHistoricoComprasController
         }
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    //gets and sets:
+    public static ClienteHistoricoComprasController getInstance() {
+        return instance;
     }
 
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
+    }
 }

@@ -3,11 +3,12 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.CampoVazioException;
 import br.ufrpe.readeasy.exceptions.LoginInvalidoException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -26,26 +27,37 @@ public class LoginController {
     boolean telasFuncionarioCarregadas = false;
     boolean telasFornecedorCarregadas = false;
     boolean telasClienteCarregadas = false;
+    private static LoginController instance;
 
-    //métodos de troca de tela:
+    //Construtor:
+    public LoginController() {
+        if(instance == null){
+            instance = this;
+            telasAdmCarregadas = false;
+            telasFuncionarioCarregadas = false;
+            telasFornecedorCarregadas = false;
+            telasClienteCarregadas = false;
+        }
+    }
+
+    //métodos:
     @FXML
     public void trocarTelaCadastro(){
         ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteCadastro.fxml", "Cadastro - ReadEasy");
+        sm.trocartelasPrincipais("clienteCadastro.fxml", "ReadEasy - Cadastro");
     }
 
-    //Outros métodos:
     @FXML
     public void onBtnLoginclick()
     {
-        List<Usuario> users = ServidorReadEasy.getInstance().listarUsuarios();
+        List<Usuario> users = Fachada.getInstance().listarUsuarios();
         String login = tfUsuario.getText();
         String senha = pfSenha.getText();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         try
         {
-            if(ServidorReadEasy.getInstance().checarLogin(login, senha))
+            if(Fachada.getInstance().checarLogin(login, senha))
             {
                 Usuario usuarioLogadoSucesso = null;
                 for(int i=0; i<users.size();i++)
@@ -103,8 +115,18 @@ public class LoginController {
                     sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
                     telasAdmCarregadas = true;
                 }
+
+                sm.getAdmCRUDPromocoesController().setIgnorarInitialize(false);
+                sm.getAdmCRUDUsuariosController().setIgnorarInitialize(false);
+                sm.getAdmEstoqueController().setIgnorarInitialize(false);
+                sm.getAdmHistoricoComprasEVendasController().setIgnorarInitialize(false);
+                sm.getAdmLivrosController().setIgnorarInitialize(false);
+                sm.getAdmPerfilController().setIgnorarInitialize(false);
+                sm.getAdmRelatoriosController().setIgnorarInitialize(false);
+
                 sm.inicializarTelas("adm");
-                sm.TrocarTela("admPerfil.fxml", "ReadEasy - Relatorios");
+                sm.trocartelasPrincipais("admMain.fxml", "ReadEasy - Perfil");
+                sm.getAdmMainController().trocarTelaPerfilAdm();
             }
             else{
                 ScreenManager sm = ScreenManager.getInstance();
@@ -114,8 +136,16 @@ public class LoginController {
                     sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
                     telasFuncionarioCarregadas = true;
                 }
+
+                sm.getFuncionarioPerfilController().setIgnorarInitialize(false);
+                sm.getFuncionariosRelatoriosController().setIgnorarInitialize(false);
+                sm.getFuncionarioEstoqueController().setIgnorarInitialize(false);
+                sm.getFuncionarioHistoricoComprasEVendasController().setIgnorarInitialize(false);
+                sm.getFuncionarioCRUDLivrosController().setIgnorarInitialize(false);
+
                 sm.inicializarTelas("funcionário");
-                sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Estoque");
+                sm.trocartelasPrincipais("funcionarioMain.fxml", "ReadEasy - Perfil");
+                sm.getFuncionarioMainController().trocarTelaPerfilFuncionario();
             }
         }
         else if(usuario instanceof Fornecedor){
@@ -126,8 +156,14 @@ public class LoginController {
                 sm.carregarTelas(SessaoUsuario.getUsuarioLogado());
                 telasFornecedorCarregadas = true;
             }
+
+            sm.getFornecedorEstoqueController().setIgnorarInitialize(false);
+            sm.getFornecedorPerfilController().setIgnorarInitialize(false);
+            sm.getFornecedorHistoricoController().setIgnorarInitialize(false);
+
             sm.inicializarTelas("fornecedor");
-            sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Estoque");
+            sm.trocartelasPrincipais("fornecedorMain.fxml", "ReadEasy - Perfil");
+            sm.getFornecedorMainController().trocarTelaPerfilFornecedor();
         }
         else{
             ScreenManager sm = ScreenManager.getInstance();
@@ -138,8 +174,17 @@ public class LoginController {
                 telasClienteCarregadas = true;
             }
 
+            sm.getClientePerfilController().setIgnorarInitialize(false);
+            sm.getClienteCatalogoController().setIgnorarInitialize(false);
+            sm.getClienteMinhasComprasController().setIgnorarInitialize(false);
+
             sm.inicializarTelas("cliente");
-            sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Catálogo");
+            sm.trocartelasPrincipais("clienteMain.fxml", "ReadEasy - Perfil");
+            sm.getClienteMainController().trocarTelaPerfilCliente();
         }
+
+        Stage stage = ScreenManager.getStage();
+        stage.setResizable(true);
+        stage.setMaximized(true);
     }
 }

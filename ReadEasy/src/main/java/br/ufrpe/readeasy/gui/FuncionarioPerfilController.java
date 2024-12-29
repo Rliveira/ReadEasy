@@ -1,8 +1,9 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.*;
+import br.ufrpe.readeasy.beans.Funcionario;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 
 public class FuncionarioPerfilController
@@ -59,42 +60,31 @@ public class FuncionarioPerfilController
     @FXML
     private Label labelEstado;
 
-    //métodos de troca de tela:
-    @FXML
-    public void trocarTelaEstoqueFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioEstoque.fxml", "ReadEasy - Estoque");
+    private static FuncionarioPerfilController instance;
+    private boolean ignorarInitialize;
+
+    //construtor:
+
+
+    public FuncionarioPerfilController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
+    //métodos:
     @FXML
-    public void trocarTelaHistoricoFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    @FXML
-    public void trocarTelaLivroFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
-    }
-
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
-    @FXML
-    public void initialize()
+   public void initialize()
     {
-        inicializarLabels();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getFuncionarioPerfilController() == null){
+            screenManager.setFuncionarioPerfilController(instance);
+        }
+        if(!ignorarInitialize){
+            inicializarLabels();
+        }
     }
 
     @FXML
@@ -115,24 +105,16 @@ public class FuncionarioPerfilController
         }
     }
 
-    public void SairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
+    //gets and sets:
+    public void setBtnPerfil(Button btnPerfil) {
+        this.btnPerfil = btnPerfil;
+    }
 
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
+    public static void setInstance(FuncionarioPerfilController instance) {
+        FuncionarioPerfilController.instance = instance;
+    }
 
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

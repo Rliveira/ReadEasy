@@ -2,7 +2,7 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.HistoricoVazioException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -142,70 +142,47 @@ public class AdmRelatoriosController {
     String categoriaDePesquisaCompra;
     String periodoDeAnalise;
     boolean precisaApresentarOAlertDados;
+    private static AdmRelatoriosController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    public void trocarTelaEstoqueAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+    public AdmRelatoriosController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    public void trocarTelaLivrosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
-    }
-
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaPerfilAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaPromocoesAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-    }
-
-    public void trocarTelaUsuariosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //outros métodos:
     @FXML
     public void initialize(){
-        setPrecisaApresentarOAlertDados(ScreenManager.getInstance().isPrecisaApresentarOAlertDadosAdm());
-        limparComboBox();
-        inicializarLabels();
-        inicializarCbCategoriaEPeriodo();
-        inicializarBcRankingComDadosDoMesAtual();
-        inicializarBcDadosVendaComDadosDoMesAtual();
-        inicializarLcDadosCompraComDadosDoMesAtual();
-        inicializarTvUsuariosQueMaisGastam();
-        inicializarTvUsuariosQueMaisCompram();
-        inicializarTvRankingFornecedor();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmRelatoriosController() == null){
+            screenManager.setAdmRelatoriosController(instance);
+        }
+        if(!ignorarInitialize){
+            setPrecisaApresentarOAlertDados(ScreenManager.getInstance().isPrecisaApresentarOAlertDadosAdm());
+            limparComboBox();
+            inicializarLabels();
+            inicializarCbCategoriaEPeriodo();
+            inicializarBcRankingComDadosDoMesAtual();
+            inicializarBcDadosVendaComDadosDoMesAtual();
+            inicializarLcDadosCompraComDadosDoMesAtual();
+            inicializarTvUsuariosQueMaisGastam();
+            inicializarTvUsuariosQueMaisCompram();
+            inicializarTvRankingFornecedor();
+        }
     }
 
     private void inicializarLabels() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
         LocalDateTime agora = LocalDateTime.now();
         LocalDateTime inicioDoDia = agora.toLocalDate().atStartOfDay();
         LocalDateTime fimDoDia = LocalDateTime.of(agora.toLocalDate(), LocalTime.MAX);
 
-        int numeroDeLivrosVendidos = servidorReadEasy.calcularTotalLivrosVendidosEntreDatas(inicioDoDia, fimDoDia);
-        int numeroDeVendas = servidorReadEasy.calcularTotalDeVendasDiarias(inicioDoDia, fimDoDia);
-        Map<LocalDate, Double> faturamento = servidorReadEasy.listarLucroPorData(inicioDoDia, fimDoDia);
+        int numeroDeLivrosVendidos = fachada.calcularTotalLivrosVendidosEntreDatas(inicioDoDia, fimDoDia);
+        int numeroDeVendas = fachada.calcularTotalDeVendasDiarias(inicioDoDia, fimDoDia);
+        Map<LocalDate, Double> faturamento = fachada.listarLucroPorData(inicioDoDia, fimDoDia);
         Double faturamentoDiario = faturamento.get(LocalDate.now());
         String faturamentoFormatado = String.format("%.2f", faturamentoDiario);
 
@@ -267,6 +244,7 @@ public class AdmRelatoriosController {
     }
 
     private void inicializarCbMesOuAnoEstendido(String periodoSelecionado, ComboBox<String> cbMesOuAno, VBox vbMes, ComboBox<String> cbMes){
+
         if(periodoSelecionado.equals("Mensal")){
             vbMes.setVisible(false);
             cbMesOuAno.setDisable(false);
@@ -408,8 +386,8 @@ public class AdmRelatoriosController {
         LocalDate dataFim = LocalDate.now();
         LocalDateTime dataEHoraFim = LocalDateTime.of(dataFim, LocalTime.MAX);
 
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        Map<Livro, Integer> rankingLivros = servidorReadEasy.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
+        Fachada fachada = Fachada.getInstance();
+        Map<Livro, Integer> rankingLivros = fachada.ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(), dataEHoraFim);
 
         inicializarBcRankingDeLivros(rankingLivros);
     }
@@ -520,7 +498,7 @@ public class AdmRelatoriosController {
 
     @FXML
     private void inicializarTvUsuariosQueMaisCompram() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         Map<String, Integer> clientesPorCompra;
 
         Month mesAtual = LocalDate.now().getMonth();
@@ -528,7 +506,7 @@ public class AdmRelatoriosController {
         LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
 
         try {
-            clientesPorCompra = servidorReadEasy.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
+            clientesPorCompra = fachada.ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             throw new RuntimeException(e);
         }
@@ -554,7 +532,7 @@ public class AdmRelatoriosController {
 
     @FXML
     private void inicializarTvUsuariosQueMaisGastam() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         Map<String, Double> clientesPorGasto;
 
         Month mesAtual = LocalDate.now().getMonth();
@@ -562,7 +540,7 @@ public class AdmRelatoriosController {
         LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
 
         try {
-            clientesPorGasto = servidorReadEasy.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
+            clientesPorGasto = fachada.raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             throw new RuntimeException(e);
         }
@@ -589,13 +567,13 @@ public class AdmRelatoriosController {
 
    @FXML
     private void inicializarTvRankingFornecedor() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         List<CompraLivrariaDTO> fornecedoresRanking;
 
         Month mesAtual = LocalDate.now().getMonth();
         LocalDate dataInicio = LocalDate.of(LocalDate.now().getYear(), mesAtual, 1);
         LocalDate dataFim = dataInicio.plusMonths(1).minusDays(1);
-        fornecedoresRanking = servidorReadEasy.ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
+        fornecedoresRanking = fachada.ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
 
         construirTvRankingFornecedores();
         tvFornecedoresRanking.setItems(FXCollections.observableArrayList(fornecedoresRanking));
@@ -959,14 +937,14 @@ public class AdmRelatoriosController {
     }
 
     private void pesquisarRankingFornecedores(LocalDate dataInicio, LocalDate dataFim){
-        List<CompraLivrariaDTO> fornecedores = ServidorReadEasy.getInstance().ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
+        List<CompraLivrariaDTO> fornecedores = Fachada.getInstance().ranquearFornecedoresMaisCompradosPorPeriodo(dataInicio, dataFim);
         tvFornecedoresRanking.setItems(FXCollections.observableArrayList(fornecedores));
         if(fornecedores.isEmpty()){
             apresentarAlertNenhumResultado();
         }
     }
     private void pesquisarRankingLivro(LocalDate dataInicio, LocalDateTime dataEHoraFim){
-        Map<Livro, Integer> rankingLivros = ServidorReadEasy.getInstance().ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
+        Map<Livro, Integer> rankingLivros = Fachada.getInstance().ranquearLivrosMaisVendidosEntreDatas(dataInicio.atStartOfDay(),dataEHoraFim);
         inicializarBcRankingDeLivros(rankingLivros);
         if(!rankingLivros.isEmpty()){
             verificarValoresMap(rankingLivros);
@@ -980,8 +958,8 @@ public class AdmRelatoriosController {
         Map<String, Integer> clientesQueMaisCompram = new HashMap<>();
         Map<String, Double> clientesQueMaisGastam = new HashMap<>();
         try {
-            clientesQueMaisCompram = ServidorReadEasy.getInstance().ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
-            clientesQueMaisGastam = ServidorReadEasy.getInstance().raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
+            clientesQueMaisCompram = Fachada.getInstance().ranquearClientesPorQuantidadeDeCompraEntreDatas(dataInicio, dataFim);
+            clientesQueMaisGastam = Fachada.getInstance().raquearClientesPorGastoEntreDatas(dataInicio, dataFim);
         } catch (HistoricoVazioException e) {
             System.out.println(e.getMessage());
         }
@@ -1002,32 +980,32 @@ public class AdmRelatoriosController {
     }
 
     private void pesquisarCategoria(String categoria, LocalDateTime dataHoraInicio, LocalDateTime dataEHoraFim, String tipoDadoPesquisado){
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
         switch (categoria){
             case "Quantidade de livros":
                 Map<LocalDate, Integer> livrosPorData;
 
                 if(tipoDadoPesquisado.equals("Venda")){
-                    livrosPorData = servidorReadEasy.listarLivrosVendidosPorData(dataHoraInicio, dataEHoraFim);
+                    livrosPorData = fachada.listarLivrosVendidosPorData(dataHoraInicio, dataEHoraFim);
                     setDadosVendaPorData1(livrosPorData);
                 }
                 else{
                     LocalDate dataInicio = dataHoraInicio.toLocalDate();
                     LocalDate dataFim = dataEHoraFim.toLocalDate();
-                    livrosPorData = servidorReadEasy.calcularQtdDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
+                    livrosPorData = fachada.calcularQtdDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
                     setDadosCompraPorData1(livrosPorData);
                 }
                 break;
 
             case "N° de vendas":
-                Map<LocalDate, Integer> vendasPorData = servidorReadEasy.listarVendasPorData(dataHoraInicio, dataEHoraFim);
+                Map<LocalDate, Integer> vendasPorData = fachada.listarVendasPorData(dataHoraInicio, dataEHoraFim);
                 vendasPorData = new TreeMap<>(vendasPorData);
                 setDadosVendaPorData1(vendasPorData);
                 break;
 
             case "Faturamento":
-                Map<LocalDate, Double> lucroPorData = servidorReadEasy.listarLucroPorData(dataHoraInicio, dataEHoraFim);
+                Map<LocalDate, Double> lucroPorData = fachada.listarLucroPorData(dataHoraInicio, dataEHoraFim);
                 lucroPorData = new TreeMap<>(lucroPorData);
                 setDadosVendaPorData2(lucroPorData);
                 break;
@@ -1035,7 +1013,7 @@ public class AdmRelatoriosController {
             case "Despesa total com fornecedores":
                 LocalDate dataInicio = dataHoraInicio.toLocalDate();
                 LocalDate dataFim = dataEHoraFim.toLocalDate();
-                Map<LocalDate, Double> gastoPorData = servidorReadEasy.calcularValorTotalPagoDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
+                Map<LocalDate, Double> gastoPorData = fachada.calcularValorTotalPagoDeLivrosCompradosPorPeriodo(dataInicio, dataFim);
                 setDadosCompraPorData2(gastoPorData);
         }
     }
@@ -1150,27 +1128,6 @@ public class AdmRelatoriosController {
         return mes;
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
     //gets and sets:
     public void setDadosVendaPorData1(Map<LocalDate, Integer> dadosVendaPorData1) {
         this.dadosVendaPorData1 = dadosVendaPorData1;
@@ -1234,5 +1191,13 @@ public class AdmRelatoriosController {
 
     public Map<LocalDate, Integer> getDadosCompraPorData1() {
         return dadosCompraPorData1;
+    }
+
+    public static AdmRelatoriosController getInstance() {
+        return instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

@@ -3,7 +3,6 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Livro;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -24,16 +23,6 @@ public class FornecedorCartaoLivroController {
         Image image = new Image(inputStream);
         imgvLivro.setImage(image);
     }
-
-    @FXML
-    public void selecionarLivroNaTabelaEstoque(){
-        Livro livro = this.livro;
-
-        ScreenManager screenManager = ScreenManager.getInstance();
-        screenManager.getFornecedorEstoqueController().selecionarLivroNaTabela(livro);
-    }
-
-
 
     //gets and sets:
     public Livro getLivro() {

@@ -1,14 +1,18 @@
 package br.ufrpe.readeasy.gui;
 
-import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
-import br.ufrpe.readeasy.exceptions.*;
+import br.ufrpe.readeasy.beans.Cliente;
+import br.ufrpe.readeasy.beans.Endereco;
+import br.ufrpe.readeasy.beans.Usuario;
+import br.ufrpe.readeasy.business.Fachada;
+import br.ufrpe.readeasy.exceptions.CampoVazioException;
+import br.ufrpe.readeasy.exceptions.DataInvalidaException;
+import br.ufrpe.readeasy.exceptions.EnderecoExistenteException;
+import br.ufrpe.readeasy.exceptions.UsuarioExistenteException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -111,38 +115,37 @@ public class ClientePerfilController {
     private TableColumn<Endereco, String> clnEstado;
 
     private Usuario usuarioLogado;
+    private static ClientePerfilController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    private void trocarTelaCatalogoCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteCatalogo.fxml", "ReadEasy - Catálogo");
-    }
-
-    @FXML
-    private void trocarTelaHistoricoCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteHistoricoCompras.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    public void initialize(){
-        setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-        atualizarLabels();
-
-        Cliente cliente;
-        List <Endereco> enderecosCliente = null;
-
-        if(getUsuarioLogado() instanceof Cliente){
-           cliente = (Cliente) getUsuarioLogado();
-           enderecosCliente = cliente.getEnderecosentrega();
+    //Construtor:
+    public ClientePerfilController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
         }
-        inicializarTbvEnderecos(enderecosCliente);
+    }
+
+    //Métodos:
+    public void initialize(){
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getClientePerfilController() == null){
+            screenManager.setClientePerfilController(instance);
+        }
+        if(!ignorarInitialize){
+            setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
+            atualizarLabels();
+
+            Cliente cliente;
+            List <Endereco> enderecosCliente = null;
+
+            if(getUsuarioLogado() instanceof Cliente){
+                cliente = (Cliente) getUsuarioLogado();
+                enderecosCliente = cliente.getEnderecosentrega();
+            }
+            inicializarTbvEnderecos(enderecosCliente);
+        }
     }
 
     private void atualizarLabels() {
@@ -232,7 +235,7 @@ public class ClientePerfilController {
                             Endereco enderecoSelecionado = tbvEnderecosCadastrados.getItems().get(0);
                             Cliente cliente = (Cliente) this.usuarioLogado;
                             try {
-                                ServidorReadEasy.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
+                                Fachada.getInstance().atualizarCliente(cliente, nome, cpf, dataNascimento,
                                         login, senha, enderecoSelecionado, telefone);
 
                                 this.atualizarLabels();
@@ -292,8 +295,12 @@ public class ClientePerfilController {
                     Endereco endereco = new Endereco(cep, rua, bairro, cidade, estado);
 
                     try {
-                        ServidorReadEasy.getInstance().adicionarEnderecoDeEntrega(getUsuarioLogado(), endereco);
+                        Fachada.getInstance().adicionarEnderecoDeEntrega(getUsuarioLogado(), endereco);
                         tbvEnderecosCadastrados.getItems().add(endereco);
+
+                        //atualizar o combobox de endereço na tela de catálogo:
+                        ScreenManager screenManager = ScreenManager.getInstance();
+                        screenManager.getClienteCatalogoController().inicializarCbEndereco();
 
                         alert.setAlertType(Alert.AlertType.INFORMATION);
                         alert.setTitle("Cadastro de Endereço");
@@ -346,8 +353,12 @@ public class ClientePerfilController {
 
             alert.showAndWait().ifPresent(buttonType -> {
                 if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                    ServidorReadEasy.getInstance().removerEnderecoDeEntrega(usuarioLogado, enderecoSelecionado);
+                    Fachada.getInstance().removerEnderecoDeEntrega(usuarioLogado, enderecoSelecionado);
                     tbvEnderecosCadastrados.getItems().remove(enderecoSelecionado);
+
+                    //atualizar o combobox de endereço na tela de catálogo:
+                    ScreenManager screenManager = ScreenManager.getInstance();
+                    screenManager.getClienteCatalogoController().inicializarCbEndereco();
 
                     alertAviso.setAlertType(Alert.AlertType.INFORMATION);
                     alertAviso.setTitle("Sucesso");
@@ -404,7 +415,7 @@ public class ClientePerfilController {
                             if(validarQuantidadeDeCaracteres("Cep", stringCep)){
                                 int cep = Integer.parseInt(stringCep);
                                 try {
-                                    ServidorReadEasy.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, cep,
+                                    Fachada.getInstance().atualizarEnderecoDeEntrega(SessaoUsuario.getUsuarioLogado(), enderecoSelecionado, cep,
                                             novaRua, novoBairro, novaCidade, novoEstado);
                                 } catch (EnderecoExistenteException e) {
                                     alertErro.setTitle("Erro");
@@ -420,9 +431,13 @@ public class ClientePerfilController {
                                     alertErro.showAndWait();
                                 }
                                 if(!excessaoLevantada){
-                                    List<Endereco> enderecos = ServidorReadEasy.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
+                                    List<Endereco> enderecos = Fachada.getInstance().listarEnderecosDeEntrega(SessaoUsuario.getUsuarioLogado());
                                     tbvEnderecosCadastrados.getItems().clear();
                                     tbvEnderecosCadastrados.setItems(FXCollections.observableList(enderecos));
+
+                                    //atualizar o combobox de endereço na tela de catálogo:
+                                    ScreenManager screenManager = ScreenManager.getInstance();
+                                    screenManager.getClienteCatalogoController().inicializarCbEndereco();
 
                                     alertErro.setAlertType(Alert.AlertType.INFORMATION);
                                     alertErro.setTitle("Sucesso");
@@ -530,26 +545,6 @@ public class ClientePerfilController {
         dtpEditarPerfilDataDeNascimento.setValue(null);
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
 
     //GETs AND SETs:
     public Usuario getUsuarioLogado() {
@@ -557,5 +552,13 @@ public class ClientePerfilController {
     }
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    public static ClientePerfilController getInstance() {
+        return instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

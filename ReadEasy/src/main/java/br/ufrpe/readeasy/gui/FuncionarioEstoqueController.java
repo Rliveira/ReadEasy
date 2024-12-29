@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
 import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -60,51 +60,38 @@ public class FuncionarioEstoqueController {
     private TableColumn<Livro, String> colFornecedor;
 
     private List<Livro> livros;
+    private static FuncionarioEstoqueController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaPerfilFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Perfil");
+    //Construtor:
+    public FuncionarioEstoqueController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaHistoricoFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaLivroFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     public void initialize(){
-        ivCapaDoLivro.setImage(null);
-        inicializarComboBoxLivro();
-        construirTabela();
-        inicializarTabela();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getFuncionarioEstoqueController() == null){
+            screenManager.setFuncionarioEstoqueController(instance);
+        }
+        if(!ignorarInitialize){
+            ivCapaDoLivro.setImage(null);
+            inicializarComboBoxLivro();
+            construirTabela();
+            inicializarTabela();
+        }
     }
 
     @FXML
     private void inicializarComboBoxLivro(){
         cbLivros.getSelectionModel().clearSelection();
         cbLivros.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List<Livro> livros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         setLivros(livros);
         List<String> titulosLivro = new ArrayList<>();
 
@@ -139,8 +126,8 @@ public class FuncionarioEstoqueController {
     @FXML
     private void inicializarTabela(){
         tvEstoque.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         tvEstoque.setItems(FXCollections.observableArrayList(listaDeLivros));
     }
 
@@ -162,7 +149,7 @@ public class FuncionarioEstoqueController {
                 alert.close();
 
 
-                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Fachada fachada = Fachada.getInstance();
                 boolean excecaoLevantada = false;
 
                 String inputQuantidade = tfQuantidade.getText();
@@ -177,12 +164,12 @@ public class FuncionarioEstoqueController {
                 }
                 else {
                     if(validarInputTf(inputQuantidade) && validarInputTf(inputValorPago)){
-                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        Livro livro = fachada.buscarLivroPorNome(livroSelecionado);
                         int quantidade = Integer.parseInt(inputQuantidade);
                         double valorTotal = Double.parseDouble(inputValorPago);
 
                         try {
-                            servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
+                            fachada.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
                         } catch (ValorInvalidoException e) {
                             excecaoLevantada = true;
                             alertErro.setTitle("Erro");
@@ -230,7 +217,7 @@ public class FuncionarioEstoqueController {
                 alert.close();
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Fachada fachada = Fachada.getInstance();
                 boolean excecaoLevantada = false;
                 boolean resultado;
 
@@ -247,11 +234,11 @@ public class FuncionarioEstoqueController {
                     resultado = validarInputTf(inputQuantidade);
 
                     if(resultado){
-                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        Livro livro = fachada.buscarLivroPorNome(livroSelecionado);
                         int quantidade = Integer.parseInt(inputQuantidade);
 
                         try {
-                            servidorReadEasy.diminuirQuantidadeEmEstoque(livro, quantidade);
+                            fachada.diminuirQuantidadeEmEstoque(livro, quantidade);
                         } catch (ValorInvalidoException e) {
                             excecaoLevantada = true;
                             alertErro.setTitle("Erro");
@@ -299,9 +286,9 @@ public class FuncionarioEstoqueController {
     @FXML
     private void filtrarLivrosNaTabela() {
         String termoPesquisa = tfPesquisar.getText();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
 
         if (termoPesquisa == null || termoPesquisa.trim().isEmpty()) {
             tvEstoque.setItems(FXCollections.observableArrayList(listaDeLivros));
@@ -366,27 +353,6 @@ public class FuncionarioEstoqueController {
         return livroSelecionado;
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
     //GETS AND SETS:
     public List<Livro> getLivros() {
         return livros;
@@ -394,5 +360,13 @@ public class FuncionarioEstoqueController {
 
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
+    }
+
+    public static void setInstance(FuncionarioEstoqueController instance) {
+        FuncionarioEstoqueController.instance = instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

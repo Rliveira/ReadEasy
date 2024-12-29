@@ -3,7 +3,8 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class FornecedorPerfilController
 {
@@ -54,26 +55,27 @@ public class FornecedorPerfilController
     @FXML
     private Label labelEstado;
 
-    //métodos de troca de tela
-    public void trocarTelaEstoqueFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorEstoque.fxml", "ReadEasy - Estoque");
+    private static FornecedorPerfilController instance;
+    private boolean ignorarInitialize;
+
+    //construtor:
+    public FornecedorPerfilController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    public void trocarTelaHistoricoFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorHistorico.fxml", "ReadEasy - Perfil");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //métodos:
     public void initialize()
     {
-        inicializarLabels();
+        ScreenManager screenManager = ScreenManager.getInstance();
+        if(screenManager.getFuncionarioPerfilController() == null){
+            screenManager.setFornecedorPerfilController(instance);
+        }
+        if(!ignorarInitialize){
+            inicializarLabels();
+        }
     }
 
     @FXML
@@ -94,24 +96,12 @@ public class FornecedorPerfilController
         }
     }
 
-    public void SairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
+    //gets and sets:
+    public static void setInstance(FornecedorPerfilController instance) {
+        FornecedorPerfilController.instance = instance;
+    }
 
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

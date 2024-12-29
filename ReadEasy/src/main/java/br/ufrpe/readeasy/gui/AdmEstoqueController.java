@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
 import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,64 +62,36 @@ public class AdmEstoqueController {
     private TableColumn<Livro, Integer> colQuantidade;
 
     private List<Livro> livros;
+    private static AdmEstoqueController instance;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    public void trocarTelaUsuariosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuários");
+    public AdmEstoqueController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaLivrosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admLivros.fxml", "ReadEasy - Livros");
-    }
-
-    @FXML
-    public void trocarTelaPerfilAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaPromocoesAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
     public void initialize(){
-        ivCapaDoLivro.setImage(null);
-        inicializarComboBoxLivro();
-        construirTabela();
-        inicializarTabela();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmEstoqueController() == null){
+            screenManager.setAdmEstoqueController(instance);
+        }
+        if(!ignorarInitialize){
+            ivCapaDoLivro.setImage(null);
+            inicializarComboBoxLivro();
+            construirTabela();
+            inicializarTabela();
+        }
     }
 
     @FXML
     private void inicializarComboBoxLivro(){
         cbLivros.getSelectionModel().clearSelection();
         cbLivros.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List<Livro> livros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         setLivros(livros);
         List<String> titulosLivro = new ArrayList<>();
 
@@ -155,8 +126,8 @@ public class AdmEstoqueController {
     @FXML
     private void inicializarTabela(){
         tvEstoque.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         tvEstoque.setItems(FXCollections.observableArrayList(listaDeLivros));
     }
 
@@ -174,12 +145,11 @@ public class AdmEstoqueController {
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
                 alert.close();
 
 
-                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Fachada fachada = Fachada.getInstance();
                 boolean excecaoLevantada = false;
 
                 String inputQuantidade = tfQuantidade.getText();
@@ -194,12 +164,12 @@ public class AdmEstoqueController {
                 }
                 else {
                     if(validarInputTf(inputQuantidade) && validarInputTf(inputValorPago)){
-                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        Livro livro = fachada.buscarLivroPorNome(livroSelecionado);
                         int quantidade = Integer.parseInt(inputQuantidade);
                         double valorTotal = Double.parseDouble(inputValorPago);
 
                         try {
-                            servidorReadEasy.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
+                            fachada.aumentarQuantidadeEmEstoque(livro, quantidade, LocalDate.now(), valorTotal);
                         } catch (ValorInvalidoException e) {
                             excecaoLevantada = true;
                             alertErro.setTitle("Erro");
@@ -247,7 +217,7 @@ public class AdmEstoqueController {
                 alert.close();
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
 
-                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Fachada fachada = Fachada.getInstance();
                 boolean excecaoLevantada = false;
                 boolean resultado;
 
@@ -264,11 +234,11 @@ public class AdmEstoqueController {
                     resultado = validarInputTf(inputQuantidade);
 
                     if(resultado){
-                        Livro livro = servidorReadEasy.buscarLivroPorNome(livroSelecionado);
+                        Livro livro = fachada.buscarLivroPorNome(livroSelecionado);
                         int quantidade = Integer.parseInt(inputQuantidade);
 
                         try {
-                            servidorReadEasy.diminuirQuantidadeEmEstoque(livro, quantidade);
+                            fachada.diminuirQuantidadeEmEstoque(livro, quantidade);
                         } catch (ValorInvalidoException e) {
                             excecaoLevantada = true;
                             alertErro.setTitle("Erro");
@@ -316,9 +286,9 @@ public class AdmEstoqueController {
     @FXML
     private void filtrarLivrosNaTabela() {
         String termoPesquisa = tfPesquisar.getText();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
 
         if (termoPesquisa == null || termoPesquisa.trim().isEmpty()) {
             tvEstoque.setItems(FXCollections.observableArrayList(listaDeLivros));
@@ -383,27 +353,6 @@ public class AdmEstoqueController {
         return livroSelecionado;
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
     //GETS AND SETS:
     public List<Livro> getLivros() {
         return livros;
@@ -411,5 +360,13 @@ public class AdmEstoqueController {
 
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
+    }
+
+    public static AdmEstoqueController getInstance() {
+        return instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

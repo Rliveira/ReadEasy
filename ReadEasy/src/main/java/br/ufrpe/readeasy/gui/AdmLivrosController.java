@@ -3,7 +3,7 @@ package br.ufrpe.readeasy.gui;
 import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -101,54 +101,36 @@ public class AdmLivrosController {
     private boolean atualizarComboBoxLivros = false;
     private boolean atualizarComboBoxGenero = false;
     private Livro livroSelecionado;
-    //Métodos de troca de tela:
-    public void trocarTelaEstoqueAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admEstoque.fxml", "ReadEasy - Estoque");
+
+    private static AdmLivrosController instance;
+    private boolean ignorarInitialize;
+
+    //construtor:
+    public AdmLivrosController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    public void trocarTelaHistoricoAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admHistoricoComprasEVendas.fxml", "ReadEasy - Histórico");
-    }
-
-    @FXML
-    public void trocarTelaPerfilAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaPromocoesAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDPromocoes.fxml", "ReadEasy - Promoções");
-    }
-
-    public void trocarTelaRelatoriosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    public void trocarTelaUsuariosAdm(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("admCRUDUsuarios.fxml", "ReadEasy - Usuarios");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-    //Outros métodos:
+    //métodos:
     @FXML
     public void initialize(){
-        limparCampos();
-        limparComboBox();
-        inicializarCbFornecedor();
-        inicializarCbGenero();
-        inicializarListViewTodosOsGeneros();
-        construirTabela();
-        inicializarTabela();
-        atualizarCbLivros();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getAdmLivrosController() == null){
+            screenManager.setAdmLivrosController(instance);
+        }
+        if(!ignorarInitialize){
+            limparCampos();
+            limparComboBox();
+            inicializarCbFornecedor();
+            inicializarCbGenero();
+            inicializarListViewTodosOsGeneros();
+            construirTabela();
+            inicializarTabela();
+            atualizarCbLivros();
+        }
     }
 
     public void atualizarImageView() {
@@ -210,7 +192,7 @@ public class AdmLivrosController {
             String nomeLivro2 = tfTitulo.getText();
 
             if(atualizarComboBoxGenero && !nomeLivro2.isEmpty() && nomelivro.equals(nomeLivro2)){
-                Livro livro = ServidorReadEasy.getInstance().buscarLivroPorNome(nomelivro);
+                Livro livro = Fachada.getInstance().buscarLivroPorNome(nomelivro);
                 Genero genero = livro.getGeneros().get(0);
                 cbGenero.setValue(genero.getDescricaoEnum());
                 atualizarComboBoxGenero = false;
@@ -231,8 +213,8 @@ public class AdmLivrosController {
 
     @FXML
     private void inicializarCbFornecedor(){
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Fornecedor> fornecedores = servidorReadEasy.listarFornecedores();
+        Fachada fachada = Fachada.getInstance();
+        List<Fornecedor> fornecedores = fachada.listarFornecedores();
         List<String> nomesFornecedores = new ArrayList<>();
 
         setFornecedores(fornecedores);
@@ -247,8 +229,8 @@ public class AdmLivrosController {
     private void inicializarCbLivro(){
         cbLivros.getSelectionModel().clearSelection();
         cbLivros.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List <Livro>livros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List <Livro>livros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         List<String> titulosLivro = new ArrayList<>();
 
         for (Livro livro : livros){
@@ -280,9 +262,9 @@ public class AdmLivrosController {
 
     @FXML
     private void inicializarListViewGenerosDoLivro() {
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         String tituloLivro = cbLivros.getValue();
-        Livro livro = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+        Livro livro = fachada.buscarLivroPorNome(tituloLivro);
         if(livro != null){
             lvGenerosDoLivro.setItems(FXCollections.observableArrayList(livro.getGeneros()));
             lvGenerosDoLivro.setCellFactory(param -> new ListCell<Genero>() {
@@ -332,8 +314,8 @@ public class AdmLivrosController {
 
     @FXML
     private void inicializarTabela(){
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        Fachada fachada = Fachada.getInstance();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
         tvCatalogoLivros.setItems(FXCollections.observableArrayList(listaDeLivros));
     }
 
@@ -390,10 +372,10 @@ public class AdmLivrosController {
                 double preco = Double.parseDouble(textoPreco);
                 Livro livro = new Livro(titulo, autor, preco, fornecedor, imageBytes, urlLivro);
 
-                ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+                Fachada fachada = Fachada.getInstance();
                 try {
-                    servidorReadEasy.adicionarLivro(livro);
-                    servidorReadEasy.adicionarGenero(livro, genero);
+                    fachada.adicionarLivro(livro);
+                    fachada.adicionarGenero(livro, genero);
                 }  catch (ValorInvalidoException e) {
                     excecaoLevantada = true;
                     alert.setTitle("Erro");
@@ -435,7 +417,7 @@ public class AdmLivrosController {
     @FXML
     public void btnremoverLivro(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
         alert.setTitle("Confirmação");
         alert.setHeaderText("Deseja realmente remover o livro?");
@@ -454,7 +436,7 @@ public class AdmLivrosController {
                 Livro livroSelecionado = getLivroSelecionado();
 
                 if(livroSelecionado != null){
-                    servidorReadEasy.removerLivro(livroSelecionado);
+                    fachada.removerLivro(livroSelecionado);
 
                     if(!excecaoLevantada){
                         tvCatalogoLivros.getItems().remove(livroSelecionado);
@@ -485,7 +467,7 @@ public class AdmLivrosController {
 
     @FXML
     public void btnEditarLivro(){
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle("Confirmação");
@@ -549,7 +531,7 @@ public class AdmLivrosController {
                         double preco = Double.parseDouble(textoPreco);
 
                         try {
-                            servidorReadEasy.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, imageBytes, urlLivro);
+                            fachada.atualizarLivro(getLivroSelecionado(),titulo, autor, preco, fornecedor, imageBytes, urlLivro);
                         }  catch (LivroExistenteException e) {
                             excecaoLevantada = true;
                             alertErro.setTitle("Erro");
@@ -596,7 +578,7 @@ public class AdmLivrosController {
     @FXML
     public void btnAdicionarGenero(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
         alert.setTitle("Confirmação");
         alert.setHeaderText("Deseja realmente adicionar o gênero?");
@@ -613,14 +595,14 @@ public class AdmLivrosController {
 
                 Genero generoSelecionado = lvTodosOsGeneros.getSelectionModel().getSelectedItem();
                 String tituloLivro = cbLivros.getValue();
-                Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+                Livro livroSelecionado = fachada.buscarLivroPorNome(tituloLivro);
 
                 if(livroSelecionado != null){
                     if (generoSelecionado != null) {
                         boolean exceptionLevantada = false;
 
                         try {
-                            servidorReadEasy.adicionarGenero(livroSelecionado, generoSelecionado);
+                            fachada.adicionarGenero(livroSelecionado, generoSelecionado);
                         } catch (GeneroExistenteException e) {
                             exceptionLevantada = true;
                             alertErro.setTitle("Erro!");
@@ -660,7 +642,7 @@ public class AdmLivrosController {
     @FXML
     public void btnRemoverGenero(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
         alert.setTitle("Confirmação");
         alert.setHeaderText("Deseja realmente remover o gênero?");
@@ -677,7 +659,7 @@ public class AdmLivrosController {
 
                 Genero generoSelecionado = lvGenerosDoLivro.getSelectionModel().getSelectedItem();
                 String tituloLivro = cbLivros.getValue();
-                Livro livroSelecionado = servidorReadEasy.buscarLivroPorNome(tituloLivro);
+                Livro livroSelecionado = fachada.buscarLivroPorNome(tituloLivro);
 
                 if(generoSelecionado != null && generoSelecionado.equals(livroSelecionado.getGeneros().get(0))){
                     atualizarComboBoxGenero = true;
@@ -689,7 +671,7 @@ public class AdmLivrosController {
                         boolean exceptionLevantada = false;
 
                         try {
-                            servidorReadEasy.removerGenero(livroSelecionado, generoSelecionado);
+                            fachada.removerGenero(livroSelecionado, generoSelecionado);
                         } catch (GeneroNaoExistenteException e) {
                             exceptionLevantada = true;
                             alertErro.setTitle("Erro!");
@@ -735,9 +717,9 @@ public class AdmLivrosController {
     @FXML
     private void filtrarLivrosNaTabela() {
         String termoPesquisa = tfPesquisar.getText();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
+        Fachada fachada = Fachada.getInstance();
 
-        List<Livro> listaDeLivros = servidorReadEasy.listarTodosOslivrosEmOrdemAlfabetica();
+        List<Livro> listaDeLivros = fachada.listarTodosOslivrosEmOrdemAlfabetica();
 
         if (termoPesquisa == null || termoPesquisa.trim().isEmpty()) {
             tvCatalogoLivros.setItems(FXCollections.observableArrayList(listaDeLivros));
@@ -842,27 +824,6 @@ public class AdmLivrosController {
         return precoDigitadoCorretamente;
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
     //gets and Sets:
     public List<Fornecedor> getFornecedores() {
         return fornecedores;
@@ -879,13 +840,19 @@ public class AdmLivrosController {
         this.generos = generos;
     }
 
-
-
     public Livro getLivroSelecionado() {
         return livroSelecionado;
     }
 
     public void setLivroSelecionado(Livro livroSelecionado) {
         this.livroSelecionado = livroSelecionado;
+    }
+
+    public static AdmLivrosController getInstance() {
+        return instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

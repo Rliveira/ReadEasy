@@ -1,7 +1,7 @@
 package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.*;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.EstoqueInsuficienteException;
 import br.ufrpe.readeasy.exceptions.ValorInvalidoException;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,7 +17,10 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class ClienteCatalogoController {
@@ -73,33 +76,33 @@ public class ClienteCatalogoController {
     private List<LivroVendido> carrinho = new ArrayList<>();
     private List<VBox> cartoesLivroCatalogo = new ArrayList<>();
     private List<ClienteCartaoLivroController> controladoresCartaoLivro = new ArrayList<>();
+    private static ClienteCatalogoController instance;
+    private int numeroDeColunas;
+    private boolean ignorarInitialize;
 
-    //Métodos de troca de tela:
-    @FXML
-    private void trocarTelaHistoricoCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clienteHistoricoCompras.fxml", "ReadEasy - Histórico");
+    //Construtor:
+    public ClienteCatalogoController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    private void trocarTelaPerfilCliente(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("clientePerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //outros métodos:
+    //Métodos:
     public void initialize(){
-        setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
-        inicializarCatalogoDeLivros();
-        inicializarTabelaCarrinho();
-        inicializarCbPromocoes();
-        inicializarCbEndereco();
-        inicializarCbGenero();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if (screenManager.getClienteCatalogoController() == null){
+            screenManager.setClienteCatalogoController(instance);
+        }
+        if (!ignorarInitialize){
+            setUsuarioLogado(SessaoUsuario.getUsuarioLogado());
+            inicializarCatalogoDeLivros();
+            inicializarTabelaCarrinho();
+            inicializarCbPromocoes();
+            inicializarCbEndereco();
+            inicializarCbGenero();
+        }
     }
 
     private void inicializarCbGenero(){
@@ -116,7 +119,7 @@ public class ClienteCatalogoController {
 
     public void inicializarCatalogoDeLivros() {
         listaDeLivrosDoCatalogo.clear();
-        List<Livro> livrosDisponiveis = ServidorReadEasy.getInstance().listarLivrosComEstoqueDisponivel();
+        List<Livro> livrosDisponiveis = Fachada.getInstance().listarLivrosComEstoqueDisponivel();
         livrosDisponiveis.sort(Comparator.comparing(Livro::getTitulo));
         listaDeLivrosDoCatalogo.addAll(livrosDisponiveis);
 
@@ -130,7 +133,7 @@ public class ClienteCatalogoController {
         try {
             for (int i = 0; i < listaDeLivrosDoCatalogo.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/ClientecartaoLivro.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("/br/ufrpe/readeasy/clienteCartaoLivro.fxml"));
                 VBox cartaoLivro = fxmlLoader.load();
 
                 ClienteCartaoLivroController cardController = fxmlLoader.getController();
@@ -144,7 +147,7 @@ public class ClienteCatalogoController {
                     linha++;
                 }
 
-                adicionarCartaoLivroNoGridPane(cartaoLivro, linha, coluna);
+                adicionarCartaoLivroNoGridPane(cartaoLivro, linha, coluna, 590);
                 coluna++;
             }
 
@@ -159,7 +162,7 @@ public class ClienteCatalogoController {
         String termoPesquisa = tfPesquisar.getText().toLowerCase();
 
         if (termoPesquisa.trim().isEmpty()) {
-           montarCatatalogo(cartoesLivroCatalogo);
+            montarCatatalogo(cartoesLivroCatalogo);
         }
         else {
             List<VBox> cartoesFiltrados = new ArrayList<>();
@@ -178,7 +181,6 @@ public class ClienteCatalogoController {
                     }
                 }
             }
-
             montarCatatalogo(cartoesFiltrados);
         }
     }
@@ -219,23 +221,24 @@ public class ClienteCatalogoController {
         gpCatalogoLivraria.getChildren().clear();
         int coluna = 0;
         int linha = 1;
+        int prefWidth = numeroDeColunas == 3? 910 : 590;
 
         for(int i = 0; i < cartoesFiltrados.size(); i++){
-            if (coluna == 2) {
+            if (coluna == numeroDeColunas) {
                 coluna = 0;
                 linha++;
             }
 
-            adicionarCartaoLivroNoGridPane(cartoesFiltrados.get(i), linha, coluna);
+            adicionarCartaoLivroNoGridPane(cartoesFiltrados.get(i), linha, coluna, prefWidth);
             coluna++;
         }
     }
 
-    private void adicionarCartaoLivroNoGridPane(VBox cartaoLivro, int linha, int coluna){
+    private void adicionarCartaoLivroNoGridPane(VBox cartaoLivro, int linha, int coluna, int prefWidth){
         gpCatalogoLivraria.add(cartaoLivro, coluna, linha);
 
         gpCatalogoLivraria.setMinWidth(Region.USE_PREF_SIZE);
-        gpCatalogoLivraria.setPrefWidth(590);
+        gpCatalogoLivraria.setPrefWidth(prefWidth);
         gpCatalogoLivraria.setMaxWidth(Region.USE_PREF_SIZE);
 
         gpCatalogoLivraria.setMinHeight(Region.USE_COMPUTED_SIZE);
@@ -277,7 +280,7 @@ public class ClienteCatalogoController {
                             int quantidade = tbCarrinho.getItems().get(i).getQuantidade();
                             venda.adicionarLivro(livro, quantidade);
                         }
-                        ServidorReadEasy.getInstance().inserirVenda(venda);
+                        Fachada.getInstance().inserirVenda(venda);
 
                         alertErro.setAlertType(Alert.AlertType.INFORMATION);
                         alertErro.setTitle("Sucesso!");
@@ -292,7 +295,7 @@ public class ClienteCatalogoController {
                         for (LivroVendido livroVendido : venda.getLivrosVendidos()){
                             Livro livro = livroVendido.getLivro();
                             try {
-                                ServidorReadEasy.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
+                                Fachada.getInstance().diminuirQuantidadeEmEstoque(livro, livroVendido.getQuantidade());
                             } catch (EstoqueInsuficienteException | ValorInvalidoException e) {
                                 System.out.println(e.getMessage());
                             }
@@ -332,8 +335,8 @@ public class ClienteCatalogoController {
         //Limpa o conteúdo anteriormente preenchido do combobox,
         //caso tenha, preenche novamente com conteúdo novo.
         cbAplicarPromocao.getItems().clear();
-        ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-        setPromocoes(servidorReadEasy.listarTodasPromocoesAtivas());
+        Fachada fachada = Fachada.getInstance();
+        setPromocoes(fachada.listarTodasPromocoesAtivas());
         List<String> nomesPromocoes = new ArrayList<>();
 
         for(int i = 0; i < this.promocoes.size(); i++){
@@ -536,26 +539,7 @@ public class ClienteCatalogoController {
         Tooltip.install(btnCatalogoCompleto, tooltip);
     }
 
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
-
+    //Gets and sets:
     public List<Promocao> getPromocoes() {
         return promocoes;
     }
@@ -586,5 +570,21 @@ public class ClienteCatalogoController {
 
     public void setCarrinho(List<LivroVendido> carrinho) {
         this.carrinho = carrinho;
+    }
+
+    public static ClienteCatalogoController getInstance() {
+        return instance;
+    }
+
+    public int getNumeroDeColunas() {
+        return numeroDeColunas;
+    }
+
+    public void setNumeroDeColunas(int numeroDeColunas) {
+        this.numeroDeColunas = numeroDeColunas;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }

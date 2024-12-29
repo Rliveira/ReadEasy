@@ -4,7 +4,7 @@ import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Genero;
 import br.ufrpe.readeasy.beans.Livro;
 import br.ufrpe.readeasy.beans.Usuario;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -56,32 +56,37 @@ public class FornecedorEstoqueController {
     @FXML
     private ComboBox<String> cbGenero;
 
+    private static FornecedorEstoqueController instance;
+    private boolean ignorarInitialize;
+    private int numeroDeColunas;
     private List<Genero> generos;
     private List<Livro> listaDeLivrosCatalogoFornecedor = new ArrayList<>();
     private List<VBox> cartoesLivroCatalogoFornecedor = new ArrayList<>();
     private List<FornecedorCartaoLivroController> controladoresCartaoLivro = new ArrayList<>();
 
-    public void trocarTelaPerfilFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorPerfil.fxml", "ReadEasy - Perfil");
+    //Construtor:
+
+
+    public FornecedorEstoqueController() {
+        if(instance == null){
+            instance = this;
+            this.ignorarInitialize = true;
+        }
     }
 
-    public void trocarTelaHistoricoFornecedor(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("fornecedorHistorico.fxml", "ReadEasy - Histórico");
-    }
-
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //Métodos:
     public void initialize(){
-        construirTabela();
-        inicializarTabela();
-        inicializarCbGenero();
-        inicializarCatalogoDeLivrosFornecedor();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getFornecedorEstoqueController() == null) {
+            screenManager.setFornecedorEstoqueController(instance);
+        }
+        if(!ignorarInitialize){
+            construirTabela();
+            inicializarTabela();
+            inicializarCbGenero();
+            inicializarCatalogoDeLivrosFornecedor();
+        }
     }
 
     private void inicializarCbGenero(){
@@ -102,8 +107,8 @@ public class FornecedorEstoqueController {
 
         if(usuario instanceof Fornecedor){
             Fornecedor fornecedor = (Fornecedor) usuario ;
-            ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-            List<Livro> listaDeLivrosFornecedor = servidorReadEasy.listarLivrosPorFornecedor(fornecedor);
+            Fachada fachada = Fachada.getInstance();
+            List<Livro> listaDeLivrosFornecedor = fachada.listarLivrosPorFornecedor(fornecedor);
             listaDeLivrosFornecedor.sort(Comparator.comparing(Livro::getTitulo));
             listaDeLivrosCatalogoFornecedor.addAll(listaDeLivrosFornecedor);
 
@@ -131,7 +136,7 @@ public class FornecedorEstoqueController {
                         linha++;
                     }
 
-                    adicionarCartaoLivroNoGridPane(cartaoLivro, linha, coluna);
+                    adicionarCartaoLivroNoGridPane(cartaoLivro, linha, coluna, 530);
                     coluna++;
                 }
 
@@ -147,6 +152,7 @@ public class FornecedorEstoqueController {
         String termoPesquisa = tfPesquisar.getText().toLowerCase();
 
         if (termoPesquisa.trim().isEmpty()) {
+            int numeroDeColunas = ScreenManager.getStage().isMaximized()? 3 : 2;
             montarCatatalogo(cartoesLivroCatalogoFornecedor);
         }
         else {
@@ -165,7 +171,6 @@ public class FornecedorEstoqueController {
                     }
                 }
             }
-
             montarCatatalogo(cartoesFiltrados);
         }
     }
@@ -196,7 +201,6 @@ public class FornecedorEstoqueController {
                     }
                 }
             }
-
             montarCatatalogo(cartoesFiltrados);
         }
     }
@@ -218,11 +222,10 @@ public class FornecedorEstoqueController {
                             livro.getAutor().toLowerCase().contains(termoPesquisa);
 
                     if (correspondeAoFiltro) {
-                        cartoesFiltrados.add(cartoesLivroCatalogoFornecedor.get(i));
+                       cartoesFiltrados.add(cartoesLivroCatalogoFornecedor.get(i));
                     }
                 }
             }
-
             montarCatatalogo(cartoesFiltrados);
         }
     }
@@ -230,24 +233,26 @@ public class FornecedorEstoqueController {
     private void montarCatatalogo(List<VBox> cartoesFiltrados){
         gpCatalogolivrosFornecedor.getChildren().clear();
         int coluna = 0;
-        int linha = 1;
+        int linha = 0;
+        int prefWidth = numeroDeColunas == 3? 840 : 530;
+
 
         for(int i = 0; i < cartoesFiltrados.size(); i++){
-            if (coluna == 2) {
+            if (coluna == numeroDeColunas) {
                 coluna = 0;
                 linha++;
             }
 
-            adicionarCartaoLivroNoGridPane(cartoesFiltrados.get(i), linha, coluna);
+            adicionarCartaoLivroNoGridPane(cartoesFiltrados.get(i), linha, coluna, prefWidth);
             coluna++;
         }
     }
 
-    private void adicionarCartaoLivroNoGridPane(VBox cartaoLivro, int linha, int coluna){
+    private void adicionarCartaoLivroNoGridPane(VBox cartaoLivro, int linha, int coluna, int prefWidth){
         gpCatalogolivrosFornecedor.add(cartaoLivro, coluna, linha);
 
         gpCatalogolivrosFornecedor.setMinWidth(Region.USE_PREF_SIZE);
-        gpCatalogolivrosFornecedor.setPrefWidth(530);
+        gpCatalogolivrosFornecedor.setPrefWidth(prefWidth);
         gpCatalogolivrosFornecedor.setMaxWidth(Region.USE_PREF_SIZE);
 
         gpCatalogolivrosFornecedor.setMinHeight(Region.USE_COMPUTED_SIZE);
@@ -300,8 +305,8 @@ public class FornecedorEstoqueController {
         Usuario usuario = SessaoUsuario.getUsuarioLogado();
         if(usuario instanceof Fornecedor){
             Fornecedor fornecedor = (Fornecedor) usuario ;
-            ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
-            List<Livro> listaDeLivrosFornecedor = servidorReadEasy.listarLivrosPorFornecedor(fornecedor);
+            Fachada fachada = Fachada.getInstance();
+            List<Livro> listaDeLivrosFornecedor = fachada.listarLivrosPorFornecedor(fornecedor);
 
             if(listaDeLivrosFornecedor.isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -317,13 +322,6 @@ public class FornecedorEstoqueController {
         }
     }
 
-    public void selecionarLivroNaTabela(Livro livro) {
-        if (livro != null) {
-            tvEstoqueLivrosFornecedor.getSelectionModel().select(livro);
-            tvEstoqueLivrosFornecedor.scrollTo(livro); // para garantir que o livro esteja visível
-        }
-    }
-
     @FXML
     public void filtrarLivroSelecionado(){
         Livro livroSelecionado = tvEstoqueLivrosFornecedor.getSelectionModel().getSelectedItem();
@@ -332,26 +330,6 @@ public class FornecedorEstoqueController {
         filtrarCartoesLivroPorTermo(nomeLivro);
     }
 
-    public void SairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
-
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
-
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
-    }
 
     //gets and sets:
     public List<Livro> getListaDeLivrosCatalogoFornecedor() {
@@ -360,5 +338,21 @@ public class FornecedorEstoqueController {
 
     public void setListaDeLivrosCatalogoFornecedor(List<Livro> listaDeLivrosCatalogoFornecedor) {
         this.listaDeLivrosCatalogoFornecedor = listaDeLivrosCatalogoFornecedor;
+    }
+
+    public List<VBox> getCartoesLivroCatalogoFornecedor() {
+        return cartoesLivroCatalogoFornecedor;
+    }
+
+    public static void setInstance(FornecedorEstoqueController instance) {
+        FornecedorEstoqueController.instance = instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
+    }
+
+    public void setNumeroDeColunas(int numeroDeColunas) {
+        this.numeroDeColunas = numeroDeColunas;
     }
 }

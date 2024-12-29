@@ -2,7 +2,7 @@ package br.ufrpe.readeasy.gui;
 
 import br.ufrpe.readeasy.beans.CompraLivrariaDTO;
 import br.ufrpe.readeasy.beans.VendaLivrariaDTO;
-import br.ufrpe.readeasy.business.ServidorReadEasy;
+import br.ufrpe.readeasy.business.Fachada;
 import br.ufrpe.readeasy.exceptions.DataInvalidaException;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -105,44 +105,31 @@ public class FuncionarioHistoricoComprasEVendasController {
     @FXML
     private TableColumn<CompraLivrariaDTO, String> clnValorPorLivro;
 
-    //Métodos de troca de tela
-    @FXML
-    public void trocarTelaEstoqueFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioEstoque.fxml", "ReadEasy - Estoque");
+    private static FuncionarioHistoricoComprasEVendasController instance;
+    private boolean ignorarInitialize;
+
+    //Construtor:
+    public FuncionarioHistoricoComprasEVendasController() {
+        if(instance == null){
+            instance = this;
+            ignorarInitialize = true;
+        }
     }
 
-    @FXML
-    public void trocarTelaLivroFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioCRUDLivros.fxml", "ReadEasy - Livros");
-    }
-
-    @FXML
-    public void trocarTelaPerfilFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioPerfil.fxml", "ReadEasy - Perfil");
-    }
-
-    @FXML
-    public void trocarTelaRelatoriosFuncionario(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("funcionarioRelatorios.fxml", "ReadEasy - Relatorios");
-    }
-
-    @FXML
-    private void trocarTelaLogin(){
-        ScreenManager sm = ScreenManager.getInstance();
-        sm.TrocarTela("Login.fxml", "ReadEasy - Login");
-    }
-
-    //Outros métodos:
+    //Métodos:
     public void initialize() {
-        this.construirTableHistoricoVendas();
-        this.inicializarTableHistoricoVendas();
-        this.construirTableHistoricoCompras();
-        this.inicializarTableHistoricoCompras();
-        dtpkDataFimCompras.setValue(LocalDate.now());
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        if(screenManager.getFuncionarioHistoricoComprasEVendasController() == null){
+            screenManager.setFuncionarioHistoricoComprasEVendasController(instance);
+        }
+        if (!ignorarInitialize) {
+            this.construirTableHistoricoVendas();
+            this.inicializarTableHistoricoVendas();
+            this.construirTableHistoricoCompras();
+            this.inicializarTableHistoricoCompras();
+            dtpkDataFimCompras.setValue(LocalDate.now());
+        }
     }
 
     @FXML
@@ -188,7 +175,7 @@ public class FuncionarioHistoricoComprasEVendasController {
     public void inicializarTableHistoricoVendas() {
         List<VendaLivrariaDTO> vendas = null;
         try {
-            vendas = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(null, null);
+            vendas = Fachada.getInstance().listarVendasLivrariaDTO(null, null);
 
             // Ordena as vendas por data (data atual pra data mais antiga)
             Collections.sort(vendas, Comparator.comparing(VendaLivrariaDTO::getDataVenda).reversed());
@@ -205,7 +192,7 @@ public class FuncionarioHistoricoComprasEVendasController {
 
         List<VendaLivrariaDTO> vendasLivraria = null;
         try {
-            vendasLivraria = ServidorReadEasy.getInstance().listarVendasLivrariaDTO(dataInicio, dataFim);
+            vendasLivraria = Fachada.getInstance().listarVendasLivrariaDTO(dataInicio, dataFim);
         } catch (DataInvalidaException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -262,7 +249,7 @@ public class FuncionarioHistoricoComprasEVendasController {
     public void inicializarTableHistoricoCompras() {
         List<CompraLivrariaDTO> historicoCompras = new ArrayList<>();
         try {
-            historicoCompras = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(null, null);
+            historicoCompras = Fachada.getInstance().historicoLivrosCompradosLivraria(null, null);
 
             // Ordena as vendas por data (data atual pra data mais antiga)
             Collections.sort(historicoCompras, Comparator.comparing(CompraLivrariaDTO::getDataDaCompra).reversed());
@@ -280,7 +267,7 @@ public class FuncionarioHistoricoComprasEVendasController {
 
         List<CompraLivrariaDTO> comprasLivraria = null;
         try {
-            comprasLivraria = ServidorReadEasy.getInstance().historicoLivrosCompradosLivraria(dataInicio, dataFim);
+            comprasLivraria = Fachada.getInstance().historicoLivrosCompradosLivraria(dataInicio, dataFim);
         } catch (DataInvalidaException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -291,24 +278,17 @@ public class FuncionarioHistoricoComprasEVendasController {
         tableHistoricoCompras.setItems(FXCollections.observableArrayList(comprasLivraria));
     }
 
-    @FXML
-    public void btnSairDaConta(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Deseja realmente sair?");
-        alert.setContentText("Escolha uma opção.");
+    //gets and sets:
 
-        ButtonType simButton = new ButtonType("Sim", ButtonBar.ButtonData.YES);
-        ButtonType naoButton = new ButtonType("Não", ButtonBar.ButtonData.NO);
-        alert.getButtonTypes().setAll(simButton, naoButton);
+    public void setBtnPerfil(Button btnPerfil) {
+        this.btnPerfil = btnPerfil;
+    }
 
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
-            }
-            else {
-                alert.close();
-            }
-        });
+    public static void setInstance(FuncionarioHistoricoComprasEVendasController instance) {
+        FuncionarioHistoricoComprasEVendasController.instance = instance;
+    }
+
+    public void setIgnorarInitialize(boolean ignorarInitialize) {
+        this.ignorarInitialize = ignorarInitialize;
     }
 }
