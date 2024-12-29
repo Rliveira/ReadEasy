@@ -11,24 +11,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ServidorReadEasy {
+public class Fachada {
 
-    private static ServidorReadEasy instance;
+    private static Fachada instance;
     private IControladorUsuario controladorUsuario;
     private IControladorLivro controladorLivro;
     private IControladorVenda controladorVenda;
     private IControladorPromocao controladorPromocao;
 
-    private ServidorReadEasy() {
+    private Fachada() {
         this.controladorUsuario = ControladorUsuario.getInstance();
         this.controladorLivro = ControladorLivro.getInstance();
         this.controladorVenda = ControladorVenda.getInstance();
         this.controladorPromocao = ControladorPromocao.getInstance();
     }
 
-    public static ServidorReadEasy getInstance() {
+    public static Fachada getInstance() {
         if (instance == null) {
-            instance = new ServidorReadEasy();
+            instance = new Fachada();
         }
         return instance;
     }
