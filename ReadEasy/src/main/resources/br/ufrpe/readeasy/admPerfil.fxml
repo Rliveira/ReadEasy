@@ -9,642 +9,495 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmPerfilController">
-   <left>
-      <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
+<VBox prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #cccccc;" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmPerfilController">
+   <children>
+      <VBox prefHeight="332.0" prefWidth="958.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
          <children>
-            <Label prefHeight="46.0" prefWidth="183.0" text="ReadEasy" textFill="WHITE">
-               <font>
-                  <Font name="Tahoma Bold" size="36.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <Line endX="94.89286804199219" startX="-124.40000915527344" stroke="#cccccc">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnEfeitoP" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-perfil.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnLivros" mnemonicParsing="false" onAction="#trocarTelaLivrosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-Livro.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-estoque.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#trocarTelaUsuariosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnEfeitoP" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-usuarios.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnPromocoes" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" onAction="#trocarTelaPromocoesAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralP" />
-                  <String fx:value="btnBarraLateralH" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-promocao.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnEfeitoP" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-histórico.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios&#10;&#10;" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralP" />
-                  <String fx:value="btnBarraLateralH" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-relatorios.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <VBox prefHeight="202.0" prefWidth="221.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="20.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-logout.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="332.0" prefWidth="958.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+            <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                <children>
-                  <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
-                     <children>
-                        <Pane prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/icons/icons-informacoes-usuário.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets right="5.0" top="15.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefHeight="27.0" prefWidth="226.0" text="Informações Pessoais" textAlignment="JUSTIFY" textFill="WHITE">
-                           <font>
-                              <Font name="Tahoma Bold" size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="16.0" top="16.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <VBox prefHeight="213.0" prefWidth="958.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                     <children>
-                        <HBox prefHeight="192.0" prefWidth="418.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Pane prefHeight="250.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
-                              <VBox prefHeight="258.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="Nome:">
-                                       <VBox.margin>
-                                          <Insets top="25.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="35.0" text="CPF:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="178.0" text="Data de nascimento:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="198.0" text="Nome de Usuário">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="258.0" text="Telefone:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox layoutX="10.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="lblNome" text="(Nome)">
-                                       <VBox.margin>
-                                          <Insets top="25.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblData" layoutX="10.0" layoutY="178.0" text="(Data de nascimento)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets right="25.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <Separator orientation="VERTICAL" prefHeight="200.0">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" right="25.0" top="10.0" />
-                                 </HBox.margin>
-                              </Separator>
-                              <VBox layoutX="544.0" layoutY="10.0" prefHeight="250.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="CEP:">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="35.0" text="Rua:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="178.0" text="Bairro:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="198.0" text="Cidade:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="218.0" text="Estado:">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="15.0" top="25.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox layoutX="588.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="lblCep" text="(CEP)">
-                                       <VBox.margin>
-                                          <Insets top="25.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label fx:id="lblEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
-                                       <font>
-                                          <Font name="Tahoma" size="16.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="219.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </VBox>
+                  <Pane prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons/icons-informacoes-usuário.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="5.0" top="15.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label prefHeight="27.0" prefWidth="226.0" text="Informações Pessoais" textAlignment="JUSTIFY" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="16.0" top="16.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </VBox.margin>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="979.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+            </HBox>
+            <VBox prefHeight="213.0" prefWidth="958.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
+                  <HBox prefHeight="192.0" prefWidth="418.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Pane prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <HBox.margin>
-                              <Insets right="5.0" top="15.0" />
-                           </HBox.margin>
-                           <image>
-                              <Image url="@images/icons/icons-editar-perfil.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="26.0" prefWidth="124.0" text="Editar Perfil" textAlignment="JUSTIFY" textFill="WHITE">
-                           <font>
-                              <Font name="Tahoma Bold" size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="16.0" top="16.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="811.0" prefWidth="979.0" style="-fx-background-color: #ffffff; -fx-background-radius: 0px 0px 8px 8px;" VBox.vgrow="ALWAYS">
-                     <children>
-                        <VBox prefHeight="303.0" prefWidth="503.0" HBox.hgrow="ALWAYS">
+                        <Pane prefHeight="250.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
+                        <VBox prefHeight="258.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="txtFNome" prefHeight="30.0" prefWidth="309.0" promptText="Nome" stylesheets="@css/Style.css">
-                                 <font>
-                                    <Font name="Times New Roman" size="16.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
-                              </TextField>
-                              <Pane prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <Pane prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label text="Nome:">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </Pane>
-                              <TextField fx:id="txtFCpf" prefHeight="30.0" prefWidth="280.0" promptText="CPF" stylesheets="@css/Style.css">
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="35.0" text="CPF:">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="42.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFusuario" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Nome de Usuário" stylesheets="@css/Style.css">
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="55.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="178.0" text="Data de nascimento:">
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="233.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFSenha" layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css">
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="230.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="198.0" text="Nome de Usuário">
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="343.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFTelefone" layoutX="10.0" layoutY="171.0" prefHeight="30.0" prefWidth="280.0" promptText="Telefone" stylesheets="@css/Style.css">
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="248.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="258.0" text="Telefone:" VBox.vgrow="ALWAYS">
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="350.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <DatePicker fx:id="dtPckData" prefHeight="50.0" prefWidth="310.0" promptText="Data de nascimento" styleClass="datePickerDesign" stylesheets="@css/Style.css" />
-                              <Pane layoutX="10.0" layoutY="220.0" prefHeight="30.0" prefWidth="200.0" />
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                            </children>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Pane prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblNome" text="(Nome)">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblCPF" layoutX="10.0" layoutY="35.0" text="(CPF)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="230.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblData" layoutX="10.0" layoutY="178.0" prefHeight="20.0" prefWidth="202.0" text="(Data de nascimento)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="248.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblUsuario" layoutX="10.0" layoutY="198.0" text="(Nome de Usuário)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="256.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblTelefone" layoutX="10.0" layoutY="258.0" text="(Telefone)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="265.0" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="25.0" />
                            </HBox.margin>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0">
                            <HBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </HBox.margin></Separator>
-                        <VBox prefHeight="303.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
+                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                           </HBox.margin>
+                        </Separator>
+                        <VBox layoutX="544.0" layoutY="10.0" prefHeight="250.0" prefWidth="120.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <TextField fx:id="txtFCep" prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
-                                 <font>
-                                    <Font name="Times New Roman" size="16.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
-                              </TextField>
-                              <Pane prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFBairro" layoutX="10.0" layoutY="145.0" prefHeight="30.0" prefWidth="280.0" promptText="Bairro" stylesheets="@css/Style.css">
-                                 <font>
-                                    <Font name="Times New Roman" size="16.0" />
-                                 </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
+                              <Pane prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label text="CEP:">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="42.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFRua" prefHeight="30.0" prefWidth="328.0" promptText="Rua" stylesheets="@css/Style.css">
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="35.0" text="Rua:">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="349.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFCidade" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Cidade" stylesheets="@css/Style.css">
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="217.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="178.0" text="Bairro:">
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </TextField>
-                              <Pane layoutX="10.0" layoutY="348.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                              <TextField fx:id="txtFEstado" layoutX="10.0" layoutY="167.0" prefHeight="30.0" prefWidth="280.0" promptText="Estado" stylesheets="@css/Style.css">
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="240.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="198.0" text="Cidade:">
                                  <font>
-                                    <Font name="Times New Roman" size="16.0" />
+                                    <Font name="Tahoma" size="16.0" />
                                  </font>
-                                 <styleClass>
-                                    <String fx:value="textFieldDesign" />
-                                    <String fx:value="textFieldF" />
-                                 </styleClass>
-                              </TextField>
-                              <Pane prefHeight="25.0" prefWidth="258.0" />
-                              <HBox prefHeight="67.0" prefWidth="456.0">
-                                 <children>
-                                    <Pane prefHeight="38.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                                    <Button mnemonicParsing="false" onAction="#copiarDadosPessoais" prefHeight="49.0" prefWidth="198.0" styleClass="btnCopiarDadosPessoais" stylesheets="@css/Style.css" text="Copiar&#10;dados pessoais" textAlignment="CENTER">
-                                       <graphic>
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@images/icons/icons-copiar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="100.0" />
-                                    <Button fx:id="btnEditarPerfil" mnemonicParsing="false" onAction="#onBtnEditarPerfilClick" prefHeight="54.0" prefWidth="196.0" styleClass="btnAtualizar" stylesheets="@css/Style.css" text="Atualizar&#10; dados pessoais" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Times New Roman Bold" size="18.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                       <graphic>
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@images/icons/icons-editar-usuario.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Pane layoutX="282.0" layoutY="10.0" prefHeight="38.0" prefWidth="100.0" />
-                                 </children>
-                              </HBox>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label layoutX="10.0" layoutY="218.0" text="Estado:">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="257.0" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                            </children>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                              <Insets left="25.0" />
                            </HBox.margin>
                         </VBox>
+                        <VBox layoutX="588.0" layoutY="10.0" prefHeight="227.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Pane prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblCep" text="(CEP)">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="230.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblRua" layoutX="10.0" layoutY="35.0" text="(Rua)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblBairro" layoutX="10.0" layoutY="178.0" text="(Bairro)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="248.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblCidade" layoutX="10.0" layoutY="198.0" text="(Cidade)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="256.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="lblEstado" layoutX="10.0" layoutY="218.0" text="(Estado)">
+                                 <font>
+                                    <Font name="Tahoma" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="262.0" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="219.0" prefWidth="17.0" HBox.hgrow="ALWAYS" />
                      </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
                   </HBox>
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" />
+                  <Insets />
                </VBox.margin>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
       </VBox>
-   </center>
-</BorderPane>
+      <VBox prefHeight="200.0" prefWidth="979.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets right="5.0" top="15.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@images/icons/icons-editar-perfil.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="26.0" prefWidth="124.0" text="Editar Perfil" textAlignment="JUSTIFY" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="16.0" top="16.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox prefHeight="811.0" prefWidth="979.0" style="-fx-background-color: #ffffff; -fx-background-radius: 0px 0px 8px 8px;" VBox.vgrow="ALWAYS">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                  <VBox prefHeight="303.0" prefWidth="430.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane layoutX="10.0" layoutY="259.0" prefHeight="20.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Pane>
+                        <TextField fx:id="txtFNome" prefHeight="30.0" prefWidth="309.0" promptText="Nome" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                        </TextField>
+                        <Pane prefHeight="28.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Pane>
+                        <TextField fx:id="txtFCpf" prefHeight="30.0" prefWidth="280.0" promptText="CPF" stylesheets="@css/Style.css">
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="42.0" prefHeight="28.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFusuario" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Nome de Usuário" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="233.0" prefHeight="28.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFSenha" layoutX="10.0" layoutY="120.0" prefHeight="30.0" prefWidth="280.0" promptText="Senha" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="343.0" prefHeight="28.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFTelefone" layoutX="10.0" layoutY="171.0" prefHeight="30.0" prefWidth="280.0" promptText="Telefone" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="350.0" prefHeight="35.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <DatePicker fx:id="dtPckData" prefHeight="50.0" prefWidth="310.0" promptText="Data de nascimento" styleClass="datePickerDesign" stylesheets="@css/Style.css" />
+                        <Pane layoutX="10.0" layoutY="220.0" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <Pane prefHeight="200.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+                  <Separator orientation="VERTICAL" prefHeight="260.0" prefWidth="0.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Separator>
+                  <Pane layoutX="445.0" layoutY="10.0" prefHeight="200.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+                  <VBox prefHeight="303.0" prefWidth="430.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane layoutX="10.0" layoutY="212.0" prefHeight="25.0" prefWidth="258.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFCep" prefHeight="30.0" prefWidth="280.0" promptText="CEP" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                        </TextField>
+                        <Pane prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFBairro" layoutX="10.0" layoutY="145.0" prefHeight="30.0" prefWidth="280.0" promptText="Bairro" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="42.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFRua" prefHeight="30.0" prefWidth="328.0" promptText="Rua" stylesheets="@css/Style.css">
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="349.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFCidade" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="280.0" promptText="Cidade" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <Pane layoutX="10.0" layoutY="348.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="txtFEstado" layoutX="10.0" layoutY="167.0" prefHeight="30.0" prefWidth="280.0" promptText="Estado" stylesheets="@css/Style.css">
+                           <font>
+                              <Font name="Times New Roman" size="16.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="textFieldDesign" />
+                              <String fx:value="textFieldF" />
+                           </styleClass>
+                        </TextField>
+                        <Pane prefHeight="25.0" prefWidth="258.0" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="67.0" prefWidth="401.0">
+                           <children>
+                              <Pane prefHeight="38.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#copiarDadosPessoais" prefHeight="49.0" prefWidth="210.0" styleClass="btnCopiarDadosPessoais" stylesheets="@css/Style.css" text="Copiar&#10;dados pessoais" textAlignment="CENTER">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/icons/icons-copiar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="100.0" />
+                              <Button fx:id="btnEditarPerfil" mnemonicParsing="false" onAction="#onBtnEditarPerfilClick" prefHeight="54.0" prefWidth="210.0" styleClass="btnAtualizar" stylesheets="@css/Style.css" text="Atualizar&#10; dados pessoais" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/icons/icons-editar-usuario.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Pane layoutX="282.0" layoutY="10.0" prefHeight="38.0" prefWidth="100.0" />
+                           </children>
+                        </HBox>
+                        <Pane layoutX="10.0" layoutY="215.0" prefHeight="25.0" prefWidth="258.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </VBox>
+   </children>
+</VBox>

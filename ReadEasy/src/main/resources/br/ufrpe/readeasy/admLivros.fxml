@@ -17,427 +17,269 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1200.0" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmLivrosController">
-   <left>
-      <VBox prefHeight="768.0" prefWidth="220.0" styleClass="corDeFundo" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
-         <children>
-            <Label prefHeight="46.0" prefWidth="183.0" text="ReadEasy" textFill="WHITE">
-               <font>
-                  <Font name="Tahoma Bold" size="36.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <Line endX="94.89286804199219" startX="-124.40000915527344" stroke="#cccccc">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Line>
-            <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#trocarTelaPerfilAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Perfil&#10;" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralP" />
-                  <String fx:value="btnBarraLateralH" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-perfil.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnLivros" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Livros" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-Livro.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnEstoque" mnemonicParsing="false" onAction="#trocarTelaEstoqueAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Estoque" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-estoque.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#trocarTelaUsuariosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Usuários" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-usuarios.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnPromocoes" layoutX="13.0" layoutY="341.0" mnemonicParsing="false" onAction="#trocarTelaPromocoesAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Promoções&#10;&#10;" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralP" />
-                  <String fx:value="btnBarraLateralH" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-promocao.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnHistorico" mnemonicParsing="false" onAction="#trocarTelaHistoricoAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Histórico" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-histórico.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btnRelatorios" mnemonicParsing="false" onAction="#trocarTelaRelatoriosAdm" prefHeight="50.0" prefWidth="220.0" stylesheets="@css/Style.css" text="Relatórios" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="24.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralP" />
-                  <String fx:value="btnBarraLateralH" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-relatorios.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <VBox prefHeight="195.0" prefWidth="221.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="btnSair" mnemonicParsing="false" onAction="#btnSairDaConta" prefHeight="50.0" prefWidth="220.0" style="-fx-alignment: CENTER;" stylesheets="@css/Style.css" text="Sair" textFill="WHITE">
-               <font>
-                  <Font name="Times New Roman Bold" size="20.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="btnBarraLateral" />
-                  <String fx:value="btnBarraLateralH" />
-                  <String fx:value="btnBarraLateralP" />
-               </styleClass>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/icons/icons-logout.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children></VBox>
-   </left>
-   <center>
-      <VBox prefHeight="768.0" prefWidth="127.0" BorderPane.alignment="CENTER">
-         <children>
-            <TabPane onMouseClicked="#atualizarCbLivros" prefHeight="768.0" prefWidth="200.0" stylesheets="@css/Style.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-              <tabs>
-                <Tab onSelectionChanged="#atualizarCbGenero" text="Gerenciamento de livros">
-                     <content>
-                        <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #CCCCCC;">
+<VBox prefHeight="700.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.AdmLivrosController">
+   <children>
+      <TabPane onMouseClicked="#atualizarCbLivros" prefHeight="768.0" prefWidth="200.0" stylesheets="@css/Style.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+         <tabs>
+            <Tab onSelectionChanged="#atualizarCbGenero" text="Gerenciamento de livros">
+               <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #CCCCCC;">
+                     <children>
+                        <VBox prefHeight="956.0" prefWidth="540.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox prefHeight="956.0" prefWidth="540.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
                                  <children>
-                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;">
+                                    <Pane prefHeight="62.0" prefWidth="78.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets right="5.0" top="15.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@images/icons/icon-livro2.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label prefHeight="25.0" prefWidth="193.0" text="Cadastro de livros" textFill="WHITE">
+                                       <font>
+                                          <Font name="Tahoma Bold" size="20.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="16.0" top="16.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="78.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <Pane prefHeight="15.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <HBox prefHeight="207.0" prefWidth="429.0">
+                                 <children>
+                                    <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: Transparent;" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Pane>
+                                    <VBox prefHeight="154.0" prefWidth="175.0">
                                        <children>
-                                          <Pane prefHeight="62.0" prefWidth="78.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                             <HBox.margin>
-                                                <Insets right="5.0" top="15.0" />
-                                             </HBox.margin>
-                                             <image>
-                                                <Image url="@images/icons/icon-livro2.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Label prefHeight="25.0" prefWidth="193.0" text="Cadastro de livros" textFill="WHITE">
-                                             <font>
-                                                <Font name="Tahoma Bold" size="20.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets bottom="16.0" top="16.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="78.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                    <VBox prefHeight="15.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
-                                    <HBox prefHeight="207.0" prefWidth="429.0">
-                                       <children>
-                                          <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: Transparent;" HBox.hgrow="ALWAYS">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Pane>
-                                          <VBox prefHeight="154.0" prefWidth="175.0">
+                                          <VBox prefHeight="206.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
                                              <children>
-                                                <VBox prefHeight="206.0" prefWidth="175.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css">
+                                                <ImageView fx:id="ivCapaDoLivro" fitHeight="200.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <Pane prefHeight="15.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <HBox>
+                                 <children>
+                                    <VBox prefHeight="236.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Pane prefHeight="112.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <VBox prefHeight="23.0" prefWidth="544.0">
                                                    <children>
-                                                      <ImageView fx:id="ivCapaDoLivro" fitHeight="200.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
+                                                      <TextField fx:id="tfURLCapaDoLivro" layoutX="10.0" layoutY="10.0" onKeyTyped="#atualizarImageView" prefHeight="30.0" prefWidth="175.0" promptText="Link da capa do livro" style="-fx-border-color: linear-gradient(to bottom right, #4a93c2, #2f6a8e); -fx-border-radius: 8px; -fx-background-radius: 8px;" />
+                                                      <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
                                                          <VBox.margin>
-                                                            <Insets />
+                                                            <Insets top="10.0" />
                                                          </VBox.margin>
-                                                      </ImageView>
+                                                         <styleClass>
+                                                            <String fx:value="textFieldDesign" />
+                                                            <String fx:value="textFieldF" />
+                                                         </styleClass>
+                                                      </TextField>
+                                                      <TextField fx:id="tfAutor" prefHeight="30.0" prefWidth="175.0" promptText="Autor" stylesheets="@css/Style.css">
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                         <styleClass>
+                                                            <String fx:value="textFieldDesign" />
+                                                            <String fx:value="textFieldF" />
+                                                         </styleClass>
+                                                      </TextField>
+                                                      <TextField fx:id="tfPreco" prefHeight="30.0" prefWidth="175.0" promptText="Preço" stylesheets="@css/Style.css">
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                         <styleClass>
+                                                            <String fx:value="textFieldDesign" />
+                                                            <String fx:value="textFieldF" />
+                                                         </styleClass>
+                                                      </TextField>
                                                    </children>
                                                 </VBox>
+                                                <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                              </children>
-                                          </VBox>
-                                          <Pane prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </HBox>
-                                    <VBox prefHeight="15.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
-                                    <HBox>
-                                       <children>
-                                          <VBox prefHeight="236.0" prefWidth="524.0" HBox.hgrow="ALWAYS">
+                                          </HBox>
+                                          <HBox prefHeight="129.0" prefWidth="524.0">
                                              <children>
-                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                <Pane layoutX="455.0" layoutY="10.0" prefHeight="96.0" prefWidth="146.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <VBox prefHeight="102.0" prefWidth="144.0">
                                                    <children>
-                                                      <Pane prefHeight="112.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                      <VBox prefHeight="23.0" prefWidth="544.0">
-                                                         <children>
-                                                            <TextField fx:id="tfURLCapaDoLivro" layoutX="10.0" layoutY="10.0" onKeyTyped="#atualizarImageView" prefHeight="30.0" prefWidth="175.0" promptText="Link da capa do livro" style="-fx-border-color: linear-gradient(to bottom right, #4a93c2, #2f6a8e); -fx-border-radius: 8px; -fx-background-radius: 8px;" />
-                                                            <TextField fx:id="tfTitulo" prefHeight="30.0" prefWidth="175.0" promptText="Título" stylesheets="@css/Style.css">
-                                                               <VBox.margin>
-                                                                  <Insets top="10.0" />
-                                                               </VBox.margin>
-                                                               <styleClass>
-                                                                  <String fx:value="textFieldDesign" />
-                                                                  <String fx:value="textFieldF" />
-                                                               </styleClass>
-                                                            </TextField>
-                                                            <TextField fx:id="tfAutor" prefHeight="30.0" prefWidth="175.0" promptText="Autor" stylesheets="@css/Style.css">
-                                                               <VBox.margin>
-                                                                  <Insets top="10.0" />
-                                                               </VBox.margin>
-                                                               <styleClass>
-                                                                  <String fx:value="textFieldDesign" />
-                                                                  <String fx:value="textFieldF" />
-                                                               </styleClass>
-                                                            </TextField>
-                                                            <TextField fx:id="tfPreco" prefHeight="30.0" prefWidth="175.0" promptText="Preço" stylesheets="@css/Style.css">
-                                                               <VBox.margin>
-                                                                  <Insets top="10.0" />
-                                                               </VBox.margin>
-                                                               <styleClass>
-                                                                  <String fx:value="textFieldDesign" />
-                                                                  <String fx:value="textFieldF" />
-                                                               </styleClass>
-                                                            </TextField>
-                                                         </children>
-                                                      </VBox>
-                                                      <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                      <Label prefHeight="19.0" prefWidth="54.0" style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Gênero:">
+                                                         <VBox.margin>
+                                                            <Insets left="25.0" top="25.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font name="Times New Roman" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Fornecedor:">
+                                                         <VBox.margin>
+                                                            <Insets top="30.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font name="Times New Roman" size="16.0" />
+                                                         </font>
+                                                      </Label>
                                                    </children>
-                                                </HBox>
-                                                <HBox prefHeight="129.0" prefWidth="524.0">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <VBox prefHeight="96.0" prefWidth="250.0">
                                                    <children>
-                                                      <Pane layoutX="455.0" layoutY="10.0" prefHeight="96.0" prefWidth="146.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                      <VBox prefHeight="102.0" prefWidth="144.0">
-                                                         <children>
-                                                            <Label prefHeight="19.0" prefWidth="54.0" style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Gênero:">
-                                                               <VBox.margin>
-                                                                  <Insets left="25.0" top="25.0" />
-                                                               </VBox.margin>
-                                                               <font>
-                                                                  <Font name="Times New Roman" size="16.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Fornecedor:">
-                                                               <VBox.margin>
-                                                                  <Insets top="30.0" />
-                                                               </VBox.margin>
-                                                               <font>
-                                                                  <Font name="Times New Roman" size="16.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                         <HBox.margin>
-                                                            <Insets right="5.0" />
-                                                         </HBox.margin>
-                                                      </VBox>
-                                                      <VBox prefHeight="96.0" prefWidth="250.0">
-                                                         <children>
-                                                            <ComboBox fx:id="cbGenero" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css">
-                                                               <VBox.margin>
-                                                                  <Insets top="20.0" />
-                                                               </VBox.margin>
-                                                            </ComboBox>
-                                                            <ComboBox fx:id="cbFornecedor" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css">
-                                                               <VBox.margin>
-                                                                  <Insets top="15.0" />
-                                                               </VBox.margin>
-                                                            </ComboBox>
-                                                         </children>
-                                                      </VBox>
-                                                      <Pane prefHeight="92.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                      <ComboBox fx:id="cbGenero" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css">
+                                                         <VBox.margin>
+                                                            <Insets top="20.0" />
+                                                         </VBox.margin>
+                                                      </ComboBox>
+                                                      <ComboBox fx:id="cbFornecedor" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" stylesheets="@css/Style.css">
+                                                         <VBox.margin>
+                                                            <Insets top="15.0" />
+                                                         </VBox.margin>
+                                                      </ComboBox>
                                                    </children>
-                                                </HBox>
+                                                </VBox>
+                                                <Pane prefHeight="92.0" prefWidth="150.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                              </children>
-                                          </VBox>
+                                          </HBox>
                                        </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </HBox>
-                                    <HBox prefHeight="99.0" prefWidth="429.0" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Pane>
-                                          <VBox prefHeight="88.0" prefWidth="138.0">
-                                             <children>
-                                                <Button fx:id="btnAdicionar1" mnemonicParsing="false" onAction="#btnAdicionarLivro" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/icons/icons-add-livro.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="btnDeletar1" mnemonicParsing="false" onAction="#btnremoverLivro" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets top="5.0" />
-                                                   </VBox.margin>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/icons/icons-remover-livro.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </VBox>
-                                          <Pane layoutX="324.0" layoutY="10.0" prefHeight="93.0" prefWidth="38.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                          <VBox prefHeight="93.0" prefWidth="147.0">
-                                             <children>
-                                                <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#btnEditarLivro" prefHeight="45.0" prefWidth="130.0" styleClass="btnEditar" stylesheets="@css/Style.css" text="Editar&#10;&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/icons/icons-editar-livro.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="btnLimpar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#limparCampos" prefHeight="45.0" prefWidth="130.0" styleClass="btnLimpar" stylesheets="@css/Style.css" text="Limpar&#10;campos&#10;&#10;&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets top="5.0" />
-                                                   </VBox.margin>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/icons/icons-limpar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </VBox>
-                                          <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </VBox.margin>
-                                    </HBox>
+                                    </VBox>
                                  </children>
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox prefHeight="730.0" prefWidth="630.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <Pane prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              <HBox prefHeight="99.0" prefWidth="429.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Pane>
+                                    <VBox prefHeight="88.0" prefWidth="138.0" HBox.hgrow="NEVER">
+                                       <children>
+                                          <Button fx:id="btnAdicionar1" mnemonicParsing="false" onAction="#btnAdicionarLivro" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-add-livro.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnDeletar1" mnemonicParsing="false" onAction="#btnremoverLivro" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-remover-livro.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <Pane layoutX="324.0" layoutY="10.0" prefHeight="93.0" prefWidth="38.0" style="-fx-background-color: transparent;" HBox.hgrow="NEVER" />
+                                    <VBox prefHeight="93.0" prefWidth="147.0" HBox.hgrow="NEVER">
+                                       <children>
+                                          <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#btnEditarLivro" prefHeight="45.0" prefWidth="130.0" styleClass="btnEditar" stylesheets="@css/Style.css" text="Editar&#10;&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-editar-livro.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnLimpar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#limparCampos" prefHeight="45.0" prefWidth="130.0" styleClass="btnLimpar" stylesheets="@css/Style.css" text="Limpar&#10;campos&#10;&#10;&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-limpar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <Pane prefHeight="159.0" prefWidth="75.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <Pane layoutX="10.0" layoutY="533.0" prefHeight="10.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" top="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <BorderPane prefHeight="700.0" prefWidth="630.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                           <center>
+                              <TableView fx:id="tvCatalogoLivros" onMouseClicked="#popularCamposDoLivroSelecionadoPelaTabela" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="colTitulo" prefWidth="200.0" text="Título" />
+                                    <TableColumn fx:id="colAutor" minWidth="8.800048828125" prefWidth="100.0" text="Autor" />
+                                    <TableColumn fx:id="colFornecedor" minWidth="0.0" prefWidth="91.0" text="Fornecedor" />
+                                    <TableColumn fx:id="colPreco" minWidth="0.0" prefWidth="149.79998779296875" text="Preço" />
+                                 </columns>
+                                 <styleClass>
+                                    <String fx:value="table-view" />
+                                    <String fx:value="table-column" />
+                                 </styleClass>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                           <top>
+                              <VBox prefHeight="106.0" prefWidth="520.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                                        <children>
@@ -461,7 +303,7 @@
                                           <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="116.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                    <HBox prefHeight="297.0" prefWidth="520.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <Pane prefHeight="30.0" prefWidth="87.0" style="-fx-background-color: transparent;" HBox.hgrow="NEVER" />
                                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -476,178 +318,160 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <TableView fx:id="tvCatalogoLivros" onMouseClicked="#popularCamposDoLivroSelecionadoPelaTabela" prefHeight="670.0" prefWidth="620.0" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                       <columns>
-                                          <TableColumn fx:id="colTitulo" prefWidth="200.0" text="Título" />
-                                          <TableColumn fx:id="colAutor" minWidth="8.800048828125" prefWidth="100.0" text="Autor" />
-                                          <TableColumn fx:id="colFornecedor" minWidth="0.0" prefWidth="91.0" text="Fornecedor" />
-                                          <TableColumn fx:id="colPreco" minWidth="0.0" prefWidth="149.79998779296875" text="Preço" />
-                                       </columns>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                       <styleClass>
-                                          <String fx:value="table-view" />
-                                          <String fx:value="table-column" />
-                                       </styleClass>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
                                  </children>
                               </VBox>
-                           </children>
-                        </HBox>
-                     </content>
-                </Tab>
-                <Tab onSelectionChanged="#atualizarCbLivros" text="Gênero de livros">
-                     <content>
-                        <HBox prefHeight="730.0" prefWidth="1110.0" style="-fx-background-color: #CCCCCC;">
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+            <Tab onSelectionChanged="#atualizarCbLivros" text="Gênero de livros">
+               <content>
+                  <HBox prefHeight="730.0" prefWidth="1110.0" style="-fx-background-color: #CCCCCC;">
+                     <children>
+                        <VBox layoutX="20.0" layoutY="20.0" prefHeight="710.0" prefWidth="823.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox layoutX="20.0" layoutY="20.0" prefHeight="710.0" prefWidth="823.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS">
+                              <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
                                  <children>
-                                    <HBox prefHeight="59.0" prefWidth="523.0" style="-fx-background-color: linear-gradient(to top left, #137DC5, #72D0EB); -fx-background-radius: 8px 8px 0px 0px;" styleClass="shadow" stylesheets="@css/Style.css">
+                                    <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets right="5.0" top="15.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@images/icons/icons-lista-generos.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Gerenciamento de gêneros" textFill="WHITE">
+                                       <font>
+                                          <Font name="Tahoma Bold" size="20.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="16.0" top="16.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Pane prefHeight="55.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
+                                    <HBox prefHeight="46.0" prefWidth="1124.0">
                                        <children>
-                                          <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                             <HBox.margin>
-                                                <Insets right="5.0" top="15.0" />
-                                             </HBox.margin>
-                                             <image>
-                                                <Image url="@images/icons/icons-lista-generos.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Label text="Gerenciamento de gêneros" textFill="WHITE">
+                                          <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                          <Label prefHeight="23.0" prefWidth="60.0" style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Livros:">
                                              <font>
-                                                <Font name="Tahoma Bold" size="20.0" />
+                                                <Font name="Tahoma" size="18.0" />
                                              </font>
                                              <HBox.margin>
-                                                <Insets bottom="16.0" top="16.0" />
+                                                <Insets top="3.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                          <ComboBox fx:id="cbLivros" onAction="#inicializarListViewGenerosDoLivro" prefHeight="30.0" prefWidth="313.0" styleClass="combo-box" stylesheets="@css/Style.css" HBox.hgrow="ALWAYS" />
+                                          <Pane prefHeight="200.0" prefWidth="225.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                    <Pane prefHeight="54.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
+                                    <HBox prefHeight="466.0" prefWidth="1124.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Pane prefHeight="55.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
-                                          <HBox prefHeight="46.0" prefWidth="1124.0">
+                                          <Pane layoutX="610.0" layoutY="10.0" prefHeight="648.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                          <VBox prefHeight="425.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                <Label prefHeight="23.0" prefWidth="60.0" style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Livros:">
+                                                <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Todos os gêneros:">
                                                    <font>
-                                                      <Font name="Tahoma" size="18.0" />
+                                                      <Font name="Tahoma" size="20.0" />
                                                    </font>
-                                                   <HBox.margin>
-                                                      <Insets top="3.0" />
-                                                   </HBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="cbLivros" onAction="#inicializarListViewGenerosDoLivro" prefHeight="30.0" prefWidth="313.0" styleClass="combo-box" stylesheets="@css/Style.css" />
-                                                <Pane prefHeight="200.0" prefWidth="225.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <ListView fx:id="lvTodosOsGeneros" prefHeight="328.0" prefWidth="265.0" styleClass="listViewDesign" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </ListView>
                                              </children>
-                                          </HBox>
-                                          <Pane prefHeight="54.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
-                                          <HBox prefHeight="466.0" prefWidth="1124.0" VBox.vgrow="ALWAYS">
+                                          </VBox>
+                                          <HBox prefHeight="100.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Pane layoutX="610.0" layoutY="10.0" prefHeight="648.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                <VBox prefHeight="425.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                                <Pane layoutX="128.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                                                <VBox prefHeight="648.0" prefWidth="26.0">
                                                    <children>
-                                                      <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Todos os gêneros:">
-                                                         <font>
-                                                            <Font name="Tahoma" size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ListView fx:id="lvTodosOsGeneros" prefHeight="328.0" prefWidth="265.0" styleClass="listViewDesign" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                                         <VBox.margin>
-                                                            <Insets top="5.0" />
-                                                         </VBox.margin>
-                                                      </ListView>
-                                                   </children>
-                                                </VBox>
-                                                <HBox prefHeight="100.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Pane layoutX="128.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                      <VBox prefHeight="648.0" prefWidth="26.0">
-                                                         <children>
-                                                            <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-                                                            <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@images/icons/icons-seta-direita.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                            <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
-                                                         </children>
-                                                      </VBox>
-                                                      <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                                   </children>
-                                                </HBox>
-                                                <VBox prefHeight="200.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Gêneros do livro:">
-                                                         <font>
-                                                            <Font name="Tahoma" size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ListView fx:id="lvGenerosDoLivro" prefHeight="330.0" prefWidth="330.0" styleClass="listViewDesign" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
-                                                         <VBox.margin>
-                                                            <Insets top="5.0" />
-                                                         </VBox.margin>
-                                                      </ListView>
-                                                   </children>
-                                                </VBox>
-                                                <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
-                                             </children>
-                                          </HBox>
-                                          <Pane layoutX="10.0" layoutY="83.0" prefHeight="59.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
-                                          <HBox prefHeight="111.0" prefWidth="1124.0" VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <Pane prefHeight="55.0" prefWidth="682.0" HBox.hgrow="ALWAYS" />
-                                                <Button fx:id="btnAdicionar2" mnemonicParsing="false" onAction="#btnAdicionarGenero" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                      <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+                                                      <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@images/icons/icons-add.png" />
+                                                            <Image url="@images/icons/icons-seta-direita.png" />
                                                          </image>
                                                       </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="btnDeletar2" mnemonicParsing="false" onAction="#btnRemoverGenero" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Times New Roman Bold" size="14.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="20.0" right="30.0" />
-                                                   </HBox.margin>
-                                                   <graphic>
-                                                      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/icons/icons-remover.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
+                                                      <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+                                                   </children>
+                                                </VBox>
+                                                <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
+                                          <VBox prefHeight="200.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label style="-fx-text-fill: linear-gradient(to bottom left, #39556b, #0D69A0);" text="Gêneros do livro:">
+                                                   <font>
+                                                      <Font name="Tahoma" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                                <ListView fx:id="lvGenerosDoLivro" prefHeight="330.0" prefWidth="330.0" styleClass="listViewDesign" stylesheets="@css/Style.css" VBox.vgrow="ALWAYS">
+                                                   <VBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </VBox.margin>
+                                                </ListView>
+                                             </children>
+                                          </VBox>
+                                          <Pane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
                                        </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </VBox>
+                                    </HBox>
+                                    <Pane layoutX="10.0" layoutY="83.0" prefHeight="59.0" prefWidth="958.0" VBox.vgrow="ALWAYS" />
+                                    <HBox prefHeight="111.0" prefWidth="1124.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Pane prefHeight="55.0" prefWidth="682.0" HBox.hgrow="ALWAYS" />
+                                          <Button fx:id="btnAdicionar2" mnemonicParsing="false" onAction="#btnAdicionarGenero" prefHeight="45.0" prefWidth="130.0" style="-fx-background-radius: 8px;" styleClass="btnAdicionar" stylesheets="@css/Style.css" text="Adicionar&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-add.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnDeletar2" mnemonicParsing="false" onAction="#btnRemoverGenero" prefHeight="45.0" prefWidth="130.0" styleClass="btnDeletar" stylesheets="@css/Style.css" text="Deletar&#10;" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman Bold" size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="20.0" right="30.0" />
+                                             </HBox.margin>
+                                             <graphic>
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/icons/icons-remover.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
                                  </children>
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </VBox>
                            </children>
-                        </HBox>
-                     </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </children>
-      </VBox>
-   </center>
-</BorderPane>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</VBox>

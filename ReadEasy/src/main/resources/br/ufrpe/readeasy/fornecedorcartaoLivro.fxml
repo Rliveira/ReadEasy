@@ -8,7 +8,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8px;" styleClass="shadow" stylesheets="@css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.readeasy.gui.FornecedorCartaoLivroController">
    <children>
-      <HBox prefHeight="52.0" prefWidth="275.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #00469B); -fx-background-radius: 8px 8px 0px 0px;">
+      <HBox prefHeight="52.0" prefWidth="275.0" style="-fx-background-color: linear-gradient(to bottom right, #00B4CC, #00469B); -fx-background-radius: 8px 8px 0px 0px;" VBox.vgrow="ALWAYS">
          <children>
             <Label fx:id="lblnomedolivro" prefHeight="22.0" prefWidth="252.0" text="Nome do livro" textFill="WHITE">
                <font>
@@ -20,10 +20,10 @@
             </Label>
          </children>
       </HBox>
-      <HBox prefHeight="224.0" prefWidth="275.0">
+      <HBox prefHeight="224.0" prefWidth="275.0" VBox.vgrow="ALWAYS">
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0" />
-            <ImageView fx:id="imgvLivro" fitHeight="228.0" fitWidth="200.0" onMouseEntered="#selecionarLivroNaTabelaEstoque" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+            <ImageView fx:id="imgvLivro" fitHeight="228.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
                <HBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </HBox.margin>
