@@ -5,6 +5,7 @@ import br.ufrpe.readeasy.beans.Fornecedor;
 import br.ufrpe.readeasy.beans.Funcionario;
 import br.ufrpe.readeasy.beans.Usuario;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,62 +15,56 @@ public class ScreenManager {
     private static ScreenManager instance;
     private static Stage stage;
 
-    private Scene admCRUDPromocoesScene;
+    private Scene admMainScene;
+    private AdmMainController admMainController;
+
     private AdmCRUDPromocoesController admCRUDPromocoesController;
 
-    private Scene admCRUDUsuariosScene;
     private AdmCRUDUsuariosController admCRUDUsuariosController;
 
-    private Scene admEstoqueScene;
     private AdmEstoqueController admEstoqueController;
 
-    private Scene admHistoricoComprasEvendasScene;
     private AdmHistoricoComprasEVendasController admHistoricoComprasEVendasController;
 
-    private Scene admLivrosScene;
     private AdmLivrosController admLivrosController;
 
-    private Scene admPerfilScene;
     private AdmPerfilController admPerfilController;
 
-    private Scene admRelatoriosScene;
     private AdmRelatoriosController admRelatoriosController;
 
     private Scene clienteCadastroScene;
     private ClienteCadastroController clienteCadastroController;
 
-    private Scene clienteCatalogoScene;
     private ClienteCatalogoController clienteCatalogoController;
 
-    private Scene clienteMinhasComprasScene;
     private ClienteHistoricoComprasController clienteHistoricoComprasController;
 
-    private Scene clientePerfilScene;
     private ClientePerfilController clientePerfilController;
 
-    private Scene fornecedorEstoqueScene;
+    private Scene clienteMainScene;
+    private ClienteMainController clienteMainController;
+
     private FornecedorEstoqueController fornecedorEstoqueController;
 
-    private Scene fornecedorHistoricoScene;
     private FornecedorHistoricoController fornecedorHistoricoController;
 
-    private Scene fornecedorPerfilScene;
     private FornecedorPerfilController fornecedorPerfilController;
 
-    private Scene funcionarioCRUDLivrosScene;
+    private Scene fornecedorMainScene;
+    private FornecedorMainController fornecedorMainController;
+
     private FuncionarioCRUDLivrosController funcionarioCRUDLivrosController;
 
-    private Scene funcionarioEstoqueScene;
     private FuncionarioEstoqueController funcionarioEstoqueController;
 
-    private Scene funcionarioHistoricoComprasEVendasScene;
     private FuncionarioHistoricoComprasEVendasController funcionarioHistoricoComprasEVendasController;
 
-    private Scene funcionarioPefilScene;
     private FuncionarioPerfilController funcionarioPerfilController;
 
-    private Scene funcionariosRelatoriosScene;
     private FuncionarioRelatoriosController funcionariosRelatoriosController;
+
+    private Scene funcionarioMainScene;
+    private FuncionarioMainController funcionarioMainController;
 
     private Scene loginScene;
     private LoginController loginController;
@@ -93,83 +88,27 @@ public class ScreenManager {
 
             if(usuarioLogado != null){
                 if(usuarioLogado instanceof Funcionario && ((Funcionario) usuarioLogado).isAdm()){
-                    FXMLLoader admTelaCRUDPromocoesPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDPromocoes.fxml"));
-                    this.admCRUDPromocoesScene = new Scene(admTelaCRUDPromocoesPane.load());
-                    this.admCRUDPromocoesController = admTelaCRUDPromocoesPane.getController();
-
-                    FXMLLoader admTelaCRUDUsuariosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admCRUDUsuarios.fxml"));
-                    this.admCRUDUsuariosScene = new Scene(admTelaCRUDUsuariosPane.load());
-                    this.admCRUDUsuariosController = admTelaCRUDUsuariosPane.getController();
-
-                    FXMLLoader admEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admEstoque.fxml"));
-                    this.admEstoqueScene = new Scene(admEstoquePane.load());
-                    this.admEstoqueController = admEstoquePane.getController();
-
-                    FXMLLoader admHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admHistoricoComprasEVendas.fxml"));
-                    this.admHistoricoComprasEvendasScene = new Scene(admHistoricoComprasEVendasPane.load());
-                    this.admHistoricoComprasEVendasController = admHistoricoComprasEVendasPane.getController();
-
-                    FXMLLoader admLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admLivros.fxml"));
-                    this.admLivrosScene = new Scene(admLivrosPane.load());
-                    this.admLivrosController = admLivrosPane.getController();
-
-                    FXMLLoader admPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admPerfil.fxml"));
-                    this.admPerfilScene = new Scene(admPerfilPane.load());
-                    this.admPerfilController = admPerfilPane.getController();
-
-                    FXMLLoader admTelaRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admRelatorios.fxml"));
-                    this.admRelatoriosScene = new Scene(admTelaRelatoriosPane.load());
-                    this.admRelatoriosController = admTelaRelatoriosPane.getController();
+                    FXMLLoader admtelaMainPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/admMain.fxml"));
+                    this.admMainScene = new Scene(admtelaMainPane.load());
+                    this.admMainController = admtelaMainPane.getController();
                 }
 
                 else if (usuarioLogado instanceof Cliente){
-                    FXMLLoader clientecatalogoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteCatalogo.fxml"));
-                    this.clienteCatalogoScene = new Scene(clientecatalogoPane.load());
-                    this.clienteCatalogoController = clientecatalogoPane.getController();
-
-                    FXMLLoader clienteMinhasComprasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteHistoricoCompras.fxml"));
-                    this.clienteMinhasComprasScene = new Scene(clienteMinhasComprasPane.load());
-                    this.clienteHistoricoComprasController = clienteMinhasComprasPane.getController();
-
-                    FXMLLoader clientePerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clientePerfil.fxml"));
-                    this.clientePerfilScene= new Scene(clientePerfilPane.load());
-                    this.clientePerfilController = clientePerfilPane.getController();
+                    FXMLLoader clienteMainPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/clienteMain.fxml"));
+                    this.clienteMainScene = new Scene(clienteMainPane.load());
+                    this.clienteMainController = clienteMainPane.getController();
                 }
 
                 else if(usuarioLogado instanceof Fornecedor){
-                    FXMLLoader fornecedorEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorEstoque.fxml"));
-                    this.fornecedorEstoqueScene = new Scene(fornecedorEstoquePane.load());
-                    this.fornecedorEstoqueController = fornecedorEstoquePane.getController();
-
-                    FXMLLoader fornecedorHistoricoPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorHistorico.fxml"));
-                    this.fornecedorHistoricoScene = new Scene(fornecedorHistoricoPane.load());
-                    this.fornecedorHistoricoController = fornecedorHistoricoPane.getController();
-
-                    FXMLLoader fornecedorPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorPerfil.fxml"));
-                    this.fornecedorPerfilScene = new Scene(fornecedorPerfilPane.load());
-                    this.fornecedorPerfilController = fornecedorPerfilPane.getController();
+                    FXMLLoader fornecedorMainPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/fornecedorMain.fxml"));
+                    this.fornecedorMainScene = new Scene(fornecedorMainPane.load());
+                    this.fornecedorMainController = fornecedorMainPane.getController();
                 }
 
                 else{
-                    FXMLLoader funcionarioCRUDLivrosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioCRUDLivros.fxml"));
-                    this.funcionarioCRUDLivrosScene = new Scene(funcionarioCRUDLivrosPane.load());
-                    this.funcionarioCRUDLivrosController = funcionarioCRUDLivrosPane.getController();
-
-                    FXMLLoader funcionarioEstoquePane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioEstoque.fxml"));
-                    this.funcionarioEstoqueScene = new Scene(funcionarioEstoquePane.load());
-                    this.funcionarioEstoqueController = funcionarioEstoquePane.getController();
-
-                    FXMLLoader funcionarioHistoricoComprasEVendasPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioHistoricoComprasEVendas.fxml"));
-                    this.funcionarioHistoricoComprasEVendasScene = new Scene(funcionarioHistoricoComprasEVendasPane.load());
-                    this.funcionarioHistoricoComprasEVendasController = funcionarioHistoricoComprasEVendasPane.getController();
-
-                    FXMLLoader funcionarioPerfilPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioPerfil.fxml"));
-                    this.funcionarioPefilScene = new Scene(funcionarioPerfilPane.load());
-                    this.funcionarioPerfilController = funcionarioPerfilPane.getController();
-
-                    FXMLLoader funcionarioRelatoriosPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioRelatorios.fxml"));
-                    this.funcionariosRelatoriosScene = new Scene(funcionarioRelatoriosPane.load());
-                    this.funcionariosRelatoriosController = funcionarioRelatoriosPane.getController();
+                    FXMLLoader funcionarioMainPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/funcionarioMain.fxml"));
+                    this.funcionarioMainScene = new Scene(funcionarioMainPane.load());
+                    this.funcionarioMainController = funcionarioMainPane.getController();
                 }
             }
 
@@ -177,107 +116,78 @@ public class ScreenManager {
             this.clienteCadastroScene = new Scene(clientecadastroPane.load());
             this.clienteCadastroController = clientecadastroPane.getController();
 
-            FXMLLoader LoginPane = new FXMLLoader(getClass().getResource("/br/ufrpe/readeasy/Login.fxml"));
-            this.loginScene = new Scene(LoginPane.load());
-            this.loginController = LoginPane.getController();
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void TrocarTela(String fxml, String title) {
+    public void trocarTelaAdm(Node telaSelecionada, String titulo){
+        admMainController.getTelaPerfil().setVisible(false);
+        admMainController.getTelaLivros().setVisible(false);
+        admMainController.getTelaEstoque().setVisible(false);
+        admMainController.getTelaUsuarios().setVisible(false);
+        admMainController.getTelaPromocoes().setVisible(false);
+        admMainController.getTelaHistorico().setVisible(false);
+        admMainController.getTelaRelatorios().setVisible(false);
+
+        telaSelecionada.setVisible(true);
+        stage.setTitle(titulo);
+    }
+
+    public void trocarTelaCliente(Node telaSelecionada, String titulo){
+        clienteMainController.getTelaPerfil().setVisible(false);
+        clienteMainController.getTelaHistoricoCompras().setVisible(false);
+        clienteMainController.getTelaCatalogo().setVisible(false);
+
+        telaSelecionada.setVisible(true);
+        stage.setTitle(titulo);
+    }
+
+    public void trocarTelaFornecedor(Node telaSelecionada, String titulo){
+        fornecedorMainController.getTelaFornecedorEstoque().setVisible(false);
+        fornecedorMainController.getTelaFornecedorHistorico().setVisible(false);
+        fornecedorMainController.getTelaFornecedorPerfil().setVisible(false);
+
+        telaSelecionada.setVisible(true);
+        stage.setTitle(titulo);
+    }
+
+    public void trocarTelaFuncionario(Node telaSelecionada, String titulo){
+        funcionarioMainController.getTelaFuncionarioEstoque().setVisible(false);
+        funcionarioMainController.getTelaFuncionarioHistorico().setVisible(false);
+        funcionarioMainController.getTelaFuncionarioPerfil().setVisible(false);
+        funcionarioMainController.getTelaFuncionarioRelatorios().setVisible(false);
+        funcionarioMainController.getTelaFuncionarioCRUDLivros().setVisible(false);
+
+        telaSelecionada.setVisible(true);
+        stage.setTitle(titulo);
+    }
+
+
+    public void trocartelasPrincipais(String fxml, String title) {
         switch (fxml) {
-            case "Login.fxml":
+            case "login.fxml":
                 stage.setScene(loginScene);
-                break;
-
-            case "admCRUDPromocoes.fxml":
-                stage.setScene(admCRUDPromocoesScene);
-                break;
-
-            case "admCRUDUsuarios.fxml":
-                admCRUDUsuariosController.initialize();
-                stage.setScene(admCRUDUsuariosScene);
-                break;
-
-            case "admEstoque.fxml":
-                admEstoqueController.initialize();
-                stage.setScene(admEstoqueScene);
-                break;
-
-            case "admHistoricoComprasEVendas.fxml":
-                admHistoricoComprasEVendasController.initialize();
-                stage.setScene(admHistoricoComprasEvendasScene);
-                break;
-
-            case "admLivros.fxml":
-                stage.setScene(admLivrosScene);
-                break;
-
-            case "admPerfil.fxml":
-                admPerfilController.initialize();
-                stage.setScene(admPerfilScene);
-                break;
-
-            case "admRelatorios.fxml":
-                admRelatoriosController.initialize();
-                stage.setScene(admRelatoriosScene);
                 break;
 
             case "clienteCadastro.fxml":
                 stage.setScene(clienteCadastroScene);
                 break;
 
-            case "clienteHistoricoCompras.fxml":
-                clienteHistoricoComprasController.initialize();
-                stage.setScene(clienteMinhasComprasScene);
+            case "admMain.fxml":
+                stage.setScene(admMainScene);
                 break;
 
-            case "clienteCatalogo.fxml":
-                stage.setScene(clienteCatalogoScene);
+            case "clienteMain.fxml":
+                stage.setScene(clienteMainScene);
                 break;
 
-            case "clientePerfil.fxml":
-                clientePerfilController.initialize();
-                stage.setScene(clientePerfilScene);
+            case "funcionarioMain.fxml":
+                stage.setScene(funcionarioMainScene);
                 break;
 
-            case "fornecedorEstoque.fxml":
-                stage.setScene(fornecedorEstoqueScene);
-                break;
-
-            case "fornecedorHistorico.fxml":
-                fornecedorHistoricoController.initialize();
-                stage.setScene(fornecedorHistoricoScene);
-                break;
-
-            case "fornecedorPerfil.fxml":
-                fornecedorPerfilController.initialize();
-                stage.setScene(fornecedorPerfilScene);
-                break;
-
-            case "funcionarioEstoque.fxml":
-                funcionarioEstoqueController.initialize();
-                stage.setScene(funcionarioEstoqueScene);
-                break;
-
-            case "funcionarioPerfil.fxml":
-                funcionarioPerfilController.initialize();
-                stage.setScene(funcionarioPefilScene);
-                break;
-
-            case "funcionarioRelatorios.fxml":
-                stage.setScene(funcionariosRelatoriosScene);
-                break;
-
-            case "funcionarioCRUDLivros.fxml":
-                funcionarioCRUDLivrosController.initialize();
-                stage.setScene(funcionarioCRUDLivrosScene);
-                break;
-
-            case "funcionarioHistoricoComprasEVendas.fxml":
-                stage.setScene(funcionarioHistoricoComprasEVendasScene);
+            case "fornecedorMain.fxml":
+                stage.setScene(fornecedorMainScene);
                 break;
         }
         stage.setTitle(title);
@@ -289,28 +199,40 @@ public class ScreenManager {
         //As telas abaixo só precisam ser atualizados 1 vez por login realizado.
         switch (tipoUsuario){
             case "adm":
+                AdmPerfilController admPerfilController = screenManager.getAdmPerfilController();
                 AdmCRUDPromocoesController admCRUDPromocoesController = screenManager.getAdmCRUDPromocoesController();
                 AdmLivrosController admLivrosController = ScreenManager.getInstance().getAdmLivrosController();
 
+                admPerfilController.initialize();
                 admCRUDPromocoesController.initialize();
                 admLivrosController.initialize();
                 break;
 
             case "funcionário":
                 FuncionarioRelatoriosController funcionarioRelatoriosController = screenManager.getFuncionariosRelatoriosController();
+                FuncionarioCRUDLivrosController funcionarioCRUDLivrosController = screenManager.getFuncionarioCRUDLivrosController();
+                FuncionarioPerfilController funcionarioPerfilController = screenManager.getFuncionarioPerfilController();
+
                 funcionarioRelatoriosController.initialize();
+                funcionarioCRUDLivrosController.initialize();
+                funcionarioPerfilController.initialize();
                 break;
 
             case "fornecedor":
                 FornecedorEstoqueController fornecedorEstoqueController = screenManager.getFornecedorEstoqueController();
                 FornecedorHistoricoController fornecedorHistoricoController = screenManager.getFornecedorHistoricoController();
+                FornecedorPerfilController fornecedorPerfilController = screenManager.getFornecedorPerfilController();
 
                 fornecedorEstoqueController.initialize();
                 fornecedorHistoricoController.initialize();
+                fornecedorPerfilController.initialize();
                 break;
+
             case "cliente":
                 ClienteCatalogoController clienteCatalogoController = screenManager.getClienteCatalogoController();
+                ClientePerfilController clientePerfilController = screenManager.getClientePerfilController();
 
+                clientePerfilController.initialize();
                 clienteCatalogoController.initialize();
                 break;
         }
@@ -324,51 +246,36 @@ public class ScreenManager {
         ScreenManager.stage = stage;
     }
 
-    public Scene getAdmCRUDPromocoesScene() {
-        return admCRUDPromocoesScene;
-    }
     public AdmCRUDPromocoesController getAdmCRUDPromocoesController() {
         return admCRUDPromocoesController;
     }
 
-    public Scene getAdmCRUDUsuariosScene() {
-        return admCRUDUsuariosScene;
-    }
     public AdmCRUDUsuariosController getAdmCRUDUsuariosController() {
         return admCRUDUsuariosController;
     }
 
-    public Scene getAdmEstoqueScene() {
-        return admEstoqueScene;
-    }
     public AdmEstoqueController getAdmEstoqueController() {
         return admEstoqueController;
     }
 
-    public Scene getAdmHistoricoComprasEvendasScene() {
-        return admHistoricoComprasEvendasScene;
-    }
     public AdmHistoricoComprasEVendasController getAdmHistoricoComprasEVendasController() {
         return admHistoricoComprasEVendasController;
     }
-
-    public Scene getAdmLivrosScene() {
-        return admLivrosScene;
+    public Scene getAdmMainScene() {
+        return admMainScene;
     }
+    public AdmMainController getAdmMainController() {
+        return admMainController;
+    }
+
     public AdmLivrosController getAdmLivrosController() {
         return admLivrosController;
     }
 
-    public Scene getAdmPerfilScene() {
-        return admPerfilScene;
-    }
     public AdmPerfilController getAdmPerfilController() {
         return admPerfilController;
     }
 
-    public Scene getAdmRelatoriosScene() {
-        return admRelatoriosScene;
-    }
     public AdmRelatoriosController getAdmRelatoriosController() {
         return admRelatoriosController;
     }
@@ -380,81 +287,69 @@ public class ScreenManager {
         return clienteCadastroController;
     }
 
-    public Scene getClienteCatalogoScene() {
-        return clienteCatalogoScene;
-    }
     public ClienteCatalogoController getClienteCatalogoController() {
         return clienteCatalogoController;
     }
 
-    public Scene getClienteMinhasComprasScene() {
-        return clienteMinhasComprasScene;
-    }
     public ClienteHistoricoComprasController getClienteMinhasComprasController() {
         return clienteHistoricoComprasController;
     }
 
-    public Scene getClientePerfilScene() {
-        return clientePerfilScene;
-    }
     public ClientePerfilController getClientePerfilController() {
         return clientePerfilController;
     }
 
-    public Scene getFornecedorEstoqueScene() {
-        return fornecedorEstoqueScene;
+    public Scene getClienteMainScene() {
+        return clienteMainScene;
     }
+    public ClienteMainController getClienteMainController() {
+        return clienteMainController;
+    }
+
     public FornecedorEstoqueController getFornecedorEstoqueController() {
         return fornecedorEstoqueController;
     }
 
-    public Scene getFornecedorHistoricoScene() {
-        return fornecedorHistoricoScene;
-    }
     public FornecedorHistoricoController getFornecedorHistoricoController() {
         return fornecedorHistoricoController;
     }
 
-    public Scene getFornecedorPerfilScene() {
-        return fornecedorPerfilScene;
-    }
     public FornecedorPerfilController getFornecedorPerfilController() {
         return fornecedorPerfilController;
     }
 
-    public Scene getFuncionarioCRUDLivrosScene() {
-        return funcionarioCRUDLivrosScene;
+    public Scene getFornecedorMainScene() {
+        return fornecedorMainScene;
     }
+    public FornecedorMainController getFornecedorMainController() {
+        return fornecedorMainController;
+    }
+
     public FuncionarioCRUDLivrosController getFuncionarioCRUDLivrosController() {
         return funcionarioCRUDLivrosController;
     }
 
-    public Scene getFuncionarioEstoqueScene() {
-        return funcionarioEstoqueScene;
-    }
     public FuncionarioEstoqueController getFuncionarioEstoqueController() {
         return funcionarioEstoqueController;
     }
 
-    public Scene getFuncionarioPefilScene() {
-        return funcionarioPefilScene;
-    }
     public FuncionarioPerfilController getFuncionarioPerfilController() {
         return funcionarioPerfilController;
     }
 
-    public Scene getFuncionarioHistoricoComprasEVendasScene() {
-        return funcionarioHistoricoComprasEVendasScene;
-    }
     public FuncionarioHistoricoComprasEVendasController getFuncionarioHistoricoComprasEVendasController() {
         return funcionarioHistoricoComprasEVendasController;
     }
 
-    public Scene getFuncionariosRelatoriosScene() {
-        return funcionariosRelatoriosScene;
-    }
     public FuncionarioRelatoriosController getFuncionariosRelatoriosController() {
         return funcionariosRelatoriosController;
+    }
+
+    public Scene getFuncionarioMainScene() {
+        return funcionarioMainScene;
+    }
+    public FuncionarioMainController getFuncionarioMainController() {
+        return funcionarioMainController;
     }
 
     public Scene getLoginScene() {
@@ -470,5 +365,93 @@ public class ScreenManager {
 
     public boolean isPrecisaApresentarOAlertDadosFuncionario() {
         return precisaApresentarOAlertDadosFuncionario;
+    }
+
+    public void setAdmCRUDPromocoesController(AdmCRUDPromocoesController admCRUDPromocoesController) {
+        this.admCRUDPromocoesController = admCRUDPromocoesController;
+    }
+
+    public void setAdmCRUDUsuariosController(AdmCRUDUsuariosController admCRUDUsuariosController) {
+        this.admCRUDUsuariosController = admCRUDUsuariosController;
+    }
+
+    public void setAdmEstoqueController(AdmEstoqueController admEstoqueController) {
+        this.admEstoqueController = admEstoqueController;
+    }
+
+    public void setAdmHistoricoComprasEVendasController(AdmHistoricoComprasEVendasController admHistoricoComprasEVendasController) {
+        this.admHistoricoComprasEVendasController = admHistoricoComprasEVendasController;
+    }
+
+    public void setAdmLivrosController(AdmLivrosController admLivrosController) {
+        this.admLivrosController = admLivrosController;
+    }
+
+    public void setAdmPerfilController(AdmPerfilController admPerfilController) {
+        this.admPerfilController = admPerfilController;
+    }
+
+    public void setAdmRelatoriosController(AdmRelatoriosController admRelatoriosController) {
+        this.admRelatoriosController = admRelatoriosController;
+    }
+
+    public void setClienteCatalogoController(ClienteCatalogoController clienteCatalogoController) {
+        this.clienteCatalogoController = clienteCatalogoController;
+    }
+
+    public void setClienteHistoricoComprasController(ClienteHistoricoComprasController clienteHistoricoComprasController) {
+        this.clienteHistoricoComprasController = clienteHistoricoComprasController;
+    }
+
+    public void setClientePerfilController(ClientePerfilController clientePerfilController) {
+        this.clientePerfilController = clientePerfilController;
+    }
+
+    public void setClienteCadastroController(ClienteCadastroController clienteCadastroController) {
+        this.clienteCadastroController = clienteCadastroController;
+    }
+
+    public static void setInstance(ScreenManager instance) {
+        ScreenManager.instance = instance;
+    }
+
+    public void setFornecedorEstoqueController(FornecedorEstoqueController fornecedorEstoqueController) {
+        this.fornecedorEstoqueController = fornecedorEstoqueController;
+    }
+
+    public void setFornecedorHistoricoController(FornecedorHistoricoController fornecedorHistoricoController) {
+        this.fornecedorHistoricoController = fornecedorHistoricoController;
+    }
+
+    public void setFornecedorPerfilController(FornecedorPerfilController fornecedorPerfilController) {
+        this.fornecedorPerfilController = fornecedorPerfilController;
+    }
+
+    public void setFuncionarioCRUDLivrosController(FuncionarioCRUDLivrosController funcionarioCRUDLivrosController) {
+        this.funcionarioCRUDLivrosController = funcionarioCRUDLivrosController;
+    }
+
+    public void setFuncionarioEstoqueController(FuncionarioEstoqueController funcionarioEstoqueController) {
+        this.funcionarioEstoqueController = funcionarioEstoqueController;
+    }
+
+    public void setFuncionarioHistoricoComprasEVendasController(FuncionarioHistoricoComprasEVendasController funcionarioHistoricoComprasEVendasController) {
+        this.funcionarioHistoricoComprasEVendasController = funcionarioHistoricoComprasEVendasController;
+    }
+
+    public void setFuncionarioPerfilController(FuncionarioPerfilController funcionarioPerfilController) {
+        this.funcionarioPerfilController = funcionarioPerfilController;
+    }
+
+    public void setFuncionariosRelatoriosController(FuncionarioRelatoriosController funcionariosRelatoriosController) {
+        this.funcionariosRelatoriosController = funcionariosRelatoriosController;
+    }
+
+    public void setLoginScene(Scene loginScene) {
+        this.loginScene = loginScene;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
     }
 }
