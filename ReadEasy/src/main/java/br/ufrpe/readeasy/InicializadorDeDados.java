@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InicializadorDeDados {
-    public static void main() {
+    public static void main(String[] args)  {
         ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
         String data = "2001-08-23";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -31,10 +31,10 @@ public class InicializadorDeDados {
         Fornecedor ronyF = new Fornecedor("Ronyzito", "1234568", dataNasc, "ronald wesley", "1234", endereco3, "987654321", tipoFornecedor3);
         Fornecedor lucasf = new Fornecedor("Lucas", "098876865", LocalDate.of(1909, 1, 1), "forn", "1234", new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"), "12312314", TipoFornecedor.EDITORA);
         Fornecedor marif = new Fornecedor("Mari", "1234567890", LocalDate.of(1990, 1, 1), "forn", "1234", new Endereco(12345678, "Rua 1", "Bairro 1", "Cidade 1", "PE"), "12312314", TipoFornecedor.DISTRIBUIDORA_DE_LIVRO);
-        Funcionario funcionario1 = new Funcionario("Rony ADM", "1234568515", dataNasc, "adm2", "1234", endereco3, "987654321", true, null);
-        Funcionario funcionario2 = new Funcionario("Ronyzito Func.", "1234568515", dataNasc, "ronyzito", "1234", endereco3, "987654321", false, funcionario1);
+        Funcionario ronyAdmin = new Funcionario("ronyAdmin", "1234568515", dataNasc, "ronyAdmin", "ronyAdmin1234", endereco3, "987654321", true, null);
+        Funcionario funcionario2 = new Funcionario("Ronyzito Func.", "95115975312", dataNasc, "ronyzito", "1234", endereco3, "987654321", false, ronyAdmin);
 
-        String urlS1 = "https://lojasemear.com.br/product_images/u/691/p7733__91582_std.jpg";
+        String urlS1 = "https://m.media-amazon.com/images/I/51FwHerjYKL._SY445_SX342_QL70_ML2_.jpg";
         String urlS2 = "https://m.media-amazon.com/images/I/81PbdwXqKkL._SL1500_.jpg";
         String urlS3 = "https://m.media-amazon.com/images/I/7158aW38zxL._AC_UF1000,1000_QL80_.jpg";
         String urlS4 = "https://m.media-amazon.com/images/I/81TmHlRleJL._SL1500_.jpg";
@@ -52,7 +52,7 @@ public class InicializadorDeDados {
         String urlS16 = "https://m.media-amazon.com/images/I/61t0bwt1s3L._SL1000_.jpg";
         String urlS17 = "https://m.media-amazon.com/images/I/81QuEGw8VPL._SL1500_.jpg";
         String urlS18 = "https://m.media-amazon.com/images/I/617ZJMlC86L._SL1294_.jpg";
-        String urlS19 = "https://upload.wikimedia.org/wikipedia/pt/7/72/The_Hobbit_Cover.JPG";
+        String urlS19 = "https://m.media-amazon.com/images/I/91M9xPIf10L._SY466_.jpg";
         String urlS20 = "https://m.media-amazon.com/images/I/51SDFG0BD8L.jpg";
         String urlS21 = "https://m.media-amazon.com/images/I/81SQPrWU7SL._AC_UF1000,1000_QL80_.jpg";
         String urlS22 = "https://m.media-amazon.com/images/I/719esIW3D7L._SL1297_.jpg";
@@ -236,6 +236,7 @@ public class InicializadorDeDados {
             servidorReadEasy.cadastrarUsuario(marif);
             servidorReadEasy.cadastrarUsuario(lucasf);
             servidorReadEasy.cadastrarUsuario(funcionario2);
+            servidorReadEasy.cadastrarAdmInicial();
 
         } catch (MenorDeIdadeException | DataInvalidaException | CampoVazioException | UsuarioExistenteException e) {
             System.out.println(e.getMessage());
@@ -1326,13 +1327,6 @@ public class InicializadorDeDados {
             servidorReadEasy.diminuirQuantidadeEmEstoque(livro28, 13);
             servidorReadEasy.diminuirQuantidadeEmEstoque(livro29, 9);
             servidorReadEasy.diminuirQuantidadeEmEstoque(livro30, 20);
-
-            //TODO FAZER O RESTO
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
-            servidorReadEasy.diminuirQuantidadeEmEstoque(livro14, 15);
         } catch (EstoqueInsuficienteException | ValorInvalidoException e) {
             System.out.println(e.getMessage());        }
 

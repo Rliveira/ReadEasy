@@ -81,6 +81,7 @@ public class ScreenManager {
     public static ScreenManager getInstance(){
         if(instance == null){
             instance = new ScreenManager();
+            instance.carregarTelas(null); // para carregar a tela de login e cadastro
         }
         return instance;
     }
