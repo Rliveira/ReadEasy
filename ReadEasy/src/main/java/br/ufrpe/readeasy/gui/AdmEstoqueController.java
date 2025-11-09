@@ -174,10 +174,8 @@ public class AdmEstoqueController {
 
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
-                trocarTelaLogin();
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
                 alert.close();
-
 
                 ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                 boolean excecaoLevantada = false;

@@ -161,7 +161,6 @@ public class FuncionarioEstoqueController {
                 Alert alertErro = new Alert(Alert.AlertType.ERROR);
                 alert.close();
 
-
                 ServidorReadEasy servidorReadEasy = ServidorReadEasy.getInstance();
                 boolean excecaoLevantada = false;
 
